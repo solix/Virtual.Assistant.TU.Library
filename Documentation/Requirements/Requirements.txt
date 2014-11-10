@@ -19,7 +19,8 @@ Virtual Assistant Project
 
 * Personal Advice / Adaptation
 TBD - meeting dinsdag 11 Nov
+- Reviewer feedback moet gecategoriseerd worden, en bijgehouden
 
 * TU Delft Services
-- Met welke moet het compatibel zijn?
-- Wat is het idee erachter? (Welke services zou een user zoal nodig kunnen hebben?)
+- Compatibel met TULib
+- Moet "struikelblokken" herkennen en overeenkomstige informatie teruggeven.
