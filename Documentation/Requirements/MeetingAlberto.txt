@@ -1,0 +1,18 @@
+A - Usage Analytics (not required, but keep logs)
+
+B - Focused Usage of Info
+
+Use Case: Student writes bachelor report
+
+0...many users + one admin (Add people/work together)
+Track data about each user for analytics
+
+1 - Setting Overall Schedule
+2 - Choose a template (2 is ok, more is allowed)
+2b - Each section should have a schedule
+2c - Makes suggestions based on knowledge, suggests a schedule based on a template but allows for rearranging
+3 - Give suggestions on how to write sections (Based on template)
+4 - Suggestions canbe done/discarded (Find a reason for the user to do this, gamification, social, review feedback, ...)
+5 - Send/Receive feedback within the environment (in a form of chat function) + versioning
+
+
