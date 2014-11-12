@@ -1,53 +1,75 @@
 \documentclass{article}
-\usepackage{setspace}
-\usepackage{adjustbox,lipsum}
-\usepackage{booktabs}
-\usepackage{varwidth}
-\usepackage{wrapfig}
-
-%% We use A4 paper with slightly smaller margins than the default (scale = 0.7).
-\usepackage{geometry}
-\geometry{a4paper,hscale=0.75,vscale=0.8}
-
-%% Define the TU Delft house style colors.
-\usepackage{color}
-\definecolor{tudelft-cyan}{cmyk}{1,0,0,0}
-\definecolor{tudelft-black}{cmyk}{0,0,0,1}
-\definecolor{tudelft-white}{cmyk}{0,0,0,0}
-\definecolor{tudelft-sea-green}{cmyk}{0.54,0,0.32,0}
-\definecolor{tudelft-green}{cmyk}{1,0.15,0.4,0}
-\definecolor{tudelft-dark-blue}{cmyk}{1,0.66,0,0.4}
-\definecolor{tudelft-purple}{cmyk}{0.98,1,0,0.35}
-\definecolor{tudelft-turquoise}{cmyk}{0.82,0,0.21,0.08}
-\definecolor{tudelft-sky-blue}{cmyk}{0.45,0,0.06,0.06}
-\definecolor{tudelft-lavendel}{cmyk}{0.45,0.2,0,0.07}
-\definecolor{tudelft-orange}{cmyk}{0.02,0.56,0.84,0}
-\definecolor{tudelft-warm-purple}{cmyk}{0.58,1,0,0.02}
-\definecolor{tudelft-fuchsia}{cmyk}{0.19,1,0,0.19}
-\definecolor{tudelft-bright-green}{cmyk}{0.36,0,1,0}
-\definecolor{tudelft-yellow}{cmyk}{0.02,0,0.54,0}
-
+\usepackage{xcolor}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{caption}
+\usepackage{verbatim}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{qtree}
 \usepackage{tikz}
-
-\title{Report Template} %The title, e.g. Algoritmiek Assignment 1
-\author{
-  LastName1, FirstName1\\
-  \texttt{first1.last1@xxxxx.com}
-  \and
-  LastName2, FirstName2\\
-  \texttt{first2.last2@xxxxx.com}
+\usepackage{bm}
+\usepackage{frame,color}
+\usepackage{datetime}
+\usepackage{etoolbox}
+\usepackage{emerald}
+\usepackage[T1]{fontenc}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\definecolor{shadecolor}{rgb}{184,184,184}
+\lstset{language=Matlab,
+        frame = single,
+        breaklines=true
 }
+\usetikzlibrary{calc,positioning}
+\usetikzlibrary{arrows,automata}
+\renewcommand{\familydefault}{\sfdefault}
+
 \begin{document}
-\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE PAGE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+    \begin{minipage}[H]{0.33\textwidth}
+		\vspace{0.3cm}
+		\includegraphics[scale=0.8]{img/TUDelftLogo.eps}
+	\end{minipage}
+	\begin{minipage}[H]{0.33\textwidth}
+		\begin{center}
+			\ECFJD{Virtual Assistant Project}
+		\end{center}
+		
+		\begin{center}
+			\includegraphics[scale=0.8]{img/Lg.eps}	
+		
+		\end{center}
+	\end{minipage}
+	\begin{minipage}[H]{0.33\textwidth}
+			\begin{flushright}
 
-%% Insert the TU Delft logo at the bottom of the page.
-\begin{tikzpicture}[remember picture,overlay]
-    \node at (current page.north east)[anchor=north east,inner sep=0pt]{
-        \includegraphics{img/logo.pdf}
-    };
-\end{tikzpicture}
+				\small{Arnaud Hambenne \qquad 4047575}\\
+				\small{Soheil Jahanshahi \qquad 4127617}\\
+				
 
-\section{Example}
-\input{./Sections/example.tex}
+			\end{flushright}
+			
+	\end{minipage}
+\end{figure}
+
+\begin{minipage}[H]{\textwidth}
+\vspace{0.3cm}
+		\begin{center}
+		
+		\vspace{0.3cm}
+			\Huge{\textbf{Project Requirements Document}}\\
+		\vspace{0.3cm}	
+		
+		\vspace{0.7cm}	
+		\end{center}
+	\end{minipage}
 	
-\end{document}
+	\end{document}
