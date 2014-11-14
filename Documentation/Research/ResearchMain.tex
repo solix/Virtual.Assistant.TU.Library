@@ -10,6 +10,7 @@
 \usepackage{amsfonts}
 \usepackage{enumerate}
 \usepackage{enumitem}
+\usepackage{booktabs}
 \usepackage{listings}
 \usepackage{qtree}
 \usepackage{tikz}
@@ -19,6 +20,12 @@
 \usepackage{etoolbox}
 \usepackage{emerald}
 \usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt,left=11mm]{geometry} % Document margins
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{hyperref} % For hyperlinks in the PDF
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space 
+\usepackage{abstract} % Allows abstract customizationbetween them
 \makeatletter
 \patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
 \makeatother
@@ -30,23 +37,22 @@
 \usetikzlibrary{calc,positioning}
 \usetikzlibrary{arrows,automata}
 \renewcommand{\familydefault}{\sfdefault}
-
+\fancyhead{} % Blank out the default header
+\fancyhead[C]{Project assistU $\bullet$ TI3800 $\bullet$ TU Delft Library} % Custom header text
 \begin{document}
+\thispagestyle{fancy}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE PAGE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
     \begin{minipage}[H]{0.33\textwidth}
 		\vspace{0.3cm}
 		\includegraphics[scale=0.8]{img/TUDelftLogo.eps}
 	\end{minipage}
-	\begin{minipage}[H]{0.33\textwidth}
+	\begin{minipage}[H]{0.34\textwidth}
 		\begin{center}
-			\ECFJD{Virtual Assistant Project}
+			\fontfamily{lmdh}\selectfont \textcolor{blue}{}
 		\end{center}
 		
-		\begin{center}
-			\includegraphics[scale=0.8]{img/Lg.eps}	
-		
-		\end{center}
+	
 	\end{minipage}
 	\begin{minipage}[H]{0.33\textwidth}
 			\begin{flushright}
@@ -60,16 +66,41 @@
 	\end{minipage}
 \end{figure}
 
+
 \begin{minipage}[H]{\textwidth}
 \vspace{0.3cm}
 		\begin{center}
 		
 		\vspace{0.3cm}
-			\Huge{\textbf{Project Requirements Document}}\\
+			\large{\fontfamily{lmr}\selectfont Title fo Document}\\
 		\vspace{0.3cm}	
 		
 		\vspace{0.7cm}	
 		\end{center}
 	\end{minipage}
-	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE ENDS HERE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+%%%%%%%%%%%%%%%%%ALL Sections
+\section{Introduction}
+  \input{./sections/1.Intro.tex}
+  \section{Problem Domain}
+  \input{./sections/2.problemDomain.tex}
+  \section{Research Question}
+  \input{./sections/3.ResearchQuestion.tex}
+  \section{Project Requirements}
+  \input{./sections/4.ProjectRequirement.tex}
+  \section{Technical Analysis}
+  \input{./sections/5.TechnicalAnalysis.tex}
+   \section{Conclusion}
+  \input{./sections/6.Conclusion.tex}
+
+
+%%%%%%%%%%%%%%%%ALL Sections ENDS here
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Refrences%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\bibliographystyle{plain}
+\bibliography{refrences}
+
+
 	\end{document}
