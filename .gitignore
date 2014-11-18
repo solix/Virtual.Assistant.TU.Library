@@ -31,7 +31,9 @@
 *.xdy
 *.tdo
 *.swp
+*.pdf
 clean
-main.pdf
+emerald.sty
+qtree.sty
 main.bbl
 main.out
