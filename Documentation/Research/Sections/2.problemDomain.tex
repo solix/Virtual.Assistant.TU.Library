@@ -3,12 +3,12 @@ Within the following section we will describe and analyse what our problem domai
 \subsection{Domain Description} % (fold)
 \label{sub:problem_description}
 
-The goal of this project is the technical implementation of a prototype of a "Virtual Assistant", which helps students and researchers to write a report, thesis or dissertation. This Virtual Assistant should provide its users with the ability to choose a layout template, allow for scheduling and feedback, and give suggestions or tips to users about how to write a report, thesis or dissertation.
+The goal of this project is the creation and implementation of a prototype for a "Virtual Assistant", which helps students and researchers to write a report, thesis or dissertation. This Virtual Assistant should provide its users with the ability to choose a layout template, allow for scheduling and feedback, and give suggestions or tips to users about how to write a report, thesis or dissertation.
 This project should entail either native desktop software, a web application, or a mobile application. The final product should be released as open source software.
 
 \subsection{Domain analysis} % (fold)
 
-One of the key aspects that need to be well-researched for our project is our domain analysis. The domain analysis basically illustrates all the types of people involved with the problem domain (i.e. the stakeholders), and what their interests are. First we list all the stakeholders involved with our domain, secondly we define our scope, and finally we summarize a set of interviews we have conducted with people that embody relevant roles.
+One of the key aspects that need to be well-researched for our project is our domain analysis. The domain analysis basically illustrates all the different types of roles involved with the problem domain (i.e. the stakeholders), and what their interests are. First we list all the stakeholders involved with our domain, secondly we define our scope, and finally we summarize a set of interviews we have conducted with people that embody relevant roles.
 
 \subsubsection{Stakeholders} % (fold)
 
@@ -16,7 +16,9 @@ Below we identify the different stakeholders, which roles they can take, and wha
 
 \paragraph{Client: TU Delft Library} The TU Delft Library is the entity that requested this project, and is therefor our client. They expect a prototype of a product that meets their requirements.
 
-\paragraph{Users: Students, Researchers and Reviewers} The use of this product is aimed at students, researchers and reviewers, which makes them our users. They want a product that is easy to use and helps them with writing or reviewing a report/thesis/dissertation.
+\paragraph{Users: Students and Researchers} The use of this product is aimed at students, and researchers, which makes them a subset of our users. They want a product that is easy to use and helps them with writing a report/thesis/dissertation.
+
+\paragraph{Users: Reviewers} The use of this product is also aimed at reviewers, which makes the complementary subset of our users. They also want a product that is easy to use and facilitates them in reviewing a report/thesis/dissertation.
 
 \paragraph{Contributors: Open Source Developers} Our client requested that our final version be released as an open source project. This means that at some point in the future other developers are going to improve upon our product. With this in mind, we have to introduce some design ideals and constraints that will make it easier for them to add code in the future.
 
@@ -25,10 +27,10 @@ Below we identify the different stakeholders, which roles they can take, and wha
 The scope of our domain is set for the use-case of students who are writing a Bachelor project final report. One obvious reason for this scope is that this project is also a Bachelor final project, which will also include the process of writing a final report. This means that we will have affinity with the scope, which should imply an advantage within our design. Another reason is that there are plainly too many different cases and subjects within our problem domain to serve all of them accordingly within our deadline.
 Our main objective is the creation of an online environment that acts as a support for students who are writing a report/thesis/dissertation. It should provide the students with suggestions, tips, sources and other relevant information. It should provide a platform where there is an interaction between students and their peers or superiors (in this case a teacher, coach or supervisor), and where they can exchange feedback towards each other.
 
-\subsubsection{Interview with Nicole Will} % (fold)
+\subsubsection{Interview result analysis} % (fold)
 
 The most challenging part in this project is understanding how we can provide suggestions, tips, sources and other relevant information to students. In order to get a more detailed comprehension of this part within our problem domain, we conducted an interview with Nicole Will. Nicole works for the TU Delft Library as the Head of Education Support, and is also involved with the TULib website, which is an informative website about finding and using scientific information.
-We wanted to know what the most valuable pieces of information were that we could provide students with when they write a report. She claimed there were three important parts that we should include, being the module on how to cite, how to make a reference list, and how to use the APA style for your references.
+We wanted to know what the most valuable pieces of information were that we could provide students with when they write a report. She claimed there were three important parts that we should include, being the module on how to cite\cite{tulib:howtocite}, how to make a reference list, and how to use the APA\cite{tulib:apa} style for your references.
 Other than these she also found it useful to provide the students with information on how to find information and articles, how to check for relevance and reliability of sources and what plagiarism is and how to avoid it.
 
 
