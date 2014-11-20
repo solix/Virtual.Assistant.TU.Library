@@ -36,7 +36,8 @@ Given these advantages, the use of the Scrum method should be the most adequate 
 \end{itemize} 
 \end{enumerate}
 \subsection{Architectural Model : MVC}
-A design pattern is important to write re-usable and maintainable code. For the Virtual assistant application is best to divide the application into three interconnected parts to separate internal representation of information from information that is presented to users or accepted by them\cite{wiki:mvc}. Such a Design is called MVC pattern which consist of three separate parts namely Model, View and Controller.
+Having a design pattern is important when you want to write re-usable and maintainable code.
+For the Virtual assistant application we decided that it is best to divide the application into three interconnected parts which separate the internal representation of data from information that is presented to the users\cite{wiki:mvc}. This type of designpattern is called the MVC pattern. MVC stands for the three components that make up the pattern, the Model, the View and the Controller.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{./img/MVC.png}
@@ -45,17 +46,17 @@ A design pattern is important to write re-usable and maintainable code. For the 
 	
 \end{figure}
 
-As shown in fig \ref{mvc} , MVC will give the application power to separate the classes which are used typically in a database from the user interface; that is necessary to render the model to the user. also controller will act as a brain of the application. controller decides what the user input was and how the model needs to change as a result of that input\cite{codinghorror},controller then respond back to the user by calling resulting view.
+As shown in fig \ref{mvc}, the MVC separates the application into a front end, the View, and a back end, the Model and Controller. The Controller provides the link between both the View and the Model, which makes it act as the brain of the application. The Controller decides what the user input was and how the Model needs to change as a result of this input\cite{codinghorror}. The Controller then responds back to the user by calling the resulting View.
 
 \subsection{Choice of framework}
-For choosing suitable web application framework we have conducted some  constraint for ourselves to benchmark various popular existing frameworks which is proven in production. Our first criteria was choosing a framework which is based on either Java, Scala, Javascript. With this we have narrowed down our choices to search for the suitable framework. After Analyzing popular frameworks such as \href{https://grails.org/}{Grails}, \href{https://vaadin.com/home}{Vaadin}, \href{https://www.playframework.com/}{Play!} and \href{http://projects.spring.io/spring-framework/}{Spring}. We finally selected two candidates to benchmark them. We boiled down our choices between Spring framework and Play! framework.\\
+In order to be able to choose a suitable web application framework, we have defined some  constraints for ourselves that we can use to benchmark various popular existing frameworks. Our first criteria was choosing a framework which is based on either Java, Scala or Javascript. With this in mind, we have narrowed our choices down to three popular frameworks such as \href{https://grails.org/}{Grails}, \href{https://vaadin.com/home}{Vaadin}, \href{https://www.playframework.com/}{Play!} and \href{http://projects.spring.io/spring-framework/}{Spring}. Finally we were able to boil down our choice to either the Spring framework or the Play! framework.\\
 \subsubsection{Benchmarking}
- below table shows comparison of these two frameworks with constraint that we have settled:\\\\
+ The table below lists the comparison of these two frameworks with the constraints that we have defined:\\\\
 
 \begin{center}
 	
 
-\begin{tabular}{ |l||l|p{6cm}|p{6cm}|  }
+\begin{tabular}{ |l||l| C{6cm} | C{6cm} |  }
  \hline
  \multicolumn{4}{|c|}{\textbf{Benchmark Table}} \\
  \hline
@@ -86,7 +87,7 @@ For choosing suitable web application framework we have conducted some  constrai
 \end{tabular}
 \end{center}
 
-The result of Benchmarking showed that there are actually not much of a difference between these two frameworks. Finally we decided to use Play!Framework for this project.
+The result of this benchmark shows us that the differences between these two frameworks are fairly minimal. We decided to use the Play!Framework for this project.
 
 \subsection{Play! Framework}
   \input{./Sections/5.6.play.tex}
@@ -111,4 +112,4 @@ The result of Benchmarking showed that there are actually not much of a differen
 % \subsubsection{Jenkins}
 % \subsubsection{frameworks}
 
-
+/newpage
