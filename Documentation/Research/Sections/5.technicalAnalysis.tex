@@ -1,11 +1,11 @@
-When conducting the research for the problem domain, We have extracted information regarding stakeholders and scope of the project. In this section we will justify our findings on technical choices regarding the deployment of the tools, design and system components. These choices are based on the requirement that is given by the product owner and the extra requirement that we think is necessary for developing a robust software.   
+When conducting the research for the problem domain, We have extracted information regarding stakeholders and scope of the project. In this section we will justify our findings on technical choices regarding the deployment of the tools, design and system components. These choices are based on the requirement that is given by the product owner and the extra requirement that we think is necessary for developing a robust software.
 
 \subsection{Why a web application?}
 Nowadays people rely heavily on using the web application. Google maps are good example of such an application, It is a very powerful software that provides to the user so many map features within a web browser, users can travel virtually within a map and can zoom for particular locations. Every time a user asks for specific information, that information is pulled dynamically into the web app.\\
  For our purpose web application is the best choice because users can access their data from various locations on any device because all data is stored online and it works on every device with a web browser. It is also safer to run an application on a web browser because It cannot interfere with programs running on the user's computer and this will lead to better performance of the machine.
 
 \subsection{Objective}
-There are various models readily available for the implementation of a web application. The choice of a specific model usually depends on the context and objectives of the project itself. Our current project entails the development of a prototype within a time constraint of 11 to 12 weeks, which persuaded us to use a full stack framework. When we would use a full stack frameword, we should be able to focus solely on techniques that allow us to perform rapid prototyping, generate quality code and provide good documentation all of which meet the clients requirements. The following features should facilitate reaching our objectives during the development phase.
+There are various models readily available for the implementation of a web application. The choice of a specific model usually depends on the context and objectives of the project itself. Our current project entails the development of a prototype within a time constraint of 11 to 12 weeks, which persuaded us to use a full stack framework. If we would use a full stack framework, we should be able to focus primarily on techniques that allow us to perform rapid prototyping, generate quality code and provide good documentation all of which meet the clients requirements. The following features should facilitate reaching our objectives during the development phase.
 
 \begin{enumerate}
 	\item \textbf{Full stack framework}: a framework that gathers all the libraries and help us with the full development stack.
@@ -40,7 +40,7 @@ Because of the aforementioned advantages of the scrum, we decided to practice sc
 A design pattern is important to write re-usable and maintainable code. For the Virtual assistant application is best to divide the application into three interconnected parts to separate internal representation of information from information that is presented to users or accepted by them\cite{wiki:mvc}. Such a Design is called MVC pattern which consist of three separate parts namely Model, View and Controller.
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.3]{./img/MVC.PNG}
+\includegraphics[scale=0.3]{./img/MVC.png}
 \caption{\small{model,view and controller that are interconnected by directed edges}}
 \label{mvc}
 	
@@ -56,33 +56,33 @@ For choosing suitable web application framework we have conducted some  constrai
 \begin{center}
 	
 
-\begin{tabular}{ |l||l|p{7cm}|p{6cm}|  }
+\begin{tabular}{ |l||l|p{6cm}|p{6cm}|  }
  \hline
  \multicolumn{4}{|c|}{\textbf{Benchmark Table}} \\
  \hline
  ~ & \textbf{Constraint} & \textbf{Play! Framework} & \textbf{Spring Framework}\\
  \hline
- 1   & Development Principles & Convention over configuration,Don't repeat yourself,Test-driven development & Convention over configuration,Don't repeat yourself,Test-driven development ,Domain Driven Design   \\
+ 1 & Development Principles & Convention over configuration, Don't repeat yourself, Test-driven development & Convention over configuration, Don't repeat yourself, Test-driven development, Domain Driven Design \\
  \hline
- 2 & Design pattern & Model-View-Controller,Dependency-injection,Active-Record,DAO,Actors & Model-View-Controller,Dependency-injection,Domain-Driven-Design \\
+ 2 & Design pattern & Model-View-Controller, Dependency-injection, Active-Record, DAO, Actors & Model-View-Controller, Dependency-injection, Domain-Driven-Design \\
  \hline
- 3 &Operating System & Cross-Platform&  Cross-Platform\\
+ 3 & Operating System & Cross-Platform & Cross-Platform \\
  \hline
- 4 &Programming Language & Java, Scala &  Java\\
+ 4 & Programming Language & Java, Scala & Java \\
  \hline
- 5& Database  & MySQL,PostgreSQL,MongoDB,Oracle,SQLite,HBase,H2-database,Resis& Microsoft-BI,MYSQL,PostgreSQL,Oracle,SQLite,IBM-DB2,JDBC-Compatible,MongoDB,Microsoft-SQL-Server,Taradata,Cassandra\\
+ 5 & Database & MySQL, PostgreSQL, MongoDB, Oracle, SQLite, HBase, H2-database, Resis & Microsoft-BI, MYSQL, PostgreSQL, Oracle, SQLite, IBM-DB2, JDBC-Compatible, MongoDB, Microsoft-SQL-Server, Taradata, Cassandra \\
  \hline
- 6&   Database model  & NoSQL,Relational,Object-Relational & Document-Oriented,Graph-Oriented,Multidimensional,NoSQL,Relational,Object-Relational,XML Database\\
+ 6 & Database model & NoSQL, Relational, Object-Relational & Document-Oriented, Graph-Oriented, Multidimensional, NoSQL, Relational, Object-Relational, XML Database \\
  \hline
- 7&   Documentation level & Excellent&Excellent\\
+ 7 & Documentation level & Excellent&Excellent \\
  \hline
- 8&   Programming paradigm  & OOP,Functional,Concurrency Oriented&Aspect-Oriented,OOP\\
+ 8 & Programming paradigm & OOP, Functional, Concurrency Oriented&Aspect-Oriented, OOP \\
  \hline
- 9&   Cloud Platform Support  & Heroku,Clever Cloud,Amazon EC2,Cloud Bee,OpenShift,digital Ocean,playframework Cloud & Open Shift,Heroku,Amazon EC2,AppHarbor,CloudBee\\
+ 9 & Cloud Platform Support & Heroku, Clever Cloud, Amazon EC2, Cloud Bee, OpenShift, digital Ocean, playframework Cloud & Open Shift, Heroku, Amazon EC2, AppHarbor, CloudBee \\
  \hline
- 10&   Annotatiuon support & YES & YES\\
+ 10 & Annotation support & YES & YES \\
  \hline
- 11&   Scalability & YES&YES\\
+ 11 & Scalability & YES & YES \\
  \hline
 \end{tabular}
 \end{center}
