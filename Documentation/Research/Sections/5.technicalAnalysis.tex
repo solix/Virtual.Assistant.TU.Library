@@ -32,9 +32,24 @@ Given these advantages, the use of the Scrum method should be the most adequate 
 		\item Sprint reflection report: A weekly evaluation where the estimated effort is compared to the actual effort that was needed to implement the chosen features, and where possible issues are documented. The evaluation takes place at the end of each Sprint.
 		\item Daily Scrum meeting: A daily meeting between the developers which takes about 15 minutes.
 		\item Sprint review meeting: A weekly meeting of about 15-20 minutes with the clients, in order to receive their feedback on the implemented features.
-		
-\end{itemize} 
+\end{itemize}
 \end{enumerate}
+
+\subsubsection{Definition of Done} 
+For this project, we have defined an extra convention for ourselves
+
+
+
+For this project, we define a convention called the definition of done, A project task is done if the following holds for the task:
+
+\begin{itemize}
+	\item	Implemented (the code has been written)
+	\item	Unit tested (JUnit test cases)
+	\item 	Integrated
+	\item 	Integration tested
+	\item 	Documented (the change has been documented)
+\end{itemize} 
+
 \subsection{Architectural Model : MVC}
 Having a design pattern is important when you want to write re-usable and maintainable code.
 For the Virtual assistant application we decided that it is best to divide the application into three interconnected parts which separate the internal representation of data from information that is presented to the users\cite{wiki:mvc}. This type of designpattern is called the MVC pattern. MVC stands for the three components that make up the pattern, the Model, the View and the Controller.
