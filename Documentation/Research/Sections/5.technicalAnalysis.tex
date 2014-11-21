@@ -4,7 +4,7 @@ Now that the requirements are set, and our research question has been formulated
 One of the main ideas that have been advised to us by our coach is the creation of a web application for our project. The justification for this is ease of usability and compatibility across several platforms. Web applications are also exempted from platform-specific updates, whereas now one single update on the web application immediatly reaches all of our users at once. When a web application is used, users can access the exact same content from different computers or mobile devices.
 
 \subsection{Objective}
-There are various models readily available for the implementation of a web application. The choice of a specific model usually depends on the context and objectives of the project itself. Our current project entails the development of a prototype within a time constraint of 11 to 12 weeks, which persuaded us to use a full stack framework. If we would use a full stack framework, we should be able to focus primarily on techniques that allow us to perform rapid prototyping, generate quality code and provide good documentation all of which meet the clients requirements. The following features should facilitate reaching our objectives during the development phase.
+There are various frameworks available for the implementation of a web application. The choice of a specific framework usually depends on the context and objectives of the project itself. Our current project entails the development of a prototype within a time constraint of 11 to 12 weeks, which persuaded us to use a full stack framework. If we would use a full stack framework, we should be able to focus primarily on techniques that allow us to perform rapid prototyping, generate quality code and provide good documentation all of which meet the clients requirements. The following features should facilitate reaching our objectives during the development phase.
 
 \begin{enumerate}
 	\item \textbf{a Full-Stack framework}: A framework that already contains all the basic utilities to create and run an application, with the option to connect or import external entities too.
@@ -14,7 +14,7 @@ There are various models readily available for the implementation of a web appli
 \end{enumerate}
 \subsection{Project Development Methodology} % (fold)
 
-For our project development methodology we chose the agile Scrum methodology. This means that we will have weekly sprints (iterations within a fixed amount of time) in which a predefined set of features are to be implemented. Each week we show our client what we achieved, and we discuss possible changes (within the requirements that have been agreed upon). The Scrum method gives developers an advantage over sequential methodologies such as the waterfall model or the V-model, because when changes have to be made to either pieces of code, features or even requirements, the sequential methodologies force the developers to revise (or even redo) everything that happened after the point where they were processed within the implementation. These sort of changes are more manageable within iterative methodologies such as Scrum. Scrum also allows developers to uncover designing constraints that may not have been obvious at the start of the implementation by giving them the opportunity to pivot after every sprint. \\
+For our project development methodology we chose the agile Scrum methodology. This means that we will have weekly sprints (iterations within a fixed amount of time) in which a predefined set of items, taken from a product backlog\footnote{The agile product backlog in Scrum is a prioritized features list, containing short descriptions of all functionality desired in the product.\cite{backlog} }, are to be implemented. Each week we show our client what we achieved, and we discuss possible changes (within the requirements that have been agreed upon). The Scrum method gives developers an advantage over sequential methodologies such as the waterfall model or the V-model, because when changes have to be made to either pieces of code, features or even requirements, the sequential methodologies force the developers to revise (or even redo) everything that happened after the point where they were processed within the implementation. These sort of changes are more manageable within iterative methodologies such as Scrum. Scrum also allows developers to uncover designing constraints that may not have been obvious at the start of the implementation by giving them the opportunity to pivot after every sprint. \\\\
 Given these advantages, the use of the Scrum method should be the most adequate for our project. When using Scrum, some roles and conventions have to be attributed, which are listed below:
 
 \begin{enumerate}
@@ -27,7 +27,7 @@ Given these advantages, the use of the Scrum method should be the most adequate 
 		\end{itemize}
 	\item \textbf{Conventions}	
 \begin{itemize}
-		\item Sprint duration : One iteration per week.
+		\item Sprint duration: One week.
 		\item Sprint Planning meeting: A weekly meeting that is used to prioritise the selected features for each sprint. 
 		\item Sprint reflection report: A weekly evaluation where the estimated effort is compared to the actual effort that was needed to implement the chosen features, and where possible issues are documented. The evaluation takes place at the end of each Sprint.
 		\item Daily Scrum meeting: A daily meeting between the developers which takes about 15 minutes.
@@ -37,7 +37,7 @@ Given these advantages, the use of the Scrum method should be the most adequate 
 \end{enumerate}
 \subsection{Architectural Model : MVC}
 Having a design pattern is important when you want to write re-usable and maintainable code.
-For the Virtual assistant application we decided that it is best to divide the application into three interconnected parts which separate the internal representation of data from information that is presented to the users\cite{wiki:mvc}. This type of designpattern is called the MVC pattern. MVC stands for the three components that make up the pattern, the Model, the View and the Controller.
+For the `Virtual Assistant' application we decided that it is best to divide the application into three interconnected parts which separate the internal representation of data from information that is presented to the users\cite{wiki:mvc}. This type of designpattern is called the MVC pattern. MVC stands for the three components that make up the pattern, the Model, the View and the Controller.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{./img/MVC.png}
@@ -49,9 +49,9 @@ For the Virtual assistant application we decided that it is best to divide the a
 As shown in fig \ref{mvc}, the MVC separates the application into a front end, the View, and a back end, the Model and Controller. The Controller provides the link between both the View and the Model, which makes it act as the brain of the application. The Controller decides what the user input was and how the Model needs to change as a result of this input\cite{codinghorror}. The Controller then responds back to the user by calling the resulting View.
 
 \subsection{Choice of framework}
-In order to be able to choose a suitable web application framework, we have defined some  constraints for ourselves that we can use to benchmark various popular existing frameworks. Our first criteria was choosing a framework which is based on either Java, Scala or Javascript. With this in mind, we have narrowed our choices down to three popular frameworks such as \href{https://grails.org/}{Grails}, \href{https://vaadin.com/home}{Vaadin}, \href{https://www.playframework.com/}{Play!} and \href{http://projects.spring.io/spring-framework/}{Spring}. Finally we were able to boil down our choice to either the Spring framework or the Play! framework.\\
+In order to be able to choose a suitable web application framework, we have defined some  constraints for ourselves that we can use to benchmark various popular existing frameworks. Our first criteria was choosing a framework which is based on either Java, Scala or Javascript. With this in mind, we have narrowed our choices down to four popular frameworks such as \href{https://grails.org/}{Grails}, \href{https://vaadin.com/home}{Vaadin}, \href{https://www.playframework.com/}{Play!} and \href{http://projects.spring.io/spring-framework/}{Spring}. Finally we were able to boil down our choice to either the Spring framework or the Play! framework.
 \subsubsection{Benchmarking}
- The table below lists the comparison of these two frameworks with the constraints that we have defined:\\\\
+ The table below lists the comparison of these two frameworks within the constraints that we have defined:\\\\
 
 \begin{center}
 	
@@ -88,6 +88,7 @@ In order to be able to choose a suitable web application framework, we have defi
 \end{center}
 
 The result of this benchmark shows us that the differences between these two frameworks are fairly minimal. We decided to use the Play!Framework for this project.
+\newpage
 
 \subsection{Play! Framework}
   \input{./Sections/5.6.play.tex}
@@ -112,4 +113,3 @@ The result of this benchmark shows us that the differences between these two fra
 % \subsubsection{Jenkins}
 % \subsubsection{frameworks}
 
-/newpage
