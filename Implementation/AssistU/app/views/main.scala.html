@@ -54,22 +54,19 @@
     </head>
     <body>
         @content
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <!-- jQuery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+        <!--bootstrap-->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
+        <!--sb-Admin-->
+        <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 
-        <!-- Metis Menu Plugin JavaScript -->
-        <script src="@routes.Assets.at("js/plugins/metisMenu/metisMenu.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/plugins/morris/raphael.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/plugins/morris/morris.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/plugins/morris/morris-data.js")"></script>
 
-        <!-- Morris Charts JavaScript -->
-        <script src="@routes.Assets.at("js/plugins/morris/raphael.min.js")"></script>
-        <script src="@routes.Assets.at("js/plugins/morris/morris.min.js")"></script>
-        <script src="@routes.Assets.at("js/plugins/morris/morris-data.js")"></script>
-
-        <!-- Custom Theme JavaScript -->
-        <script src="js/sb-admin-2.js"></script>
 
     </body>
 </html>
