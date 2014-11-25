@@ -347,3 +347,21 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+.panel-pink {
+    border-color: #B4045F;
+}
+
+.panel-pink .panel-heading {
+    border-color: #B4045F;
+    color: #fff;
+    background-color: #B4045F;
+}
+
+.panel-pink a {
+    color: #B4045F;
+}
+
+.panel-pink a:hover {
+    color: #DF01D7;
+}
