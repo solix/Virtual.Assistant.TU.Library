@@ -7,11 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>login page</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="@routes.Assets.at("css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("css/bootstrap-social.css")" rel="stylesheet">
+    <!-- Normalize css file  -->
+    <link href="@routes.Assets.at("css/normalize.css")" rel="stylesheet">
+
 
     <!-- MetisMenu CSS -->
     <link href="@routes.Assets.at("css/plugins/metisMenu/metisMenu.min.css")" rel="stylesheet">
@@ -28,9 +33,13 @@
 
     <!-- Custom Fonts -->
     <link href="@routes.Assets.at("font-awesome-4.1.0/css/font-awesome.min.css")" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="@routes.Assets.at("css/login.css")" rel="stylesheet" type="text/css">
 
-    <!--bootstrap datepicker-->
-    <link href="@routes.Assets.at("css/datepicker.css")" rel="stylesheet" type="text/css">
+
+    <!--Login CSS-->
+
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,50 +51,96 @@
 
 
     <![endif]-->
-
 </head>
 
 <body>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
-                            </fieldset>
-                        </form>
+
+<div class="container">
+        
+    <div class="page-header">
+        <h1>Sign in</h1>
+    </div>
+<!-- the sign in from with email and Adress -->
+
+    <div class="row">
+
+        <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+            <form method="POST" action="." novalidate>
+               <div class="form-group ">
+                <label class="control-label" for="email">Email</label>
+                <input autofocus class="form-control input-lg" id="email" name="email" type="email" value="">
+               </div>
+
+
+                <div class="form-group ">
+                  <label class="control-label" for="password">Password</label>
+                    <div class="input-group input-group-lg">
+                      <input autocomplete="on" class="form-control" id="password" name="password" type="password" value="">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default btn-password-show" type="button" data-target="#password" data-toggle="button" title="Show/Hide Password" tabindex="-1">
+                          <span class="fa fa-eye"></span>
+                        </button>
+                      </span>
                     </div>
                 </div>
+
+  
+                <div class="controls">
+                    <button type="submit" class="btn btn-block btn-lg btn-success btn-loading" data-loading-text="Signing in..">
+                    Sign in
+                    </button>
+                </div>
+                  <div class="form-group">
+                    <div class="btn-group btn-group-justified form-control-static">
+                      <a class="btn btn-link btn-xs ellipsis" href="/user/forgot/">Forgot password?</a>
+                      <a class="btn btn-link btn-xs ellipsis" href="/signup/?next=%2F">Create new account</a>
+                    </div>
+                  </div>
+            </form>          
+            <legend class="text-muted text-center">
+                or
+            </legend>
+            <div class="text-center">
+                    <a class="btn btn-lg btn-social-icon btn-google-plus" href="/signin/google/?next=%2F" title="Sign in with Google" rel="nofollow">
+                    <i class="fa fa-google-plus"></i>
+                    </a>
+
+                
+
+                     <a class="btn btn-lg btn-social-icon btn-twitter" href="/signin/twitter/?next=%2F" title="Sign in with Twitter" rel="nofollow">
+                        <i class="fa fa-twitter"></i>
+                     </a>
+          </div>
+<hr>
+            <div class="checkbox remember">
+                 <label><input type="checkbox" checked>Keep me signed in</label>
             </div>
         </div>
     </div>
+  </div>
+</div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-    <!--bootstrap-->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+  </script>
+    <script src="/p/min/script/scripts.min.js?1-4-0.379471333572466079"></script>
+  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+  </script>
 
-    <!--sb-Admin-->
-    <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+<!--bootstrap-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-    <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+<!--sb-Admin-->
+<script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+
+<script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+<script src="@routes.Assets.at("javascripts.js")"></script>
+
 
 </body>
 
