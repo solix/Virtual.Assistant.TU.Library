@@ -1,31 +1,57 @@
-.form-control {
-display: inline-block;
+.task-list {
+  width: 250px;
+  float: left;
+  margin: 0 5px;
+  background-color: #e3e3e3;
+  min-height: 240px;
+  border-radius: 10px;
+  padding-bottom: 15px;
 }
-.add_button {
-margin: 10px 0px 10px 0px;
+ 
+.task-list input, .task-list textarea {
+  width: 240px;
+  margin: 1px 5px;
 }
-.checkbox {
-margin-top: 20px;
+ 
+.task-list input {
+  height: 30px;
 }
-.completed_item {
-text-decoration: line-through;
+ 
+.todo-task {
+  border-radius: 5px;
+  background-color: #fff;
+  width: 230px;
+  margin: 5px;
+  padding: 5px;
 }
-h1 {
-display: inline-block;
-color: #292b33;
+ 
+.task-list input[type="button"] {
+  width: 100px;
+  margin: 5px;
 }
-body {
-background-color: #f6f6f6;
+ 
+.todo-task > .task-header {
+  font-weight: bold;
 }
-.text_holder {
-display: block;
-max-width: 100%;
-word-wrap: break-word;
+ 
+.todo-task > .task-date {
+  font-size: small;
+  font-style: italic;
 }
-#main {
-margin-top: 0px;
-background-color: #ffffff;
-border-radius: 60px;
-width: 90%;
-border: opx solid #545454;
+ 
+.todo-task > .task-description {
+  font-size: smaller;
+}
+ 
+h3 {
+  text-align: center;
+}
+ 
+#delete-div {
+  background-color: #fff;
+  border: 3px dotted #000;
+  margin: 10px;
+  height: 75px;
+  line-height: 75px;
+  text-align: center;
 }
