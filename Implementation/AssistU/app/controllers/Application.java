@@ -39,13 +39,23 @@ public class Application extends Controller {
         return ok(calendar.render());
     }
 
+
     public static Result project() {
 
         return ok(project.render());
     }
 
-    public static Result bep() {
+    
+    /**respond to inbox page request*/
+    public static Result inbox() {
 
-        return ok(bep.render());
+        return ok(inbox.render());
+    }
+
+     /**respond to tips and suggestions page request*/
+    public static Result tips() {
+
+        return ok(tips.render());
+
     }
 }

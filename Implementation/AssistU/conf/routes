@@ -3,12 +3,27 @@
 # ~~~~
 
 # Home page
+
 GET     /                           controllers.Application.index()
+#task
+
 GET     /task                       controllers.Application.task()
+#login
+
 GET     /login                      controllers.Application.login()
+#calendar
+
 GET     /calendar                   controllers.Application.calendar()
+#project
+
 GET     /project                    controllers.Application.project()
-GET     /project/bep                        controllers.Application.bep()
+#inbox
+
+GET     /inbox                      controllers.Application.inbox()
+#tips
+
+GET     /tips						controllers.Application.tips()	
+
 
 
 # Map static resources from the /public folder to the /assets URL path

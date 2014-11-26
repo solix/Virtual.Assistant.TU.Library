@@ -1,0 +1,50 @@
+/* #demo style - you can delete it */
+#demo {
+  position: relative;
+  margin: 30px auto;
+  width: 455px;
+  padding: 0;
+}
+
+#demo > * {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  background-color: #03a9f4;
+}
+
+/* core style - don't delete */
+// Mixin
+.scale(@ratio) {
+  -webkit-transform: scale(@ratio);
+      -ms-transform: scale(@ratio); // IE9 only
+       -o-transform: scale(@ratio);
+          transform: scale(@ratio);
+}
+.transition(@transition) {
+  -webkit-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+
+// Animation
+.display-animation > * {
+  .scale(0);
+}
+.display-animation > .animated {
+  .scale(1); 
+  .transition(all .3s cubic-bezier(.55,0,.1,1)); // "Swift Out" easing curve
+}
+// for no-js (if you use modernizr, if don't - you can write own class for this sort of situations)
+.no-js .display-animation > * {
+  .scale(1);
+}
