@@ -38,4 +38,14 @@ public class Application extends Controller {
 
         return ok(calendar.render());
     }
+
+    public static Result project() {
+
+        return ok(project.render());
+    }
+
+    public static Result bep() {
+
+        return ok(bep.render());
+    }
 }

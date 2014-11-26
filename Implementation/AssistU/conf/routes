@@ -5,11 +5,12 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET     /task                       controllers.Application.task()
-GET     /login                       controllers.Application.login()
-GET     /calendar                       controllers.Application.calendar()
+GET     /login                      controllers.Application.login()
+GET     /calendar                   controllers.Application.calendar()
+GET     /project                    controllers.Application.project()
+GET     /project/bep                        controllers.Application.bep()
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /webjars/*file              controllers.WebJarAssets.at(file)
