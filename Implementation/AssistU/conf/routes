@@ -5,8 +5,10 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET     /task                       controllers.Application.task()
-GET     /login                       controllers.Application.login()
-GET     /calendar                       controllers.Application.calendar()
+GET     /login                      controllers.Application.login()
+GET     /calendar                   controllers.Application.calendar()
+GET     /inbox                      controllers.Application.inbox()
+GET     /tips						controllers.Application.tips()	
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -38,4 +38,16 @@ public class Application extends Controller {
 
         return ok(calendar.render());
     }
+    
+    /**respond to inbox page request*/
+    public static Result inbox() {
+
+        return ok(inbox.render());
+    }
+
+     /**respond to tips and suggestions page request*/
+    public static Result tips() {
+
+        return ok(tips.render());
+    }
 }
