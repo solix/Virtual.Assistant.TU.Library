@@ -40,10 +40,12 @@ public class Application extends Controller {
     }
 
 
+
     public static Result project() {
 
         return ok(project.render());
     }
+
 
     
     /**respond to inbox page request*/

@@ -8,6 +8,7 @@ GET     /                           controllers.Application.index()
 #task
 
 GET     /task                       controllers.Application.task()
+
 #login
 
 GET     /login                      controllers.Application.login()
@@ -23,6 +24,7 @@ GET     /inbox                      controllers.Application.inbox()
 #tips
 
 GET     /tips						controllers.Application.tips()	
+
 
 
 
