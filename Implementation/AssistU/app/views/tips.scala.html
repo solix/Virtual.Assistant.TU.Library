@@ -1,12 +1,25 @@
-<html>
+
+<html lang="en">
+
 <head>
-    <meta charset='utf-8' />
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>login page</title>
+
     <!-- Bootstrap Core CSS -->
     <link href="@routes.Assets.at("css/bootstrap.min.css")" rel="stylesheet">
-    <!-- date picker -->
-    <link href="@routes.Assets.at("stylesheets/bootstrap/datepicker.css")" rel="stylesheet">
-    <link href="@routes.Assets.at("stylesheets/bootstrap/dropdown.css")" rel="stylesheet">
-    <link href="@routes.Assets.at("stylesheets/bootstrap/sprites.css")" rel="stylesheet">
+
+    <link href="@routes.Assets.at("css/bootstrap-social.css")" rel="stylesheet">
+    <!-- Normalize css file  -->
+    <link href="@routes.Assets.at("css/normalize.css")" rel="stylesheet">
+
+
     <!-- MetisMenu CSS -->
     <link href="@routes.Assets.at("css/plugins/metisMenu/metisMenu.min.css")" rel="stylesheet">
 
@@ -22,28 +35,31 @@
 
     <!-- Custom Fonts -->
     <link href="@routes.Assets.at("font-awesome-4.1.0/css/font-awesome.min.css")" rel="stylesheet" type="text/css">
-
-    <!--bootstrap datepicker-->
-    <link href="@routes.Assets.at("css/datepicker.css")" rel="stylesheet" type="text/css">
-
-    <!-- loading Full calendar stylesheet -->
-    <link href="@routes.Assets.at("css/task.css")" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 
+    <!--inbox CSS-->
+	   <link href="@routes.Assets.at("css/inbox.css")" rel="stylesheet" type="text/css">
 
-    <!-- jQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-    <script src="@routes.Assets.at("javascripts/task.js")"></script>
-    <script type="text/javascript">
-       $('.datepicker').datepicker();
-    </script>
+<!-- jQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
 
+
+
+    <![endif]-->
 </head>
+
 <body>
 <div id="wrapper">
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+     <!-- Navigation -->
+     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -68,9 +84,9 @@
                         <a href="#">
                             <div>
                                 <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
+                                <span class="pull-right text-muted">
+                                    <em>Yesterday</em>
+                                </span>
                             </div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
                         </a>
@@ -80,9 +96,9 @@
                         <a href="#">
                             <div>
                                 <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
+                                <span class="pull-right text-muted">
+                                    <em>Yesterday</em>
+                                </span>
                             </div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
                         </a>
@@ -92,9 +108,9 @@
                         <a href="#">
                             <div>
                                 <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
+                                <span class="pull-right text-muted">
+                                    <em>Yesterday</em>
+                                </span>
                             </div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
                         </a>
@@ -303,7 +319,7 @@
                         <a href="tables.html"><i class="fa fa-table fa-fw"></i> Calendar</a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-comment fa-fw"></i> Discusions</a>
+                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Inbox</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> Tasks<span class="fa arrow"></span></a>
@@ -353,11 +369,11 @@
                     </li>
                     <div class="input-group custom-search-form">
                         <input type="text" class="form-control" placeholder="Search Google Scholar Quickly...">
-                    <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                    </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
                 </ul>
             </div>
@@ -366,78 +382,26 @@
         <!-- /.navbar-static-side -->
     </nav>
 </div>
-
-<div id="page-wrapper">
-       <div class="container-fluid "> 
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3 text-center">
-                                <i class="fa fa-wrench fa-5x"></i>
-                            </div>
-                            
-                        </div>
-                    </div>                        
-            </div>
-        </div>  
-        </div>  
-<div class="container" ng-app="todomvc">
-    <div id="todoapp" ng-controller="TodoCtrl">
-
-         
-
-          
-          <div class="row">
-          
-            <div class="col-sm-8 col-sm-offset-2">
-                <div class="input-group input-group-lg">
-                  
-                  <form id="todo-form" ng-submit="addTodo()">
-                    <input class="form-control input-lg" id="new-todo" placeholder="What needs to be done?" ng-model="newTodo" autofocus="">
-                  </form>
-                  <span class="input-group-btn">
-                    <button class="btn btn-default btn-lg" ng-click="addTodo()"><i class="glyphicon glyphicon-time"></i></button>
-                  </span>                  
-                  <span class="input-group-btn">
-                    <button class="btn btn-success btn-lg" ng-click="addTodo()"><i class="glyphicon glyphicon-plus"></i></button>
-                  </span>
-
-                </div><!-- /input-group -->
-              </div><!-- /.col-lg-6 -->
-          
-          </div><!-- /row -->
-         <h1 class="text-center">
-           <p class="lead">List of Tasks</p> 
-         </h1> 
-          <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
-                <hr><!-- /divider -->
-            </div>
-          </div>
-      
-          <div class="raw">
-             <div class="task-list" id="ToDo">
-                <h3>Todo</h3>
-            </div>
-            <div class="task-list" id="inProgress">
-                <h3>In Progress</h3>
-            </div>
- 
-            <div class="task-list" id="Completed">
-               <h3>Completed</h3>
-            </div>
-          </div>  
-          
-      
-        
-        
-    
-    </div><!--/ app -->  
-</div><!--/ container -->
-
-           
-</div>
+<!-- Use class .display-animation for your container -->
+<header style="text-align: center;">Material Design Animation Timing</header>
+<ul id="demo" class="display-animation">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
 
 <!--bootstrap-->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
@@ -445,6 +409,7 @@
 <!--sb-Admin-->
 <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 
-        <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+<script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+
 </body>
-</html>

@@ -1,33 +1,133 @@
-$(document).ready(function(){
-$("form#main_input_box").submit(function(event){
-event.preventDefault();
-var deleteButton = "<button class='delete btn btn-warning'>Delete</button>";
-var editButton = "<button class='edit btn btn-success'>Edit</button>";
-var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
-var checkBox = "<div class='checkbox'><label><input type='checkbox' class='pull-right'></label></div>";
-$(".list_of_items").append("<li class='list-group-item'>" + "<div class='text_holder'>" + $("#custom_textbox").val() + twoButtons + "</div>" + checkBox + "</li>");
-$("#custom_textbox").val('');
-});
- 
-$(".list_of_items").on("click", "button.delete", function(){
-$(this).closest("li").remove();
-});
- 
-$(".list_of_items").on("click", "button.edit", function (){
-var editItemBox = "<form class='edit_input_box'><input type='text' class='itembox'></form>";
-var originalItem = $(this).parent().val();
-var deleteButton = "<button class='delete btn btn-warning'>Delete</button>";
-var editButton = "<button class='edit btn btn-success'>Edit</button>";
-var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
-$(this).closest("div.text_holder").replaceWith(editItemBox);
-$("form.edit_input_box ").on("submit", function(){
-event.preventDefault(); 
-var checkBox = "<label><input type='checkbox'></label>";
-$(this).replaceWith("<div>" + $(".itembox").val() + twoButtons + "</div>");
-}); 
-});
- 
-$(".list_of_items").on("click", ":checkbox", function (){
-$(this).closest("li").toggleClass("completed_item");
-});
-});
+// var todomvc = angular.module('todomvc', []);
+
+// /**
+//  * Services that persists and retrieves TODOs from localStorage
+// */
+// todomvc.factory('todoStorage', function () {
+// 	var STORAGE_ID = 'todos-angularjs-perf';
+
+// 	return {
+// 		get: function () {
+// 			return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+// 		},
+
+// 		put: function (todos) {
+//           //alert("saving:"+JSON.stringify(todos));
+// 			localStorage.setItem(STORAGE_ID, JSON.stringify(todos));
+// 		}
+// 	};
+// });
+
+// todomvc.directive('todoEscape', function () {
+// 	var ESCAPE_KEY = 27;
+// 	return function (scope, elem, attrs) {
+// 		elem.bind('keydown', function (event) {
+// 			if (event.keyCode === ESCAPE_KEY) {
+// 				scope.$apply(attrs.todoEscape);
+// 			}
+// 		});
+// 	};
+// });
+
+// /**
+//  * Directive that places focus on the element it is applied to when the expression it binds to evaluates to true
+//  */
+// todomvc.directive('todoFocus', function ($timeout) {
+// 	return function (scope, elem, attrs) {
+// 		scope.$watch(attrs.todoFocus, function (newVal) {
+// 			if (newVal) {
+// 				$timeout(function () {
+// 					elem[0].focus();
+// 				}, 0, false);
+// 			}
+// 		});
+// 	};
+// });
+
+// todomvc.controller('TodoCtrl', function TodoCtrl($scope, $location, $filter, todoStorage) {
+// 	var todos = $scope.todos = todoStorage.get();
+
+// 	$scope.newTodo = '';
+// 	$scope.remainingCount = $filter('filter')(todos, {completed: false}).length;
+// 	$scope.editedTodo = null;
+
+// 	if ($location.path() === '') {
+// 		$location.path('/');
+// 	}
+
+// 	$scope.location = $location;
+
+// 	$scope.$watch('location.path()', function (path) {
+// 		$scope.statusFilter = { '/active': {completed: false}, '/completed': {completed: true} }[path];
+// 	});
+
+// 	$scope.$watch('remainingCount == 0', function (val) {
+// 		$scope.allChecked = val;
+// 	});
+
+// 	$scope.addTodo = function () {
+// 		var newTodo = $scope.newTodo.trim();
+// 		if (newTodo.length === 0) {
+// 			return;
+// 		}
+
+// 		todos.push({
+// 			title: newTodo,
+// 			completed: false
+// 		});
+// 		todoStorage.put(todos);
+
+// 		$scope.newTodo = '';
+// 		$scope.remainingCount++;
+// 	};
+
+// 	$scope.editTodo = function (todo) {
+// 		$scope.editedTodo = todo;
+// 		// Clone the original todo to restore it on demand.
+// 		$scope.originalTodo = angular.extend({}, todo);
+// 	};
+
+// 	$scope.doneEditing = function (todo) {
+// 		$scope.editedTodo = null;
+// 		todo.title = todo.title.trim();
+
+// 		if (!todo.title) {
+// 			$scope.removeTodo(todo);
+// 		}
+
+// 		todoStorage.put(todos);
+// 	};
+
+// 	$scope.revertEditing = function (todo) {
+// 		todos[todos.indexOf(todo)] = $scope.originalTodo;
+// 		$scope.doneEditing($scope.originalTodo);
+// 	};
+
+// 	$scope.removeTodo = function (todo) {
+// 		$scope.remainingCount -= todo.completed ? 0 : 1;
+// 		todos.splice(todos.indexOf(todo), 1);
+// 		todoStorage.put(todos);
+// 	};
+
+// 	$scope.todoCompleted = function (todo) {
+// 		$scope.remainingCount += todo.completed ? -1 : 1;
+// 		todoStorage.put(todos);
+// 	};
+
+// 	$scope.clearCompletedTodos = function () {
+// 		$scope.todos = todos = todos.filter(function (val) {
+// 			return !val.completed;
+// 		});
+// 		todoStorage.put(todos);
+// 	};
+
+// 	$scope.markAll = function (completed) {
+// 		todos.forEach(function (todo) {
+// 			todo.completed = !completed;
+// 		});
+// 		$scope.remainingCount = completed ? todos.length : 0;
+// 		todoStorage.put(todos);
+// 	};
+// });
+
+// $(document).ready(function() {});

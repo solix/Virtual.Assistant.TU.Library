@@ -27,8 +27,8 @@
       <file leaf-file-name="Application.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AssistU/app/controllers/Application.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="684" max-vertical-offset="882">
-              <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="1206">
+              <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="false" />
                 <element signature="e#224#225#0" expanded="false" />
@@ -68,18 +68,28 @@
       <file leaf-file-name="calendar.scala.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AssistU/app/views/calendar.scala.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="8226">
-              <caret line="35" column="46" selection-start-line="35" selection-start-column="2" selection-end-line="35" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="8568">
+              <caret line="36" column="46" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="suggestions.scala.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="suggestions.scala.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AssistU/app/views/suggestions.scala.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49579832" vertical-offset="7152" max-vertical-offset="7866">
+            <state vertical-scroll-proportion="-13.111111" vertical-offset="7152" max-vertical-offset="7866">
               <caret line="417" column="12" selection-start-line="417" selection-start-column="12" selection-end-line="417" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="routes" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AssistU/conf/routes">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4774536" vertical-offset="0" max-vertical-offset="754">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -124,11 +134,11 @@
         <option value="$PROJECT_DIR$/AssistU/app/views/index.scala.html" />
         <option value="$PROJECT_DIR$/AssistU/app/views/project.scala.html" />
         <option value="$PROJECT_DIR$/AssistU/app/views/calendar.scala.html" />
-        <option value="$PROJECT_DIR$/AssistU/conf/routes" />
         <option value="$PROJECT_DIR$/AssistU/app/controllers/Application.java" />
         <option value="$PROJECT_DIR$/AssistU/public/css/wheel.css" />
         <option value="$PROJECT_DIR$/AssistU/public/css/menuwheel.css" />
         <option value="$PROJECT_DIR$/AssistU/app/views/suggestions.scala.html" />
+        <option value="$PROJECT_DIR$/AssistU/conf/routes" />
       </list>
     </option>
   </component>
@@ -829,8 +839,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AssistU/app/controllers/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="684" max-vertical-offset="882">
-          <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="1206">
+          <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="false" />
             <element signature="e#224#225#0" expanded="false" />
@@ -847,13 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5328">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AssistU/conf/routes">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2387268" vertical-offset="0" max-vertical-offset="754">
-          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -880,8 +883,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AssistU/app/views/calendar.scala.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="8226">
-          <caret line="35" column="46" selection-start-line="35" selection-start-column="2" selection-end-line="35" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="8568">
+          <caret line="36" column="46" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
           <folding />
         </state>
       </provider>
@@ -912,8 +915,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AssistU/app/views/suggestions.scala.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49579832" vertical-offset="7152" max-vertical-offset="7866">
+        <state vertical-scroll-proportion="-13.111111" vertical-offset="7152" max-vertical-offset="7866">
           <caret line="417" column="12" selection-start-line="417" selection-start-column="12" selection-end-line="417" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AssistU/conf/routes">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4774536" vertical-offset="0" max-vertical-offset="754">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
         </state>
       </provider>
