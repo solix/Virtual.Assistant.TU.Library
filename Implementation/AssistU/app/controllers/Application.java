@@ -44,8 +44,8 @@ public class Application extends Controller {
         return ok(project.render());
     }
 
-    public static Result bep() {
+    public static Result suggestions() {
 
-        return ok(bep.render());
+        return ok(suggestions.render());
     }
 }

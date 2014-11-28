@@ -1,0 +1,23 @@
+/* Required Stylesheets */
+.wheel-button {
+  position: center;
+}
+
+.wheel {
+  /*margin: 0;
+  padding: 0;
+  list-style: none;*/
+  width: 500px; /* this will determine the diameter of the circle  */
+  height: 500px; /* this will determine the diameter of the circle  */
+  visibility: hidden;
+  position: absolute;
+  display: none;
+}
+  
+/* ALL DEMO */
+
+.wheel-button, .wheel-button:visited {
+  text-align: center;
+  display: block;
+  margin: 25% 50%;
+}

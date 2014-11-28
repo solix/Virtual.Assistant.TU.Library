@@ -8,7 +8,7 @@ GET     /task                       controllers.Application.task()
 GET     /login                      controllers.Application.login()
 GET     /calendar                   controllers.Application.calendar()
 GET     /project                    controllers.Application.project()
-GET     /project/bep                        controllers.Application.bep()
+GET     /suggestions                controllers.Application.suggestions()
 
 
 # Map static resources from the /public folder to the /assets URL path
