@@ -39,7 +39,7 @@ public class Application extends Controller {
      */
     public static Result calendar() {
 
-        return ok(calendar.render());
+        return ok(calendar.render("My Calendar"));
     }
 
     /**
