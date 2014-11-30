@@ -1,23 +1,27 @@
+
+
 <!-- Navigation -->
+
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <button type="button" class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <!--<a class="navbar-brand" href="index.html">AssistU Prototype</a>-->
     </div>
-    <a href="http://www.reactivemanifesto.org/">
-        <img style="border: 0; position: fixed; left: 0; top:0; z-index: 9000" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-left.png">
-    </a>
+    
+    <ul class="nav navbar-top-links navbar-left">
+
+    </ul>
+
     <!-- /.navbar-header -->
 
     <ul class="nav navbar-top-links navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                <i class="fa fa-comment fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-messages">
                 <li>
@@ -226,19 +230,23 @@
     <!-- /.navbar-top-links -->
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
-            <ul class="nav" id="side-menu">
+            <ul class="nav nav-tabs nav-stacked" id="side-menu">
                 <li class="sidebar-search">
-                    <!--<div class="input-group custom-search-form">-->
-                    <!--<input type="text" class="form-control" placeholder="Search Google Scholar Quickly...">-->
-                    <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-default" type="button">-->
-                    <!--<i class="fa fa-search"></i>-->
-                    <!--</button>-->
-                    <!--</span>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /input-group &ndash;&gt;-->
-                </li>
-                <li class="sidebar-search"></li>
+                    
+                        <div id="imaginary_container"> 
+                            <div class="input-group stylish-input-group">
+                                <input type="text" class="form-control"  placeholder="Search" >
+                                <span class="input-group-addon">
+                                    <button type="submit">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>  
+                                </span>
+                            </div>
+                        </div>
+                    
+               </li>
+                
+                
                 <li>
                     <a class="active" href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
@@ -255,10 +263,10 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="tables.html"><i class="fa fa-table fa-fw"></i> Calendar</a>
+                    <a href="tables.html"><i class="fa fa-calendar-o fa-fw"></i> Calendar</a>
                 </li>
                 <li>
-                    <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Inbox</a>
+                    <a href="forms.html"><i class="fa fa-comment fa-fw"></i> Discussions</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-wrench fa-fw"></i> Tasks<span class="fa arrow"></span></a>
@@ -277,7 +285,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-sitemap fa-fw"></i> Suggestions & Tips<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-yelp fa-fw"></i> Suggestions & Tips<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="#">Second Level Item</a>
@@ -306,17 +314,14 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="Search Google Scholar Quickly...">
-                    <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                    </span>
-                </div>
+                
             </ul>
         </div>
         <!-- /.sidebar-collapse -->
     </div>
     <!-- /.navbar-static-side -->
 </nav>
+
+
+</body>
+</html>

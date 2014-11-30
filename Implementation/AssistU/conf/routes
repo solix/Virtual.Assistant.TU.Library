@@ -3,30 +3,29 @@
 # ~~~~
 
 # Home page
-
 GET     /                           controllers.Application.index()
-#task
 
+#task
 GET     /task                       controllers.Application.task()
 
 #login
-
 GET     /login                      controllers.Application.login()
+
 #calendar
-
 GET     /calendar                   controllers.Application.calendar()
-#project
 
+#project
 GET     /project                    controllers.Application.project()
 
+#Suggestions
 GET     /suggestions                controllers.Application.suggestions()
 
 #inbox
+GET     /chat                       controllers.Application.chat()
 
-GET     /inbox                      controllers.Application.inbox()
-#tips
 
-GET     /tips						controllers.Application.tips()	
+
+
 
 
 
