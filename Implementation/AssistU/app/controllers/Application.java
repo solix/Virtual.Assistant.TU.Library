@@ -65,9 +65,9 @@ public class Application extends Controller {
      * chat page
      * @return
      */
-    public static Result chat() {
+    public static Result discussion() {
 
-        return TODO;
+        return ok(discussion.render("gap"));
     }
 
 
