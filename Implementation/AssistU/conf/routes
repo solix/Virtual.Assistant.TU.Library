@@ -21,7 +21,7 @@ GET     /project                    controllers.Application.project()
 GET     /suggestions                controllers.Application.suggestions()
 
 #inbox
-GET     /discussion                      controllers.Application.discussion()
+GET     /discussion                  controllers.Application.discussion()
 
 
 

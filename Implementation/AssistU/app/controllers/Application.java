@@ -21,7 +21,8 @@ public class Application extends Controller {
      * @return
      */
     public static Result task() {
-        return ok(task.render());
+
+        return ok(task.render("your tasks"));
     }
 
     /**
