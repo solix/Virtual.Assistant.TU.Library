@@ -9,17 +9,17 @@ import java.util.*;
 
 
 @Entity
-public class Person{
+public class Profile{
 
 
-    public String name;
-    public String lastName;
     @Id
     public String email;
+    public String name;
+    public String lastName;
     public String username;
     public String password;
 
-    public Person(String name,
+    public Profile(String name,
                   String lastName,
                   String email,
                   String username,

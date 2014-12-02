@@ -3,6 +3,8 @@ package models;
 import javax.persistence.*;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
+
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.*;
 
@@ -23,16 +25,20 @@ public class User extends Model{
     @Temporal(TemporalType.DATE)
     public Date lastLogin;
 
+    public boolean enabled;
+
     public User(
             String uid,
             Person userProfile,
             Date createdAT,
-            Date lastLogin){
+            Date lastLogin,
+            Boolean enabled){
 
         this.uid = uid;
         this.userProfile=userProfile;
         this.createdAt = createdAT;
         this.lastLogin = lastLogin;
+        this.enabled = enabled;
 
     }
 
