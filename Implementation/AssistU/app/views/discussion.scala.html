@@ -27,35 +27,29 @@
 <div id="wrapper">
 @dashboard()
 <div id="page-wrapper">
-
-    <div class="container-fluid "> 
+    <div class="container-fluid ">
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-12 text-center">
-                                <i class="fa fa-comment fa-5x"></i>
-                            </div>
-                            
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <i class="fa fa-comment fa-5x"></i>
                         </div>
-                    </div>                        
+                    </div>
+                </div>
             </div>
         </div>  
-    </div> 
+    </div>
         <!-- Top panes -->
         <div role="tabpanel">
-        <!-- loading chat navbar -->
-            @chat.chatNavbar()          
-          <!-- /#Tab panes -->
+            <!-- loading chat navbar -->
+            @chat.chatNavbar()
+            <!-- /#Tab panes -->
             <div class="tab-content">
-            @chat.chatContent()    
+                @chat.chatContent()
             </div>
-
         </div>
-
-	
-
-</div>	
+</div>
 <!-- jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 

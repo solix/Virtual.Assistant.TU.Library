@@ -50,7 +50,7 @@ public class Application extends Controller {
 
     public static Result project() {
 
-        return ok(project.render());
+        return ok(project.render("My Projects"));
     }
 
     /**
