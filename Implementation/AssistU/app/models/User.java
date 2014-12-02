@@ -3,9 +3,8 @@ package models;
 import javax.persistence.*;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
-
-import java.lang.Override;
 import java.lang.String;
+import java.util.*;
 
 @Entity
 public class User extends Model{
@@ -15,31 +14,25 @@ public class User extends Model{
 
     @Id
     public String uid;
-    public String name;
-    public String lastName;
-    public String email;
-    public String userName;
-    public String password;
+    Person userProfile;
     /**
      * bookkeeping for user activity
      */
     @Temporal(TemporalType.DATE)
     public Date createdAt;
     @Temporal(TemporalType.DATE)
-    public Date updatedAt;
-    @Temporal(TemporalType.DATE)
     public Date lastLogin;
 
     public User(
             String uid,
-            String name,
-            String lastName,
-            String email,
-            String userName,
-            String password,
+            Person userProfile,
             Date createdAT,
-            Date updatedAt,
-            Date ){
+            Date lastLogin){
+
+        this.uid = uid;
+        this.userProfile=userProfile;
+        this.createdAt = createdAT;
+        this.lastLogin = lastLogin;
 
     }
 
