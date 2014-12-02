@@ -7,25 +7,26 @@ import views.html.*;
 
 public class Application extends Controller {
     /**
-     * responds to the index page request
+     * index view
      *
      * @return
      */
     public static Result index() {
-        return ok(index.render("Dashboard"));
+        return ok(index.render("welcome name"));
     }
 
     /**
-     * responds to the index page request
+     *Task view
      *
      * @return
      */
     public static Result task() {
-        return ok(task.render());
+
+        return ok(task.render("your tasks"));
     }
 
     /**
-     * responds to the index page request
+     * login page
      *
      * @return
      */
@@ -33,34 +34,42 @@ public class Application extends Controller {
         return ok(login.render());
     }
 
-
+    /**
+     * Calendar page
+     * @return
+     */
     public static Result calendar() {
 
-        return ok(calendar.render());
+        return ok(calendar.render("My Calendar"));
     }
 
-
+    /**
+     * project page
+     * @return
+     */
 
     public static Result project() {
 
         return ok(project.render());
     }
 
+    /**
+     * suggestion page
+     * @return
+     */
     public static Result suggestions() {
 
-        return ok(suggestions.render());
-    }
-    
-    /**respond to inbox page request*/
-    public static Result inbox() {
-
-        return ok(inbox.render());
+        return TODO;
     }
 
-     /**respond to tips and suggestions page request*/
-    public static Result tips() {
+    /**
+     * chat page
+     * @return
+     */
+    public static Result discussion() {
 
-        return ok(tips.render());
-
+        return ok(discussion.render("gap"));
     }
+
+
 }

@@ -1,451 +1,24 @@
+@(title: String)
 
+<html lang="en">
 <html>
 <head>
-  <meta charset='utf-8' />
-  <!-- Bootstrap Core CSS -->
-  <link href="@routes.Assets.at("css/bootstrap.min.css")" rel="stylesheet">
-
-
-        <!-- MetisMenu CSS -->
-        <!--<link href="@routes.Assets.at("css/plugins/metisMenu/metisMenu.min.css")" rel="stylesheet">
-
-
-        <!-- Timeline CSS -->
-        <!--<link href="@routes.Assets.at("css/plugins/timeline.css")" rel="stylesheet">-->
-
-  <!-- Custom CSS -->
-  <link href="@routes.Assets.at("css/sb-admin-2.css")" rel="stylesheet">
-
-
-        <!-- Morris Charts CSS -->
-        <!--<link href="@routes.Assets.at("css/plugins/morris.css")" rel="stylesheet">-->
-
-
-  <!-- Custom Fonts -->
-  <link href="@routes.Assets.at("font-awesome-4.1.0/css/font-awesome.min.css")" rel="stylesheet" type="text/css">
-
-
-  <!-- loading Full calendar stylesheet -->
-  <link href="@routes.Assets.at("css/fullcalendar.css")" rel="stylesheet">
-  <link href="@routes.Assets.at("css/fullcalendar.print.css")" rel="stylesheet" media='print'>
-  <link href="@routes.Assets.at("css/basicCalendar.css")" rel="stylesheet">
-  <link href="@routes.Assets.at("css/fullcalendar.min.css")" rel="stylesheet">
-
-
-  <!-- jQuery -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-  <script src="@routes.Assets.at("javascripts/fullcalendar/moment.min.js")"></script>
-  <script src="@routes.Assets.at("javascripts/fullcalendar/fullcalendar.js")"></script>
-  <script>
-      $(document).ready(function() {
-
-          $('#calendar').fullCalendar({
-             header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,basicWeek,basicDay'
-            },
-            defaultDate: '2014-11-12',
-            editable: true,
-			eventLimit: true, // allow "more" link when too many events
-			events: [
-            {
-               title: 'All Day Event',
-               start: '2014-11-01'
-           },
-           {
-               title: 'Long Event',
-               start: '2014-11-07',
-               end: '2014-11-10'
-           },
-           {
-               id: 999,
-               title: 'Repeating Event',
-               start: '2014-11-09T16:00:00'
-           },
-           {
-               id: 999,
-               title: 'Repeating Event',
-               start: '2014-11-16T16:00:00'
-           },
-           {
-               title: 'Conference',
-               start: '2014-11-11',
-               end: '2014-11-13'
-           },
-           {
-               title: 'Meeting',
-               start: '2014-11-12T10:30:00',
-               end: '2014-11-12T12:30:00'
-           },
-           {
-               title: 'Lunch',
-               start: '2014-11-12T12:00:00'
-           },
-           {
-               title: 'Meeting',
-               start: '2014-11-12T14:30:00'
-           },
-           {
-               title: 'Happy Hour',
-               start: '2014-11-12T17:30:00'
-           },
-           {
-               title: 'Dinner',
-               start: '2014-11-12T20:00:00'
-           },
-           {
-               title: 'Birthday Party',
-               start: '2014-11-13T07:00:00'
-           },
-           {
-               title: 'Click for Google',
-               url: 'http://google.com/',
-               start: '2014-11-28'
-           }
-           ]
-       });
-
-});
-
-</script>
-
-
+  @linkLoader.headlinks(title)
+  @linkLoader.calendarlinks()
 </head>
 <body>
-	<div id="wrapper">
-     <!-- Navigation -->
-     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <!--<a class="navbar-brand" href="index.html">AssistU Prototype</a>-->
-        </div>
-        <a href="http://www.reactivemanifesto.org/">
-            <img style="border: 0; position: fixed; left: 0; top:0; z-index: 9000" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-left.png">
-        </a>
-        <!-- /.navbar-header -->
 
-        <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-messages">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                <span class="pull-right text-muted">
-                                    <em>Yesterday</em>
-                                </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                <span class="pull-right text-muted">
-                                    <em>Yesterday</em>
-                                </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                <span class="pull-right text-muted">
-                                    <em>Yesterday</em>
-                                </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>Read All Messages</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-messages -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-tasks">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Submit Conclusion</strong>
-                                    <span class="pull-right text-muted">10% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
-                                        <span class="sr-only">10% Complete (success)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Write Abstract</strong>
-                                    <span class="pull-right text-muted">20% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                        <span class="sr-only">80% Complete</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Change Introduction</strong>
-                                    <span class="pull-right text-muted">60% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                        <span class="sr-only">60% Complete (warning)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>message John</strong>
-                                    <span class="pull-right text-muted">80% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                        <span class="sr-only">80% Complete (danger)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Tasks</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-tasks -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                <span class="pull-right text-muted small">12 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-tasks fa-fw"></i> New Task
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-alerts -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
-
-            <!-- /.dropdown -->
-        </ul>
-        <!-- /.navbar-top-links -->
-
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav navbar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <!--<div class="input-group custom-search-form">-->
-                        <!--<input type="text" class="form-control" placeholder="Search Google Scholar Quickly...">-->
-                        <!--<span class="input-group-btn">-->
-                        <!--<button class="btn btn-default" type="button">-->
-                        <!--<i class="fa fa-search"></i>-->
-                        <!--</button>-->
-                        <!--</span>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash; /input-group &ndash;&gt;-->
-                    </li>
-                    <li class="sidebar-search"></li>
-                    <li>
-                        <a class="active" href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Projects <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">BEP</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">science of web</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-table fa-fw"></i> Calendar</a>
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-comment fa-fw"></i> Discusions</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i> Tasks<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="panels-wells.html">All Tasks</a>
-                            </li>
-                            <li>
-                                <a href="buttons.html">Due soon</a>
-                            </li>
-                            <li>
-                                <a href="notifications.html">Per Project</a>
-                            </li>
-
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Suggestions & Tips<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-third-level -->
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search Google Scholar Quickly...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </ul>
-            </div>
-            <!-- /.sidebar-collapse -->
-        </div>
-        <!-- /.navbar-static-side -->
-    </nav>
-</div>
+<div id="wrapper">
+<!-- LOading Side menue and top nav menue -->
+  @dashboard()  
 <!-- Header Icon -->
-<div id="page-wrapper">
+  <div id="page-wrapper">
     <div class="container-fluid "> 
         <div class="row">
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-12">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3 text-center">
+                            <div class="col-xs-12 text-center">
                                 <i class="fa fa-calendar fa-5x"></i>
                             </div>
                             
@@ -453,19 +26,23 @@
                     </div>                        
             </div>
         </div>  
-    </div>  
+    </div> 
+    <!-- /#header icon --> 
 
-  <div class="row">
-  <div id='calendar'></div>
+    <div class="row">
+      <div id='calendar' style="background-color: "></div>
+    </div>
   </div>
+
 </div>
+
 
 <!--bootstrap-->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
 <!--sb-Admin-->
 <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 
 <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
 </body>
 </html>
