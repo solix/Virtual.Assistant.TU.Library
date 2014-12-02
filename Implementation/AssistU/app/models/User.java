@@ -16,7 +16,8 @@ public class User extends Model{
 
     @Id
     public String uid;
-    Person userProfile;
+    @OneToOne
+    Profile userProfile;
     /**
      * bookkeeping for user activity
      */
@@ -29,7 +30,7 @@ public class User extends Model{
 
     public User(
             String uid,
-            Person userProfile,
+            Profile userProfile,
             Date createdAT,
             Date lastLogin,
             Boolean enabled){
