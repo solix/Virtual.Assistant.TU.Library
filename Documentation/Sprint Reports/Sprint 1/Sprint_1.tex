@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage{xcolor}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{caption}
+\usepackage{verbatim}
+%\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{qtree}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{frame,color}
+\usepackage{datetime}
+\usepackage{etoolbox}
+\usepackage{emerald}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt,left=11mm,margin=1in]{geometry} % Document margins
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{hyperref} % For hyperlinks in the PDF
+%\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space 
+\usepackage{abstract} % Allows abstract customizationbetween them
+
+\usepackage{amsfonts}
+\usepackage{pifont}
+
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\definecolor{shadecolor}{rgb}{184,184,184}
+\lstset{language=Matlab,
+        frame = single,
+        breaklines=true
+}
+\usetikzlibrary{calc,positioning}
+\usetikzlibrary{arrows,automata}
+\renewcommand{\familydefault}{\sfdefault}
+\fancyhead{} % Blank out the default header
+\fancyhead[C]{Project AssistU $\bullet$ TI3800 $\bullet$ TU Delft Library} % Custom header text
+\begin{document}
+\thispagestyle{fancy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE PAGE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+    \begin{minipage}[H]{0.33\textwidth}
+		\vspace{0.3cm}
+		\includegraphics[scale=0.8]{img/TUDelftLogo.eps}
+	\end{minipage}
+	\begin{minipage}[H]{0.34\textwidth}
+		\begin{center}
+			\fontfamily{lmdh}\selectfont \textcolor{blue}{}
+		\end{center}
+		
+	
+	\end{minipage}
+	\begin{minipage}[H]{0.33\textwidth}
+			\begin{flushright}
+
+				\small{Arnaud Hambenne \qquad 4047575}\\
+				\small{Soheil Jahanshahi \qquad 4127617}\\
+				
+
+			\end{flushright}
+			
+	\end{minipage}
+\end{figure}
+
+
+\begin{minipage}[H]{\textwidth}
+\vspace{0.3cm}
+		\begin{center}
+		
+		\vspace{0.3cm}
+			\Large{\fontfamily{lmr}\selectfont \textbf{Reflection Sprint 1}}\\
+		\vspace{0.3cm}	
+		
+		\vspace{0.7cm}	
+		\end{center}
+	\end{minipage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE ENDS HERE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+%%%%%%%%%%%%%%%%%ALL Sections
+%\section{}
+
+\begin{center}
+    \begin{tabular}{ | l | l | c | c | c | c | p{5cm} |}
+    \hline
+    \multicolumn{7}{ |c| }{Sprint 1} \\
+    \hline
+    \textbf{Task} & \textbf{Subtasks} & \textbf{Estimated} & \textbf{Actual} & \textbf{Done} & \textbf{Tested} & \textbf{Remarks} \\ \hline
+    User Interface & Login [S] & 2 & 1 & \checkmark & \checkmark & Easy because of bootstrap \\ \cline{2-7}
+     & Discussions [S] & 3 & 3 & \checkmark & \checkmark & Issues with design, overall easy \\ \cline{2-7}
+     & Dashboard [S] & 4 & 3 & \checkmark & \checkmark & Expected CSS issues, was ok \\ \cline{2-7}
+     & Calendar [S] & 5 & 5 & \checkmark & \checkmark & Took a while, jquery helped \\ \cline{2-7}
+     & Project [A] & 2 & 3 & \checkmark & \checkmark & Spent too much time fine-tuning the view \\ \cline{2-7}
+     & Suggestion [A] & 3 & $\infty$ & $\times$ & $\times$ & Miscommunication + client is not yet able to provide clear-cut implementation requirement \\ \cline{2-7}
+     & Task [S] & 4 & 3 & \checkmark & $\times$ & No comment \\ 
+    \hline
+    Server & Git [A] & 2 & 3 & \checkmark & $\Box$ & The CentOS environment made Git commands not as straightforward as anticipated \\ \cline{2-7}
+     & Jenkins [A] & 2 & 3 & \checkmark & $\Box$ & A combination of incompatible versions, outdated plugins, and multiple alternatives made setup troublesome \\
+    \hline
+    Bootstrap & Integration [S] & 2 & 4 & \checkmark & \checkmark & Play has different structures for HTML and public resources \\ 
+    \hline
+    Clean up code & Refactoring [S] & 0.5 & & $\times$ & $\times$ & \\ 
+    \hline
+    Datamodel & Design [S] & 2 & & $\times$ & $\Box$ & \\ 
+    \hline
+    UML & Diagram [A] & 2 & & $\times$ & $\Box$ & \\ 
+    \hline
+    Test & HTTP [S] & 0.5 & & $\times$ & $\times$ & \\ 
+    \hline
+    \end{tabular}
+\end{center}
+
+\newpage
+
+\section*{Main problems encountered}
+
+The biggest problem here was that we did not account for unforseen issues with setup and implementation, and therefore underestimated our workload. Below are a few main issues we encountered:
+\begin{itemize}
+
+	\item The bootstrap html setup made it easy to create a basic setup, however it requires some workarounds when more unconventional features need to be implemented. Bootstrap also makes external javascript execution difficult in terms of correct rendering.
+
+	\item The setup, location and configuration of the server made a quick project setup troublesome. It required alot more time to get everything running and automated.
+
+\end{itemize}
+
+\section*{Adjustment for next sprint plan}
+
+For our next sprint we need to incorporate overtime for each part, and communicate more and better. This sprint can be used a reference point for this.
+
+%%%%%%%%%%%%%%%%ALL Sections ENDS here
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Refrences%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\bibliographystyle{plain}
+\bibliography{refrences}
+
+
+	\end{document}
