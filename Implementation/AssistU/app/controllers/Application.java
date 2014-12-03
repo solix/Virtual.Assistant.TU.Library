@@ -4,6 +4,9 @@ package controllers;
 import play.mvc.*;
 
 import views.html.*;
+import play.mvc.Http.*;
+import play.mvc.Http.MultipartFormData.*;
+import java.io.File;
 
 public class Application extends Controller {
     /**
@@ -70,6 +73,20 @@ public class Application extends Controller {
 
         return ok(discussion.render("gap"));
     }
-
-
+      /**
+      * POST uploaded document  to the server
+      */
+    public static Result uploadDocument() {
+      MultipartFormData body = request().body().asMultipartFormData();
+      FilePart document = body.getFile("document");
+      if (document != null) {
+        String fileName = document.getFilename();
+        String contentType = document.getContentType(); 
+        File file = document.getFile();
+        return ok("File uploaded");
+      } else {
+        flash("error", "Missing file");
+        return redirect(routes.Application.index());    
+      }
+}
 }

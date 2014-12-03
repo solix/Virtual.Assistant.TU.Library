@@ -16,6 +16,7 @@ GET     /calendar                   controllers.Application.calendar()
 
 #project
 GET     /project                    controllers.Application.project()
+POST    /project/upload			    controllers.Application.uploadDocument()	
 
 #Suggestions
 GET     /suggestions                controllers.Application.suggestions()
