@@ -3,9 +3,10 @@
     <div class="col-md-10">
         <div role="tabpanel">
             <ul class="nav nav-tabs">
-                <li role="presentation"><a href="#bep" data-toggle="tab">Bep</a></li>
-                <li role="presentation"><a href="#project_1" data-toggle="tab">Project_1</a></li>
-                <li role="presentation"><a href="#project_2" data-toggle="tab">Project_2</a></li>
+                <li role="presentation"><a href="#bep" data-toggle="tab">BEP</a></li>
+                @for(p <- Project.find.all()) {
+                    <li role="presentation"><a href="/@p.id" data-toggle="tab">@p.folder</a></li>
+                }
             </ul>
         </div>
     </div>
