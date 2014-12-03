@@ -15,32 +15,41 @@ public class User extends Model{
      */
 
     @Id
-    public String uid;
-    @OneToOne
+    public String email;
+
     Profile userProfile;
-    /**
-     * bookkeeping for user activity
-     */
-    @Temporal(TemporalType.DATE)
-    public Date createdAt;
-    @Temporal(TemporalType.DATE)
-    public Date lastLogin;
 
     public boolean enabled;
 
-    public User(
-            String uid,
-            Profile userProfile,
-            Date createdAT,
-            Date lastLogin,
-            Boolean enabled){
 
-        this.uid = uid;
-        this.userProfile=userProfile;
-        this.createdAt = createdAT;
-        this.lastLogin = lastLogin;
-        this.enabled = enabled;
+    /**
+     * bookkeeping for user activity
+     */
+//    @Temporal(TemporalType.DATE)
+//    public Date createdAt;
+//    @Temporal(TemporalType.DATE)
+//    public Date lastLogin;
+
+
+    public User(
+            String email,
+            Profile userProfile,
+            boolean enabled){
+
+        this.email = email;
+        this.userProfile = userProfile;
+//        this.createdAt = createdAT;
+//        this.lastLogin = lastLogin;
+//        this.enabled = enabled;
 
     }
+
+    /**
+     * Finder to  make queries from database
+     */
+
+    public static Finder<String,User> find= new Finder<String, User>(
+            String.class, User.class
+    );
 
 }
