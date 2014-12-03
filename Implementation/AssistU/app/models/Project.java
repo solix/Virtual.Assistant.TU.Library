@@ -20,6 +20,9 @@ public class Project extends Model {
     @ManyToMany(cascade = CascadeType.REMOVE)
     public List<User> members = new ArrayList<User>();
 
+    @OneToMany(cascade = CascadeType.REMOVE)
+    public List<File> files = new ArrayList<File>();
+
     public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
 
     public Project (String folder, User owner){
