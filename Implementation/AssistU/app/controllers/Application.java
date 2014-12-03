@@ -1,11 +1,26 @@
 package controllers;
 
 
+import models.Project;
+import play.data.Form;
+import play.libs.Scala;
 import play.mvc.*;
 
 import views.html.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Application extends Controller {
+
+    static Form<Project> projectForm = Form.form(Project.class);
+
+    public static Result submitNewProject() {
+        projectForm.bindFromRequest();
+        return ok();
+    }
+
+
     /**
      * index view
      *
@@ -50,7 +65,7 @@ public class Application extends Controller {
 
     public static Result project() {
 
-        return ok(project.render("My Projects"));
+        return ok(project.render("My Projects", projectForm));
     }
 
 

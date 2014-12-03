@@ -1,3 +1,4 @@
+@(projectform:Form[Project])
 <div class="row">
     <div class="col-md-10">
         <div role="tabpanel">
@@ -10,11 +11,9 @@
     </div>
     <div class="col-md-2" style="align:center">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newProject">Create a new project</button>
+            <a href="#new"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#newProject">Create a new project</button></a>
         </div>
     </div>
 </div>
 <!-- Modal New Project -->
-<div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-@projects.newProjectForm()
-</div>
+@projects.newProjectForm(projectform)

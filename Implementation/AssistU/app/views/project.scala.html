@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String)(projectform:Form[Project])
 
 <html lang="en">
 <head>
@@ -26,7 +26,7 @@
     <!-- Top panes -->
     <div role="tabpanel">
         <!-- Project NavBar -->
-        @projects.projectNavBar()
+        @projects.projectNavBar(projectform)
         <!-- /#Project NavBar -->
         <!-- Project Content -->
         <div class="tab-content">
