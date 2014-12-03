@@ -3,16 +3,23 @@
 
 # --- !Ups
 
+create table document (
+  id                        bigint not null,
+  file                      varchar(255),
+  constraint pk_document primary key (id))
+;
+
 create table project (
   id                        bigint not null,
   folder                    varchar(255),
-  version                   integer,
+  title                     varchar(255),
   constraint pk_project primary key (id))
 ;
 
 create table user (
   email                     varchar(255) not null,
-  enabled                   boolean,
+  name                      varchar(255),
+  password                  varchar(255),
   constraint pk_user primary key (email))
 ;
 
@@ -22,6 +29,8 @@ create table project_user (
   user_email                     varchar(255) not null,
   constraint pk_project_user primary key (project_id, user_email))
 ;
+create sequence document_seq;
+
 create sequence project_seq;
 
 create sequence user_seq;
@@ -37,6 +46,8 @@ alter table project_user add constraint fk_project_user_user_02 foreign key (use
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
+drop table if exists document;
+
 drop table if exists project;
 
 drop table if exists project_user;
@@ -44,6 +55,8 @@ drop table if exists project_user;
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists document_seq;
 
 drop sequence if exists project_seq;
 

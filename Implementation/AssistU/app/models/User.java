@@ -4,52 +4,26 @@ import javax.persistence.*;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
 
-import java.lang.Boolean;
-import java.lang.String;
-import java.util.*;
-
 @Entity
-public class User extends Model{
-    /**
-     * list of user attributes
-     */
+public class User extends Model {
 
     @Id
     public String email;
+    public String name;
+    public String password;
 
-    Profile userProfile;
-
-    public boolean enabled;
-
-
-    /**
-     * bookkeeping for user activity
-     */
-//    @Temporal(TemporalType.DATE)
-//    public Date createdAt;
-//    @Temporal(TemporalType.DATE)
-//    public Date lastLogin;
-
-
-    public User(
-            String email,
-            Profile userProfile,
-            boolean enabled){
-
+    public User(String email, String name, String password) {
         this.email = email;
-        this.userProfile = userProfile;
-//        this.createdAt = createdAT;
-//        this.lastLogin = lastLogin;
-//        this.enabled = enabled;
-
+        this.name = name;
+        this.password = password;
     }
 
-    /**
-     * Finder to  make queries from database
-     */
-
-    public static Finder<String,User> find= new Finder<String, User>(
+    public static Finder<String,User> find = new Finder<String,User>(
             String.class, User.class
     );
 
+    public static User authenticate(String email,String password){
+        return find.where().eq("email" , email).eq(
+                "password",password).findUnique();
+    }
 }

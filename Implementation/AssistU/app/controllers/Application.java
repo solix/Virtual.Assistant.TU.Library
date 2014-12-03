@@ -7,6 +7,10 @@ import views.html.*;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
 import java.io.File;
+import java.lang.String;
+
+import play.libs.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Application extends Controller {
     /**
@@ -81,12 +85,12 @@ public class Application extends Controller {
       FilePart document = body.getFile("document");
       if (document != null) {
         String fileName = document.getFilename();
-        String contentType = document.getContentType(); 
+        String contentType = document.getContentType();
         File file = document.getFile();
-        return ok("File uploaded");
+        return ok(Json.toJson("{ name :"+ fileName + "," + "location :" + file));
       } else {
         flash("error", "Missing file");
-        return redirect(routes.Application.index());    
+        return redirect(routes.Application.project());
       }
 }
 }
