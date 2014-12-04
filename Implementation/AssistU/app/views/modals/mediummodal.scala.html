@@ -1,0 +1,14 @@
+@(id: String)(title: String)(content: Html)
+
+<div class="modal fade" id=@id tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-content" style="margin:8% 25%">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>@title</strong>
+            </div>
+        </div>
+        <div class="panel-body">
+        @content
+        </div>
+    </div>
+</div>
