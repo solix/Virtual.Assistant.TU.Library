@@ -18,14 +18,17 @@ public class Project extends Model {
 
 //    public int version;
 
-//    @ManyToMany(cascade = CascadeType.REMOVE)
-//    public List<User> members = new ArrayList<User>();
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    public List<User> owners = new ArrayList<User>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    public List<User> participants = new ArrayList<User>();
 
 //    public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
 
     public Project (String folder){
         this.folder = folder;
-//        members.add(owner);
+//        owners.add(new User("test", new Profile("Arnaud", "Hambenne", "AH", "pass"), true));
 //        UserRole admin=new UserRole("admin" , "owns the project");
 //        this.memberroles.put(owner,admin);
 

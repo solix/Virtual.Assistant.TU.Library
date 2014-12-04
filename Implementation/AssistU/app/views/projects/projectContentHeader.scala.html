@@ -1,14 +1,24 @@
+@(p: Project)
 <div class="panel-heading">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h1>test</h1>
+                <h1>@p.folder</h1>
             </div>
             <div class="col-md-6">
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-plus fa-fw"></i><i class="fa fa-user fa-fw"></i> Add Participant
+                            <i class="fa fa-gear fa-fw"></i> Settings <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages" style="width:200px">
+                            <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit project title...</a></li>
+                            <li><a href="#"><i class="fa fa-clipboard fa-fw"></i> Member permissions...</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-users fa-fw"></i> Add Someone <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages" style="width:200px">
                             <li><a href="#"><i class="fa fa-user fa-fw"></i> Add a member...</a></li>
@@ -21,6 +31,7 @@
         </div>
     </div>
     <div class="container">
-        <p>Members: Turanga Leela, Philip J. Fry, Bender Rodriguez.</p>
+        <p>Members: @p.owners. </p>
     </div>
+
 </div>
