@@ -1,9 +1,9 @@
 @(p: Project)
 
-        <div class="tab-pane fade" id="@p.id.toString">
+        <div class="tab-pane fade" id="@p.folder">
             <div class="panel panel-default">
-                projects.projectContentHeader()
-                @*projects.projectFileList()*@
+                @*projects.projectContentHeader()*@
+                @projects.projectFileList()
             </div>
             <div class="container">
                 <div class="btn-group" role="group">
