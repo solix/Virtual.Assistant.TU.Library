@@ -1,18 +1,23 @@
-@(projectform:Form[Project])
+@(projectList: List[Project],projectform:Form[Project])
 <div class="row">
     <div class="col-md-10">
         <div role="tabpanel">
-            <ul class="nav nav-tabs">
-                <li role="presentation"><a href="#bep" data-toggle="tab">BEP</a></li>
-                @for(p <- Project.find.all()) {
-                    <li role="presentation"><a href="/@p.id" data-toggle="tab">@p.folder</a></li>
+            <ul class="nav nav-pills">
+                @for(p <- projectList) {
+                    @if(p.equals(projectList.get(projectList.size -1))){
+                        <li role="presentation" class="active" id="@p.id.toString"><a href="@p.id.toString" data-toggle="tab">@p.folder</a></li>
+                    } else {
+                        <li role="presentation" id="@p.id.toString"><a href=# data-toggle="tab">@p.folder</a></li>
+                    }
                 }
             </ul>
         </div>
     </div>
     <div class="col-md-2" style="align:center">
         <div class="btn-group" role="group">
-            <a href="#new"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#newProject">Create a new project</button></a>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newProject">
+                Create a new project
+            </button>
         </div>
     </div>
 </div>

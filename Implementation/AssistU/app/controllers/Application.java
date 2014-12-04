@@ -2,22 +2,24 @@ package controllers;
 
 
 import models.Project;
-import play.data.Form;
-import play.libs.Scala;
-import play.mvc.*;
 
+import play.data.*;
+import play.mvc.*;
 import views.html.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class Application extends Controller {
 
     static Form<Project> projectForm = Form.form(Project.class);
 
-    public static Result submitNewProject() {
-        projectForm.bindFromRequest();
-        return ok();
+    public static Result createNewProject() {
+        Form<Project> filled=projectForm.bindFromRequest();
+
+            Project projectfilled = filled.get();
+            //project.save();
+            Project thesis = Project.create(projectfilled.folder);
+            return redirect(routes.Application.project());
+
     }
 
 
@@ -65,7 +67,8 @@ public class Application extends Controller {
 
     public static Result project() {
 
-        return ok(project.render("My Projects", projectForm));
+
+        return ok(project.render("My Projects", Project.find.all(),projectForm));
     }
 
 

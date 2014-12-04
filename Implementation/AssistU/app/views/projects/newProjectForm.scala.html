@@ -1,5 +1,5 @@
 @(projectform:Form[Project])
-@import helper.twitterBootstrap._
+@import helper._;
 
 <div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <div class="modal-content" style="margin:8% 35%">
@@ -10,10 +10,10 @@
     </div>
     <div class="panel-body">
         <!-- The Project Form -->
-        @helper.form(action = routes.Application.submitNewProject()) {
-            @helper.inputText(projectform("Please choose a name"))
+        @helper.form(action = routes.Application.createNewProject) {
+            @helper.inputText(projectform("folder"))
             <div class="btn-group" role="group">
-                <a href="/project"><button type="button" class="btn btn-default" namd="send">Create!</button></a>
+                <button type="submit" class="btn btn-default" name="send">Create!</button>
             </div>
             @*<input type="button" name="send" value="Create!" />*@
         }

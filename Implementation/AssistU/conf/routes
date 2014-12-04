@@ -16,10 +16,8 @@ GET         /calendar                controllers.Application.calendar()
 
 #project
 GET         /project                 controllers.Application.project()
-#GET         /project#new             controllers.Application.newProject()
-POST        /projectsubmitnew        controllers.Application.submitNewProject()
+POST        /project/newProject      controllers.Application.createNewProject()
 
-#GET         /test                    controllers.Application.hello()
 
 #Suggestions
 GET         /suggestions             controllers.Application.suggestions()

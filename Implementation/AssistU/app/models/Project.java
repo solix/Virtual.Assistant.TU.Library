@@ -12,21 +12,22 @@ import play.db.ebean.*;
 @Entity
 public class Project extends Model {
 
-    @Id
+    @Id @GeneratedValue
     public Long id;
     public String folder;
-    public int version;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    public List<User> members = new ArrayList<User>();
+//    public int version;
 
-    public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
+//    @ManyToMany(cascade = CascadeType.REMOVE)
+//    public List<User> members = new ArrayList<User>();
 
-    public Project (String folder, User owner){
+//    public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
+
+    public Project (String folder){
         this.folder = folder;
-        members.add(owner);
-        UserRole admin=new UserRole("admin" , "owns the project");
-        this.memberroles.put(owner,admin);
+//        members.add(owner);
+//        UserRole admin=new UserRole("admin" , "owns the project");
+//        this.memberroles.put(owner,admin);
 
     }
     /**
@@ -35,5 +36,18 @@ public class Project extends Model {
     public static Model.Finder<Long,Project> find = new Model.Finder(
             Long.class, Project.class
     );
+
+    /**
+     * creates a new project and saves it to DB
+     * @param folder
+     * @return
+     */
+    public static Project create(String folder){
+        Project project = new Project(folder);
+        project.save();
+
+        return project;
+
+    }
 
 }
