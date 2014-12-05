@@ -1,4 +1,4 @@
-@(p: Project)
+@(p: Project , filelist: List[DocumentFile])
 <!-- Table -->
 <table class="table">
     <thead>
@@ -11,13 +11,17 @@
         </tr>
     </thead>
     <tbody>
-        @*<tr>*@
-            @*<td>1</td>*@
-            @*<td>Final.tex</td>*@
-            @*<td>Philip J. Fry</td>*@
-            @*<td>1</td>*@
-            @*<td><a href="#"><i class="fa fa-download fa-fw"></i></a></td>*@
-        @*</tr>*@
+
+        @filelist.map{ f =>
+
+        <tr>
+            <td>1</td>
+            <td>@f.name</td>
+            <td>Philip J. Fry</td>
+            <td>@f.id</td>
+            <td><a href="#"><i class="fa fa-download fa-fw"></i></a></td>
+        </tr>
+        }
         @*<tr>*@
             @*<td>2</td>*@
             @*<td>img.jpeg</td>*@
