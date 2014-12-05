@@ -3,6 +3,7 @@ package controllers;
 
 import models.Project;
 
+import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
@@ -71,12 +72,14 @@ public class Application extends Controller {
         Project projectfilled = filled.get();
         //project.save();
         Project thesis = Project.create(projectfilled.folder);
+        Logger.info("Created a new Project");
         return redirect(routes.Application.project());
     }
 
     public static Result deleteProject(Long id) {
+        Logger.info("You are in the deleteProject Function");
         Project.find.ref(id).delete();
-        return TODO;
+        return redirect(routes.Application.project());
     }
 
     /**

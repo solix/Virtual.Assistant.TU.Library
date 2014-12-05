@@ -28,11 +28,7 @@
                         </ul>
                     </li>
                     @*make if statement, and change to "Archive Project" if the user is the single owner*@
-                    <li data-project="@p.id">
-                            <button class="delete" data-href="@routes.Application.deleteProject(p.id)">
-                                <i class="fa fa-sign-out fa-fw"></i> Delete Project
-                            </button>
-                    </li>
+                    <li><a href="@routes.Application.deleteProject(p.id)"><i class="fa fa-sign-out fa-fw"></i> Delete Project</a></li>
                 </ul>
             </div>
         </div>
