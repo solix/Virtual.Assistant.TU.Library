@@ -1,9 +1,9 @@
-@(p: Project)
+@(p: Project ,filelist: List[DocumentFile])
 
         <div class="tab-pane fade" id="@p.folder">
             <div class="panel panel-default">
                 @projects.projectContentHeader(p)
-                @projects.projectFileList(p)
+                @projects.projectFileList(p,filelist)
             </div>
             <div class="btn-group" role="group" style="margin:2% 7%">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#pcUpload">

@@ -1,7 +1,8 @@
 package controllers;
 
 
-import models.Project;
+import models.DocumentFile;
+import models.*;
 
 import play.data.*;
 import play.mvc.*;
@@ -60,7 +61,11 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        return ok(project.render("My Projects", Project.find.all(),projectForm));
+        return ok(project.render(
+                "My Projects",
+                Project.find.all(),
+                projectForm,
+                DocumentFile.find.all()));
     }
 
     static Form<Project> projectForm = Form.form(Project.class);
@@ -106,10 +111,11 @@ public class Application extends Controller {
         String fileName = document.getFilename();
         String contentType = document.getContentType();
         File file = document.getFile();
-        return ok(Json.toJson("{ name :"+ fileName + "," + "location :" + file));
-      } else {
-        flash("error", "Missing file");
+        DocumentFile doc = DocumentFile.create(fileName , file.toString());
         return redirect(routes.Application.project());
+      } else {
+
+        return badRequest();
       }
 }
 }
