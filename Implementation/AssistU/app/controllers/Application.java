@@ -76,7 +76,7 @@ public class Application extends Controller {
 
     public static Result deleteProject(Long id) {
         Project.find.ref(id).delete();
-        return ok();
+        return TODO;
     }
 
     /**

@@ -52,7 +52,6 @@ public class Project extends Model {
         project.save();
 
         return project;
-
     }
 
 }

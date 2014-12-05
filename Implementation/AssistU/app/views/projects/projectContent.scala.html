@@ -1,6 +1,11 @@
-@(p: Project)
+@(p: Project, projectList: List[Project])
 
-        <div class="tab-pane fade" id="@p.folder">
+@if(p.equals(projectList.get(projectList.size -1))){
+    <div class="tab-pane fade in active" id="@p.folder">
+} else {
+    <div class="tab-pane fade" id="@p.folder">
+}
+
             <div class="panel panel-default">
                 @projects.projectContentHeader(p)
                 @projects.projectFileList(p)
