@@ -25,4 +25,15 @@ public class ProjectTest extends WithApplication {
         assertNotNull(T);
         assertEquals("Thesis" , T.folder);
     }
+
+    @Test
+    public void createAndDeleteProject(){
+        Project.create("Thesis");
+        Project T = Project.find.where().eq("folder" , "Thesis").findUnique();
+        assertNotNull(T);
+        assertEquals("Thesis" , T.folder);
+        Project.find.ref(T.id).delete();
+        Project Td = Project.find.where().eq("folder" , "Thesis").findUnique();
+        assertEquals(Td, null);
+    }
 }

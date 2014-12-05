@@ -3,27 +3,28 @@
 # ~~~~
 
 # Home page
-GET         /                      controllers.Application.index()
+GET         /                          controllers.Application.index()
 
 #task
-GET         /task                  controllers.Application.task()
+GET         /task                      controllers.Application.task()
 
 #login
-GET         /login                 controllers.Application.login()
+GET         /login                     controllers.Application.login()
 
 #calendar
-GET         /calendar              controllers.Application.calendar()
+GET         /calendar                  controllers.Application.calendar()
 
 #project
-GET         /project               controllers.Application.project()
-POST        /project/upload        controllers.Application.uploadDocument()
-POST        /project/newProject      controllers.Application.createNewProject()
+GET         /project                   controllers.Application.project()
+POST        /project/upload            controllers.Application.uploadDocument()
+POST        /project/newProject        controllers.Application.createNewProject()
+DELETE      /project/:id               controllers.Application.deleteProject(id: Long)
 
 #Suggestions
-GET         /suggestions           controllers.Application.suggestions()
+GET         /suggestions               controllers.Application.suggestions()
 
 #inbox
-GET         /discussion            controllers.Application.discussion()
+GET         /discussion                controllers.Application.discussion()
 
 
 
@@ -32,5 +33,5 @@ GET         /discussion            controllers.Application.discussion()
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file          controllers.Assets.at(path="/public", file)
-GET         /webjars/*file         controllers.WebJarAssets.at(file)
+GET         /assets/*file              controllers.Assets.at(path="/public", file)
+GET         /webjars/*file             controllers.WebJarAssets.at(file)

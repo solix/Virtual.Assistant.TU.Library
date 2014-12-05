@@ -28,12 +28,18 @@
                         </ul>
                     </li>
                     @*make if statement, and change to "Archive Project" if the user is the single owner*@
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Leave Project</a></li>
+                    <li>
+                        @helper.form(action = routes.Application.deleteProject(p.id)) {
+                            <button class="delete">
+                                <i class="fa fa-sign-out fa-fw"></i> Delete Project
+                            </button>
+                        }
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="container">
-        <p>Members: @p.owners. </p>
+        <p>Members: Empty. </p>
     </div>
 </div>

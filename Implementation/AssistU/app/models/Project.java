@@ -3,10 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 import play.db.ebean.Model;
 
@@ -19,25 +16,23 @@ public class Project extends Model {
     @Id @GeneratedValue
     public Long id;
     public String folder;
-    public String title;
 
-//    public int version;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    public List<User> owners = new ArrayList<User>();
+//    @ManyToMany(cascade = CascadeType.REMOVE)
+//    public List<User> owners = new ArrayList<User>();
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    public List<User> participants = new ArrayList<User>();
+//    @ManyToMany(cascade = CascadeType.REMOVE)
+//    public List<User> participants = new ArrayList<User>();
 
 
 //    public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
 
-    public Project (String folder, String title){
-
+    public Project (String folder){
         this.folder = folder;
-        this.title = title;
-//        members.add(owner);
-        UserRole admin=new UserRole("admin" , "owns the project");
+//        owners.add(new User("test", new Profile("Arnaud", "Hambenne", "AH", "pass"), true));
+//        UserRole admin=new UserRole("admin" , "owns the project");
+//        this.memberroles.put(owner,admin);
+
     }
     /**
      * Finder to  make queries from database
@@ -46,16 +41,18 @@ public class Project extends Model {
             Long.class, Project.class
     );
 
+
     /**
      * creates a new project and saves it to DB
      * @param folder
      * @return
      */
-    public static Project create(String folder, String title){
-        Project project = new Project(folder, title);
+    public static Project create(String folder){
+        Project project = new Project(folder);
         project.save();
 
         return project;
 
     }
+
 }

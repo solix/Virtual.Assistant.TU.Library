@@ -17,19 +17,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class Application extends Controller {
 
-    static Form<Project> projectForm = Form.form(Project.class);
-
-    public static Result createNewProject() {
-        Form<Project> filled=projectForm.bindFromRequest();
-
-            Project projectfilled = filled.get();
-            //project.save();
-            Project thesis = Project.create(projectfilled.folder);
-            return redirect(routes.Application.project());
-
-    }
-
-
     /**
      * index view
      *
@@ -73,12 +60,24 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-
-
         return ok(project.render("My Projects", Project.find.all(),projectForm));
     }
 
+    static Form<Project> projectForm = Form.form(Project.class);
 
+    public static Result createNewProject() {
+        Form<Project> filled=projectForm.bindFromRequest();
+
+        Project projectfilled = filled.get();
+        //project.save();
+        Project thesis = Project.create(projectfilled.folder);
+        return redirect(routes.Application.project());
+    }
+
+    public static Result deleteProject(Long id) {
+        Project.find.ref(id).delete();
+        return ok();
+    }
 
     /**
      * suggestion page
