@@ -31,7 +31,8 @@
         <!-- Project Content -->
         <div class="tab-content" style="margin:5% 7%">
         @for(p <- projectList) {
-            @projects.projectContent(p,filelist)
+
+            @projects.projectContent(p, projectList ,filelist)
         }
         </div>
 

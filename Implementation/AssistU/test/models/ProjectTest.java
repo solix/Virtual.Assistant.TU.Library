@@ -1,5 +1,6 @@
 package models;
 
+import controllers.Application;
 import models.*;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -32,7 +33,7 @@ public class ProjectTest extends WithApplication {
         Project T = Project.find.where().eq("folder" , "Thesis").findUnique();
         assertNotNull(T);
         assertEquals("Thesis" , T.folder);
-        Project.find.ref(T.id).delete();
+        Application.deleteProject(T.id);
         Project Td = Project.find.where().eq("folder" , "Thesis").findUnique();
         assertEquals(Td, null);
     }
