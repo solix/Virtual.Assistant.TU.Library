@@ -1,8 +1,10 @@
 package controllers;
 
 
-import play.mvc.*;
+import models.Project;
 
+import play.data.*;
+import play.mvc.*;
 import views.html.*;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
@@ -12,7 +14,22 @@ import java.lang.String;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.JsonNode;
 
+
 public class Application extends Controller {
+
+    static Form<Project> projectForm = Form.form(Project.class);
+
+    public static Result createNewProject() {
+        Form<Project> filled=projectForm.bindFromRequest();
+
+            Project projectfilled = filled.get();
+            //project.save();
+            Project thesis = Project.create(projectfilled.folder);
+            return redirect(routes.Application.project());
+
+    }
+
+
     /**
      * index view
      *
@@ -57,8 +74,11 @@ public class Application extends Controller {
 
     public static Result project() {
 
-        return ok(project.render("My Projects"));
+
+        return ok(project.render("My Projects", Project.find.all(),projectForm));
     }
+
+
 
     /**
      * suggestion page

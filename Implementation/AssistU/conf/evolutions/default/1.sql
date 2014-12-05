@@ -13,6 +13,7 @@ create table project (
   id                        bigint not null,
   folder                    varchar(255),
   title                     varchar(255),
+
   constraint pk_project primary key (id))
 ;
 

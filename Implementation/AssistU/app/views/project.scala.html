@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String, projectList: List[Project], projectform:Form[Project])
 
 <html lang="en">
 <head>
@@ -26,12 +26,15 @@
     <!-- Top panes -->
     <div role="tabpanel">
         <!-- Project NavBar -->
-        @projects.projectNavBar()
+        @projects.projectNavBar(projectList,projectform)
         <!-- /#Project NavBar -->
         <!-- Project Content -->
-        <div class="tab-content">
-            @projects.projectContent()
+        <div class="tab-content" style="margin:5% 7%">
+        @for(p <- projectList) {
+            @projects.projectContent(p)
+        }
         </div>
+
         <!-- /#Project Content -->
     </div>
 </div>

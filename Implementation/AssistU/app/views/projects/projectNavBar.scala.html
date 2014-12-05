@@ -1,7 +1,25 @@
-<div role="tabpanel">
-    <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#bep" data-toggle="tab">Bep</a></li>
-        <li role="presentation"><a href="#project_1" data-toggle="tab">Project_1</a></li>
-        <li role="presentation"><a href="#project_2" data-toggle="tab">Project_2</a></li>
-    </ul>
+@(projectList: List[Project],projectform:Form[Project])
+<div class="row">
+    <div class="col-md-10">
+        <div role="tabpanel">
+            <ul class="nav nav-pills">
+                @for(p <- projectList) {
+                    @if(p.equals(projectList.get(projectList.size -1))){
+                        <li role="presentation" class="active" id="@p.id.toString"><a href="#@p.folder" data-toggle="tab">@p.folder</a></li>
+                    } else {
+                        <li role="presentation" id="@p.id.toString"><a href="#@p.folder" data-toggle="tab">@p.folder</a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-2" style="align:center">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">
+                Create a new project
+            </button>
+        </div>
+    </div>
 </div>
+<!-- Modal New Project -->
+@projects.newProjectForm(projectform)
