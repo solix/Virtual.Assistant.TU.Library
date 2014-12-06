@@ -2,9 +2,9 @@
 @(p: Project, projectList: List[Project] ,filelist: List[DocumentFile])
 
 @if(p.equals(projectList.get(projectList.size -1))){
-    <div class="tab-pane fade in active" id="@p.id">
+    <div class="tab-pane fade in active" id="tab@p.id">
 } else {
-    <div class="tab-pane fade" id="@p.id">
+    <div class="tab-pane fade" id="tab@p.id">
 }
 
             <div class="panel panel-default">

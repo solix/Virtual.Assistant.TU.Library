@@ -5,9 +5,9 @@
             <ul class="nav nav-pills">
                 @for(p <- projectList) {
                     @if(p.equals(projectList.get(projectList.size -1))){
-                        <li role="presentation" class="active"><a href="#@p.id" data-toggle="tab">@p.folder</a></li>
+                        <li role="presentation" class="active"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
                     } else {
-                        <li role="presentation"><a href="#@p.id" data-toggle="tab">@p.folder</a></li>
+                        <li role="presentation"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
                     }
                 }
             </ul>
