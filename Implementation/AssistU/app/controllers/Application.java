@@ -73,17 +73,19 @@ public class Application extends Controller {
 
     public static Result createNewProject() {
         Form<Project> filled=projectForm.bindFromRequest();
-
-        Project projectfilled = filled.get();
-        //project.save();
-        Project thesis = Project.create(projectfilled.folder);
-        Logger.info("Created a new Project");
-        return redirect(routes.Application.project());
+        if(filled.hasErrors()) {
+            return badRequest("The form had errors. Need to implement in-style vaildation");
+        } else {
+            Project projectfilled = filled.get();
+            Project.create(projectfilled.tabname, projectfilled.name, projectfilled.description);
+            Logger.info("Created Project: " + projectfilled.name);
+            return redirect(routes.Application.project());
+        }
     }
 
     public static Result deleteProject(Long id) {
-        Logger.info("You are in the deleteProject Function");
         Project.find.ref(id).delete();
+        Logger.info("Deleted Project " + id);
         return redirect(routes.Application.project());
     }
 

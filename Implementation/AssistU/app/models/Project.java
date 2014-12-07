@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
 /**
@@ -15,7 +16,16 @@ public class Project extends Model {
 
     @Id @GeneratedValue
     public Long id;
-    public String folder;
+
+    @Required
+    @MinLength(1)
+    public String tabname;
+
+    @Required
+    @MinLength(1)
+    public String name;
+
+    public String description;
 
 
 //    @ManyToMany(cascade = CascadeType.REMOVE)
@@ -27,8 +37,10 @@ public class Project extends Model {
 
 //    public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
 
-    public Project (String folder){
-        this.folder = folder;
+    public Project (String tabname, String name, String description){
+        this.tabname = tabname;
+        this.name = name;
+        this.description = description;
 //        owners.add(new User("test", new Profile("Arnaud", "Hambenne", "AH", "pass"), true));
 //        UserRole admin=new UserRole("admin" , "owns the project");
 //        this.memberroles.put(owner,admin);
@@ -44,11 +56,11 @@ public class Project extends Model {
 
     /**
      * creates a new project and saves it to DB
-     * @param folder
+     * @param
      * @return
      */
-    public static Project create(String folder){
-        Project project = new Project(folder);
+    public static Project create(String tabname, String name, String description){
+        Project project = new Project(tabname, name, description);
         project.save();
 
         return project;

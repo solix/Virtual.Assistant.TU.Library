@@ -3,9 +3,11 @@
 
 @template.smallmodal("newProject")("Create a new Project") {
     @helper.form(action = routes.Application.createNewProject) {
-        @helper.inputText(projectform("folder"))
-        <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-default" name="send">Create!</button>
+        @helper.inputText(projectform("tabname"), '_label -> "Project Tab Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(projectform("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(projectform("description"), '_label -> "Project Description (Optional)", 'size -> 50)
+        <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
+            <button type="submit" class="btn btn-success" name="send">Create!</button>
         </div>
     }
 }

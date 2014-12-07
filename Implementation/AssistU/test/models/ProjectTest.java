@@ -21,20 +21,22 @@ public class ProjectTest extends WithApplication {
     @Test
     public void createProject(){
 //        new Project("Thesis").save();
-        Project.create("Thesis");
-        Project T = Project.find.where().eq("folder" , "Thesis").findUnique();
+        Project.create("Thesis", "first thesis", "boring");
+        Project T = Project.find.where().eq("tabname" , "Thesis").findUnique();
         assertNotNull(T);
-        assertEquals("Thesis" , T.folder);
+        assertEquals("Thesis" , T.tabname);
     }
 
     @Test
     public void createAndDeleteProject(){
-        Project.create("Thesis");
-        Project T = Project.find.where().eq("folder" , "Thesis").findUnique();
+        Project.create("Thesis", "first thesis", "boring");
+        Project T = Project.find.where().eq("tabname" , "Thesis").findUnique();
         assertNotNull(T);
-        assertEquals("Thesis" , T.folder);
+        assertEquals("Thesis" , T.tabname);
+        assertEquals("first thesis" , T.name);
+        assertEquals("boring" , T.description);
         Application.deleteProject(T.id);
-        Project Td = Project.find.where().eq("folder" , "Thesis").findUnique();
+        Project Td = Project.find.where().eq("tabname" , "Thesis").findUnique();
         assertEquals(Td, null);
     }
 }
