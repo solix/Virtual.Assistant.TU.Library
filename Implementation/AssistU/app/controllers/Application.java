@@ -105,17 +105,21 @@ public class Application extends Controller {
       * POST uploaded document  to the server
       */
     public static Result uploadDocument() {
+
       MultipartFormData body = request().body().asMultipartFormData();
       FilePart document = body.getFile("document");
       if (document != null) {
         String fileName = document.getFilename();
+
         String contentType = document.getContentType();
         File file = document.getFile();
         DocumentFile doc = DocumentFile.create(fileName , file.toString());
         return redirect(routes.Application.project());
       } else {
 
-        return badRequest();
+        return badRequest(
+                "PLease provide a correct file"
+        );
       }
 }
 }
