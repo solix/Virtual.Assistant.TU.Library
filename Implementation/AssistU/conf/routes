@@ -11,6 +11,10 @@ GET         /task                            controllers.Application.task()
 #login
 GET         /login                           controllers.Application.login()
 
+#register
+GET         /register                        controllers.Application.register()
+POST        /register/create                 controllers.Application.createUser()
+
 #calendar
 GET         /calendar                        controllers.Application.calendar()
 

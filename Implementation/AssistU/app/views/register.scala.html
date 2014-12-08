@@ -1,0 +1,49 @@
+@(registerForm: Form[User], errors: Boolean)
+<html lang="en">
+<head>
+@linkLoader.headlinks("Register")
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <div class="container-fluid ">
+            <div class="panel-heading" style="text-align: center">
+                <i class="fa fa-pencil-square-o fa-5x"></i> <h3>Let's get you signed up.</h3>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="text-align: center">
+        @if(errors){
+            <p style="color: #c23321">Word around the server says you may have missed some required fields. Care to try again?</p>
+        }
+        @helper.form(action = routes.Application.createUser) {
+            @helper.inputText(registerForm("email"), '_label -> "Registration E-mail (Required)", '_showConstraints -> false, '_showsErrors -> true)
+            @helper.inputPassword(registerForm("password"), '_label -> "Password (Required)", '_showConstraints -> false, '_showsErrors -> true)
+            @helper.inputText(registerForm("titles"), '_label -> "Titles", '_showConstraints -> false)
+            @helper.inputText(registerForm("firstname"), '_label -> "First Name", '_showConstraints -> false)
+            @helper.inputText(registerForm("lastname"), '_label -> "Last Name", '_showConstraints -> false)
+            @helper.inputText(registerForm("institution"), '_label -> "Institution", '_showConstraints -> false)
+            @helper.inputText(registerForm("contactemail"), '_label -> "Profile Contact E-mail", '_showConstraints -> false)
+            <p>Needs automated avatar creation</p>
+            <div class="btn-group" role="group" style="margin:2% 1% 1% 1%">
+                <div class="btn-group" role="group">
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Take me back.</a>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-success" name="send">Sign me up!</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+<!--bootstrap-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<!--sb-Admin-->
+<script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+
+<script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+</body>
+</html>

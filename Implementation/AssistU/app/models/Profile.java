@@ -1,24 +1,26 @@
 package models;
 
-
-
 public class Profile{
 
+    public String titles;
+    public String firstname;
+    public String lastname;
+    public String institution;
+    public String email;
+    public String avatar;
 
-
-    public String name;
-    public String lastName;
-    public String username;
-    public String password;
-
-    public Profile(String name,
-                  String lastName,
-                  String username,
-                  String password){
-        this.name = name;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
+    public Profile(String titles,
+                  String firstname,
+                  String lastname,
+                  String institution,
+                  String email,
+                  String avatar){
+        this.titles = titles;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.institution = institution;
+        this.email = email;
+        this.avatar = avatar;
     }
 
 

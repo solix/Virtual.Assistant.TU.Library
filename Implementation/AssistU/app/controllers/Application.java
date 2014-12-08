@@ -48,6 +48,21 @@ public class Application extends Controller {
         return ok(login.render());
     }
 
+    static Form<User> emptyRegisterForm = Form.form(User.class);
+
+    public static Result register() {
+        return ok(register.render(emptyRegisterForm, false));
+    }
+
+    public static Result createUser() {
+        Form<User> filledRegisterForm = emptyRegisterForm.bindFromRequest();
+        if(filledRegisterForm.hasErrors()) {
+            return badRequest(register.render(filledRegisterForm, true));
+        } else {
+            return ok(index.render("Welcome name"));
+        }
+    }
+
     /**
      * Calendar page
      * @return
