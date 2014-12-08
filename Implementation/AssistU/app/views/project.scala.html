@@ -1,4 +1,11 @@
-@(title: String, p : Project, projectList: List[Project], emptyProjectForm: Form[Project], fileList: List[DocumentFile])
+@(
+        title: String,
+        p : Project,
+        projectList: List[Project],
+        emptyProjectForm: Form[Project],
+        filledProjectForm: Form[Project],
+        fileList: List[DocumentFile]
+        )
 
 <html lang="en">
 <head>
@@ -20,25 +27,14 @@
             </div>
         </div>
         @if(p != null) {
-            @projects.projectContent(p, fileList)
+            @projects.projectContent(p, fileList, filledProjectForm)
         }
     </div>
-        <!-- /#Project NavBar -->
-        <!-- Project Content -->
-        @*<div class="tab-content" style="margin:5% 7%">*@
-        @*for(p <- projectList) {*@
-
-
-        @*}*@
-        @*</div>*@
-
-        <!-- /#Project Content -->
-
 </div>
 <!-- /#wrapper -->
 @*Modal for the creation of a new Project*@
 @template.smallmodal("newProject")("success")("Create a new Project") {
-    @helper.form(action = routes.Application.createNewProject) {
+    @helper.form(action = routes.Application.createProject) {
         @helper.inputText(emptyProjectForm("tabname"), '_label -> "Project Tab Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
         @helper.inputText(emptyProjectForm("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
         @helper.inputText(emptyProjectForm("description"), '_label -> "Project Description (Optional)", 'size -> 50)

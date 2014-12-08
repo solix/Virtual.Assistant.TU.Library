@@ -17,10 +17,12 @@ GET         /calendar                        controllers.Application.calendar()
 #project
 GET         /project                         controllers.Application.project()
 GET         /project/:id                     controllers.Application.showProject(id: Long)
+POST        /project/create                  controllers.Application.createProject()
+GET         /project/:id/delete              controllers.Application.deleteProject(id: Long)
+GET         /project/:id/edit                controllers.Application.editProject(id: Long)
 POST        /project/upload                  controllers.Datafile.uploadDocument()
 GET         /project/download/:fileid        controllers.Datafile.downloadDocument(fileid :Long)
-POST        /project/newProject              controllers.Application.createNewProject()
-GET         /project/:id/delete              controllers.Application.deleteProject(id: Long)
+
 
 #Suggestions
 GET         /suggestions                     controllers.Application.suggestions()

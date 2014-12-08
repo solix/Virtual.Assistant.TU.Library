@@ -66,4 +66,17 @@ public class Project extends Model {
         return project;
     }
 
+    public Project update(String tabname, String name, String description){
+        this.tabname = tabname;
+        this.name = name;
+        this.description = description;
+        this.save();
+        return this;
+    }
+
+    public String toString() {
+        return "Project: " + this.id + "\n"
+                + "Name: " + this.name;
+    }
+
 }

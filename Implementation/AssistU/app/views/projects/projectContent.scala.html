@@ -1,7 +1,7 @@
-@(p: Project, fileList: List[DocumentFile])
+@(p: Project, fileList: List[DocumentFile], filledProjectForm: Form[Project])
 <div class="container" style="margin:4% 5%">
     <div class="panel panel-default">
-        @projects.projectContentHeader(p)
+        @projects.projectContentHeader(p, filledProjectForm)
         @projects.projectFileList(p, fileList)
     </div>
     @projects.projectUploadButtons()

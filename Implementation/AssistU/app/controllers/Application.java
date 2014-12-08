@@ -73,23 +73,25 @@ public class Application extends Controller {
                     null,
                     Project.find.all(),
                     emptyProjectForm,
+                    emptyProjectForm,
                     DocumentFile.find.all()));
         }
     }
 
-    public static Result showProject(Long pid) {
-        Project ProjectToBeDisplayed = Project.find.ref(pid);
+    public static Result showProject(Long id) {
+        Project ProjectToBeDisplayed = Project.find.ref(id);
         return ok(project.render(
                 ProjectToBeDisplayed.name,
                 ProjectToBeDisplayed,
                 Project.find.all(),
                 emptyProjectForm,
+                emptyProjectForm.fill(ProjectToBeDisplayed),
                 DocumentFile.find.all()));
     }
 
     static Form<Project> emptyProjectForm = Form.form(Project.class);
 
-    public static Result createNewProject() {
+    public static Result createProject() {
         Form<Project> filledProjectForm = emptyProjectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style vaildation");
@@ -105,6 +107,21 @@ public class Application extends Controller {
         Project.find.ref(id).delete();
         Logger.info("Deleted Project " + id);
         return redirect(routes.Application.project());
+    }
+
+    public static Result editProject(Long id) {
+        Form<Project> filledProjectForm = emptyProjectForm.bindFromRequest();
+        if(filledProjectForm.hasErrors()) {
+            return badRequest("The form had errors. Need to implement in-style validation");
+        } else {
+            Project projectData = filledProjectForm.get();
+            Project current = Project.find.ref(id);
+            Logger.info("\nUpdating Project:\n" + current + "\nto\n" + projectData + "\n");
+            current.update(projectData.tabname, projectData.name, projectData.description);
+            Logger.info("\nUpdated:\n" + current + "\n");
+            return redirect(routes.Application.showProject(id));
+        }
+
     }
 
     /**

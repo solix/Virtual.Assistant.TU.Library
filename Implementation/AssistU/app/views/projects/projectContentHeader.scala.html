@@ -1,4 +1,4 @@
-@(p: Project)
+@(p: Project, filledProjectForm: Form[Project])
 
 <div class="panel-heading">
     <div class="container-fluid">
@@ -38,7 +38,21 @@
     </div>
 </div>
 @*Edit Project Modal*@
-@template.smallmodal("editProject"+p.id.toString)("info")("Edit details of "+p.name) {<p>Needs to show filled form with action</p>}
+@template.smallmodal("editProject"+p.id.toString)("info")("Edit details of "+p.name) {
+    @helper.form(action = routes.Application.editProject(p.id)) {
+        @helper.inputText(filledProjectForm("tabname"), '_label -> "Project Tab Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(filledProjectForm("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(filledProjectForm("description"), '_label -> "Project Description (Optional)", 'size -> 50)
+        <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
+            <div class="btn-group" role="group">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-info" name="send">Save!</button>
+            </div>
+        </div>
+    }
+}
 @*Member List Modal*@
 @template.mediummodal("projectMemberList"+p.id.toString)("info")("Members of "+p.name) {<p>Show a list of the members here,
     along with first name, last name, time of add, role, emailaddress with possible mailto hyperlink</p>}

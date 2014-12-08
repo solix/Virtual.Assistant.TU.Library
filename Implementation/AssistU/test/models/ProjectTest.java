@@ -39,4 +39,19 @@ public class ProjectTest extends WithApplication {
         Project Td = Project.find.where().eq("tabname" , "Thesis").findUnique();
         assertEquals(Td, null);
     }
+
+    @Test
+    public void createAndUpdateProject(){
+        Project.create("Thesis", "first thesis", "boring");
+        Project T = Project.find.where().eq("tabname" , "Thesis").findUnique();
+        assertNotNull(T);
+        assertEquals("Thesis" , T.tabname);
+        assertEquals("first thesis" , T.name);
+        assertEquals("boring" , T.description);
+        T.update("Final Report", "last thesis", "very interesting");
+        Project Tu = Project.find.where().eq("description" , "very interesting").findUnique();
+        assertEquals(Tu.tabname, "Final Report");
+        assertEquals(Tu.name, "last thesis");
+        assertEquals(Tu.description, "very interesting");
+    }
 }
