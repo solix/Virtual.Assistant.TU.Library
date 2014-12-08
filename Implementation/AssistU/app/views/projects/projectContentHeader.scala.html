@@ -1,5 +1,4 @@
 @(p: Project)
-@import controllers.Application._
 
 <div class="panel-heading">
     <div class="container-fluid">
@@ -39,16 +38,16 @@
     </div>
 </div>
 @*Edit Project Modal*@
-@template.smallmodal("editProject"+p.id.toString)("Edit details of "+p.name) {<p>Needs to show filled form with action</p>}
+@template.smallmodal("editProject"+p.id.toString)("info")("Edit details of "+p.name) {<p>Needs to show filled form with action</p>}
 @*Member List Modal*@
-@template.mediummodal("projectMemberList"+p.id.toString)("Members of "+p.name) {<p>Show a list of the members here,
+@template.mediummodal("projectMemberList"+p.id.toString)("info")("Members of "+p.name) {<p>Show a list of the members here,
     along with first name, last name, time of add, role, emailaddress with possible mailto hyperlink</p>}
 @*Add Member Modal*@
-@template.smallmodal("addMemberToProject"+p.id.toString)("Add a Member to "+p.name) {<p>Form with email address</p>}
+@template.smallmodal("addMemberToProject"+p.id.toString)("info")("Add a Member to "+p.name) {<p>Form with email address</p>}
 @*Add Reviewer Modal*@
-@template.smallmodal("addReviewerToProject"+p.id.toString)("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
+@template.smallmodal("addReviewerToProject"+p.id.toString)("info")("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
 @*Delete Project Confirmation Modal*@
-@template.smallmodal("deleteProject"+p.id.toString)("Deletion of "+p.name) {
+@template.smallmodal("deleteProject"+p.id.toString)("danger")("Deletion of "+p.name) {
     <p>Are you sure you want to delete project @p.name, and all of its files?
     This action will not be reversible.</p>
     <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
