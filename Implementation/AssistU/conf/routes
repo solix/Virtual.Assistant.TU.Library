@@ -16,7 +16,8 @@ GET         /calendar                  controllers.Application.calendar()
 
 #project
 GET         /project                   controllers.Application.project()
-POST        /project/upload            controllers.Application.uploadDocument()
+POST        /project/upload            controllers.Datafile.uploadDocument()
+GET         /project/download/:fileid  controllers.Datafile.downloadDocument(fileid :Long)
 POST        /project/newProject        controllers.Application.createNewProject()
 GET         /project/:id               controllers.Application.deleteProject(id: Long)
 

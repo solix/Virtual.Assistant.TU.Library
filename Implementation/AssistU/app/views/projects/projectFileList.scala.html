@@ -19,7 +19,7 @@
             <td>@f.name</td>
             <td>Philip J. Fry</td>
             <td>@f.id</td>
-            <td><a href="#"><i class="fa fa-download fa-fw"></i></a></td>
+            <td><a href="@{routes.Datafile.downloadDocument(f.id)}" ><i class="fa fa-download fa-fw"></i></a></td>
         </tr>
         }
         @*<tr>*@

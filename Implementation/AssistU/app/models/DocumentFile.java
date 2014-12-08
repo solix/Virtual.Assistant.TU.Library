@@ -18,7 +18,7 @@ public class DocumentFile extends Model{
 //    public static enum FileType {
 //
 //    }
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
 
     @Constraints.MaxLength(140)
@@ -35,9 +35,10 @@ public class DocumentFile extends Model{
      * @param filename
      * @param filepath
      */
-    public DocumentFile(String filename, String filepath){
+    public DocumentFile(String filename, String filepath , File file){
         this.name=filename;
         this.filepath=filepath;
+        this.file=file;
     }
 
     /**
@@ -47,8 +48,8 @@ public class DocumentFile extends Model{
             Long.class, DocumentFile.class
     );
 
-    public static DocumentFile create(String name, String filepath){
-        DocumentFile documentFile = new DocumentFile(name,filepath);
+    public static DocumentFile create(String name, String filepath,  File file){
+        DocumentFile documentFile = new DocumentFile(name,filepath ,file);
         documentFile.save();
 
         return documentFile;
