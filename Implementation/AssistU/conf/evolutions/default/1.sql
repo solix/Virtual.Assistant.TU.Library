@@ -12,7 +12,9 @@ create table document_file (
 
 create table project (
   id                        bigint not null,
-  folder                    varchar(255),
+  tabname                   varchar(255),
+  name                      varchar(255),
+  description               varchar(255),
   constraint pk_project primary key (id))
 ;
 

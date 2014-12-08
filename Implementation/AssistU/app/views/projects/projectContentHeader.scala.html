@@ -1,10 +1,11 @@
 @(p: Project)
 @import controllers.Application._
+
 <div class="panel-heading">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h1>@p.folder</h1>
+                <h1>@p.name</h1>
             </div>
             <div class="col-md-6">
                 <ul class="nav navbar-top-links navbar-right">
@@ -13,9 +14,9 @@
                             <i class="fa fa-gear fa-fw"></i> Settings <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages" style="width:200px">
-                            <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit project title...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#editProject@p.id"><i class="fa fa-pencil fa-fw"></i> Edit Project...</a></li>
                             @*make if statement, and change to "request ownership" if user is not in owners list*@
-                            <li><a href="#"><i class="fa fa-clipboard fa-fw"></i> Member permissions...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#projectMemberList@p.id"><i class="fa fa-clipboard fa-fw"></i> Member permissions...</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -23,16 +24,12 @@
                             <i class="fa fa-users fa-fw"></i> Add Someone <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages" style="width:200px">
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i> Add a member...</a></li>
-                            <li><a href="#"><i class="fa fa-edit fa-fw"></i> Add a reviewer...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user fa-fw"></i> Add a member...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#addReviewerToProject@p.id"><i class="fa fa-edit fa-fw"></i> Add a reviewer...</a></li>
                         </ul>
                     </li>
                     @*make if statement, and change to "Archive Project" if the user is the single owner*@
-                    <li data-project="@p.id">
-                            <button class="delete" data-href="@routes.Application.deleteProject(p.id)">
-                                <i class="fa fa-sign-out fa-fw"></i> Delete Project
-                            </button>
-                    </li>
+                    <li><a href="#" data-toggle="modal" data-target="#deleteProject@p.id"><i class="fa fa-sign-out fa-fw"></i> Delete Project</a></li>
                 </ul>
             </div>
         </div>
@@ -41,3 +38,25 @@
         <p>Members: Empty. </p>
     </div>
 </div>
+@*Edit Project Modal*@
+@template.smallmodal("editProject"+p.id.toString)("Edit details of "+p.name) {<p>Needs to show filled form with action</p>}
+@*Member List Modal*@
+@template.mediummodal("projectMemberList"+p.id.toString)("Members of "+p.name) {<p>Show a list of the members here,
+    along with first name, last name, time of add, role, emailaddress with possible mailto hyperlink</p>}
+@*Add Member Modal*@
+@template.smallmodal("addMemberToProject"+p.id.toString)("Add a Member to "+p.name) {<p>Form with email address</p>}
+@*Add Reviewer Modal*@
+@template.smallmodal("addReviewerToProject"+p.id.toString)("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
+@*Delete Project Confirmation Modal*@
+@template.smallmodal("deleteProject"+p.id.toString)("Deletion of "+p.name) {
+    <p>Are you sure you want to delete project @p.name, and all of its files?
+    This action will not be reversible.</p>
+    <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
+        <div class="btn-group" role="group">
+            <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+        </div>
+        <div class="btn-group" role="group">
+            <a type="button" class="btn btn-danger" href="@routes.Application.deleteProject(p.id)">Delete</a>
+        </div>
+    </div>
+}
