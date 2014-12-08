@@ -1,0 +1,16 @@
+<div class="btn-group" role="group" style="margin:2% 7%">
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#pcUpload">
+        <i class="fa fa-cloud-upload fa-fw"></i> Upload a file...
+    </button>
+</div>
+@template.smallmodal("pcUpload")("success")("Upload Files") {
+        <h4>Upload your document here!</h4>
+        @helper.form(action = routes.Datafile.uploadDocument, 'enctype -> "multipart/form-data") {
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="file" name="document" id="js-upload-files" multiple>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
+            </div>
+        }
+}

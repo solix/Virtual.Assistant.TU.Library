@@ -1,25 +1,9 @@
-
-@(p: Project, projectList: List[Project] ,filelist: List[DocumentFile])
-
-@if(p.equals(projectList.get(projectList.size -1))){
-    <div class="tab-pane fade in active" id="tab@p.id">
-} else {
-    <div class="tab-pane fade" id="tab@p.id">
-}
-
-            <div class="panel panel-default">
-                @projects.projectContentHeader(p)
-                @projects.projectFileList(p,filelist)
-            </div>
-            <div class="btn-group" role="group" style="margin:2% 7%">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#pcUpload">
-                    <i class="fa fa-cloud-upload fa-fw"></i> Upload a file...
-                </button>
-            </div>
-                <!-- Modal PC Upload -->
-            <div class="modal fade" id="pcUpload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            @upload.uploadProjectFile()
-            </div>
-        </div>
-
+@(p: Project, fileList: List[DocumentFile])
+<div class="container" style="margin:4% 5%">
+    <div class="panel panel-default">
+        @projects.projectContentHeader(p)
+        @projects.projectFileList(p, fileList)
+    </div>
+    @projects.projectUploadButtons()
+</div>
 

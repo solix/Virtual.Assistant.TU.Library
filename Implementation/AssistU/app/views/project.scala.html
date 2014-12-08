@@ -1,4 +1,4 @@
-@(title: String, projectList: List[Project], projectform:Form[Project] ,filelist: List[DocumentFile])
+@(title: String, p : Project, projectList: List[Project], emptyProjectForm: Form[Project], fileList: List[DocumentFile])
 
 <html lang="en">
 <head>
@@ -6,40 +6,52 @@
 </head>
 <body>
 <div id="wrapper">
-@dashboard()
-<!-- Header Icon -->
-<div id="page-wrapper">
-    <div class="container-fluid ">
+    @dashboard()
+    <div id="page-wrapper">
+        @template.headericon("fa fa-line-chart fa-5x")
         <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <i class="fa fa-line-chart fa-5x"></i>
-                        </div>
-                    </div>
+            <div class="col-xs-10">
+                @projects.projectNavBar(projectList,p)
+            </div>
+            <div class="col-xs-2" style="align:center">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project</button>
                 </div>
             </div>
         </div>
+        @if(p != null) {
+            @projects.projectContent(p, fileList)
+        }
     </div>
-    <!-- /#header icon -->
-    <!-- Top panes -->
-    <div role="tabpanel">
-        <!-- Project NavBar -->
-        @projects.projectNavBar(projectList,projectform)
         <!-- /#Project NavBar -->
         <!-- Project Content -->
-        <div class="tab-content" style="margin:5% 7%">
-        @for(p <- projectList) {
+        @*<div class="tab-content" style="margin:5% 7%">*@
+        @*for(p <- projectList) {*@
 
-            @projects.projectContent(p, projectList ,filelist)
-        }
-        </div>
+
+        @*}*@
+        @*</div>*@
 
         <!-- /#Project Content -->
-    </div>
+
 </div>
 <!-- /#wrapper -->
+@*Modal for the creation of a new Project*@
+@template.smallmodal("newProject")("success")("Create a new Project") {
+    @helper.form(action = routes.Application.createNewProject) {
+        @helper.inputText(emptyProjectForm("tabname"), '_label -> "Project Tab Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(emptyProjectForm("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(emptyProjectForm("description"), '_label -> "Project Description (Optional)", 'size -> 50)
+        <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
+            <div class="btn-group" role="group">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-success" name="send">Create!</button>
+            </div>
+        </div>
+    }
+}
 
         <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>

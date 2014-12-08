@@ -1,25 +1,12 @@
-@(projectList: List[Project],projectform:Form[Project])
-<div class="row">
-    <div class="col-xs-10">
-        <div role="tabpanel">
-            <ul class="nav nav-pills">
-                @for(p <- projectList) {
-                    @if(p.equals(projectList.get(projectList.size -1))){
-                        <li role="presentation" class="active"><a href="#tab@p.id" data-toggle="tab">@p.tabname</a></li>
-                    } else {
-                        <li role="presentation"><a href="#tab@p.id" data-toggle="tab">@p.tabname</a></li>
-                    }
-                }
-            </ul>
-        </div>
-    </div>
-    <div class="col-xs-2" style="align:center">
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">
-                Create a new project
-            </button>
-        </div>
-    </div>
+@(projectList: List[Project], p: Project)
+<div role="tabpanel">
+    <ul class="nav nav-pills">
+        @for(ps <- projectList) {
+            @if(p.equals(ps)){
+                <li role="presentation" class="active"><a href="@routes.Application.showProject(ps.id)">@ps.tabname</a></li>
+            } else {
+                <li role="presentation"><a href="@routes.Application.showProject(ps.id)">@ps.tabname</a></li>
+            }
+        }
+    </ul>
 </div>
-<!-- Modal New Project -->
-@projects.newProjectForm(projectform)

@@ -12,6 +12,7 @@ import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
 import java.io.File;
 import java.lang.String;
+import java.util.List;
 
 import play.libs.Json;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -62,23 +63,40 @@ public class Application extends Controller {
      */
 
     public static Result project() {
+        List<Project> AllProjects = Project.find.all();
+        if (AllProjects.size() > 0) {
+//            Find the latest active project, for now just the last in the list
+            return showProject((AllProjects.get(AllProjects.size()-1)).id);
+        } else {
+            return ok(project.render(
+                    "My Projects",
+                    null,
+                    Project.find.all(),
+                    emptyProjectForm,
+                    DocumentFile.find.all()));
+        }
+    }
+
+    public static Result showProject(Long pid) {
+        Project ProjectToBeDisplayed = Project.find.ref(pid);
         return ok(project.render(
-                "My Projects",
+                ProjectToBeDisplayed.name,
+                ProjectToBeDisplayed,
                 Project.find.all(),
-                projectForm,
+                emptyProjectForm,
                 DocumentFile.find.all()));
     }
 
-    static Form<Project> projectForm = Form.form(Project.class);
+    static Form<Project> emptyProjectForm = Form.form(Project.class);
 
     public static Result createNewProject() {
-        Form<Project> filled=projectForm.bindFromRequest();
-        if(filled.hasErrors()) {
+        Form<Project> filledProjectForm = emptyProjectForm.bindFromRequest();
+        if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
-            Project projectfilled = filled.get();
-            Project.create(projectfilled.tabname, projectfilled.name, projectfilled.description);
-            Logger.info("Created Project: " + projectfilled.name);
+            Project projectData = filledProjectForm.get();
+            Project.create(projectData.tabname, projectData.name, projectData.description);
+            Logger.info("Created Project: " + projectData.name);
             return redirect(routes.Application.project());
         }
     }
