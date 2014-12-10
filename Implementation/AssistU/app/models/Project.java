@@ -16,9 +16,9 @@ public class Project extends Model {
 
     @Id @GeneratedValue
     public Long id;
-    @Required @MinLength(5)
+    @Required
     public String folder;
-    @Required @MinLength(5)
+    @Required
     public String name;
     public Boolean active=false;
     @ManyToMany(cascade= CascadeType.REMOVE)
@@ -30,11 +30,10 @@ public class Project extends Model {
      * @param folder
      * @param name
      */
-    public Project (String folder, String name ,User owner ){
+    public Project (String folder, String name, User owner){
         this.folder = folder;
         this.name = name;
         this.userlist.add(owner);
-
     }
     /**
      * Finder to  make queries from database via Ebeans
@@ -58,6 +57,7 @@ public class Project extends Model {
      */
     public static Project create(String folder, String name,  String owner){
         Project project = new Project(folder, name ,User.find.ref(owner));
+
         project.active=true;
         project.save();
         project.saveManyToManyAssociations("userlist");
@@ -67,12 +67,11 @@ public class Project extends Model {
     /**
      * edits the project TODO: change the name of update method to edit.
      * TODO: project need to be find by id and only then new data will be updated using update method
-     * @param folder
-     * @param name
+
      * @return
      */
 
-    public static void update(String folder, String name){
+    public static void edit(Long pid){
        // this.folder = folder;
         //this.name = name;
         //this.save();

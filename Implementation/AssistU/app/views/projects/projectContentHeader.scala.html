@@ -1,14 +1,14 @@
-@(p: Project)
+@(uid: String, p: Project)
 
 <div class="panel-heading">
     @*<div class="container-fluid">*@
         <div class="row">
-            <div class="col-xs-8">
-                <h1>@p.name</h1>
+            <div class="col-xs-6">
+                <h1>@p.name by @uid</h1>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-6">
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropdown pulls-right">
+                    <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="fa fa-gear fa-fw"></i> <u class="hidden-xs">Settings</u><span class="caret"></span>
                         </a>
@@ -34,19 +34,41 @@
 </div>
 @*Edit Project Modal*@
 @template.smallmodal("editProject"+p.id.toString)("info")("Edit details of "+p.name) {
-    @*helper.form(action = routes.Application.editProject(p.id)) {
-        @helper.inputText(filledProjectForm("tabname"), '_label -> "Project Tab Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
-        @helper.inputText(filledeProjectForm("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
-        @helper.inputText(filledProjectForm("description"), '_label -> "Project Description (Optional)", 'size -> 50)
-        <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
-            <div class="btn-group" role="group">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+        @helper.form(action = routes.Application.editProject(p.id)) {
+            <div class="form-group">
+                <label for="validate-text">Folder Name</label>
+                <div class="input-group" data-validate="length" data-length="3">
+                    <input type="text" class="form-control" name="folder" value="@p.folder" id="validate-text" placeholder="Required" required>
+                    <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                </div>
+                <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
             </div>
-            <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-info" name="send">Save!</button>
+            <div class="form-group">
+                <label for="validate-text">Project Name</label>
+                <div class="input-group" data-validate="length" data-length="3">
+                    <input type="text" class="form-control" name="name" value="@p.name" id="validate-text" placeholder="Required" required>
+                    <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                </div>
+                <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
             </div>
+            @*<div class="form-group">*@
+                @*<label for="validate-optional">Description</label>*@
+                @*<div class="input-group">*@
+                    @*<input type="text" class="form-control" name="description" id="validate-optional" placeholder="Optional">*@
+                    @*<span class="input-group-addon info"><span class="glyphicon glyphicon-asterisk"></span></span>*@
+                @*</div>*@
+            @*</div>*@
+            <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                <button type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</button>
+            </div>
+            <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                <button type="submit" class="btn btn-info col-xs-12" disabled>Edit!</button>
+            </div>
+        }
         </div>
-    }*@
+    </div>
 }
 @*Member List Modal*@
 @template.mediummodal("projectMemberList"+p.id.toString)("info")("Members of "+p.name) {<p>Show a list of the members here,
@@ -63,7 +85,7 @@
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
         </div>
         <div class="btn-group" role="group">
-            <a type="button" class="btn btn-danger" href="@routes.Application.archiveProject(p.id)">Archive!</a>
+            <a type="button" class="btn btn-danger" href="@routes.Application.archiveProject()">Archive!</a>
         </div>
     </div>
 }

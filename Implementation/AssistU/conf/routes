@@ -11,19 +11,16 @@ GET         /task                            controllers.Application.task()
 #login
 GET         /login                           controllers.Application.login()
 
-#register
-GET         /register                        controllers.Application.register()
-POST        /register/create                 controllers.Application.createUser()
+
 
 #calendar
 GET         /calendar                        controllers.Application.calendar()
 
 #project
 GET         /project                         controllers.Application.project()
-#GET         /project/:id                     controllers.Application.showProject(id: Long)
-POST        /project/create                  controllers.Application.createProject()
-GET         /project/:id/archive              controllers.Application.archiveProject(id: Long)
-GET         /project/:id/edit                controllers.Application.editProject(id: Long)
+POST        /:uid/project/create             controllers.Application.createProject(uid: String)
+GET         /project/:pid/edit               controllers.Application.editProject(pid: Long)
+GET         /project/archive                 controllers.Application.archiveProject()
 POST        /project/upload                  controllers.Datafile.uploadDocument()
 GET         /project/download/:fileid        controllers.Datafile.downloadDocument(fileid :Long)
 
