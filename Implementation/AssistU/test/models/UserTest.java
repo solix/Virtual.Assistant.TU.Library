@@ -15,9 +15,19 @@ public class UserTest extends WithApplication {
 
     @Test
     public void createAndRetrieveUser() {
-        new User("admin@AssisTU.nl", "solix", "jj").save();
+        new User("admin@AssisTU.nl","secret").save();
         User solix = User.find.where().eq("email", "admin@AssisTU.nl").findUnique();
         assertNotNull(solix);
-        assertEquals("solix", solix.name);
+        assertEquals("solix", solix.email);
+    }
+
+    @Test
+    public void authenticateTest(){
+        new User("admin@AssisTU.nl","secret").save();
+
+        assertNotNull(User.authenticate("admin@AssisTU.nl","secret"));
+        assertNull(User.authenticate("admin@AssisTU.nl","badpassword"));
+        assertNull(User.authenticate("bademail@ls.io", "secret"));
+
     }
 }
