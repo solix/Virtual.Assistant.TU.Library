@@ -36,7 +36,7 @@
 @template.smallmodal("editProject"+p.id.toString)("info")("Edit details of "+p.name) {
     @*helper.form(action = routes.Application.editProject(p.id)) {
         @helper.inputText(filledProjectForm("tabname"), '_label -> "Project Tab Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
-        @helper.inputText(filledProjectForm("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
+        @helper.inputText(filledeProjectForm("name"), '_label -> "Project Name (Required)", '_showConstraints -> false, '_showsErrors -> true)
         @helper.inputText(filledProjectForm("description"), '_label -> "Project Description (Optional)", 'size -> 50)
         <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
             <div class="btn-group" role="group">

@@ -11,7 +11,10 @@ import play.mvc.Http.MultipartFormData.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.String;
+import org.apache.commons.io.FileUtils;
+
 
 
 
@@ -30,9 +33,17 @@ public class Datafile extends Controller {
             String fileName = document.getFilename();
             String contentType = document.getContentType();
             File file = document.getFile();
+            try {
+                //this creates folder and  will be changed in future to the name of the project
+                String pname="projectfolder";
+
+                FileUtils.moveFile(file, new File("/home/"+pname, fileName));
+            } catch (IOException ioe) {
+                System.out.println("Problem operating on filesystem");
+            }
             String filepath = document.getFile().toString();
             DocumentFile doc = DocumentFile.create(fileName ,filepath,file);
-            return redirect(routes.Application.project());
+            return redirect(controllers.routes.Application.project());
         } else {
 
             return badRequest(
@@ -49,9 +60,12 @@ public class Datafile extends Controller {
 
     public static Result downloadDocument(Long id){
 
+        //this creates folder and  will be changed in future to the name of the project
+        String pname="projectfolder";
         DocumentFile documentFile = DocumentFile.find.byId(id);
+        String path ="/home/"+pname;
 
-            return  ok(new File(documentFile.filepath));
+        return  ok(new File(path,documentFile.name));
 
 
     }
