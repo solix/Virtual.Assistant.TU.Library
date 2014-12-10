@@ -20,7 +20,7 @@ GET         /calendar                        controllers.Application.calendar()
 
 #project
 GET         /project                         controllers.Application.project()
-GET         /project/:id                     controllers.Application.showProject(id: Long)
+#GET         /project/:id                     controllers.Application.showProject(id: Long)
 POST        /project/create                  controllers.Application.createProject()
 GET         /project/:id/archive              controllers.Application.archiveProject(id: Long)
 GET         /project/:id/edit                controllers.Application.editProject(id: Long)

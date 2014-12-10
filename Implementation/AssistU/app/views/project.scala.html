@@ -1,11 +1,4 @@
-@(
-        title: String,
-        p : Project,
-        projectList: List[Project],
-        emptyProjectForm: Form[Project],
-        filledProjectForm: Form[Project],
-        fileList: List[DocumentFile]
-        )
+@(title: String, projectList: List[Project])
 
 <html lang="en">
 <head>
@@ -17,18 +10,16 @@
     <div id="page-wrapper">
         @template.headericon("fa fa-line-chart fa-5x")
         <div class="row">
-            <div class="hidden-xs col-xs-10">
-                @projects.projectNavBar(projectList,p)
+            <div class="hidden-xs col-xs-8">
+                @projects.projectNavBar(projectList)
             </div>
-            <div class="col-xs-2" style="align:center">
+            <div class="col-xs-4" style="align:center">
                 <div class="btn-group hidden-xs" role="group">
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project</button>
                 </div>
             </div>
         </div>
-        @if(p != null) {
-            @projects.projectContent(p, fileList, filledProjectForm)
-        }
+        @projects.projectContent(projectList)
     </div>
 </div>
 <!-- /#wrapper -->
@@ -70,7 +61,6 @@
         </div>
     </div>
 }
-
         <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 

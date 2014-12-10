@@ -79,30 +79,24 @@ public class Application extends Controller {
 
     public static Result project() {
         List<Project> AllProjects = Project.find.all();
-        if (AllProjects.size() > 0) {
+        //if (AllProjects.size() > 0) {
 //            Find the latest active project, for now just the last in the list
-            return showProject((AllProjects.get(AllProjects.size()-1)).id);
-        } else {
-            return ok(project.render(
-                    "My Projects",
-                    null,
-                    Project.find.all(),
-                    emptyProjectForm,
-                    emptyProjectForm,
-                    DocumentFile.find.all()));
-        }
+          //  return showProject((AllProjects.get(AllProjects.size()-1)).id);
+        //} else {
+            return ok(project.render("My Projects", Project.find.all()));
+        //}
     }
 
-    public static Result showProject(Long id) {
-        Project ProjectToBeDisplayed = Project.find.ref(id);
-        return ok(project.render(
-                ProjectToBeDisplayed.name,
-                ProjectToBeDisplayed,
-                Project.find.where().eq("active", "true").findList(),
-                emptyProjectForm,
-                emptyProjectForm.fill(ProjectToBeDisplayed),
-                DocumentFile.find.all()));
-    }
+//    public static Result showProject(Long id) {
+//        Project ProjectToBeDisplayed = Project.find.ref(id);
+//        return ok(project.render(
+//                ProjectToBeDisplayed.name,
+//                ProjectToBeDisplayed,
+//                Project.find.where().eq("active", "true").findList(),
+//                emptyProjectForm,
+//                emptyProjectForm.fill(ProjectToBeDisplayed),
+//                DocumentFile.find.all()));
+//    }
 
     static Form<Project> emptyProjectForm = Form.form(Project.class);
 
@@ -134,7 +128,7 @@ public class Application extends Controller {
             Logger.info("\nUpdating Project:\n" + current + "\nto\n" + projectData + "\n");
             current.update(projectData.folder, projectData.name, projectData.description);
             Logger.info("\nUpdated:\n" + current + "\n");
-            return redirect(routes.Application.showProject(id));
+            return redirect(routes.Application.project());
         }
 
     }

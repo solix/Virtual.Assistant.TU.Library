@@ -1,11 +1,11 @@
-@(projectList: List[Project], p: Project)
+@(projectList: List[Project])
 <div role="tabpanel">
     <ul class="nav nav-pills">
-        @for(ps <- projectList) {
-            @if(p.equals(ps)){
-                <li role="presentation" class="active"><a href="@routes.Application.showProject(ps.id)">@ps.folder</a></li>
+        @for(p <- projectList) {
+            @if(p.equals(projectList.last)){
+                <li role="presentation" class="active"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
             } else {
-                <li role="presentation"><a href="@routes.Application.showProject(ps.id)">@ps.folder</a></li>
+                <li role="presentation"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
             }
         }
     </ul>
