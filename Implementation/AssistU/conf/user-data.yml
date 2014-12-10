@@ -17,5 +17,21 @@
     email:      tom@gmail.com
     password:   golden
 
+- !!models.User
+    email:      arnaud@assistu.nl
+    password:   arnaud
 
+- !!models.User
+    email:      soheil@assistu.nl
+    password:   soheil
+
+- !!models.User
+    email:      babak@assistu.nl
+    password:   babak
+
+- !!models.User
+    email:      nicoleta@assistu.nl
+    password:   nicoleta
+
+- !!models.Project
 
