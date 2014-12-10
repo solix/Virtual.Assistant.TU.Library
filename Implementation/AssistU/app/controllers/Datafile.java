@@ -27,7 +27,7 @@ public class Datafile extends Controller {
     public static Result uploadDocument() {
 
         MultipartFormData body = request().body().asMultipartFormData();
-        //play api tp get the file
+        //play api to get the file
         FilePart document = body.getFile("document");
         if (document != null) {
             String fileName = document.getFilename();

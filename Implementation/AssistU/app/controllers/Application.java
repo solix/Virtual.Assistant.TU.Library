@@ -1,24 +1,31 @@
 package controllers;
 
 
-import models.DocumentFile;
-import models.*;
 
+import models.*;
 import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
-import play.mvc.Http.*;
-import play.mvc.Http.MultipartFormData.*;
-import java.io.File;
 import java.lang.String;
 import java.util.List;
 
-import play.libs.Json;
-import com.fasterxml.jackson.databind.JsonNode;
-
 
 public class Application extends Controller {
+
+    /**
+     * TEMPORARY USER CREATION
+     */
+    public static User getUser(String uid){
+        User user = User.find.byId(uid);
+        if(user == null){
+            User newUser = new User(uid, "sushi");
+            newUser.save();
+            return newUser;
+        }else{
+            return user;
+        }
+    }
 
     /**
      * index view
@@ -51,17 +58,10 @@ public class Application extends Controller {
     static Form<User> emptyRegisterForm = Form.form(User.class);
 
     public static Result register() {
-        return ok(register.render(emptyRegisterForm, false));
+        return TODO;
     }
 
-    public static Result createUser() {
-        Form<User> filledRegisterForm = emptyRegisterForm.bindFromRequest();
-        if(filledRegisterForm.hasErrors()) {
-            return badRequest(register.render(filledRegisterForm, true));
-        } else {
-            return ok(index.render("Welcome name"));
-        }
-    }
+
 
     /**
      * Calendar page
@@ -78,57 +78,42 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        List<Project> AllProjects = Project.find.all();
-        //if (AllProjects.size() > 0) {
-//            Find the latest active project, for now just the last in the list
-          //  return showProject((AllProjects.get(AllProjects.size()-1)).id);
-        //} else {
-            return ok(project.render("My Projects", Project.find.all()));
-        //}
+        User dummy = getUser("A@H.com");
+        return ok(project.render("My Projects", dummy.email, Project.find.all()));
     }
 
-//    public static Result showProject(Long id) {
-//        Project ProjectToBeDisplayed = Project.find.ref(id);
-//        return ok(project.render(
-//                ProjectToBeDisplayed.name,
-//                ProjectToBeDisplayed,
-//                Project.find.where().eq("active", "true").findList(),
-//                emptyProjectForm,
-//                emptyProjectForm.fill(ProjectToBeDisplayed),
-//                DocumentFile.find.all()));
-//    }
+    static Form<Project> projectForm = Form.form(Project.class);
 
-    static Form<Project> emptyProjectForm = Form.form(Project.class);
-
-    public static Result createProject() {
-        Form<Project> filledProjectForm = emptyProjectForm.bindFromRequest();
+    public static Result createProject(String uid) {
+//        User.find.ref(uid);
+        Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, projectData.description);
-            Logger.info("Created Project: " + projectData.name);
+            Project.create(projectData.folder, projectData.name, uid);
+//            Logger.info("Created Project: " + projectData.name);
             return redirect(routes.Application.project());
         }
+//        return TODO;
     }
 
-    public static Result archiveProject(Long id) {
-        Project.find.ref(id).archive();
-        Logger.info("Archived Project " + id);
-        return redirect(routes.Application.project());
+    public static Result archiveProject() {
+       // Project.find.ref(id).archive();
+       // return redirect(routes.Application.project());
+        return TODO;
     }
 
-    public static Result editProject(Long id) {
-        Form<Project> filledProjectForm = emptyProjectForm.bindFromRequest();
+    public static Result editProject(Long pid) {
+        Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
-            Project projectData = filledProjectForm.get();
-            Project current = Project.find.ref(id);
-            Logger.info("\nUpdating Project:\n" + current + "\nto\n" + projectData + "\n");
-            current.update(projectData.folder, projectData.name, projectData.description);
-            Logger.info("\nUpdated:\n" + current + "\n");
-            return redirect(routes.Application.project());
+//            Project projectData = filledProjectForm.get();
+//            Project current = Project.find.ref(pid);
+//            current.update(projectData.folder, projectData.name);
+//            return redirect(routes.Application.project());
+        return TODO;
         }
 
     }
