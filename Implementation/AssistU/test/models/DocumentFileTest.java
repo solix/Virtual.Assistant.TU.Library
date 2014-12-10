@@ -19,11 +19,7 @@ public class DocumentFileTest extends WithApplication{
 
     @Test
     public void createDocumentTest(){
-//        new Project("Thesis").save();
-        DocumentFile.create("Thesis","/home");
-        DocumentFile d = DocumentFile.find.where().eq("name" , "Thesis").eq("filePath", "/home").findUnique();
-        assertNotNull(d);
-        assertEquals("Thesis" , d.name);
+    assertTrue(false);
     }
 
 }
