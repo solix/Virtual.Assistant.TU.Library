@@ -18,14 +18,16 @@ public class Project extends Model {
     public Long id;
 
     @Required
-    @MinLength(1)
-    public String tabname;
+    @MinLength(5)
+    public String folder;
 
     @Required
-    @MinLength(1)
+    @MinLength(5)
     public String name;
 
     public String description;
+
+    public Boolean active;
 
 
 //    @ManyToMany(cascade = CascadeType.REMOVE)
@@ -37,14 +39,14 @@ public class Project extends Model {
 
 //    public Map<User,UserRole> memberroles = new HashMap<User,UserRole>();
 
-    public Project (String tabname, String name, String description){
-        this.tabname = tabname;
+    public Project (String folder, String name, String description){
+        this.folder = folder;
         this.name = name;
         this.description = description;
 //        owners.add(new User("test", new Profile("Arnaud", "Hambenne", "AH", "pass"), true));
 //        UserRole admin=new UserRole("admin" , "owns the project");
 //        this.memberroles.put(owner,admin);
-
+        this.active = true;
     }
     /**
      * Finder to  make queries from database
@@ -59,17 +61,23 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String tabname, String name, String description){
-        Project project = new Project(tabname, name, description);
+    public static Project create(String folder, String name, String description){
+        Project project = new Project(folder, name, description);
         project.save();
 
         return project;
     }
 
-    public Project update(String tabname, String name, String description){
-        this.tabname = tabname;
+    public Project update(String folder, String name, String description){
+        this.folder = folder;
         this.name = name;
         this.description = description;
+        this.save();
+        return this;
+    }
+
+    public Project archive(){
+        this.active = false;
         this.save();
         return this;
     }

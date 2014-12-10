@@ -32,10 +32,10 @@ public class ProjectTest extends WithApplication {
         Project.create("Thesis", "first thesis", "boring");
         Project T = Project.find.where().eq("tabname" , "Thesis").findUnique();
         assertNotNull(T);
-        assertEquals("Thesis" , T.tabname);
+        assertEquals("Thesis" , T.folder);
         assertEquals("first thesis" , T.name);
         assertEquals("boring" , T.description);
-        Application.deleteProject(T.id);
+        Application.archiveProject(T.id);
         Project Td = Project.find.where().eq("tabname" , "Thesis").findUnique();
         assertEquals(Td, null);
     }

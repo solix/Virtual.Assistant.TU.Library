@@ -98,7 +98,7 @@ public class Application extends Controller {
         return ok(project.render(
                 ProjectToBeDisplayed.name,
                 ProjectToBeDisplayed,
-                Project.find.all(),
+                Project.find.where().eq("active", "true").findList(),
                 emptyProjectForm,
                 emptyProjectForm.fill(ProjectToBeDisplayed),
                 DocumentFile.find.all()));
@@ -112,15 +112,15 @@ public class Application extends Controller {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.tabname, projectData.name, projectData.description);
+            Project.create(projectData.folder, projectData.name, projectData.description);
             Logger.info("Created Project: " + projectData.name);
             return redirect(routes.Application.project());
         }
     }
 
-    public static Result deleteProject(Long id) {
-        Project.find.ref(id).delete();
-        Logger.info("Deleted Project " + id);
+    public static Result archiveProject(Long id) {
+        Project.find.ref(id).archive();
+        Logger.info("Archived Project " + id);
         return redirect(routes.Application.project());
     }
 
@@ -132,7 +132,7 @@ public class Application extends Controller {
             Project projectData = filledProjectForm.get();
             Project current = Project.find.ref(id);
             Logger.info("\nUpdating Project:\n" + current + "\nto\n" + projectData + "\n");
-            current.update(projectData.tabname, projectData.name, projectData.description);
+            current.update(projectData.folder, projectData.name, projectData.description);
             Logger.info("\nUpdated:\n" + current + "\n");
             return redirect(routes.Application.showProject(id));
         }

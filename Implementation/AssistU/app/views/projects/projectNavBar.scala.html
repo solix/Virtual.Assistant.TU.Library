@@ -3,9 +3,9 @@
     <ul class="nav nav-pills">
         @for(ps <- projectList) {
             @if(p.equals(ps)){
-                <li role="presentation" class="active"><a href="@routes.Application.showProject(ps.id)">@ps.tabname</a></li>
+                <li role="presentation" class="active"><a href="@routes.Application.showProject(ps.id)">@ps.folder</a></li>
             } else {
-                <li role="presentation"><a href="@routes.Application.showProject(ps.id)">@ps.tabname</a></li>
+                <li role="presentation"><a href="@routes.Application.showProject(ps.id)">@ps.folder</a></li>
             }
         }
     </ul>
