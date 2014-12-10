@@ -47,7 +47,7 @@ public class Project extends Model {
      * find involving members
      */
 
-    public static List<Project> findProjectInvolving(String User){
+    public static List<Project> findProjectInvolving(String user){
         List<Project> projects = find.where().eq("userlist.email" , user).findList();
         return projects;
     }
@@ -56,7 +56,7 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name, String description , String owner){
+    public static Project create(String folder, String name,  String owner){
         Project project = new Project(folder, name ,User.find.ref(owner));
         project.active=true;
         project.save();
@@ -69,7 +69,6 @@ public class Project extends Model {
      * TODO: project need to be find by id and only then new data will be updated using update method
      * @param folder
      * @param name
-     * @param description
      * @return
      */
 

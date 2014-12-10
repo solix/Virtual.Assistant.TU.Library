@@ -1,0 +1,20 @@
+# Users
+
+- !!models.User
+    email:      alex@gmail.com
+    password:   secret
+
+- !!models.User
+    email:      james@gmail.com
+    password:   apple
+
+- !!models.User
+    email:      alex@gmail.com
+    password:   orange
+
+- !!models.User
+    email:      alex@gmail.com
+    password:   golden
+
+
+
