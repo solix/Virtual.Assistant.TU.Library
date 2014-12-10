@@ -37,7 +37,7 @@ public class Datafile extends Controller {
                 //this creates folder and  will be changed in future to the name of the project
                 String pname="projectfolder";
 
-                FileUtils.moveFile(file, new File("/home/"+pname, fileName));
+                FileUtils.moveFile(file, new File("/home/spyruo/projectfolder/", fileName));
             } catch (IOException ioe) {
                 System.out.println("Problem operating on filesystem");
             }
@@ -63,7 +63,7 @@ public class Datafile extends Controller {
         //this creates folder and  will be changed in future to the name of the project
         String pname="projectfolder";
         DocumentFile documentFile = DocumentFile.find.byId(id);
-        String path ="/home/"+pname;
+        String path ="/home/spyruo/projectfolder/";
 
         return  ok(new File(path,documentFile.name));
 

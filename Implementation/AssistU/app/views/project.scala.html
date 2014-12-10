@@ -1,4 +1,4 @@
-@(title: String, uid: String, projectList: List[Project])
+@(title: String, uid: String, projectList: List[Project] , filelist: List[DocumentFile])
 @import  java.util.List;
 <html lang="en">
 <head>
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        @projects.projectContent(uid, projectList)
+        @projects.projectContent(uid,projectList)(filelist)
     </div>
 </div>
 <!-- /#wrapper -->

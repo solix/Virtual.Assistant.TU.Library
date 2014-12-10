@@ -3,7 +3,6 @@ package controllers;
 
 
 import models.*;
-import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
@@ -79,7 +78,7 @@ public class Application extends Controller {
 
     public static Result project() {
         User dummy = getUser("A@H.com");
-        return ok(project.render("My Projects", dummy.email, Project.find.all()));
+        return ok(project.render("My Projects", dummy.email, Project.find.all(), DocumentFile.find.all()));
     }
 
     static Form<Project> projectForm = Form.form(Project.class);
