@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -57,7 +58,6 @@ public class Project extends Model {
      */
     public static Project create(String folder, String name,  String owner){
         Project project = new Project(folder, name ,User.find.ref(owner));
-
         project.active=true;
         project.save();
         project.saveManyToManyAssociations("userlist");
@@ -65,16 +65,15 @@ public class Project extends Model {
     }
 
     /**
-     * edits the project TODO: change the name of update method to edit.
-     * TODO: project need to be find by id and only then new data will be updated using update method
-
+     * edits the project
+     * TODO: project need to be find by id and only then new data will be updated using update method (need to check hashmap support)
      * @return
      */
-
-    public static void edit(Long pid){
-       // this.folder = folder;
-        //this.name = name;
-        //this.save();
+    public static void edit(Long pid, String folder, String name){
+        Project p = Project.find.byId(pid);
+        p.folder = folder;
+        p.name = name;
+        p.update();
     }
 
     /**
@@ -82,12 +81,26 @@ public class Project extends Model {
      * this method closes the project
      * @return
      */
-    public static void archive(){
-        //this.active = false;
-        //this.save();
-        //return this;
+    public static void archive(Long pid){
+        Project p = Project.find.byId(pid);
+        p.active = false;
+        p.update();
+//        p.saveManyToManyAssociations("userlist");
     }
 
+    /**
+     * TODO: Set role as secondary parameter
+     * This method invites another user to a project by its user id
+     */
+    public static void addMemberAs(String uid){
 
+    }
+
+    /**
+     * this method removes a member from the project
+     */
+    public static void removeMember(String uid){
+
+    }
 
 }

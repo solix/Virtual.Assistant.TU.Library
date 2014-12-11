@@ -18,8 +18,8 @@
     password:   golden
 
 - !!models.User
-    email:      arnaud@assistu.nl
-    password:   arnaud
+    email: arnaud@assistu.nl
+    password: arnaud
 
 - !!models.User
     email:      soheil@assistu.nl
@@ -32,6 +32,4 @@
 - !!models.User
     email:      nicoleta@assistu.nl
     password:   nicoleta
-
-- !!models.Project
 

@@ -3,6 +3,7 @@ package controllers;
 
 
 import models.*;
+import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
@@ -77,8 +78,7 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        User dummy = getUser("A@H.com");
-        return ok(project.render("My Projects", dummy.email, Project.find.all(), DocumentFile.find.all()));
+        return ok(project.render("My Projects", "arnaud@assistu.nl", Project.find.where().eq("active", "true").findList(), DocumentFile.find.all()));
     }
 
     static Form<Project> projectForm = Form.form(Project.class);
@@ -97,10 +97,15 @@ public class Application extends Controller {
 //        return TODO;
     }
 
-    public static Result archiveProject() {
-       // Project.find.ref(id).archive();
-       // return redirect(routes.Application.project());
-        return TODO;
+    public static Result archiveProject(String uid, Long pid) {
+        Project toArchive = Project.find.ref(pid);
+        Logger.info("In archive");
+        if (toArchive.userlist.contains(User.find.byId(uid)) && toArchive.userlist.size() == 1){
+            toArchive.archive(pid);
+        } else {
+            flash("failure", "You are not the single owner of this project");
+        }
+       return redirect(routes.Application.project());
     }
 
     public static Result editProject(Long pid) {
@@ -108,13 +113,30 @@ public class Application extends Controller {
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
-//            Project projectData = filledProjectForm.get();
-//            Project current = Project.find.ref(pid);
-//            current.update(projectData.folder, projectData.name);
-//            return redirect(routes.Application.project());
-        return TODO;
+            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name);
+            return redirect(routes.Application.project());
+
         }
 
+    }
+
+    /**
+     * TODO: Need to add third Role parameter
+     * @param uid
+     * @param pid
+     * @return
+     */
+    public static Result addMemberToProjectAs(String uid, Long pid){
+        Project.find.byId(pid).addMemberAs(uid);
+        return project();
+    }
+
+    /**
+     * This method removes a user from the project's userlist
+     */
+    public static Result leaveProject(String uid, Long pid){
+        Project.find.byId(pid).removeMember(uid);
+        return project();
     }
 
     /**

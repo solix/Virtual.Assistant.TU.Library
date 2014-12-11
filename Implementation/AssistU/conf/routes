@@ -20,7 +20,7 @@ GET         /calendar                        controllers.Application.calendar()
 GET         /project                         controllers.Application.project()
 POST        /:uid/project/create             controllers.Application.createProject(uid: String)
 GET         /project/:pid/edit               controllers.Application.editProject(pid: Long)
-GET         /project/archive                 controllers.Application.archiveProject()
+GET         /:uid/project/:pid/archive       controllers.Application.archiveProject(uid: String, pid: Long)
 POST        /project/upload                  controllers.Datafile.uploadDocument()
 GET         /project/download/:fileid        controllers.Datafile.downloadDocument(fileid :Long)
 

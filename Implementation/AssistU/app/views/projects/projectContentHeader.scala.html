@@ -4,7 +4,7 @@
     @*<div class="container-fluid">*@
         <div class="row">
             <div class="col-xs-6">
-                <h1>@p.name by @uid</h1>
+                <h1>@p.name</h1>
             </div>
             <div class="col-xs-6">
                 <ul class="nav navbar-top-links navbar-right">
@@ -78,14 +78,14 @@
 @*Add Reviewer Modal*@
 @template.smallmodal("addReviewerToProject"+p.id.toString)("info")("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
 @*Delete Project Confirmation Modal*@
-@template.smallmodal("archiveProject"+p.id.toString)("danger")("Deletion of "+p.name) {
+@template.smallmodal("archiveProject"+p.id.toString)("danger")("Request to archive "+p.name) {
     <p>Are you sure you want to archive project @p.name, and all of its files?</p>
     <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
         <div class="btn-group" role="group">
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
         </div>
         <div class="btn-group" role="group">
-            <a type="button" class="btn btn-danger" href="@routes.Application.archiveProject()">Archive!</a>
+            <a type="button" class="btn btn-danger" href="@routes.Application.archiveProject(uid,p.id)">Archive!</a>
         </div>
     </div>
 }
