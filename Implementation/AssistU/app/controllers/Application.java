@@ -126,8 +126,9 @@ public class Application extends Controller {
      * @param pid
      * @return
      */
-    public static Result addMemberToProjectAs(String uid, Long pid){
-        Project.find.byId(pid).addMemberAs(uid);
+    public static Result addMemberToProjectAs(Long pid){
+        Form<String> email = Form.form(String.class).bindFromRequest();
+        Project.addMemberAs(pid, email.get());
         return project();
     }
 

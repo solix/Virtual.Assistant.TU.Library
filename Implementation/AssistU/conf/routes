@@ -3,33 +3,34 @@
 # ~~~~
 
 # Home page
-GET         /                                controllers.Application.index()
+GET         /                                 controllers.Application.index()
 
 #task
-GET         /task                            controllers.Application.task()
+GET         /task                             controllers.Application.task()
 
 #login
-GET         /login                           controllers.Application.login()
+GET         /login                            controllers.Application.login()
 
 
 
 #calendar
-GET         /calendar                        controllers.Application.calendar()
+GET         /calendar                         controllers.Application.calendar()
 
 #project
-GET         /project                         controllers.Application.project()
-POST        /:uid/project/create             controllers.Application.createProject(uid: String)
-GET         /project/:pid/edit               controllers.Application.editProject(pid: Long)
-GET         /:uid/project/:pid/archive       controllers.Application.archiveProject(uid: String, pid: Long)
-POST        /project/upload                  controllers.Datafile.uploadDocument()
-GET         /project/download/:fileid        controllers.Datafile.downloadDocument(fileid :Long)
+GET         /project                          controllers.Application.project()
+POST        /:uid/project/create              controllers.Application.createProject(uid: String)
+GET         /project/:pid/edit                controllers.Application.editProject(pid: Long)
+GET         /:uid/project/:pid/archive        controllers.Application.archiveProject(uid: String, pid: Long)
+GET         /project/:pid/addMember           controllers.Application.addMemberToProjectAs(pid: Long)
+POST        /project/upload                   controllers.Datafile.uploadDocument()
+GET         /project/download/:fileid         controllers.Datafile.downloadDocument(fileid :Long)
 
 
 #Suggestions
-GET         /suggestions                     controllers.Application.suggestions()
+GET         /suggestions                      controllers.Application.suggestions()
 
 #inbox
-GET         /discussion                      controllers.Application.discussion()
+GET         /discussion                       controllers.Application.discussion()
 
 
 
@@ -38,5 +39,5 @@ GET         /discussion                      controllers.Application.discussion(
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                    controllers.Assets.at(path="/public", file)
-GET         /webjars/*file                   controllers.WebJarAssets.at(file)
+GET         /assets/*file                     controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                    controllers.WebJarAssets.at(file)

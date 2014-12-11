@@ -8,6 +8,8 @@ $(document).ready(function() {
 
         if (!$group.data('validate')) {
             state = $(this).val() ? true : false;
+        }else if ($group.data('validate') == "email") {
+            state = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($(this).val())
         }else if ($group.data('validate') == "length") {
             state = $(this).val().length >= $group.data('length') ? true : false;
         }else if ($group.data('validate') == "number") {

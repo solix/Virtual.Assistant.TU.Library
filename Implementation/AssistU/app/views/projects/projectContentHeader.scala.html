@@ -74,7 +74,27 @@
 @template.mediummodal("projectMemberList"+p.id.toString)("info")("Members of "+p.name) {<p>Show a list of the members here,
     along with first name, last name, time of add, role, emailaddress with possible mailto hyperlink</p>}
 @*Add Member Modal*@
-@template.smallmodal("addMemberToProject"+p.id.toString)("info")("Add a Member to "+p.name) {<p>Form with email address</p>}
+@template.smallmodal("addMemberToProject"+p.id.toString)("info")("Add a Member to "+p.name) {
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+        @helper.form(action = routes.Application.addMemberToProjectAs(p.id)) {
+            <div class="form-group">
+                <label for="validate-email">E-mail</label>
+                <div class="input-group" data-validate="email">
+                    <input type="text" class="form-control" name="email" id="validate-email" placeholder="Email" required>
+                    <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                </div>
+            </div>
+            <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                <button type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</button>
+            </div>
+            <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                <button type="submit" class="btn btn-success col-xs-12" disabled>Invite!</button>
+            </div>
+        }
+        </div>
+    </div>
+}
 @*Add Reviewer Modal*@
 @template.smallmodal("addReviewerToProject"+p.id.toString)("info")("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
 @*Delete Project Confirmation Modal*@

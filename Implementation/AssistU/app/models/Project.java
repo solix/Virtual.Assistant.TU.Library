@@ -89,11 +89,14 @@ public class Project extends Model {
     }
 
     /**
-     * TODO: Set role as secondary parameter
+     * TODO: Set role as third parameter
      * This method invites another user to a project by its user id
      */
-    public static void addMemberAs(String uid){
-
+    public static void addMemberAs(Long pid, String uid){
+        Project p = Project.find.byId(pid);
+        p.userlist.add(User.find.byId(uid));
+        p.save();
+        p.saveManyToManyAssociations("userlist");
     }
 
     /**
