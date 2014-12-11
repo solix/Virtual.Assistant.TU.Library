@@ -127,18 +127,29 @@ public class Application extends Controller {
      * @return
      */
     public static Result addMemberToProjectAs(Long pid){
-        Form<String> email = Form.form(String.class).bindFromRequest();
-        Project.addMemberAs(pid, email.get());
+        DynamicForm emailform = Form.form().bindFromRequest();
+        Project.addMemberAs(pid, emailform.get("email"));
         return project();
     }
 
     /**
-     * This method removes a user from the project's userlist
+     * TODO: Only owners should be able to remove non-owners
+     * @param uid
+     * @param pid
+     * @return
      */
-    public static Result leaveProject(String uid, Long pid){
-        Project.find.byId(pid).removeMember(uid);
+    public static Result removeMemberFromProject(Long pid, String uid){
+        Project.removeMemberFrom(pid, uid);
         return project();
     }
+
+    /**
+     * This method removes a user from the project's userlist USE REMOVEMEMBER INSTEAD
+     */
+//    public static Result leaveProject(String uid, Long pid){
+////        Project.find.byId(pid).removeMember(uid);
+//        return project();
+//    }
 
     /**
      * suggestion page

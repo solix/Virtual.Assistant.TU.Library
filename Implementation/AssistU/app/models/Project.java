@@ -95,15 +95,19 @@ public class Project extends Model {
     public static void addMemberAs(Long pid, String uid){
         Project p = Project.find.byId(pid);
         p.userlist.add(User.find.byId(uid));
-        p.save();
+        p.update();
         p.saveManyToManyAssociations("userlist");
     }
 
     /**
+     * TODO: Add roles accordingly
      * this method removes a member from the project
      */
-    public static void removeMember(String uid){
-
+    public static void removeMemberFrom(Long pid, String uid){
+        Project p = Project.find.byId(pid);
+        p.userlist.remove(User.find.byId(uid));
+        p.update();
+        p.saveManyToManyAssociations("userlist");
     }
 
 }

@@ -56,14 +56,13 @@ public class ProjectTest extends WithApplication {
     public void projectScene1(){
         Project thesis = Project.create("Thesis", "Final Thesis", "arnaud@assistu.nl");
         assertEquals(thesis.name, "Final Thesis");
-        Long id = thesis.id;
-        Project.addMemberAs(id, "soheil@assistu.nl");
-        Project newthesis = Project.find.byId(id);
-        assertTrue(newthesis.userlist.contains(User.find.byId("soheil@assistu.nl")));
-//        Application.leaveProject("arnaud@assistu.nl", thesis.id);
-//        assertFalse(thesis.userlist.contains(User.find.byId("arnaud@assistu.nl")));
-//        assertTrue(thesis.userlist.contains(User.find.byId("soheil@assistu.nl")));
-//        assertTrue(thesis.userlist.size() == 1);
+        Project.addMemberAs(thesis.id, "soheil@assistu.nl");
+        Application.removeMemberFromProject(thesis.id, "arnaud@assistu.nl");
+        //You need to reinstantiate the same project again, if you don't the test will fail
+        Project updated = Project.find.byId(thesis.id);
+        assertFalse(updated.userlist.contains(User.find.byId("arnaud@assistu.nl")));
+        assertTrue(updated.userlist.contains(User.find.byId("soheil@assistu.nl")));
+        assertTrue(updated.userlist.size() == 1);
     }
 
     /**
