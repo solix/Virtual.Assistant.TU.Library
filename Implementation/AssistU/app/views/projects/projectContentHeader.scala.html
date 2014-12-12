@@ -34,8 +34,8 @@
         </div>
         <div class="col-xs-5">
             <p>Members:</p>
-            <p style="text-align: right">@for(user <- p.userlist){
-                @if(p.userlist.last.equals(user)){
+            <p style="text-align: right">@for(user <- p.users){
+                @if(p.users.last.equals(user)){
                     @user.email.
                 } else {
                     @user.email,

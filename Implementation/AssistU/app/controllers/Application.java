@@ -66,7 +66,7 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        return ok(project.render("My Projects", "TODO", Project.find.where().eq("active", "true").findList(), DocumentFile.find.all()));
+        return ok(project.render("My Projects", "TODO@test.nl", Project.find.where().eq("active", "true").findList(), DocumentFile.find.all()));
 
     }
 

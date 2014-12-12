@@ -63,10 +63,7 @@ public class Project extends Model {
     public static Project create(String folder, String name,  String owner ,String description){
         Project project = new Project(folder, name ,User.find.ref(owner),description);
         project.active=true;
-        DocumentFile documentFile=new DocumentFile(null,null,null);
-        documentFile.project=project;
         project.save();
-        documentFile.save();
         return project;
     }
 
@@ -95,7 +92,7 @@ public class Project extends Model {
     }
 
     /**
-     * TODO: Set role as third parameter
+     * TODO: Set role as third parameter? no,better to set role as seperate function
      * This method invites another user to a project by its user id
      */
     public static void addMemberAs(Long pid, String uid){
