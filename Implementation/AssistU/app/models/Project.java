@@ -10,20 +10,22 @@ import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
 /**
- * Project class which has list of members and owners
+ * Project model class
  */
 @Entity
 public class Project extends Model {
 
-    @Id @GeneratedValue
+    @Id
     public Long id;
-    @Required
-    public String folder;
-    @Required
     public String name;
+    public String folder;
+    public String description;
     public Boolean active=false;
-    @ManyToMany(cascade= CascadeType.REMOVE)
-    public List<User> userlist = new ArrayList<User>();
+    @ManyToMany(mappedBy = "projects")
+    public List<User> users = new ArrayList<User>();
+    @OneToMany(mappedBy = "project")
+    public List<DocumentFile> documentFiles= new ArrayList<DocumentFile>();
+
 
 
     /**
@@ -31,10 +33,12 @@ public class Project extends Model {
      * @param folder
      * @param name
      */
-    public Project (String folder, String name, User owner){
+    public Project (String folder, String name, User owner,String description){
+
         this.folder = folder;
         this.name = name;
-        this.userlist.add(owner);
+        this.description=description;
+        this.users.add(owner);
     }
     /**
      * Finder to  make queries from database via Ebeans
@@ -56,11 +60,13 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name,  String owner){
-        Project project = new Project(folder, name ,User.find.ref(owner));
+    public static Project create(String folder, String name,  String owner ,String description){
+        Project project = new Project(folder, name ,User.find.ref(owner),description);
         project.active=true;
+        DocumentFile documentFile=new DocumentFile(null,null,null);
+        documentFile.project=project;
         project.save();
-        project.saveManyToManyAssociations("userlist");
+        documentFile.save();
         return project;
     }
 
@@ -94,7 +100,7 @@ public class Project extends Model {
      */
     public static void addMemberAs(Long pid, String uid){
         Project p = Project.find.byId(pid);
-        p.userlist.add(User.find.byId(uid));
+        p.users.add(User.find.byId(uid));
         p.update();
         p.saveManyToManyAssociations("userlist");
     }
@@ -105,7 +111,7 @@ public class Project extends Model {
      */
     public static void removeMemberFrom(Long pid, String uid){
         Project p = Project.find.byId(pid);
-        p.userlist.remove(User.find.byId(uid));
+        p.users.remove(User.find.byId(uid));
         p.update();
         p.saveManyToManyAssociations("userlist");
     }

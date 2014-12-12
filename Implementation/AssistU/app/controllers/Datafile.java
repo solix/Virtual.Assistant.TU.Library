@@ -42,7 +42,7 @@ public class Datafile extends Controller {
                 System.out.println("Problem operating on filesystem");
             }
             String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,filepath,file);
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getAbsolutePath());
             return redirect(controllers.routes.Application.project());
         } else {
 

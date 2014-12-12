@@ -7,16 +7,29 @@ import play.db.ebean.*;
 import com.avaje.ebean.*;
 import play.data.validation.Constraints.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class User extends Model {
 
 
     @Id
     public String email;
+    public String name;
     public String password;
 
+    @ManyToMany
+    List<UserRole> userroles=new ArrayList<UserRole>();
 
-    public User(String email,  String password) {
+    @ManyToMany
+    List<Project> projects = new ArrayList<Project>();
+
+    @OneToMany(mappedBy = "user")
+    public List<Task> tasks= new ArrayList<Task>();
+
+    public User(String name, String email,  String password) {
+        this.name=name;
         this.email = email;
         this.password = password;
 
@@ -31,8 +44,8 @@ public class User extends Model {
                 "password",password).findUnique();
     }
 
-    public User create(String email,  String password) {
-        User user = new User(email,  password);
+    public User create(String name,String email,  String password) {
+        User user = new User(name,email,  password);
         user.save();
         return user;
     }

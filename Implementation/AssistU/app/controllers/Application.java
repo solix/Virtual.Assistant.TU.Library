@@ -13,19 +13,7 @@ import java.util.List;
 
 public class Application extends Controller {
 
-    /**
-     * TEMPORARY USER CREATION
-     */
-    public static User getUser(String uid){
-        User user = User.find.byId(uid);
-        if(user == null){
-            User newUser = new User(uid, "sushi");
-            newUser.save();
-            return newUser;
-        }else{
-            return user;
-        }
-    }
+
 
     /**
      * index view
@@ -78,7 +66,8 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        return ok(project.render("My Projects", "arnaud@assistu.nl", Project.find.where().eq("active", "true").findList(), DocumentFile.find.all()));
+        return ok(project.render("My Projects", "TODO", Project.find.where().eq("active", "true").findList(), DocumentFile.find.all()));
+
     }
 
     static Form<Project> projectForm = Form.form(Project.class);
@@ -90,7 +79,7 @@ public class Application extends Controller {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, uid);
+            Project.create(projectData.folder, projectData.name, uid , "dummy must be implemenetd");
 //            Logger.info("Created Project: " + projectData.name);
             return redirect(routes.Application.project());
         }
@@ -100,7 +89,7 @@ public class Application extends Controller {
     public static Result archiveProject(String uid, Long pid) {
         Project toArchive = Project.find.ref(pid);
         Logger.info("In archive");
-        if (toArchive.userlist.contains(User.find.byId(uid)) && toArchive.userlist.size() == 1){
+        if (toArchive.users.contains(User.find.byId(uid)) && toArchive.users.size() == 1){
             toArchive.archive(pid);
         } else {
             flash("failure", "You are not the single owner of this project");
@@ -122,7 +111,7 @@ public class Application extends Controller {
 
     /**
      * TODO: Need to add third Role parameter
-     * @param uid
+     *
      * @param pid
      * @return
      */
