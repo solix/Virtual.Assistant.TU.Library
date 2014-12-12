@@ -9,7 +9,7 @@
     }
     <div class="panel panel-default">
         @projects.projectContentHeader(uid: String, p)
-        @projects.projectFileList(filelist)
+        @projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())
     </div>
 @projects.projectUploadButtons(p)
 </div>

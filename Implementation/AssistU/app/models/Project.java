@@ -24,7 +24,7 @@ public class Project extends Model {
     @ManyToMany(mappedBy = "projects")
     public List<User> users = new ArrayList<User>();
     @OneToMany(mappedBy = "project")
-    public List<DocumentFile> documentFiles= new ArrayList<DocumentFile>();
+    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
 
 
 

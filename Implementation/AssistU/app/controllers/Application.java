@@ -2,13 +2,18 @@ package controllers;
 
 
 
+import com.avaje.ebean.Ebean;
 import models.*;
+//import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
+//import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.*;
 import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
 import java.lang.String;
 import java.util.List;
+import java.util.Set;
 
 
 public class Application extends Controller {
@@ -67,11 +72,12 @@ public class Application extends Controller {
 
     public static Result project() {
         User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
+        List<Project> projectList = Project.find.where().eq("users.email", user.email).eq("active", "true").findList();
+        List<DocumentFile> documentList = DocumentFile.find.where().in("project.id", Project.find.where().eq("users.email", user.email).eq("active", "true").findIds()).findList();
         return ok(project.render("My Projects",
                 user.email,
-                Project.find.where().eq("users.email" ,
-                user.email).eq("active", "true").findList(),
-                DocumentFile.find.all()
+                projectList,
+                documentList
                ));
 
     }
