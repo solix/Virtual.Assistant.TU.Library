@@ -8,7 +8,7 @@ import play.data.*;
 import play.mvc.*;
 import views.html.*;
 import java.lang.String;
-import java.util.List;
+
 
 
 public class Application extends Controller {
@@ -34,14 +34,7 @@ public class Application extends Controller {
         return ok(task.render("your tasks"));
     }
 
-    /**
-     * login page
-     *
-     * @return
-     */
-    public static Result login() {
-        return ok(login.render());
-    }
+
 
     static Form<User> emptyRegisterForm = Form.form(User.class);
 
@@ -61,8 +54,8 @@ public class Application extends Controller {
     }
 
     /**
-     * project page
-     * @return
+     *
+     * @return project page
      */
 
     public static Result project() {
@@ -76,7 +69,7 @@ public class Application extends Controller {
 
     }
 
-    static Form<Project> projectForm = Form.form(Project.class);
+    private static final Form<Project> projectForm = Form.form(Project.class);
 
     public static Result createProject() {
         User user= User.find.where().eq("email", "alex@gmail.com").findUnique();

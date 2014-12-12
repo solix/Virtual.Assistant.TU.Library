@@ -1,44 +1,7 @@
-<html lang="en">
-
+@(form: Form[Authentication.Login])
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>login page</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="@routes.Assets.at("css/bootstrap.min.css")" rel="stylesheet">
-    <link href="@routes.Assets.at("css/bootstrap-social.css")" rel="stylesheet">
-    <!-- Normalize css file  -->
-    <link href="@routes.Assets.at("css/normalize.css")" rel="stylesheet">
-
-
-    <!-- MetisMenu CSS -->
-    <link href="@routes.Assets.at("css/plugins/metisMenu/metisMenu.min.css")" rel="stylesheet">
-
-
-    <!-- Timeline CSS -->
-    <link href="@routes.Assets.at("css/plugins/timeline.css")" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="@routes.Assets.at("css/sb-admin-2.css")" rel="stylesheet">
-
-    <!-- Morris Charts CSS -->
-    <link href="@routes.Assets.at("css/plugins/morris.css")" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="@routes.Assets.at("font-awesome-4.1.0/css/font-awesome.min.css")" rel="stylesheet" type="text/css">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href="@routes.Assets.at("css/login.css")" rel="stylesheet" type="text/css">
-
-
-    <!--Login CSS-->
-
+    @linkLoader.loginhead()
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -76,21 +39,28 @@
         </div>  
     </div>
 <!-- the sign in from with email and Adress -->
+    @if(form.hasGlobalErrors) {
+        <p class="error">
+        @form.globalError.message
+        </p>
+    }
 
     <div class="row">
 
         <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="." novalidate>
+            @helper.form(routes.Authentication.authenticate){
+
                <div class="form-group ">
+
                 <label class="control-label" for="email">Email</label>
-                <input autofocus class="form-control input-lg" id="email" name="email" type="email" value="">
+                <input autofocus class="form-control input-lg" id="email" name="email" type="email" value="@form("email").value" placeholder="Email">
                </div>
 
 
                 <div class="form-group ">
                   <label class="control-label" for="password">Password</label>
                     <div class="input-group input-group-lg">
-                      <input autocomplete="on" class="form-control" id="password" name="password" type="password" value="">
+                      <input autocomplete="on" class="form-control" id="password" name="password" type="password" placeholder="Password">
                       <span class="input-group-btn">
                         <button class="btn btn-default btn-password-show" type="button" data-target="#password" data-toggle="button" title="Show/Hide Password" tabindex="-1">
                           <span class="fa fa-eye"></span>
@@ -111,7 +81,7 @@
                       <a class="btn btn-link btn-xs ellipsis" href="#">Create new account</a>
                     </div>
                   </div>
-            </form>          
+            }
             <legend class="text-muted text-center">
                 or
             </legend>
@@ -133,9 +103,8 @@
         </div>
     </div>
   </div>
-</div>
 
-  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
   <script>
     !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
   </script>
@@ -145,7 +114,7 @@
     !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
   </script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 <!--bootstrap-->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 

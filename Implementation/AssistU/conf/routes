@@ -9,8 +9,8 @@ GET         /                                 controllers.Application.index()
 GET         /task                             controllers.Application.task()
 
 #login
-GET         /login                            controllers.Application.login()
-
+GET         /login                            controllers.Authentication.login()
+POST        /login                            controllers.Authentication.authenticate()
 
 
 #calendar

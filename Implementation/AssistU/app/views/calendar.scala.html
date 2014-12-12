@@ -1,7 +1,6 @@
 @(title: String)
 
 <html lang="en">
-<html>
 <head>
 
   @linkLoader.headlinks(title)
@@ -11,7 +10,7 @@
 
 <div id="wrapper">
 <!-- LOading Side menue and top nav menue -->
-  @dashboard
+  @dashboard()
 <!-- Header Icon -->
     <div id="page-wrapper">
         <div class="container-fluid ">
@@ -30,7 +29,7 @@
     <!-- /#header icon --> 
 
     <div class="row">
-      <div id='calendar' style="background-color: "></div>
+      <div id='calendar'></div>
     </div>
   </div>
 
