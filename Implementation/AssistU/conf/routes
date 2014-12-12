@@ -18,7 +18,7 @@ GET         /calendar                         controllers.Application.calendar()
 
 #project
 GET         /project                          controllers.Application.project()
-POST        /:uid/project/create              controllers.Application.createProject(uid: String)
+POST        /project/create              controllers.Application.createProject()
 GET         /project/:pid/edit                controllers.Application.editProject(pid: Long)
 GET         /:uid/project/:pid/archive        controllers.Application.archiveProject(uid: String, pid: Long)
 GET         /project/:pid/addMember           controllers.Application.addMemberToProjectAs(pid: Long)
