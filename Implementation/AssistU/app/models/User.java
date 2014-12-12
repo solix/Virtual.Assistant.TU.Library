@@ -39,12 +39,18 @@ public class User extends Model {
             String.class, User.class
     );
 
+    /**
+     * autheticates  user
+     * @param email
+     * @param password
+     * @return
+     */
     public static User authenticate(String email,String password){
         return find.where().eq("email" , email).eq(
                 "password",password).findUnique();
     }
 
-    public User create(String name,String email,  String password) {
+    public static User create(String name,String email,  String password) {
         User user = new User(name,email,  password);
         user.save();
         return user;
