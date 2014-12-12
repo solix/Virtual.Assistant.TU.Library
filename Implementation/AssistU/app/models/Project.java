@@ -52,7 +52,7 @@ public class Project extends Model {
      */
 
     public static List<Project> findProjectInvolving(String user){
-        List<Project> projects = find.where().eq("userlist.email" , user).findList();
+        List<Project> projects = find.where().eq("users.email" , user).findList();
         return projects;
     }
     /**
@@ -96,10 +96,10 @@ public class Project extends Model {
      * This method invites another user to a project by its user id
      */
     public static void addMemberAs(Long pid, String uid){
-        Project p = Project.find.byId(pid);
+        Project p = Project.find.ref(pid);
         p.users.add(User.find.byId(uid));
         p.update();
-        p.saveManyToManyAssociations("userlist");
+        p.saveManyToManyAssociations("users");
     }
 
     /**
@@ -110,7 +110,7 @@ public class Project extends Model {
         Project p = Project.find.byId(pid);
         p.users.remove(User.find.byId(uid));
         p.update();
-        p.saveManyToManyAssociations("userlist");
+//        p.saveManyToManyAssociations("users");
     }
 
 }

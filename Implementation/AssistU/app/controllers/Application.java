@@ -66,21 +66,24 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        return ok(project.render("My Projects", "TODO@test.nl", Project.find.where().eq("active", "true").findList(), DocumentFile.find.all()));
+        User user= User.find.where().eq("email", "alex @gmail.com").findUnique();
+        return ok(project.render("My Projects",
+                user.email,
+                Project.find.where().eq("active", "true").findList(),
+                DocumentFile.find.all()));
 
     }
 
     static Form<Project> projectForm = Form.form(Project.class);
 
-    public static Result createProject(String uid) {
-//        User.find.ref(uid);
+    public static Result createProject() {
+        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, uid , "dummy must be implemenetd");
-//            Logger.info("Created Project: " + projectData.name);
+            Project.create(projectData.folder, projectData.name, user.email , "dummy must be implemenetd");
             return redirect(routes.Application.project());
         }
 //        return TODO;
@@ -118,7 +121,7 @@ public class Application extends Controller {
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
         Project.addMemberAs(pid, emailform.get("email"));
-        return project();
+        return redirect(routes.Application.project());
     }
 
     /**

@@ -27,7 +27,7 @@
 @template.smallmodal("newProject")("success")("Create a new Project") {
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-            @helper.form(action = routes.Application.createProject(uid)) {
+            @helper.form(action = routes.Application.createProject()) {
                 <div class="form-group">
                     <label for="validate-text">Folder Name</label>
                     <div class="input-group" data-validate="length" data-length="3">
