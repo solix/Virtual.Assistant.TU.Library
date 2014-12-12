@@ -2,15 +2,14 @@ package controllers;
 
 
 import models.*;
+import controllers.*;
 
-import play.data.*;
+
 import play.mvc.*;
-import views.html.*;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.lang.String;
 import org.apache.commons.io.FileUtils;
@@ -24,8 +23,8 @@ public class Datafile extends Controller {
     /**
      * POST uploaded document  to the server
      */
-    public static Result uploadDocument() {
-
+    public static Result uploadDocument(long pid) {
+        Project project=Project.find.byId(pid);
         MultipartFormData body = request().body().asMultipartFormData();
         //play api to get the file
         FilePart document = body.getFile("document");
@@ -35,14 +34,16 @@ public class Datafile extends Controller {
             File file = document.getFile();
             try {
                 //this creates folder and  will be changed in future to the name of the project
-                String pname="projectfolder";
+                //String pname=project.folder;
 
                 FileUtils.moveFile(file, new File("/home/spyruo/projectfolder/", fileName));
             } catch (IOException ioe) {
                 System.out.println("Problem operating on filesystem");
             }
             String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getAbsolutePath());
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id);
+
+
             return redirect(controllers.routes.Application.project());
         } else {
 

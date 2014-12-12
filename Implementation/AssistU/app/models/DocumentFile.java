@@ -42,10 +42,11 @@ public class DocumentFile extends Model{
      * Constructor
      * @param name
      */
-    public DocumentFile(String name, File file ,String filepath){
+    public DocumentFile(String name, File file ,String filepath, long pid){
         this.name=name;
         this.filepath=filepath;
         this.file=file;
+        this.project=Project.find.ref(pid);
 
     }
 
@@ -56,8 +57,9 @@ public class DocumentFile extends Model{
             Long.class, DocumentFile.class
     );
 
-    public static DocumentFile create(String name, File file  ,String filepath){
-        DocumentFile documentFile = new DocumentFile(name,file,filepath);
+    public static DocumentFile create(String name, File file  ,String filepath,long pid){
+        Project project = Project.find.ref(pid);
+        DocumentFile documentFile = new DocumentFile(name,file,filepath,project.id);
         documentFile.save();
 
         return documentFile;

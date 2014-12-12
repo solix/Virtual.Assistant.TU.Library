@@ -40,12 +40,6 @@ public class Project extends Model {
         this.description=description;
         this.users.add(owner);
     }
-    /**
-     * Finder to  make queries from database via Ebeans
-     */
-    public static Model.Finder<Long,Project> find = new Model.Finder(
-            Long.class, Project.class
-    );
 
     /**
      * find involving members
@@ -55,6 +49,13 @@ public class Project extends Model {
         List<Project> projects = find.where().eq("users.email" , user).findList();
         return projects;
     }
+    /**
+     * Finder to  make queries from database via Ebeans
+     */
+    public static Model.Finder<Long,Project> find = new Model.Finder(
+            Long.class, Project.class
+    );
+
     /**
      * creates a new project and saves it to DB
      * @param

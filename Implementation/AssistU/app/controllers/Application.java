@@ -66,11 +66,13 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        User user= User.find.where().eq("email", "alex @gmail.com").findUnique();
+        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
         return ok(project.render("My Projects",
                 user.email,
-                Project.find.where().eq("active", "true").findList(),
-                DocumentFile.find.all()));
+                Project.find.where().eq("users.email" ,
+                user.email).eq("active", "true").findList(),
+                DocumentFile.find.all()
+               ));
 
     }
 

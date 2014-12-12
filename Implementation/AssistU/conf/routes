@@ -23,7 +23,7 @@ GET         /project/:pid/edit                controllers.Application.editProjec
 GET         /:uid/project/:pid/archive        controllers.Application.archiveProject(uid: String, pid: Long)
 GET         /project/:pid/addMember           controllers.Application.addMemberToProjectAs(pid: Long)
 GET         /project/:pid/removeMember/:uid   controllers.Application.removeMemberFromProject(pid: Long, uid: String)
-POST        /project/upload                   controllers.Datafile.uploadDocument()
+POST        /project/upload                   controllers.Datafile.uploadDocument(pid : Long)
 GET         /project/download/:fileid         controllers.Datafile.downloadDocument(fileid :Long)
 
 
