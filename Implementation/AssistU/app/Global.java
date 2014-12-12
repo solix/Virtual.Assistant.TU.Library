@@ -13,6 +13,9 @@ public class Global extends GlobalSettings {
 
     }
 
+    /**
+     * loads the data from yaml file and add rows in User table
+     */
     static class InitialData {
         public static void insertUsers(Application app) {
             if (Ebean.find(User.class).findRowCount() == 0) {
