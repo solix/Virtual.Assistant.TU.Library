@@ -1,18 +1,27 @@
 import play.*;
 import play.libs.*;
-import com.avaje.ebean.Ebean;
 import models.*;
 import java.util.*;
+import com.avaje.ebean.*;
 
 /**
  * this class  injects default data into the webapp  to load a YAML file at application load time
  */
 public class Global extends GlobalSettings {
+    public void onStart(Application app) {
+        InitialData.insertUsers(app);
 
-    @Override
-    public void onStart(Application app){
-        if(User.find.findRowCount() == 0){
-            Ebean.save((List) Yaml.load("user-data.yml"));
+    }
+
+    static class InitialData {
+        public static void insertUsers(Application app) {
+            if (Ebean.find(User.class).findRowCount() == 0) {
+                Map<String, List<Object>> all =
+                        (Map<String, List<Object>>) Yaml.
+                                load("initial-data.yml");
+                Ebean.save(all.get("users"));
+            }
         }
+
     }
 }

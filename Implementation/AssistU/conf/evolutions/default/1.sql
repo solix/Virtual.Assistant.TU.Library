@@ -7,48 +7,79 @@ create table document_file (
   id                        bigint not null,
   name                      varchar(255),
   filepath                  varchar(255),
+  project_id                bigint,
+  version                   bigint not null,
   constraint pk_document_file primary key (id))
 ;
 
 create table project (
   id                        bigint not null,
-  folder                    varchar(255),
   name                      varchar(255),
+  folder                    varchar(255),
+  description               varchar(255),
   active                    boolean,
   constraint pk_project primary key (id))
 ;
 
+create table task (
+  id                        bigint not null,
+  name                      varchar(255),
+  due_date                  timestamp,
+  done                      boolean,
+  user_email                varchar(255),
+  constraint pk_task primary key (id))
+;
+
 create table user (
   email                     varchar(255) not null,
+  name                      varchar(255),
   password                  varchar(255),
   constraint pk_user primary key (email))
 ;
 
 create table user_role (
-  name                      varchar(255) not null,
-  constraint pk_user_role primary key (name))
+  id                        bigint not null,
+  tag                       varchar(255),
+  description               varchar(255),
+  constraint pk_user_role primary key (id))
 ;
 
 
-create table project_user (
-  project_id                     bigint not null,
+create table user_user_role (
   user_email                     varchar(255) not null,
-  constraint pk_project_user primary key (project_id, user_email))
+  user_role_id                   bigint not null,
+  constraint pk_user_user_role primary key (user_email, user_role_id))
+;
+
+create table user_project (
+  user_email                     varchar(255) not null,
+  project_id                     bigint not null,
+  constraint pk_user_project primary key (user_email, project_id))
 ;
 create sequence document_file_seq;
 
 create sequence project_seq;
 
+create sequence task_seq;
+
 create sequence user_seq;
 
 create sequence user_role_seq;
 
+alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_document_file_project_1 on document_file (project_id);
+alter table task add constraint fk_task_user_2 foreign key (user_email) references user (email) on delete restrict on update restrict;
+create index ix_task_user_2 on task (user_email);
 
 
 
-alter table project_user add constraint fk_project_user_project_01 foreign key (project_id) references project (id) on delete restrict on update restrict;
+alter table user_user_role add constraint fk_user_user_role_user_01 foreign key (user_email) references user (email) on delete restrict on update restrict;
 
-alter table project_user add constraint fk_project_user_user_02 foreign key (user_email) references user (email) on delete restrict on update restrict;
+alter table user_user_role add constraint fk_user_user_role_user_role_02 foreign key (user_role_id) references user_role (id) on delete restrict on update restrict;
+
+alter table user_project add constraint fk_user_project_user_01 foreign key (user_email) references user (email) on delete restrict on update restrict;
+
+alter table user_project add constraint fk_user_project_project_02 foreign key (project_id) references project (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -58,9 +89,13 @@ drop table if exists document_file;
 
 drop table if exists project;
 
-drop table if exists project_user;
+drop table if exists user_project;
+
+drop table if exists task;
 
 drop table if exists user;
+
+drop table if exists user_user_role;
 
 drop table if exists user_role;
 
@@ -69,6 +104,8 @@ SET REFERENTIAL_INTEGRITY TRUE;
 drop sequence if exists document_file_seq;
 
 drop sequence if exists project_seq;
+
+drop sequence if exists task_seq;
 
 drop sequence if exists user_seq;
 

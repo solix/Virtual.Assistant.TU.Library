@@ -1,7 +1,12 @@
 package models;
 
+import play.db.ebean.Model;
+
+import javax.annotation.Generated;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.*;
 import java.util.ArrayList;
 
@@ -10,16 +15,27 @@ import java.util.ArrayList;
  */
 @Entity
 public class UserRole{
-   @Id
-    public final String name;
+   @Id @GeneratedValue
+   public long id;
+
+    public String tag;
+    public String description;
+
+    @ManyToMany(mappedBy = "userroles")
+    List<User> users = new ArrayList<User>();
+
+    /**
+     * Finder to  make queries from database via Ebeans
+     */
+    public static Model.Finder<Long,UserRole> find = new Model.Finder(
+            Long.class, UserRole.class
+    );
 
 
-
-
-    public UserRole(final String name){
-        this.name = name;
-
-    }
+@Override
+    public String toString(){
+    return this.tag;
+}
 
 
 

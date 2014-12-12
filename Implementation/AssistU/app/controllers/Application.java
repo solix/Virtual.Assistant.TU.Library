@@ -12,19 +12,7 @@ import java.util.List;
 
 public class Application extends Controller {
 
-    /**
-     * TEMPORARY USER CREATION
-     */
-    public static User getUser(String uid){
-        User user = User.find.byId(uid);
-        if(user == null){
-            User newUser = new User(uid, "sushi");
-            newUser.save();
-            return newUser;
-        }else{
-            return user;
-        }
-    }
+
 
     /**
      * index view
@@ -77,8 +65,7 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        User dummy = getUser("A@H.com");
-        return ok(project.render("My Projects", dummy.email, Project.find.all(), DocumentFile.find.all()));
+        return ok(project.render("My Projects", "TODO", Project.find.all(), DocumentFile.find.all()));
     }
 
     static Form<Project> projectForm = Form.form(Project.class);
@@ -90,7 +77,7 @@ public class Application extends Controller {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, uid);
+            Project.create(projectData.folder, projectData.name, uid , "dummy must be implemenetd");
 //            Logger.info("Created Project: " + projectData.name);
             return redirect(routes.Application.project());
         }
