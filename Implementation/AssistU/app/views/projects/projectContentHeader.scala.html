@@ -10,18 +10,21 @@
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-gear fa-fw"></i> <u class="hidden-xs">Settings</u><span class="caret"></span>
+                            <i class="fa fa-cogs fa-fw"></i> <u class="hidden-xs">Settings</u><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
-                            <li><a href="#" data-toggle="modal" data-target="#editProject@p.id"><i class="fa fa-pencil fa-fw"></i> Edit Project...</a></li>
-                            @*make if statement, and change to "request ownership" if user is not in owners list*@
-                            <li><a href="#" data-toggle="modal" data-target="#projectMemberList@p.id"><i class="fa fa-clipboard fa-fw"></i> Member permissions...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#editProject@p.id"><i class="fa fa-pencil fa-fw"></i> Edit project details...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#projectMemberList@p.id"><i class="fa fa-clipboard fa-fw"></i> List of members...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#projectMemberList@p.id"><i class="fa fa-comment fa-fw"></i> Start a discussion...</a></li>
                             <li class="divider"></li>
+                            @*TODO: make if statement, and change to "request ownership" if user is not in owners list*@
                             <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user fa-fw"></i> Add a member...</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#addReviewerToProject@p.id"><i class="fa fa-edit fa-fw"></i> Add a reviewer...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#removeMemberFromProject@p.id"><i class="fa fa-remove fa-fw"></i> Remove someone...</a></li>
                             <li class="divider"></li>
-                            @*make if statement, and change to "Archive Project" if the user is the single owner*@
-                            <li><a href="#" data-toggle="modal" data-target="#archiveProject@p.id"><i class="fa fa-sign-out fa-fw"></i> Archive Project</a></li>
+                            @*TODO: make if statement, and change to "Archive Project" if the user is the single owner*@
+                            <li><a href="#" data-toggle="modal" data-target="#archiveProject@p.id"><i class="fa fa-archive fa-fw"></i> Archive Project</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#leaveProject@p.id"><i class="fa fa-sign-out fa-fw"></i> Leave project</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -48,7 +51,7 @@
 @template.smallmodal("editProject"+p.id.toString)("info")("Edit details of "+p.name) {
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-        @helper.form(action = routes.Application.editProject(p.id)) {
+        @helper.form(action = routes.ProjectData.editProject(p.id)) {
             <div class="form-group">
                 <label for="validate-text">Folder Name</label>
                 <div class="input-group" data-validate="length" data-length="3">
@@ -76,13 +79,36 @@
     </div>
 }
 @*Member List Modal*@
-@template.mediummodal("projectMemberList"+p.id.toString)("info")("Members of "+p.name) {<p>Show a list of the members here,
-    along with first name, last name, time of add, role, emailaddress with possible mailto hyperlink</p>}
+@template.mediummodal("projectMemberList"+p.id.toString)("info")("Members of "+p.name) {
+    <!-- Table -->
+    <table class="table" style="table-layout: fixed">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Date Joined</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @p.users.map{ u =>
+                <tr>
+                    <td>@u.name</td>
+                    <td>@u.email</td>
+                    <td>Not Applicaple yet</td>
+                    <td>Not Applicable yet</td>
+                    <td>Not Applicable yet</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 @*Add Member Modal*@
 @template.smallmodal("addMemberToProject"+p.id.toString)("info")("Add a Member to "+p.name) {
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-        @helper.form(action = routes.Application.addMemberToProjectAs(p.id)) {
+        @helper.form(action = routes.ProjectData.addMemberToProjectAs(p.id)) {
 @*//            TODO: FIND EMAIL REGEXX*@
             <div class="form-group">
                 <label for="validate-email">E-mail</label>
@@ -101,9 +127,37 @@
         </div>
     </div>
 }
+@*Remove Member Modal*@
+@template.mediummodal("removeMemberFromProject"+p.id.toString)("danger")("Members of "+p.name) {
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Date Joined</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @p.users.map{ u =>
+            @if(!u.email.equals(uid)){
+                <tr>
+                    <td>@u.name</td>
+                    <td>@u.email</td>
+                    <td>Not Applicaple yet</td>
+                    <td>Not Applicable yet</td>
+                    <td><a href="@{routes.ProjectData.removeMemberFromProject(u.email, p.id)}" ><i class="fa fa-remove fa-fw"></i></a></td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+}
 @*Add Reviewer Modal*@
 @template.smallmodal("addReviewerToProject"+p.id.toString)("info")("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
-@*Delete Project Confirmation Modal*@
+@*Archive Project Confirmation Modal*@
 @template.smallmodal("archiveProject"+p.id.toString)("danger")("Request to archive "+p.name) {
     <p>Are you sure you want to archive project @p.name, and all of its files?</p>
     <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
@@ -111,7 +165,19 @@
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
         </div>
         <div class="btn-group" role="group">
-            <a type="button" class="btn btn-danger" href="@routes.Application.archiveProject(uid,p.id)">Archive!</a>
+            <a type="button" class="btn btn-danger" href="@routes.ProjectData.archiveProject(uid,p.id)">Archive!</a>
+        </div>
+    </div>
+}
+@*Leave Project Confirmation Modal*@
+@template.smallmodal("leaveProject"+p.id.toString)("danger")("Leaving "+p.name) {
+    <p>Are you sure you want to leave project @p.name?</p>
+    <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
+        <div class="btn-group" role="group">
+            <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
+        </div>
+        <div class="btn-group" role="group">
+            <a type="button" class="btn btn-danger" href="@routes.ProjectData.removeMemberFromProject(uid,p.id)">Leave!</a>
         </div>
     </div>
 }

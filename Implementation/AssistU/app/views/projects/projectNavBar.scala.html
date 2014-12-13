@@ -1,11 +1,12 @@
-@(projectList: List[Project])
+@(uid: String)
 <div role="tabpanel">
     <ul class="nav nav-pills">
-        @for(p <- projectList) {
-            @if(p.equals(projectList.last)){
-                <li role="presentation" class="active"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
+        @for(p <- Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) {
+@*//            TODO: Rewrite below to the last updated project *@
+            @if(p.equals(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList().last)){
+                <li role="presentation" class="active" style="width: 18%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
             } else {
-                <li role="presentation"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
+                <li role="presentation" style="width: 18%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis"><a href="#tab@p.id" data-toggle="tab">@p.folder</a></li>
             }
         }
     </ul>

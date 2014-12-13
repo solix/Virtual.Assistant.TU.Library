@@ -1,5 +1,4 @@
-@(title: String, uid: String, projectList: List[Project] , filelist: List[DocumentFile])
-@import  java.util.List;
+@(title: String, uid: String)
 <html lang="en">
 <head>
     @linkLoader.headlinks(title)
@@ -10,16 +9,23 @@
     <div id="page-wrapper">
         @template.headericon("fa fa-line-chart fa-5x")
         <div class="row">
-            <div class="hidden-xs col-xs-8">
-                @projects.projectNavBar(projectList)
+            <div class="col-xs-6" style="text-align: center; margin: 1% 0">
+                <div class="btn-group" role="group">
+                    <button style="width: 200px" type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project</button>
+                </div>
             </div>
-            <div class="col-xs-4" style="align:center">
-                <div class="btn-group hidden-xs" role="group">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project</button>
+            <div class="col-xs-6" style="text-align: center; margin: 1% 0">
+                <div class="btn-group" role="group">
+                    <button style="width: 200px" type="button" class="btn btn-info" data-toggle="modal" data-target="#archivedProjectList">Archived projects</button>
                 </div>
             </div>
         </div>
-        @projects.projectContent(uid,projectList)(filelist)
+        <div class="row">
+            <div class="col-xs-12" style="text-align: center; margin: 1% 5%">
+                @projects.projectNavBar(uid)
+            </div>
+        </div>
+        @projects.projectContent(uid)
     </div>
 </div>
 <!-- /#wrapper -->
@@ -27,7 +33,7 @@
 @template.smallmodal("newProject")("success")("Create a new Project") {
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-            @helper.form(action = routes.Application.createProject()) {
+            @helper.form(action = routes.ProjectData.createProject()) {
                 <div class="form-group">
                     <label for="validate-text">Folder Name</label>
                     <div class="input-group" data-validate="length" data-length="3">
@@ -53,6 +59,30 @@
             }
         </div>
     </div>
+}
+@*Member List Modal*@
+@template.mediummodal("archivedProjectList")("info")("List of Archived Projects") {
+        <!-- Table -->
+    <table class="table" style="table-layout: fixed">
+        <thead>
+            <tr>
+                <th>Folder Name</th>
+                <th>Project Name</th>
+                <th>Date Archived</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @Project.find.where().in("users", User.find.ref(uid)).eq("active", false).findList().map{ p =>
+            <tr>
+                <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.folder</td>
+                <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.name</td>
+                <td><span class="text-muted small">00-00-00</span></td>
+                <td>N/A</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }
         <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
