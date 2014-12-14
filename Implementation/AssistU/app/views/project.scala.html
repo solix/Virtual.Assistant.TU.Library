@@ -1,4 +1,5 @@
 @(title: String, uid: String)
+@defining(Project.find.where().in("users", User.find.ref(uid))) { projectListQuery =>
 <html lang="en">
 <head>
     @linkLoader.headlinks(title)
@@ -16,7 +17,9 @@
             </div>
             <div class="col-xs-6" style="text-align: center; margin: 1% 0">
                 <div class="btn-group" role="group">
-                    <button style="width: 200px" type="button" class="btn btn-info" data-toggle="modal" data-target="#archivedProjectList">Archived projects</button>
+                    <button style="width: 200px" type="button" class="btn btn-info"
+                    data-toggle="modal" data-target="#archivedProjectList"
+                    @if(projectListQuery.eq("active", false).findList().isEmpty){disabled}>Archived projects</button>
                 </div>
             </div>
         </div>
@@ -73,7 +76,7 @@
             </tr>
         </thead>
         <tbody>
-        @Project.find.where().in("users", User.find.ref(uid)).eq("active", false).findList().map{ p =>
+        @projectListQuery.eq("active", false).findList().map{ p =>
             <tr>
                 <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.folder</td>
                 <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.name</td>
@@ -100,3 +103,4 @@
 
 </body>
 </html>
+}
