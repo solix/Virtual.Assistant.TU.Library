@@ -18,13 +18,12 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result createProject() {
-        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style vaildation");
+            return badRequest("The form had errors. Need to implement in-style validation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, user.email , "dummy must be implemenetd");
+            Project.create(projectData.folder, projectData.name, session().get("email") , "dummy must be implemenetd");
             return redirect(routes.Application.project());
         }
     }

@@ -46,10 +46,9 @@ public class Application extends Controller {
      */
 
     public static Result project() {
-        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
-        return ok(project.render("My Projects", user.email));
+        return ok(project.render("My Projects", session().get("email")));
     }
-    
+
     /**
      * suggestion page
      * @return
