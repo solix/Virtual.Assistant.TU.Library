@@ -95,25 +95,31 @@
     \multicolumn{7}{ |c| }{Sprint 3} \\
     \hline
     \textbf{Task} & \textbf{Subtasks} & \textbf{Estimated} & \textbf{Actual} & \textbf{Done} & \textbf{Tested} & \textbf{Remarks} \\ \hline
-    Project & New Project [A] & 3 &  & \checkmark & \checkmark & \\ \cline{2-7}
-     & Archive Project [A] & 3 &  & \checkmark & \checkmark & \\ \cline{2-7}
-     & Content View [A] & 4 &  & \checkmark & NA &  \\ \cline{2-7}
-     & Edit Project Title [A] & 2 &  & \checkmark & \checkmark &  \\ \cline{2-7}
-     & Project Notification [\_] & 3 &  & $\times$ & $\times$ & No notification functionality yet  \\ \cline{2-7}
-     & Project Member List [A] & 2 &  & $\approx$ & \checkmark & The server side is implemented, but no html rendering functionality yet \\ \cline{2-7}
-     & Delegate Ownership [A] & 1 &  & $\times$ & $\times$ & No roles were implemented yet at this time  \\ \cline{2-7}
-     & Add/Remove Members [A] & 1 & & \checkmark & \checkmark &  \\ 
+    Project & New Project [A] & 3 & 2 & \checkmark & \checkmark & Most functionality was done in previous sprint \\ \cline{2-7}
+     & Archive Project [A] & 3 & 2 & \checkmark & \checkmark & Still misses the unanimous function which could not be implemented yet \\ \cline{2-7}
+     & Content View [A] & 4 & 5 & \checkmark & NA & Merged all different actions, rearranged the view \\ \cline{2-7}
+     & Edit Project Title [A] & 2 & 3 & \checkmark & \checkmark & Getting the form constraints to function properly took a bit more time \\ \cline{2-7}
+     & Project Notification [\_] & 3 & ? & $\times$ & $\times$ & Moved to later sprint \\ \cline{2-7}
+     & Project Member List [A] & 2 & 2 & \checkmark & \checkmark &  \\ \cline{2-7}
+     & Delegate Ownership [A] & 1 & ? & $\times$ & $\times$ & The role model was not ready yet \\ \cline{2-7}
+     & Add/Remove Members [A] & 1 & 1 & \checkmark & \checkmark &  \\ 
     \hline
-    User & Create User [S] & 2 & & &  &  \\ \cline{2-7}
-     & Create Signup Form [A] & 1 &  &  &  &  \\ \cline{2-7}
-      & Update User [S] & 1 &  &  &  &  \\ \cline{2-7}
-      & Add User to Project [S] & 1 &  &  &  &  \\ \cline{2-7}
-     & User Role [S] & 1 &  & &  &  \\ \cline{2-7}
-     & Authenticate User [S] & 1 &  &  &  &  \\ \cline{2-7}
-     & Create Image for User [S] & 1 &  &  &  &  \\ \cline{2-7}
+    User & Create User [S] & 2 & 2 & \checkmark & NA & Added yml file with predefined users  \\ \cline{2-7}
+     & Create Signup Form [A] & 1 & ? & $\times$ & $\times$ &  \\ \cline{2-7}
+     & Create Default Auth. [A] & 2 & 2 & \checkmark & \checkmark & Validation still needs to be done \\ \cline{2-7}
+      & Update User [S] & 1 & ? & $\times$ & $\times$ & for next sprint \\ \cline{2-7}
+      & Add User to Project [A] & 1 & 2 & \checkmark & $\times$ & making the client side straightforward required some more time \\ \cline{2-7}
+     & User Role [S] & 1 & ? & $\times$ & $\times$ & Model is not yet connected \\ \cline{2-7}
+     & Create Image for User [S] & 1 & ? & $\times$ & $\times$ & Very low priority \\ \cline{2-7}
     \hline
-    File & Upload [S] & 5 &  & $\approx$ & \checkmark &  \\ \cline{2-7}
-     & Download [S] & 4 &  & $\approx$ & \checkmark & \\ \cline{2-7}
+    File & Upload [S] & 5 & 5 & $\approx$ & \checkmark &  \\ \cline{2-7}
+     & Download [S] & 4 & 4 & $\approx$ & \checkmark & \\ \cline{2-7}
+    \hline
+    Models & Project [S] & 3 & 3 & \checkmark & $\times$ &  \\ \cline{2-7}
+    & User [S] & 3 & 3 & \checkmark & $\times$ & \\ \cline{2-7}
+    & User Role [S] & 3 & 3 & \checkmark & $\times$ &  \\ \cline{2-7}
+    & Task [S] & 1 & 1 & \checkmark & $\times$ &  \\ \cline{2-7}
+    & Documentfile [S] & 2 & 2 & \checkmark & $\times$ &  \\ \cline{2-7}
     \hline
 
     %Clean up code & Refactoring [S] & 0.5 & & $\times$ & $\times$ & \\ 
