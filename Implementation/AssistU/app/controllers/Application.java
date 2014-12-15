@@ -16,8 +16,6 @@ import java.util.Set;
 
 public class Application extends Controller {
 
-
-
     /**
      * index view
      *
@@ -32,18 +30,7 @@ public class Application extends Controller {
      *
      * @return
      */
-    public static Result task() {
-
-        return ok(task.render("your tasks"));
-    }
-
-
-
-    static Form<User> emptyRegisterForm = Form.form(User.class);
-
-    public static Result register() {
-        return TODO;
-    }
+    public static Result task() {return ok(task.render("your tasks"));}
 
 
 
@@ -51,10 +38,7 @@ public class Application extends Controller {
      * Calendar page
      * @return
      */
-    public static Result calendar() {
-
-        return ok(calendar.render("My Calendar"));
-    }
+    public static Result calendar() {return ok(calendar.render("My Calendar"));}
 
     /**
      *
@@ -63,78 +47,9 @@ public class Application extends Controller {
 
     public static Result project() {
         User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
-        List<Project> projectList = Project.find.where().eq("users.email", user.email).eq("active", "true").findList();
-        List<DocumentFile> documentList = DocumentFile.find.where().in("project.id", Project.find.where().eq("users.email", user.email).eq("active", "true").findIds()).findList();
-        return ok(project.render("My Projects",
-                user.email,
-                projectList,
-                documentList
-               ));
-
+        return ok(project.render("My Projects", user.email));
     }
-
-    private static final Form<Project> projectForm = Form.form(Project.class);
-
-    public static Result createProject() {
-        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
-        Form<Project> filledProjectForm = projectForm.bindFromRequest();
-        if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style vaildation");
-        } else {
-            Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, user.email , "dummy must be implemenetd");
-            return redirect(routes.Application.project());
-        }
-
-    }
-
-    public static Result archiveProject(String uid, Long pid) {
-        Project toArchive = Project.find.ref(pid);
-        Logger.info("In archive");
-        if (toArchive.users.contains(User.find.byId(uid)) && toArchive.users.size() == 1){
-            toArchive.archive(pid);
-        } else {
-            flash("failure", "You are not the single owner of this project");
-        }
-       return redirect(routes.Application.project());
-    }
-
-    public static Result editProject(Long pid) {
-        Form<Project> filledProjectForm = projectForm.bindFromRequest();
-        if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style validation");
-        } else {
-            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name);
-            return redirect(routes.Application.project());
-
-        }
-
-    }
-
-    /**
-     * TODO: Need to add third Role parameter
-     *
-     * @param pid
-     * @return
-     */
-    public static Result addMemberToProjectAs(Long pid){
-        DynamicForm emailform = Form.form().bindFromRequest();
-        Project.addMemberAs(pid, emailform.get("email"));
-        return redirect(routes.Application.project());
-    }
-
-    /**
-     * TODO: Only owners should be able to remove non-owners
-     * @param uid
-     * @param pid
-     * @return
-     */
-    public static Result removeMemberFromProject(Long pid, String uid){
-        Project.removeMemberFrom(pid, uid);
-        return project();
-    }
-
-
+    
     /**
      * suggestion page
      * @return

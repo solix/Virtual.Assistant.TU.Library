@@ -1,17 +1,19 @@
-@(uid: String, projectList: List[Project])(filelist: List[DocumentFile])
-
-<div class="tab-content" style="margin:5% 7%">
-@for(p <- projectList){
-    @if(p.equals(projectList(projectList.size -1))){
-        <div class="tab-pane fade in active" id="tab@p.id">
-        } else {
-        <div class="tab-pane fade" id="tab@p.id">
-    }
-    <div class="panel panel-default">
-        @projects.projectContentHeader(uid: String, p)
-        @projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())
+@(uid: String)
+@defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { activeProjectList =>
+    <div class="tab-content" style="margin:2% 7%">
+        @for(p <- activeProjectList){
+            @*TODO: Same as in projectNavBar, rewrite in the future when the time/update class has been added*@
+            @if(p.equals(activeProjectList.last)){
+                <div class="tab-pane fade in active" id="tab@p.id">
+                } else {
+                <div class="tab-pane fade" id="tab@p.id">
+            }
+            <div class="panel panel-default">
+                @projects.projectContentHeader(uid: String, p)
+                @projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())
+            </div>
+        @projects.projectUploadButtons(p)
+        </div>
+        }
     </div>
-@projects.projectUploadButtons(p)
-</div>
 }
-</div>

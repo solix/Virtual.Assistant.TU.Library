@@ -35,7 +35,7 @@ public class User extends Model {
 
     }
 
-    public static Finder<String,User> find = new Finder<String,User>(
+    public static Model.Finder<String,User> find = new Model.Finder(
             String.class, User.class
     );
 
