@@ -17,8 +17,8 @@ public class ProjectData extends Controller {
      * This function creates a new Project initiated by a user that automatically becomes its owner.
      * @return
      */
-    public static Result createProject() {
-        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
+    public static Result createProject(String uid) {
+        User user = User.find.ref(uid);
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style vaildation");

@@ -1,4 +1,6 @@
 @(form: Form[Authentication.Login])
+@import com.feth.play.module.pa.views.html._
+@import com.feth.play.module.pa.providers.AuthProvider
 <head>
 
     @linkLoader.loginhead()
@@ -86,11 +88,9 @@
                 or
             </legend>
             <div class="text-center">
-                    <a class="btn btn-lg btn-social-icon btn-google-plus" href="/signin/google/?next=%2F" title="Sign in with Google" rel="nofollow">
+                <a class="btn btn-lg btn-social-icon btn-google-plus" href="@AuthProvider.Registry.get("google").getUrl()" title="Sign in with Google" rel="nofollow">
                     <i class="fa fa-google-plus"></i>
-                    </a>
-
-                
+                </a>
 
                      <a class="btn btn-lg btn-social-icon btn-twitter" href="/signin/twitter/?next=%2F" title="Sign in with Twitter" rel="nofollow">
                         <i class="fa fa-twitter"></i>

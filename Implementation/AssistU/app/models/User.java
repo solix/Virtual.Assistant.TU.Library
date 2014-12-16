@@ -19,8 +19,12 @@ public class User extends Model {
     public String name;
     public String password;
 
+//  Extra attributes for social users
+    public String socialId;
+    public String socialKey;
+
     @ManyToMany
-    List<UserRole> userroles=new ArrayList<UserRole>();
+    List<UserRole> userroles = new ArrayList<UserRole>();
 
     @ManyToMany
     List<Project> projects = new ArrayList<Project>();
@@ -28,11 +32,12 @@ public class User extends Model {
     @OneToMany(mappedBy = "user")
     public List<Task> tasks= new ArrayList<Task>();
 
-    public User(String name, String email,  String password) {
+    public User(String name, String email, String password, String socialId, String socialKey) {
         this.name=name;
         this.email = email;
         this.password = password;
-
+        this.socialId = socialId;
+        this.socialKey = socialKey;
     }
 
     public static Model.Finder<String,User> find = new Model.Finder(
@@ -45,13 +50,12 @@ public class User extends Model {
      * @param password
      * @return
      */
-    public static User authenticate(String email,String password){
-        return find.where().eq("email" , email).eq(
-                "password",password).findUnique();
+    public static User authenticate(String email, String password){
+        return find.where().eq("email", email).eq("password", password).findUnique();
     }
 
-    public static User create(String name,String email,  String password) {
-        User user = new User(name,email,  password);
+    public static User create(String name, String email, String password, String socialId, String socialKey) {
+        User user = new User(name, email, password, socialId, socialKey);
         user.save();
         return user;
     }

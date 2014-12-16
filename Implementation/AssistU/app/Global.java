@@ -3,6 +3,17 @@ import play.libs.*;
 import models.*;
 import java.util.*;
 import com.avaje.ebean.*;
+import play.mvc.Call;
+
+import play.Application;
+import play.GlobalSettings;
+
+import com.feth.play.module.pa.PlayAuthenticate;
+import com.feth.play.module.pa.PlayAuthenticate.Resolver;
+import com.feth.play.module.pa.exceptions.AccessDeniedException;
+import com.feth.play.module.pa.exceptions.AuthException;
+
+import controllers.routes;
 
 /**
  * this class  injects default data into the webapp  to load a YAML file at application load time
@@ -10,7 +21,7 @@ import com.avaje.ebean.*;
 public class Global extends GlobalSettings {
     public void onStart(Application app) {
         InitialData.insertUsers(app);
-
+        providerResolver.setUp(app);
     }
 
     /**
@@ -25,6 +36,63 @@ public class Global extends GlobalSettings {
                 Ebean.save(all.get("users"));
             }
         }
+    }
 
+    static class providerResolver {
+        public static void setUp(Application app) {
+
+            PlayAuthenticate.setResolver(new Resolver() {
+
+                @Override
+                public Call login() {
+                    // Your login page
+                    return routes.Authentication.login();
+                }
+
+                @Override
+                public Call afterAuth() {
+                    // The user will be redirected to this page after authentication
+                    // if no original URL was saved
+                    return routes.Application.index();
+                }
+
+                @Override
+                public Call afterLogout() {
+                    return routes.Authentication.login();
+                }
+
+                @Override
+                public Call auth(final String provider) {
+                    // You can provide your own authentication implementation,
+                    // however the default should be sufficient for most cases
+                    return routes.Authentication.OAuth(provider);
+                }
+
+                @Override
+                public Call onException(final AuthException e) {
+                    if (e instanceof AccessDeniedException) {
+                        return routes.Authentication.OAuthDenied(((AccessDeniedException) e).getProviderKey());
+                    }
+
+                    // more custom problem handling here...
+
+                    return super.onException(e);
+                }
+
+                @Override
+                public Call askLink() {
+                    // We don't support moderated account linking in this sample.
+                    // See the play-authenticate-usage project for an example
+                    return null;
+                }
+
+                @Override
+                public Call askMerge() {
+                    // We don't support moderated account merging in this sample.
+                    // See the play-authenticate-usage project for an example
+                    return null;
+                }
+            });
+        }
     }
 }

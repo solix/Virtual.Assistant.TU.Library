@@ -9,6 +9,9 @@ import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
+import controllers.*;
+import com.feth.play.module.pa.PlayAuthenticate;
+import com.feth.play.module.pa.user.AuthUser;
 import java.lang.String;
 import java.util.List;
 import java.util.Set;
@@ -41,13 +44,19 @@ public class Application extends Controller {
     public static Result calendar() {return ok(calendar.render("My Calendar"));}
 
     /**
-     *
+     * TODO: Unify the plugin/regular style login
      * @return project page
      */
 
     public static Result project() {
-        User user= User.find.where().eq("email", "alex@gmail.com").findUnique();
-        return ok(project.render("My Projects", user.email));
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            User user = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique();
+            return ok(project.render("My Projects", user.email));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(project.render("My Projects", user.email));
+        }
     }
     
     /**
