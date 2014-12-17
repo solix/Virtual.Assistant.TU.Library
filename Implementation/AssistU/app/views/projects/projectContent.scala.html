@@ -1,4 +1,4 @@
-@(uid: String)
+@(uid: Long)
 @defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { activeProjectList =>
     <div class="tab-content" style="margin:2% 7%">
         @for(p <- activeProjectList){
@@ -9,7 +9,7 @@
                 <div class="tab-pane fade" id="tab@p.id">
             }
             <div class="panel panel-default">
-                @projects.projectContentHeader(uid: String, p)
+                @projects.projectContentHeader(uid,p)
                 @projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())
             </div>
         @projects.projectUploadButtons(p)

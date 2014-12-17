@@ -61,7 +61,7 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name,  String owner ,String description){
+    public static Project create(String folder, String name,  Long owner ,String description){
         Project project = new Project(folder, name ,User.find.ref(owner),description);
         project.active=true;
         project.save();
@@ -96,18 +96,18 @@ public class Project extends Model {
      * TODO: Set role as third parameter? no,better to set role as seperate function
      * This method invites another user to a project by its user id
      */
-    public static void addMemberAs(Long pid, String uid){
+    public static void addMemberAs(Long pid, Long uid){
         Project p = Project.find.ref(pid);
         p.users.add(User.find.byId(uid));
         p.update();
-        p.saveManyToManyAssociations("users");
+        //p.saveManyToManyAssociations("users");
     }
 
     /**
      * TODO: Add roles accordingly
      * this method removes a member from the project
      */
-    public static void removeMemberFrom(Long pid, String uid){
+    public static void removeMemberFrom(Long pid, Long uid){
         Project p = Project.find.byId(pid);
         p.users.remove(User.find.byId(uid));
         p.update();

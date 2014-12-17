@@ -1,4 +1,4 @@
-@(uid: String, p: Project)
+@(uid: Long, p: Project)
 
 <div class="panel-heading">
     @*<div class="container-fluid">*@
@@ -142,13 +142,13 @@
         </thead>
         <tbody>
         @p.users.map{ u =>
-            @if(!u.email.equals(uid)){
+            @if(!u.id.equals(uid)){
                 <tr>
                     <td>@u.name</td>
                     <td>@u.email</td>
                     <td>Not Applicaple yet</td>
                     <td>Not Applicable yet</td>
-                    <td><a href="@{routes.ProjectData.removeMemberFromProject(u.email, p.id)}" ><i class="fa fa-remove fa-fw"></i></a></td>
+                    <td><a href="@{routes.ProjectData.removeMemberFromProject(u.id, p.id)}" ><i class="fa fa-remove fa-fw"></i></a></td>
                 </tr>
             }
         }

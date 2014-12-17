@@ -22,11 +22,11 @@ GET         /calendar                              controllers.Application.calen
 
 #project
 GET         /project                               controllers.Application.project()
-POST        /:uid/project/create                   controllers.ProjectData.createProject(uid: String)
+POST        /:uid/project/create                   controllers.ProjectData.createProject(uid: Long)
 GET         /project/:pid/edit                     controllers.ProjectData.editProject(pid: Long)
-GET         /:uid/project/:pid/archive             controllers.ProjectData.archiveProject(uid: String, pid: Long)
+GET         /:uid/project/:pid/archive             controllers.ProjectData.archiveProject(uid: Long, pid: Long)
 GET         /project/:pid/addMember                controllers.ProjectData.addMemberToProjectAs(pid: Long)
-GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: String, pid: Long)
+GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
 POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
 GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
 

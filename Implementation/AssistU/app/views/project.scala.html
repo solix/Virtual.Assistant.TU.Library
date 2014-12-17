@@ -1,4 +1,4 @@
-@(title: String, uid: String)
+@(title: String, uid: Long)
 @defining(Project.find.where().in("users", User.find.ref(uid))) { projectListQuery =>
 <html lang="en">
 <head>

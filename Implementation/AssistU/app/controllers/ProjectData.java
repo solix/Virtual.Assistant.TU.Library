@@ -17,14 +17,14 @@ public class ProjectData extends Controller {
      * This function creates a new Project initiated by a user that automatically becomes its owner.
      * @return
      */
-    public static Result createProject(String uid) {
+    public static Result createProject(Long uid) {
         User user = User.find.ref(uid);
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style vaildation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, user.email , "dummy must be implemenetd");
+            Project.create(projectData.folder, projectData.name, user.id , "dummy must be implemenetd");
             return redirect(routes.Application.project());
         }
     }
@@ -53,7 +53,7 @@ public class ProjectData extends Controller {
      * @param pid: The Project ID of the project that is up for archiving
      * @return
      */
-    public static Result archiveProject(String uid, Long pid) {
+    public static Result archiveProject(Long uid, Long pid) {
         Project.archive(pid);
         return redirect(routes.Application.project());
     }
@@ -67,7 +67,7 @@ public class ProjectData extends Controller {
      */
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
-        Project.addMemberAs(pid, emailform.get("email"));
+        Project.addMemberAs(pid, User.find.where().eq("email",emailform.get("email")).findUnique().id);
         return redirect(routes.Application.project());
     }
 
@@ -80,7 +80,7 @@ public class ProjectData extends Controller {
      * @param pid: The ID of the Project in which the User had to be removed from
      * @return
      */
-    public static Result removeMemberFromProject(String uid, Long pid){
+    public static Result removeMemberFromProject(Long uid, Long pid){
         Project.removeMemberFrom(pid, uid);
         return redirect(routes.Application.project());
     }

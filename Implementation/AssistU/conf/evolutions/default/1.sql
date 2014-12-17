@@ -12,6 +12,14 @@ create table document_file (
   constraint pk_document_file primary key (id))
 ;
 
+create table linked_account (
+  id                        bigint not null,
+  user_id                   bigint,
+  provider_user_id          varchar(255),
+  provider_key              varchar(255),
+  constraint pk_linked_account primary key (id))
+;
+
 create table project (
   id                        bigint not null,
   name                      varchar(255),
@@ -26,15 +34,18 @@ create table task (
   name                      varchar(255),
   due_date                  timestamp,
   done                      boolean,
-  user_email                varchar(255),
+  user_id                   bigint,
   constraint pk_task primary key (id))
 ;
 
 create table user (
-  email                     varchar(255) not null,
+  id                        bigint not null,
+  email                     varchar(255),
   name                      varchar(255),
   password                  varchar(255),
-  constraint pk_user primary key (email))
+  email_validated           boolean,
+  active                    boolean,
+  constraint pk_user primary key (id))
 ;
 
 create table user_role (
@@ -46,17 +57,19 @@ create table user_role (
 
 
 create table user_user_role (
-  user_email                     varchar(255) not null,
+  user_id                        bigint not null,
   user_role_id                   bigint not null,
-  constraint pk_user_user_role primary key (user_email, user_role_id))
+  constraint pk_user_user_role primary key (user_id, user_role_id))
 ;
 
 create table user_project (
-  user_email                     varchar(255) not null,
+  user_id                        bigint not null,
   project_id                     bigint not null,
-  constraint pk_user_project primary key (user_email, project_id))
+  constraint pk_user_project primary key (user_id, project_id))
 ;
 create sequence document_file_seq;
+
+create sequence linked_account_seq;
 
 create sequence project_seq;
 
@@ -68,16 +81,18 @@ create sequence user_role_seq;
 
 alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_document_file_project_1 on document_file (project_id);
-alter table task add constraint fk_task_user_2 foreign key (user_email) references user (email) on delete restrict on update restrict;
-create index ix_task_user_2 on task (user_email);
+alter table linked_account add constraint fk_linked_account_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_2 on linked_account (user_id);
+alter table task add constraint fk_task_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_3 on task (user_id);
 
 
 
-alter table user_user_role add constraint fk_user_user_role_user_01 foreign key (user_email) references user (email) on delete restrict on update restrict;
+alter table user_user_role add constraint fk_user_user_role_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
 alter table user_user_role add constraint fk_user_user_role_user_role_02 foreign key (user_role_id) references user_role (id) on delete restrict on update restrict;
 
-alter table user_project add constraint fk_user_project_user_01 foreign key (user_email) references user (email) on delete restrict on update restrict;
+alter table user_project add constraint fk_user_project_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
 alter table user_project add constraint fk_user_project_project_02 foreign key (project_id) references project (id) on delete restrict on update restrict;
 
@@ -86,6 +101,8 @@ alter table user_project add constraint fk_user_project_project_02 foreign key (
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists document_file;
+
+drop table if exists linked_account;
 
 drop table if exists project;
 
@@ -102,6 +119,8 @@ drop table if exists user_role;
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists document_file_seq;
+
+drop sequence if exists linked_account_seq;
 
 drop sequence if exists project_seq;
 

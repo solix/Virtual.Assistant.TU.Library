@@ -1,4 +1,4 @@
-@(uid: String)
+@(uid: Long)
 @defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { activeProjectList =>
     <div role="tabpanel">
         <ul class="nav nav-pills">
