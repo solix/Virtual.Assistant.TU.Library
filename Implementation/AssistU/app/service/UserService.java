@@ -1,4 +1,4 @@
-package controllers;
+package service;
 
 import com.feth.play.module.pa.user.AuthUser;
 import com.feth.play.module.pa.user.AuthUserIdentity;
@@ -49,6 +49,7 @@ public class UserService extends UserServicePlugin {
     @Override
     public User getLocalIdentity(final AuthUserIdentity identity) {
         // For production: Caching might be a good idea here, and dont forget to sync the cache when users get deactivated/deleted [sic]
+
         final User user = User.find.where().eq("socialId", identity.getId()).eq("socialKey", identity.getProvider()).findUnique();
         if(user != null) {
             return user;
@@ -82,5 +83,7 @@ public class UserService extends UserServicePlugin {
     public AuthUser link(final AuthUser oldUser, final AuthUser newUser) {
         return null;
     }
+
+//    public String getLocalEmail(final Auth)
 
 }
