@@ -14,11 +14,13 @@ import com.feth.play.module.pa.user.AuthUser;
 import com.feth.play.module.pa.user.AuthUserIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 import com.feth.play.module.pa.user.NameIdentity;
+import com.feth.play.module.pa.providers.oauth2.OAuth2AuthUser;
+
 @Entity
 public class User extends Model {
 
 
-    @Id
+    @Id @GeneratedValue
     public long id;
     public String email;
     public String name;
@@ -126,6 +128,11 @@ public class User extends Model {
             if (name != null) {
                 user.name = name;
             }
+        }
+
+        if (authUser instanceof OAuth2AuthUser) {
+            final OAuth2AuthUser oAuth2AuthUser = (OAuth2AuthUser)authUser;
+            user.password = oAuth2AuthUser.getOAuth2AuthInfo().getAccessToken();
         }
 
         user.save();

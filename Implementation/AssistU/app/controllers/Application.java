@@ -41,17 +41,8 @@ public class Application extends Controller {
      * @return project page
      */
     public static Result project() {
-        AuthUser authUser = PlayAuthenticate.getUser(session());
-      //  if(authUser != null) {
-            Long id = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id;
-//            AuthUserIdentity authIdentity = (AuthUserIdentity)authUser;
-//            EmailIdentity emailIdentity = (EmailIdentity)authIdentity;
-            return ok(project.render("My Projects", id));
-       // }
-//        else{
-//           // User user = User.find.ref(session().get("id"));
-//            return ok(project.render("My Projects", user.id));
-//        }
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        return ok(project.render("My Projects", user.id));
     }
     
     /**
