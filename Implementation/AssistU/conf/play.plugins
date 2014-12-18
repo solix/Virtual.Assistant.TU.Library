@@ -1,3 +1,4 @@
 10005:service.UserService
 10010:com.feth.play.module.pa.providers.oauth2.google.GoogleAuthProvider
 10020:provider.oauth2.TuDelft.NetidAuthProvider
+10030:provider.oauth2.mendeley.MendeleyAuthProvider
