@@ -62,8 +62,8 @@ public class Authentication extends Controller {
      * @return call to the plugin that passes the name of the service to user
      */
     public static Result OAuth(String provider){
-
-        return Authenticate.authenticate(provider);
+//        TODO: NetID does not have credentials yet, overriding to google
+        return Authenticate.authenticate("google");
     }
 
     /**
