@@ -1,4 +1,4 @@
-@(headtitle: String)
+@(headtitle: String)(currentUser: User)
 
 @main("") {
 
@@ -10,7 +10,7 @@
 <!-- wraps the whole thing -->
 <div id="wrapper">
     <!-- LOading Side menue and top nav menue -->
-    @dashboard()  
+    @dashboard(currentUser)
     
     <div id="page-wrapper">
         

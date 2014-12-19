@@ -63,7 +63,7 @@ public class Authentication extends Controller {
      */
     public static Result OAuth(String provider){
 //        TODO: NetID does not have credentials yet, overriding to google
-        return Authenticate.authenticate("google");
+        return Authenticate.authenticate(provider);
     }
 
     /**

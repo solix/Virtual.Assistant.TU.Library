@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String)(currentUser:User)
 
 <html lang="en">
 <head>
@@ -25,7 +25,7 @@
 
 <body>
 <div id="wrapper">
-@dashboard()
+@dashboard(currentUser)
 <div id="page-wrapper">
     <div class="container-fluid ">
         <div class="row">

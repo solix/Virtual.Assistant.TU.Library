@@ -1,4 +1,4 @@
-@(title: String, uid: Long)
+@(title: String, uid: Long)(currentUser:User)
 @defining(Project.find.where().in("users", User.find.ref(uid))) { projectListQuery =>
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="wrapper">
-    @dashboard()
+    @dashboard(currentUser)
     <div id="page-wrapper">
         @template.headericon("fa fa-line-chart fa-5x")
         <div class="row">

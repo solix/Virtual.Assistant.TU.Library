@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String)(currentUser :User)
 <html>
 <head>
     @linkLoader.headlinks(title)
@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="wrapper">
-@dashboard()
+@dashboard(currentUser)
 </div>
 
 <div id="page-wrapper">
