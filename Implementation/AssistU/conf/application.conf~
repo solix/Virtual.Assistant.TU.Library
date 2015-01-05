@@ -84,12 +84,3 @@ logger.application=DEBUG
 # ~~~~~
 date.format=yyyy-MM-dd
 date.format.en=MM/dd/yyyy
-
-# Deadbolt
-include "play-authenticate/deadbolt.conf"
-
-# SMTP
-include "play-authenticate/smtp.conf"
-
-# And play authenticate
-include "play-authenticate/mine.conf"

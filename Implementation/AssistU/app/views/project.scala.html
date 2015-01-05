@@ -10,14 +10,10 @@
     <div id="page-wrapper">
         @template.headericon("fa fa-line-chart fa-5x")
         <div class="row">
-            <div class="col-xs-6" style="text-align: center; margin: 1% 0">
+            <div class="col-xs-12" style="text-align: center; margin: 1% 0">
                 <div class="btn-group" role="group">
-                    <button style="width: 150px" type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project</button>
-                </div>
-            </div>
-            <div class="col-xs-6" style="text-align: center; margin: 1% 0">
-                <div class="btn-group" role="group">
-                    <button style="width: 150px" type="button" class="btn btn-info"
+                    <button style="width: 190px" type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project</button>
+                    <button style="width: 190px" type="button" class="btn btn-default"
                     data-toggle="modal" data-target="#archivedProjectList"
                     @if(projectListQuery.eq("active", false).findList().isEmpty){disabled}>Archived projects</button>
                 </div>
@@ -36,7 +32,7 @@
 @template.smallmodal("newProject")("success")("Create a new Project") {
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-            @helper.form(action = routes.ProjectData.createProject()) {
+            @helper.form(action = routes.ProjectData.createProject(uid)) {
                 <div class="form-group">
                     <label for="validate-text">Folder Name</label>
                     <div class="input-group" data-validate="length" data-length="3">

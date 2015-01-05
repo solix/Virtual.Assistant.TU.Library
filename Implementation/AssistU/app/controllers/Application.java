@@ -1,17 +1,13 @@
 package controllers;
 
-
-
-import com.avaje.ebean.Ebean;
 import models.*;
-import org.apache.commons.io.*;
-import play.Logger;
-import play.data.*;
 import play.mvc.*;
 import views.html.*;
-import java.lang.String;
-import java.util.List;
-import java.util.Set;
+import com.feth.play.module.pa.PlayAuthenticate;
+import com.feth.play.module.pa.user.AuthUser;
+import com.feth.play.module.pa.user.AuthUserIdentity;
+import com.feth.play.module.pa.user.EmailIdentity;
+
 
 
 public class Application extends Controller {
@@ -41,12 +37,21 @@ public class Application extends Controller {
     public static Result calendar() {return ok(calendar.render("My Calendar"));}
 
     /**
-     *
+     * TODO: Unify the plugin/regular style login
      * @return project page
      */
-
     public static Result project() {
-        return ok(project.render("My Projects", session().get("email")));
+
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            String email = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().email;
+//            AuthUserIdentity authIdentity = (AuthUserIdentity)authUser;
+//            EmailIdentity emailIdentity = (EmailIdentity)authIdentity;
+            return ok(project.render("My Projects", email));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(project.render("My Projects", user.email));
+        }
     }
 
     /**

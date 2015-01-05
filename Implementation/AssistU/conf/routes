@@ -3,35 +3,39 @@
 # ~~~~
 
 # Home page
-GET         /                                 controllers.Application.index()
+GET         /                                      controllers.Application.index()
 
 #task
-GET         /task                             controllers.Application.task()
+GET         /task                                  controllers.Application.task()
 
 #login
-GET         /login                            controllers.Authentication.login()
-POST        /login                            controllers.Authentication.authenticate()
+GET         /login                                 controllers.Authentication.login()
+POST        /login                                 controllers.Authentication.authenticate()
 
+#OAuth 2 - Google+
+GET         /logout                                controllers.Authentication.OAuthLogout()
+GET         /authenticate/:provider                controllers.Authentication.OAuth(provider: String)
+GET         /authenticate/:provider/denied         controllers.Authentication.OAuthDenied(provider: String)
 
 #calendar
-GET         /calendar                         controllers.Application.calendar()
+GET         /calendar                              controllers.Application.calendar()
 
 #project
-GET         /project                          controllers.Application.project()
-POST        /project/create                   controllers.ProjectData.createProject()
-GET         /project/:pid/edit                controllers.ProjectData.editProject(pid: Long)
-GET         /:uid/project/:pid/archive        controllers.ProjectData.archiveProject(uid: String, pid: Long)
-GET         /project/:pid/addMember           controllers.ProjectData.addMemberToProjectAs(pid: Long)
-GET         /project/:pid/removeMember/:uid   controllers.ProjectData.removeMemberFromProject(uid: String, pid: Long)
-POST        /project/upload                   controllers.Datafile.uploadDocument(pid : Long)
-GET         /project/download/:fileid         controllers.Datafile.downloadDocument(fileid :Long)
+GET         /project                               controllers.Application.project()
+POST        /:uid/project/create                   controllers.ProjectData.createProject(uid: String)
+GET         /project/:pid/edit                     controllers.ProjectData.editProject(pid: Long)
+GET         /:uid/project/:pid/archive             controllers.ProjectData.archiveProject(uid: String, pid: Long)
+GET         /project/:pid/addMember                controllers.ProjectData.addMemberToProjectAs(pid: Long)
+GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: String, pid: Long)
+POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
+GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
 
 
 #Suggestions
-GET         /suggestions                      controllers.Application.suggestions()
+GET         /suggestions                           controllers.Application.suggestions()
 
 #inbox
-GET         /discussion                       controllers.Application.discussion()
+GET         /discussion                            controllers.Application.discussion()
 
 
 
@@ -40,5 +44,5 @@ GET         /discussion                       controllers.Application.discussion
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                     controllers.Assets.at(path="/public", file)
-GET         /webjars/*file                    controllers.WebJarAssets.at(file)
+GET         /assets/*file                          controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                         controllers.WebJarAssets.at(file)
