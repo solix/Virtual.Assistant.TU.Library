@@ -55,7 +55,7 @@ public class Application extends Controller {
      */
     public static Result suggestions() {
 
-        return TODO;
+        return ok(suggestions.render("Suggestions"));
     }
 
     /**
