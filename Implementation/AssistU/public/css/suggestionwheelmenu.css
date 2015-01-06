@@ -7,8 +7,8 @@
   margin: 0;
   padding: 0;
   /*list-style: none;*/
-  width: 500px; /* this will determine the diameter of the circle  */
-  height: 500px;  /* this will determine the diameter of the circle */
+  width: 600px; /* this will determine the diameter of the circle  */
+  height: 600px;  /* this will determine the diameter of the circle */
   visibility: hidden;
   position: relative;
   display: none;
@@ -44,7 +44,7 @@
   /*color: white;*/
   display: block;
   /*margin: 80px auto 20px;*/
-  margin: 325px auto;
+  margin: 400px auto;
   /*border: 3px solid #92311e;*/
   /*box-shadow: 0 1px 2px rgba(0,0,0,0.25);*/
   /*-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.25);*/
