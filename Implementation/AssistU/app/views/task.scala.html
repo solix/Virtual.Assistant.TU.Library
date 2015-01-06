@@ -1,4 +1,6 @@
-@(title: String)
+@(title: String, tasks :List[Task])
+@import helper._
+@import helper.twitterBootstrap
 <html>
 <head>
     @linkLoader.headlinks(title)
@@ -27,10 +29,37 @@
             </div>
         </div>  
     </div> 
-    <!-- /#header icon --> 
+    <!-- /#header icon -->
 
 
-@tasks.taskform()
+    <div class="raw" >
+        <div id="todoapp" >
+            @form(action = routes.TaskData.addTask()){
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="input-group input-group-lg">
+                        <input class="form-control input-lg" name="name" placeholder="What needs to be done?" >
+                        <span class="input-group-btn">
+                        <button id= "dueDate" class="btn btn-default btn-lg" ><i class="glyphicon glyphicon-time"></i></button>
+                        <button type="submit" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-plus"></i></button>
+                    </span>
+
+                    <span class="input-group-btn"></span>
+                    }
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+
+        </div>
+    </div>
+
+
+
+</div>
+<div>
+    <ul id="tasks">
+    @for( t <- tasks){
+        <li>@t.name</li>
+    }
+    </ul>
 </div>
 
 <!-- jQuery -->
@@ -39,8 +68,11 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <!--sb-Admin-->
 <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
-
 <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+<!-- Load jQuery and bootstrap datepicker scripts -->
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+
 
 </body>
 </html>

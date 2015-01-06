@@ -8,6 +8,7 @@ import com.feth.play.module.pa.user.AuthUser;
 import com.feth.play.module.pa.user.AuthUserIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 
+import java.util.List;
 
 
 public class Application extends Controller {
@@ -26,7 +27,12 @@ public class Application extends Controller {
      *
      * @return
      */
-    public static Result task() {return ok(task.render("your tasks"));}
+    public static Result task() {
+        List<Task> tasks = Task.find.all();
+
+        return ok(task.render("your tasks",tasks));
+
+    }
 
 
 

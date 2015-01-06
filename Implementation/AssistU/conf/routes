@@ -7,6 +7,10 @@ GET         /                                      controllers.Application.index
 
 #task
 GET         /task                                  controllers.Application.task()
+POST        /task/new                              controllers.TaskData.addTask()
+GET         /task/get                              controllers.TaskData.getTasks()
+
+
 
 #login
 GET         /login                                 controllers.Authentication.login()
