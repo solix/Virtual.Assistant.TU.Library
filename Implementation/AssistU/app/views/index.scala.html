@@ -1,16 +1,18 @@
-@(headtitle: String)
+@(title: String)
 
-@main("") {
+@*main("") {*@
 
 <html lang="en">
 
-
+    <head>
+    @linkLoader.headlinks(title)
+    </head>
 
 <body>
 <!-- wraps the whole thing -->
 <div id="wrapper">
     <!-- LOading Side menue and top nav menue -->
-    @dashboard()  
+    @dashboard(false)
     
     <div id="page-wrapper">
         
@@ -45,4 +47,4 @@
 </html>
 
 
-}
+@*}*@

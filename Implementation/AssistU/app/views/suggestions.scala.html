@@ -1,0 +1,59 @@
+@(title: String)
+
+<html lang="en">
+    <head>
+        @linkLoader.headlinks(title)
+
+        <!-- jQuery -->
+    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>*@
+
+        <!--Wheel Menu JS-->
+    <script src="@routes.Assets.at("javascripts/jquery.suggestionwheelmenu.js")" ></script>
+
+        <!--Wheel Menu CSS-->
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/suggestionwheelmenu.css")">
+
+    </head>
+
+    <body>
+        <div id="wrapper">
+            @dashboard(true)
+            <div id="page-wrapper">
+                @template.headericon("fa fa-lightbulb-o fa-5x")
+                <div class="panel panel-info">
+                    <div class="panel-body" style="height: 600px">
+                        <a href="#wheel" class="wheel-button"><p style="margin-top: 50px">TULib</p></a>
+                        <ul id="wheel">
+                            <li class="item" style="background: deepskyblue;border-radius: 50px;"><a href="#home"><i class="fa fa-book fa-2x"><br><p style="font-size: 8pt">Literature Search</p></i></a></li>
+                            <li class="item" style="background: greenyellow;border-radius: 50px;"><a href="#home"><i class="fa fa-sitemap fa-2x"><br><p style="font-size: 8pt">Processing</p></i></a></li>
+                            <li class="item" style="background: lightcoral;border-radius: 50px;"><a href="#home"><i class="fa fa-refresh fa-2x"><br><p style="font-size: 8pt">Keeping up-to-date</p></i></a></li>
+                            <li class="item" style="background: orangered;border-radius: 50px;"><a href="#home"><i class="fa fa-newspaper-o fa-2x"><br><p style="font-size: 8pt">Publish</p></i></a></li>
+                            <li class="item" style="background: dodgerblue;border-radius: 50px;"><a href="#home"><i class="fa fa-eye fa-2x"><br><p style="font-size: 8pt">Orientation</p></i></a></li>
+                            <li class="item" style="background: #ffff00;border-radius: 50px;"><a href="#home"><i class="fa fa-arrows-alt fa-2x"><br><p style="font-size: 8pt">Exploration</p></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <script type="text/javascript">
+            $(".wheel-button").wheelmenu({
+            animation: "fly",
+            animationSpeed: "slow"
+            });
+            </script>
+
+
+
+                <!--bootstrap-->
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+                <!--sb-Admin-->
+            <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+
+
+            <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+
+    </body>
+
+</html>
