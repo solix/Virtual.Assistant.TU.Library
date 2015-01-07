@@ -18,6 +18,8 @@ public class User extends Model {
     public Long id;
     public String email;
     public String name;
+    public String first_name;
+    public String last_name;
     public String password;
 
 //  Extra attributes for social users
