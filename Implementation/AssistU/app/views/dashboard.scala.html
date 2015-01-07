@@ -1,4 +1,4 @@
-@(tag_cloud: Boolean)
+@(parentpage: String)
 
 <!-- Navigation -->
 
@@ -249,10 +249,10 @@
                 
                 
                 <li>
-                    <a class="active" href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
+                    <a @if(parentpage.equals("dashboard")){class="active"} href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
+                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
                     @*<ul class="nav nav-second-level">*@
                         @*<li>*@
                             @*<a href="flot.html">BEP</a>*@
@@ -264,24 +264,24 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="@routes.Application.calendar()"><i class="fa fa-calendar-o fa-fw"></i> Calendar</a>
+                    <a @if(parentpage.equals("calendar")){class="active"} href="@routes.Application.calendar()"><i class="fa fa-calendar-o fa-fw"></i> Calendar</a>
                 </li>
                 <li>
-                    <a href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions</a>
+                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions</a>
                 </li>
                 <li>
-                    <a href="@routes.Application.task()"><i class="fa fa-wrench fa-fw"></i> Tasks</a>
+                    <a @if(parentpage.equals("task")){class="active"} href="@routes.Application.task()"><i class="fa fa-wrench fa-fw"></i> Tasks</a>
 
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="@routes.Application.suggestions()"><i class="fa fa-lightbulb-o fa-fw"></i> Suggestions & Tips</a>
+                    <a @if(parentpage.equals("suggestion")){class="active"} href="@routes.Application.suggestions()"><i class="fa fa-lightbulb-o fa-fw"></i> Suggestions & Tips</a>
 
                     <!-- /.nav-second-level -->
                 </li>
                 
             </ul>
-            @if(tag_cloud) {
+            @if(parentpage.equals("suggestion")) {
                     <!-- TAG CLOUD -->
                 <div class="container-fluid">
                     <div class="panel panel-info" style="border: 0px">

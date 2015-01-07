@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.persistence.*;
 
+import play.Logger;
 import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
@@ -62,6 +63,7 @@ public class Project extends Model {
      * @return
      */
     public static Project create(String folder, String name,  String owner ,String description){
+        Logger.debug("CREATE: " + folder + ", " + name + ", " + owner + ", " + description);
         Project project = new Project(folder, name ,User.find.ref(owner),description);
         project.active=true;
         project.save();

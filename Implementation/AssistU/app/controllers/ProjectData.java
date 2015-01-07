@@ -26,7 +26,7 @@ public class ProjectData extends Controller {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, session().get("email") , "dummy must be implemenetd");
+            Project.create(projectData.folder, projectData.name, uid , "dummy must be implemenetd");
             return redirect(routes.Application.project());
         }
     }

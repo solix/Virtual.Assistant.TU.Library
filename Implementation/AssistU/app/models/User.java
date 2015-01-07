@@ -14,7 +14,8 @@ import java.util.List;
 public class User extends Model {
 
 
-    @Id
+    @Id @GeneratedValue
+    public Long id;
     public String email;
     public String name;
     public String password;

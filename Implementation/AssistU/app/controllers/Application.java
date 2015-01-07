@@ -18,7 +18,17 @@ public class Application extends Controller {
      * @return
      */
     public static Result index() {
-        return ok(index.render("welcome name"));
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
+//            AuthUserIdentity authIdentity = (AuthUserIdentity)authUser;
+//            EmailIdentity emailIdentity = (EmailIdentity)authIdentity;
+            return ok(index.render("welcome " + User.find.ref(uid).name, uid));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(index.render("welcome " + user.name, user.id.toString()));
+        }
+
     }
 
     /**
@@ -44,13 +54,13 @@ public class Application extends Controller {
 
         AuthUser authUser = PlayAuthenticate.getUser(session());
         if(authUser != null) {
-            String email = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().email;
+            String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
 //            AuthUserIdentity authIdentity = (AuthUserIdentity)authUser;
 //            EmailIdentity emailIdentity = (EmailIdentity)authIdentity;
-            return ok(project.render("My Projects", email));
+            return ok(project.render("My Projects", uid));
         }else{
             User user = User.find.ref(session().get("email"));
-            return ok(project.render("My Projects", user.email));
+            return ok(project.render("My Projects", user.id.toString()));
         }
     }
 

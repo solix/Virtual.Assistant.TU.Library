@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String, uid: String)
 
 @*main("") {*@
 
@@ -12,7 +12,7 @@
 <!-- wraps the whole thing -->
 <div id="wrapper">
     <!-- LOading Side menue and top nav menue -->
-    @dashboard(false)
+    @dashboard("dashboard")
     
     <div id="page-wrapper">
         
@@ -35,7 +35,7 @@
     <!-- /#header icon --> 
 
     <!-- over view blocks for quick access  -->
-   @home.overviewblocks()
+   @home.overviewblocks(uid)
     </div>
 <!-- /#wrapper -->
 
