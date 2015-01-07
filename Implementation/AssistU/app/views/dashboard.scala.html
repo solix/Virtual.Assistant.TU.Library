@@ -1,4 +1,4 @@
-
+@(tag_cloud: Boolean)
 
 <!-- Navigation -->
 
@@ -228,6 +228,7 @@
         <!-- /.dropdown -->
     </ul>
     <!-- /.navbar-top-links -->
+    <!-- Side Bar -->
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav nav-tabs nav-stacked" id="side-menu">
@@ -280,12 +281,17 @@
                 </li>
                 
             </ul>
+            @if(tag_cloud) {
+                    <!-- TAG CLOUD -->
+                <div class="container-fluid">
+                    <div class="panel panel-info" style="border: 0px">
+                        <div class="panel-body" id="tagcloud" style="height:390px;text-align:center;margin:10px 0 0 30px">
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
         <!-- /.sidebar-collapse -->
     </div>
     <!-- /.navbar-static-side -->
 </nav>
-
-
-</body>
-</html>

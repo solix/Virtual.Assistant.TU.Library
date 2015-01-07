@@ -55,7 +55,7 @@ public class Application extends Controller {
      */
     public static Result suggestions() {
 
-        return ok(suggestionstagcloud.render("Suggestions"));
+        return ok(suggestions.render("Suggestions"));
     }
 
     /**

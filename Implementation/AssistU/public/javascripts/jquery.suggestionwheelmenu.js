@@ -25,8 +25,8 @@
         height = button.outerHeight(),
         //buttonX = (offset.left - $(document).scrollLeft() ) + width / 2,
         //buttonY = (offset.top -  $(document).scrollTop() ) + height / 2,
-        buttonX = offset.left + width / 2,
-        buttonY = offset.top + height / 2;
+        buttonX = offset.left + width / 2 + 50,
+        buttonY = offset.top + height / 2 + 50;
         //objectOffset = this.offset();
         //console.log("width: " + width + ", height: " + height + ", ButtonX: " + buttonX + ", ButtonY: " + buttonY + ", Button: " + button);
         //console.log($(document).scrollTop());
