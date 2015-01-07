@@ -1,4 +1,4 @@
-@(parentpage: String)
+@(parentpage: String, uid: String)
 
 <!-- Navigation -->
 
@@ -253,14 +253,18 @@
                 </li>
                 <li>
                     <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
-                    @*<ul class="nav nav-second-level">*@
-                        @*<li>*@
-                            @*<a href="flot.html">BEP</a>*@
-                        @*</li>*@
-                        @*<li>*@
-                            @*<a href="morris.html">science of web</a>*@
-                        @*</li>*@
-                    @*</ul>*@
+                    @*TODO: Maybe a dropdown menu for fast project accessibility? Would require a new "loadspecificproject" though...*@
+                    @*defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { projects =>*@
+                        @*if(projects.size() > 0) {*@
+                            @*<ul class="nav nav-second-level">*@
+                                @*for(p <- projects){*@
+                                    @*<li>*@
+                                        @*<a href="@routes.Application.project()">@p.name</a>*@
+                                    @*</li>*@
+                                @*}*@
+                            @*</ul>*@
+                        @*}*@
+                    @*}*@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>

@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String, uid: String)
 
 <html lang="en">
 <head>
@@ -10,7 +10,7 @@
 
 <div id="wrapper">
 <!-- LOading Side menue and top nav menue -->
-  @dashboard("calendar")
+  @dashboard("calendar", uid)
 <!-- Header Icon -->
     <div id="page-wrapper">
         <div class="container-fluid ">

@@ -12,25 +12,10 @@
 <!-- wraps the whole thing -->
 <div id="wrapper">
     <!-- LOading Side menue and top nav menue -->
-    @dashboard("dashboard")
+    @dashboard("dashboard", uid)
     
     <div id="page-wrapper">
-        
-       
-     <!-- Header Icon puts an icon on top the page using font awsome -->
-    <div class="container-fluid "> 
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <i class="fa fa-tachometer fa-5x"></i>
-                        </div>
-                    </div>
-                </div>                        
-            </div>
-        </div>  
-    </div> 
+        @template.headericon("fa fa-tachometer fa-5x", "Dashboard")
 
     <!-- /#header icon --> 
 

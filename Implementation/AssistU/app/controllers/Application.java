@@ -21,8 +21,6 @@ public class Application extends Controller {
         AuthUser authUser = PlayAuthenticate.getUser(session());
         if(authUser != null) {
             String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
-//            AuthUserIdentity authIdentity = (AuthUserIdentity)authUser;
-//            EmailIdentity emailIdentity = (EmailIdentity)authIdentity;
             return ok(index.render("welcome " + User.find.ref(uid).name, uid));
         }else{
             User user = User.find.ref(session().get("email"));
@@ -36,7 +34,16 @@ public class Application extends Controller {
      *
      * @return
      */
-    public static Result task() {return ok(task.render("your tasks"));}
+    public static Result task() {
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
+            return ok(task.render("My Tasks", uid));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(task.render("My Tasks", user.id.toString()));
+        }
+    }
 
 
 
@@ -44,7 +51,16 @@ public class Application extends Controller {
      * Calendar page
      * @return
      */
-    public static Result calendar() {return ok(calendar.render("My Calendar"));}
+    public static Result calendar() {
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
+            return ok(calendar.render("My Calendar", uid));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(calendar.render("My Calendar", user.id.toString()));
+        }
+    }
 
     /**
      * TODO: Unify the plugin/regular style login
@@ -69,8 +85,14 @@ public class Application extends Controller {
      * @return
      */
     public static Result suggestions() {
-
-        return ok(suggestions.render("Suggestions"));
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
+            return ok(suggestions.render("Suggestions", uid));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(suggestions.render("Suggestions", user.id.toString()));
+        }
     }
 
     /**
@@ -78,8 +100,14 @@ public class Application extends Controller {
      * @return
      */
     public static Result discussion() {
-
-        return ok(discussion.render("gap"));
+        AuthUser authUser = PlayAuthenticate.getUser(session());
+        if(authUser != null) {
+            String uid = User.find.where().eq("socialId", authUser.getId()).eq("socialKey", authUser.getProvider()).findUnique().id.toString();
+            return ok(discussion.render("My Discussions", uid));
+        }else{
+            User user = User.find.ref(session().get("email"));
+            return ok(discussion.render("My Discussions", user.id.toString()));
+        }
     }
 
 }

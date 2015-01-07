@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String, uid: String)
 <html>
 <head>
     @linkLoader.headlinks(title)
@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="wrapper">
-@dashboard("task")
+@dashboard("task", uid)
 </div>
 
 <div id="page-wrapper">

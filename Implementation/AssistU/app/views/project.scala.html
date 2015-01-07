@@ -6,9 +6,9 @@
 </head>
 <body>
 <div id="wrapper">
-    @dashboard("project")
+    @dashboard("project", uid)
     <div id="page-wrapper">
-        @template.headericon("fa fa-line-chart fa-5x")
+        @template.headericon("fa fa-line-chart fa-5x", "Projects")
         <div class="row">
             <div class="col-xs-12" style="text-align: center; margin: 1% 0">
                 <div class="btn-group" role="group">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12" style="text-align: center; margin: 1% 5%">
+            <div class="col-xs-12" style="text-align: center; margin: 1% 0">
                 @projects.projectNavBar(uid)
             </div>
         </div>
