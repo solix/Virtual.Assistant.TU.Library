@@ -33,29 +33,20 @@ public class UserService extends UserServicePlugin {
      */
     @Override
     public User save(final AuthUser authUser) {
-//        User user = getLocalIdentity(authUser);
-//
-//        if(user != null){
-//            return user;
-//        } else {
-//            String email = ((EmailIdentity)authUser).getEmail();
-//            String name =((NameIdentity)authUser).getName();
-//            //OAuth2AuthUser oAuth2AuthUser=(OAuth2AuthUser)authUser;
-//            //String oAuthpassword =oAuth2AuthUser.getOAuth2AuthInfo().getAccessToken();
-////            Logger.debug("oathuser name : " + name);
-////            Logger.debug("oath useraccesstoken : " + oAuthpassword);
-////            Logger.debug("oath expirationaccesstoken : " + oAuth2AuthUser.getOAuth2AuthInfo().getExpiration());
-//
-//            return User.create(name, email,oAuthpassword );
-
         final boolean isLinked = User.existsByAuthUserIdentity(authUser);
-
         if(!isLinked){
             return User.createAuthUser(authUser);
-
         }else{
             return null;
         }
+    }
+
+    @Override
+    public AuthUser update(final AuthUser knownUser) {
+        User.update(knownUser);
+        // User logged in again, bump last login date
+//        User.setLastLoginDate(knownUser);
+        return knownUser;
     }
 
     /**

@@ -54,7 +54,6 @@ public class MendeleyAuthProvider extends
                 .get(getTimeout());
 
         final JsonNode result = r.asJson();
-        Logger.debug(result.toString());
         if (r.getStatus() >= 400) {
             throw new AuthException(result.get("meta").get("errorDetail").asText());
         } else {

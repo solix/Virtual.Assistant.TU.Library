@@ -1,33 +1,20 @@
 @(title: String)(currentUser: User)
 
 <html lang="en">
-
     <head>
     @linkLoader.headlinks(title)
     </head>
+    <body>
+        <div id="wrapper">
+            @dashboard("dashboard",currentUser)
+            <div id="page-wrapper">
+                @template.headericon("fa fa-tachometer fa-5x")
+                @home.overviewblocks(currentUser.id)
+            </div>
+        </div>
 
-<body>
-<!-- wraps the whole thing -->
-<div id="wrapper">
-    <!-- LOading Side menue and top nav menue -->
-    @dashboard("dashboard",currentUser)
-    
-    <div id="page-wrapper">
-        @template.headericon("fa fa-tachometer fa-5x")
+            <!--bootstrap-->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-    <!-- /#header icon --> 
-
-    <!-- over view blocks for quick access  -->
-   @home.overviewblocks(currentUser.id)
-    </div>
-<!-- /#wrapper -->
-
-
-</div>
-
-</body>
-
+    </body>
 </html>
-
-
-@*}*@

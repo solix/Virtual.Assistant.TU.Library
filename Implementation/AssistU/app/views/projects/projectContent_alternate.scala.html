@@ -1,0 +1,51 @@
+@(currentUser: User)
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+    <div class="tab-content">
+        @for(p <- activeProjectList){
+            @*TODO: Same as in projectNavBar, rewrite in the future when the time/update class has been added*@
+            @if(p.equals(activeProjectList.last)){
+                <div class="tab-pane fade in active" id="tab@p.id">
+                } else {
+                <div class="tab-pane fade" id="tab@p.id">
+                }
+            <div class="container-fluid" style="margin-top: 10px">
+
+                <div class="panel panel-info">
+                    <div class="panel-body" style="height: 80px">
+                        <p style="font-size: 15pt"><b>@p.name</b><p>
+                        <p><i>@p.description</i><p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                @projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())
+                                @*<hr class="hr">*@
+                                @projects.projectUploadButtons(p)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                <p><b>Owners</b></p>
+                                <hr class="hr" style="margin-top: 0">
+                                @for(user <- p.users){
+                                    <p style="text-align: left">@user.name <br> @user.email</p> <br><br>
+                                }
+                                <p><b>Reviewers</b></p>
+                                <hr class="hr" style="margin-top: 0">
+                                <p style="text-align: left">Hubert J. Farnsworth <br> h.j.farnsworth@@planetexpress.nnyc</p> <br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*projects.projectContentHeader(currentUser,p)*@
+            @*projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())*@
+            @*projects.projectUploadButtons(p)*@
+        </div>
+        }
+    </div>
+}

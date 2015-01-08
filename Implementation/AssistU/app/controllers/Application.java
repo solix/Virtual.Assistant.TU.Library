@@ -57,7 +57,7 @@ public class Application extends Controller {
     public static Result project() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(project.render("My Projects", user));
+            return ok(project_alternate.render("My Projects (alternate)", user));
         else
             return Authentication.login();
     }

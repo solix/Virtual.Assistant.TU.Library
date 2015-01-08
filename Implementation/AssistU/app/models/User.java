@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 
+import play.Logger;
 import play.data.validation.Constraints;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
@@ -72,6 +73,57 @@ public class User extends Model {
 
     public static User create(String name, String email, String password ) {
         User user = new User(name, email, password);
+        user.save();
+        return user;
+    }
+
+    public static User update(final AuthUser authUser) {
+        final User user = User.findByAuthUserIdentity(authUser);
+        Logger.debug("USER FOR UPDATING: " + user.name);
+        user.active = true;
+//        user.linkedAccounts = Collections.singletonList(LinkedAccount
+//                .create(authUser));
+
+//        if (authUser instanceof EmailIdentity) {
+//            final EmailIdentity identity = (EmailIdentity) authUser;
+//            Remember, even when getting them from FB & Co., emails should be
+//            verified within the application as a security breach there might
+//            break your security as well!
+//            user.email = identity.getEmail();
+//            user.emailValidated = false;
+//        }
+
+//        if (authUser instanceof NameIdentity) {
+//            final NameIdentity identity = (NameIdentity) authUser;
+//            final String name = identity.getName();
+//            if (name != null) {
+//                user.name = name;
+//            }
+//        }
+
+//        if (authUser instanceof FirstLastNameIdentity) {
+//            final FirstLastNameIdentity identity = (FirstLastNameIdentity) authUser;
+//            final String first_name = identity.getFirstName();
+//            if(first_name != null){
+//                user.first_name = first_name;
+//            }
+//            final String last_name = identity.getLastName();
+//            if(last_name != null){
+//                user.last_name = last_name;
+//            }
+//        }
+
+
+        //This is for extra provider-specific information
+
+//        if(authUser instanceof GoogleAuthUser){
+
+//        }
+
+//        if(authUser instanceof MendeleyAuthUser){
+
+//        }
+
         user.save();
         return user;
     }

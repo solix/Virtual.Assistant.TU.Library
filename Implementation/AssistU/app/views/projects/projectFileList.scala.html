@@ -1,12 +1,12 @@
 @(filelist : List[DocumentFile])
 <!-- Table -->
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>File</th>
             <th>Uploaded by</th>
-            <th>Version</th>
-            <th>Download</th>
+            <th style="text-align: center">Version</th>
+            <th style="text-align: center">Download</th>
         </tr>
     </thead>
     <tbody>
@@ -18,8 +18,8 @@
 
             <td>@f.name</td>
             <td>Philip J. Fry</td>
-            <td>@f.id</td>
-            <td><a href="@{routes.Datafile.downloadDocument(f.id)}" ><i class="fa fa-download fa-fw"></i></a></td>
+            <td style="text-align: center">@f.id</td>
+            <td style="text-align: center"><a href="@{routes.Datafile.downloadDocument(f.id)}" ><i class="fa fa-download fa-fw"></i></a></td>
         </tr>
         }
 
