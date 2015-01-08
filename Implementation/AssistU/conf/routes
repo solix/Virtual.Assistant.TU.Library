@@ -9,7 +9,7 @@ GET         /                                      controllers.Application.index
 GET         /task                                  controllers.Application.task()
 POST        /task/new                              controllers.TaskData.addTask()
 GET         /task/get                              controllers.TaskData.getTasks()
-
+GET         /task/delete/:tid                      controllers.TaskData.deleteTask(tid: Long)
 
 
 #login

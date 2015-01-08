@@ -19,7 +19,12 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "14.0",
   filters,
   "be.objectify"  %% "deadbolt-java"     % "2.3.0-RC1",
-  "com.feth"      %% "play-authenticate" % "0.6.5-SNAPSHOT")
+  "com.feth"      %% "play-authenticate" % "0.6.5-SNAPSHOT",
+  "com.typesafe.slick" %% "slick" % "2.1.0",
+  "org.webjars" % "bootstrap" % "3.2.0",
+  "org.webjars" %% "webjars-play" % "2.3.0",
+  "org.webjars" % "jquery-ui" % "1.11.0-1"
+)
 
 resolvers ++= Seq(
   "Apache" at "http://repo1.maven.org/maven2/",

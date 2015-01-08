@@ -30,7 +30,7 @@ public class Application extends Controller {
     public static Result task() {
         List<Task> tasks = Task.find.all();
 
-        return ok(task.render("your tasks",tasks));
+        return ok(task.render("Task List",tasks));
 
     }
 

@@ -29,4 +29,16 @@ public class TaskData extends Controller {
 
         return ok(toJson(tasks));
     }
+
+    public static Result deleteTask(long id){
+
+        Task t = Task.find.byId(id);
+        t.delete();
+
+        return redirect(controllers.routes.Application.task());
+
+    }
+
+
+
 }

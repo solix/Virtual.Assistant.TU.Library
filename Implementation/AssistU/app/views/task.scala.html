@@ -4,10 +4,11 @@
 <html>
 <head>
     @linkLoader.headlinks(title)
-    <!-- loading Full calendar stylesheet -->
-    <link href="@routes.Assets.at("css/task.css")" rel="stylesheet">
-
-
+    <!-- loading task stylesheet(s)& script(s) -->
+        <!-- jQuery -->
+    <script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+    <script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery-ui.min.js"))'></script>
+    <script src='@routes.Assets.at("javascripts/sortable.js")'></script>
 </head>
 <body>
 <div id="wrapper">
@@ -32,46 +33,59 @@
     <!-- /#header icon -->
 
 
-    <div class="raw" >
-        <div id="todoapp" >
             @form(action = routes.TaskData.addTask()){
+                <fieldset>
             <div class="col-sm-8 col-sm-offset-2">
-                <div class="input-group input-group-lg">
-                        <input class="form-control input-lg" name="name" placeholder="What needs to be done?" >
-                        <span class="input-group-btn">
-                        <button id= "dueDate" class="btn btn-default btn-lg" ><i class="glyphicon glyphicon-time"></i></button>
-                        <button type="submit" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-plus"></i></button>
-                    </span>
+                <div id="main_input_box">
+                    <div class="input-group input-group-lg">
+                   
+                         <input  type= "text" class="form-control input" id="custom_textbox" name="name" autofocus="autofocus" placeholder="What needs to be done?" />
 
-                    <span class="input-group-btn"></span>
+                        <span class="input-group-btn">
+                            <button id= "dueDate" class="btn btn-default btn-lg" ><i class="glyphicon glyphicon-time"></i></button>
+                            <button id= "addTaskButton" type="submit" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-plus"></i></button>
+                        </span>
+                    </div>
+                 </div>
+
                     }
-                </div><!-- /input-group -->
+            
             </div><!-- /.col-lg-6 -->
 
-        </div>
-    </div>
 
+        </fieldset>
 
+    
+   <div class="col-sm-12 steps">
+       <ul id="sortable" class="list-group" >
+        @for(t <- tasks){
+            <li class="list-group-item">
 
-</div>
-<div>
-    <ul id="tasks">
-    @for( t <- tasks){
-        <li>@t.name</li>
-    }
+                @t.name
+
+                <span class="pull-right">
+                    <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
+                    <a class="btn btn-primary" href="#"><i class="fa fa-check "></i></a>
+                </span>
+
+            </li>
+        
+        }
     </ul>
-</div>
+   </div> 
 
-<!-- jQuery -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+
+    
+
+</div>    
+
 <!--bootstrap-->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <!--sb-Admin-->
 <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
-<!-- Load jQuery and bootstrap datepicker scripts -->
-<script src="js/jquery-1.9.1.min.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+
+
 
 
 </body>
