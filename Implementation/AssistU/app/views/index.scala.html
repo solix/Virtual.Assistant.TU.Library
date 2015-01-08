@@ -1,9 +1,4 @@
 @(title: String)(currentUser: User)
-@*=======*@
-@*(title: String, uid: String)*@
-@*>>>>>>> authorisation_mendeley*@
-
-@*main("") {*@
 
 <html lang="en">
 
@@ -15,14 +10,10 @@
 <!-- wraps the whole thing -->
 <div id="wrapper">
     <!-- LOading Side menue and top nav menue -->
-@*<<<<<<< HEAD*@
     @dashboard("dashboard",currentUser)
-@*=======*@
-@*//    dashboard("dashboard", uid)*@
-@*>>>>>>> authorisation_mendeley*@
     
     <div id="page-wrapper">
-        @template.headericon("fa fa-tachometer fa-5x", "Dashboard")
+        @template.headericon("fa fa-tachometer fa-5x")
 
     <!-- /#header icon --> 
 

@@ -1,4 +1,4 @@
-@(uid: Long, p: Project)
+@(currentUser: User, p: Project)
 
 <div class="panel-heading">
     @*<div class="container-fluid">*@
@@ -142,7 +142,7 @@
         </thead>
         <tbody>
         @p.users.map{ u =>
-            @if(!u.id.equals(uid)){
+            @if(!u.equals(currentUser)){
                 <tr>
                     <td>@u.name</td>
                     <td>@u.email</td>
@@ -165,7 +165,7 @@
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
         </div>
         <div class="btn-group" role="group">
-            <a type="button" class="btn btn-danger" href="@routes.ProjectData.archiveProject(uid,p.id)">Archive!</a>
+            <a type="button" class="btn btn-danger" href="@routes.ProjectData.archiveProject(currentUser.id,p.id)">Archive!</a>
         </div>
     </div>
 }
@@ -177,7 +177,7 @@
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
         </div>
         <div class="btn-group" role="group">
-            <a type="button" class="btn btn-danger" href="@routes.ProjectData.removeMemberFromProject(uid,p.id)">Leave!</a>
+            <a type="button" class="btn btn-danger" href="@routes.ProjectData.removeMemberFromProject(currentUser.id,p.id)">Leave!</a>
         </div>
     </div>
 }

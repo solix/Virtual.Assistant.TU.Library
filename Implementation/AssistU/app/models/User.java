@@ -110,6 +110,7 @@ public class User extends Model {
      * @return user
      */
     public static User createAuthUser(final AuthUser authUser) {
+//        TODO: Remove parameters from constructor once defaultlogin is implemented
         final User user = new User(null,null,null);
         user.active = true;
         user.linkedAccounts = Collections.singletonList(LinkedAccount

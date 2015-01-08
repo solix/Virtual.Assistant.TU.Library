@@ -1,5 +1,5 @@
 @(title: String)(currentUser:User)
-@defining(Project.find.where().in("users", User.find.ref(uid))) { projectListQuery =>
+@defining(Project.find.where().in("users", currentUser)) { projectListQuery =>
 <html lang="en">
 <head>
     @linkLoader.headlinks(title)
@@ -8,7 +8,7 @@
 <div id="wrapper">
     @dashboard("project", currentUser)
     <div id="page-wrapper">
-        @template.headericon("fa fa-line-chart fa-5x", "Projects")
+        @template.headericon("fa fa-line-chart fa-5x")
         <div class="row">
             <div class="col-xs-12" style="text-align: center; margin: 1% 0">
                 <div class="btn-group" role="group">
