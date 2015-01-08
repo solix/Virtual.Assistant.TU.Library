@@ -14,7 +14,10 @@ import com.feth.play.module.pa.user.AuthUser;
 import com.feth.play.module.pa.user.AuthUserIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 import com.feth.play.module.pa.user.NameIdentity;
+import com.feth.play.module.pa.user.FirstLastNameIdentity;
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthUser;
+import com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
+import providers.mendeley.MendeleyAuthUser;
 
 @Entity
 public class User extends Model {
@@ -118,9 +121,9 @@ public class User extends Model {
 
         if (authUser instanceof EmailIdentity) {
             final EmailIdentity identity = (EmailIdentity) authUser;
-            // Remember, even when getting them from FB & Co., emails should be
-            // verified within the application as a security breach there might
-            // break your security as well!
+//            Remember, even when getting them from FB & Co., emails should be
+//            verified within the application as a security breach there might
+//            break your security as well!
             user.email = identity.getEmail();
             user.emailValidated = false;
         }
@@ -133,9 +136,27 @@ public class User extends Model {
             }
         }
 
-        if (authUser instanceof OAuth2AuthUser) {
-            final OAuth2AuthUser oAuth2AuthUser = (OAuth2AuthUser)authUser;
-            user.password = oAuth2AuthUser.getOAuth2AuthInfo().getAccessToken();
+        if (authUser instanceof FirstLastNameIdentity) {
+            final FirstLastNameIdentity identity = (FirstLastNameIdentity) authUser;
+            final String first_name = identity.getFirstName();
+            if(first_name != null){
+                user.first_name = first_name;
+            }
+            final String last_name = identity.getLastName();
+            if(last_name != null){
+                user.last_name = last_name;
+            }
+        }
+
+
+        //This is for extra provider-specific information
+
+        if(authUser instanceof GoogleAuthUser){
+
+        }
+
+        if(authUser instanceof MendeleyAuthUser){
+
         }
 
         user.save();

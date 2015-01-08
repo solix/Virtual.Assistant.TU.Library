@@ -39,6 +39,9 @@ public class Authentication extends Controller {
      * @return
      */
     public static Result login() {
+        User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        if(user != null)
+            OAuthLogout();
         return ok(login.render(loginform));
     }
 

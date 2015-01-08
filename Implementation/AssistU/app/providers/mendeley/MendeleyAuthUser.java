@@ -3,14 +3,15 @@ package providers.mendeley;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.feth.play.module.pa.providers.oauth2.BasicOAuth2AuthUser;
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
-import com.feth.play.module.pa.user.NameIdentity;
+import com.feth.play.module.pa.user.FirstLastNameIdentity;
 import com.feth.play.module.pa.user.PicturedIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
+import com.feth.play.module.pa.user.ProfiledIdentity;
 
 /**
  * Created by arnaud on 18-12-14.
  */
-public class MendeleyAuthUser extends BasicOAuth2AuthUser implements NameIdentity, PicturedIdentity, EmailIdentity {
+public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNameIdentity, PicturedIdentity, EmailIdentity, ProfiledIdentity {
 
     /**
      *
@@ -96,7 +97,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements NameIdentit
         return last_name;
     }
 
-    public String getProfileUrl() {
+    public String getProfileLink() {
         return profile_url;
     }
 
