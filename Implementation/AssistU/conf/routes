@@ -33,6 +33,7 @@ GET         /project/download/:fileid              controllers.Datafile.download
 
 #Suggestions
 GET         /suggestions                           controllers.Application.suggestions()
+GET         /suggestions/:subject                  controllers.SuggestionData.suggestion(subject: String)
 
 #inbox
 GET         /discussion                            controllers.Application.discussion()

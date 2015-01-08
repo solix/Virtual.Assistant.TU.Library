@@ -1,0 +1,39 @@
+@(title: String, subject: String, icon: String)(currentUser :User)
+
+<html lang="en">
+    <head>
+        @linkLoader.headlinks(title)
+    </head>
+
+    <body>
+        <div id="wrapper">
+            @dashboard("suggestion", currentUser)
+            <div id="page-wrapper">
+                @template.headericon("fa fa-lightbulb-o fa-5x")
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div class="container-fluid" style="text-align: center">
+                            <a type="button" href="@routes.Application.suggestions()" class="btn btn-primary pull-left"><i class="fa fa-arrow-circle-o-left"> Back</i></a>
+                            @*<label style="opacity: 50%; color: darkgrey; font-size: large">Test</label>*@
+                        </div>
+                        <div class="container-fluid" id="tag_cloud" style="height: 600px; text-align: center">
+                            <label style="opacity: 0.3; color: lightgrey; font-size: 40pt; margin-top: 170px"><i class="fa @icon fa-5x"></i></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!--bootstrap-->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+            <!--sb-Admin-->
+        <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+
+
+        <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+
+    </body>
+
+</html>

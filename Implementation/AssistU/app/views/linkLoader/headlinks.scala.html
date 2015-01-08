@@ -73,9 +73,9 @@
                         @defining(words.slice(0 , scala.util.Random.nextInt(words.length))){ subset =>
                                 @for(word <- subset) {
                                         @if(!word.equals(words.last)) {
-                                                { text : " @word ", weight:  @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" },
+                                                { text: "@word", weight: @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" },
                                         } else {
-                                                { text : " @word ", weight:  @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" }
+                                                { text: "@word", weight: @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" }
                                         }
                                 }
                         }
@@ -85,6 +85,6 @@
 
         $(function() {
         // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
-        $("#tagcloud").jQCloud(word_array);
+        $("#tag_cloud").jQCloud(word_array);
         });
         </script>
