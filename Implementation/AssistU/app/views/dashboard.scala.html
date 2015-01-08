@@ -1,5 +1,4 @@
-
-@(currentUser:User)
+@(parentpage: String, currentUser:User)
 <!-- Navigation -->
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -228,6 +227,7 @@
         <!-- /.dropdown -->
     </ul>
     <!-- /.navbar-top-links -->
+    <!-- Side Bar -->
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav nav-tabs nav-stacked" id="side-menu">
@@ -248,44 +248,53 @@
                 
                 
                 <li>
-                    <a class="active" href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
+                    <a @if(parentpage.equals("dashboard")){class="active"} href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
-                    @*<ul class="nav nav-second-level">*@
-                        @*<li>*@
-                            @*<a href="flot.html">BEP</a>*@
-                        @*</li>*@
-                        @*<li>*@
-                            @*<a href="morris.html">science of web</a>*@
-                        @*</li>*@
-                    @*</ul>*@
+                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
+                    @*TODO: Maybe a dropdown menu for fast project accessibility? Would require a new "loadspecificproject" though...*@
+                    @*defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { projects =>*@
+                        @*if(projects.size() > 0) {*@
+                            @*<ul class="nav nav-second-level">*@
+                                @*for(p <- projects){*@
+                                    @*<li>*@
+                                        @*<a href="@routes.Application.project()">@p.name</a>*@
+                                    @*</li>*@
+                                @*}*@
+                            @*</ul>*@
+                        @*}*@
+                    @*}*@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="@routes.Application.calendar()"><i class="fa fa-calendar-o fa-fw"></i> Calendar</a>
+                    <a @if(parentpage.equals("calendar")){class="active"} href="@routes.Application.calendar()"><i class="fa fa-calendar-o fa-fw"></i> Calendar</a>
                 </li>
                 <li>
-                    <a href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions</a>
+                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions</a>
                 </li>
                 <li>
-                    <a href="@routes.Application.task()"><i class="fa fa-wrench fa-fw"></i> Tasks</a>
+                    <a @if(parentpage.equals("task")){class="active"} href="@routes.Application.task()"><i class="fa fa-wrench fa-fw"></i> Tasks</a>
 
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="@routes.Application.index()"><i class="fa fa-yelp fa-fw"></i> Suggestions & Tips</a>
+                    <a @if(parentpage.equals("suggestion")){class="active"} href="@routes.Application.suggestions()"><i class="fa fa-lightbulb-o fa-fw"></i> Suggestions & Tips</a>
 
                     <!-- /.nav-second-level -->
                 </li>
                 
             </ul>
+            @if(parentpage.equals("suggestion")) {
+                    <!-- TAG CLOUD -->
+                <div class="container-fluid">
+                    <div class="panel panel-info" style="border: 0px">
+                        <div class="panel-body" id="tagcloud" style="height:390px;text-align:center;margin:10px 0 0 30px">
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
         <!-- /.sidebar-collapse -->
     </div>
     <!-- /.navbar-static-side -->
 </nav>
-
-
-</body>
-</html>

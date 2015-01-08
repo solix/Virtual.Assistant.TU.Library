@@ -1,7 +1,7 @@
-@(uid: Long)
-@defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { activeProjectList =>
+@(currentUser: User)
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
     <div role="tabpanel">
-        <ul class="nav nav-pills">
+        <ul class="nav nav-tabs">
             @for(p <- activeProjectList) {
                 @* TODO: Rewrite below to the last updated project *@
                 @if(p.equals(activeProjectList.last)) {

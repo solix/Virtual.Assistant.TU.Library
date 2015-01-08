@@ -1,14 +1,9 @@
-@(icon: String)
+@(icon: String, header: String)
 <div class="container-fluid ">
     <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-12 text-center">
-                        <i class="@icon"></i>
-                    </div>
-                </div>
-            </div>
+        <div class="col-lg-12" style="text-align: center; margin-top: 10px">
+            <i class="@icon" style="font-size: 30pt"> @header</i>
         </div>
     </div>
+    <hr class="hr" style="margin-top: 10px">
 </div>

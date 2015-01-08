@@ -1,4 +1,4 @@
-package provider.oauth2.TuDelft;
+package providers.TuDelft;
 
 import play.Application;
 import play.Logger;

@@ -1,4 +1,4 @@
-package provider.oauth2.TuDelft;
+package providers.TuDelft;
 
 import java.util.Collections;
 import java.util.HashMap;

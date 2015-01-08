@@ -17,14 +17,24 @@ public class ProjectData extends Controller {
      * This function creates a new Project initiated by a user that automatically becomes its owner.
      * @return
      */
+//<<<<<<< HEAD
     public static Result createProject(Long uid) {
+//=======
+
+//    public static Result createProject(String uid) {
+//>>>>>>> authorisation_mendeley
         User user = User.find.ref(uid);
+
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style vaildation");
+            return badRequest("The form had errors. Need to implement in-style validation");
         } else {
             Project projectData = filledProjectForm.get();
+//<<<<<<< HEAD
             Project.create(projectData.folder, projectData.name, user.id , "dummy must be implemenetd");
+//=======
+//            Project.create(projectData.folder, projectData.name, uid , "dummy must be implemenetd");
+//>>>>>>> authorisation_mendeley
             return redirect(routes.Application.project());
         }
     }

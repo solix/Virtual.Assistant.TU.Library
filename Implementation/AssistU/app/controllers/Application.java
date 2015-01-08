@@ -18,7 +18,6 @@ public class Application extends Controller {
      * @return
      */
     public static Result index() {
-
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         return ok(index.render("welcome name", user));
     }
@@ -30,10 +29,8 @@ public class Application extends Controller {
      */
     public static Result task() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        return ok(task.render("your tasks", user));}
-
-
+        return ok(task.render("your tasks", user));
+    }
 
     /**
      * Calendar page
@@ -41,8 +38,8 @@ public class Application extends Controller {
      */
     public static Result calendar() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        return ok(calendar.render("My Calendar", user));}
+        return ok(calendar.render("My Calendar", user));
+    }
 
     /**
      * TODO: Unify the plugin/regular style login
@@ -50,16 +47,16 @@ public class Application extends Controller {
      */
     public static Result project() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        return ok(project.render("My Projects", user.id, user));
+        return ok(project.render("My Projects", user));
     }
-    
+
     /**
      * suggestion page
      * @return
      */
     public static Result suggestions() {
-
-        return TODO;
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        return ok(suggestions.render("Suggestions", user));
     }
 
     /**
@@ -68,8 +65,7 @@ public class Application extends Controller {
      */
     public static Result discussion() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        return ok(discussion.render("gap", user));
+        return ok(discussion.render("My Discussions", user));
     }
 
 }

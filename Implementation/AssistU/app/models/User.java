@@ -21,9 +21,11 @@ public class User extends Model {
 
 
     @Id @GeneratedValue
-    public long id;
+    public Long id;
     public String email;
     public String name;
+    public String first_name;
+    public String last_name;
     public String password;
     public boolean emailValidated;
     public boolean active=false;

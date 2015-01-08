@@ -1,4 +1,4 @@
-@(title: String, uid: Long)(currentUser:User)
+@(title: String)(currentUser:User)
 @defining(Project.find.where().in("users", User.find.ref(uid))) { projectListQuery =>
 <html lang="en">
 <head>
@@ -6,9 +6,9 @@
 </head>
 <body>
 <div id="wrapper">
-    @dashboard(currentUser)
+    @dashboard("project", currentUser)
     <div id="page-wrapper">
-        @template.headericon("fa fa-line-chart fa-5x")
+        @template.headericon("fa fa-line-chart fa-5x", "Projects")
         <div class="row">
             <div class="col-xs-12" style="text-align: center; margin: 1% 0">
                 <div class="btn-group" role="group">
@@ -20,11 +20,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12" style="text-align: center; margin: 1% 5%">
-                @projects.projectNavBar(uid)
+            <div class="col-xs-12" style="text-align: center; margin: 1% 0">
+                @projects.projectNavBar(currentUser)
             </div>
         </div>
-        @projects.projectContent(uid)
+        @projects.projectContent(currentUser)
     </div>
 </div>
 <!-- /#wrapper -->
@@ -32,7 +32,7 @@
 @template.smallmodal("newProject")("success")("Create a new Project") {
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-            @helper.form(action = routes.ProjectData.createProject(uid)) {
+            @helper.form(action = routes.ProjectData.createProject(currentUser.id)) {
                 <div class="form-group">
                     <label for="validate-text">Folder Name</label>
                     <div class="input-group" data-validate="length" data-length="3">

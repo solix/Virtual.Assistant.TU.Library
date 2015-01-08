@@ -1,4 +1,4 @@
-package provider.oauth2.mendeley;
+package providers.mendeley;
 
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
 

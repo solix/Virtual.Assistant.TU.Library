@@ -1,4 +1,4 @@
-package provider.oauth2.TuDelft;
+package providers.TuDelft;
 
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
 

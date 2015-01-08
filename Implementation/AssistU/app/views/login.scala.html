@@ -91,11 +91,21 @@
                 <a class="btn btn-lg btn-social-icon btn-google-plus" href="@AuthProvider.Registry.get("google").getUrl()" title="Sign in with Google" rel="nofollow">
                     <i class="fa fa-google-plus"></i>
                 </a>
-                <a class="btn btn-lg btn-social-icon btn-twitter" href="@AuthProvider.Registry.get("netid").getUrl()" title="Sign in with TU Delft NetID" rel="nofollow">
+@*<<<<<<< HEAD*@
+                @*<a class="btn btn-lg btn-social-icon btn-twitter" href="@AuthProvider.Registry.get("netid").getUrl()" title="Sign in with TU Delft NetID" rel="nofollow">*@
+                    @*<i class="fa fa-twitter"></i>*@
+                @*</a>*@
+                @*<a class="btn btn-lg btn-social-icon btn-facebook" href="@AuthProvider.Registry.get("mendeley").getUrl()" title="Sign in with Mendeley" rel="nofollow">*@
+                    @*<i class="fa fa-facebook"></i>*@
+@*=======*@
+
+                <a class="btn btn-lg btn-social-icon btn-twitter" href="/signin/twitter/?next=%2F" title="Sign in with Twitter" rel="nofollow">
                     <i class="fa fa-twitter"></i>
                 </a>
-                <a class="btn btn-lg btn-social-icon btn-facebook" href="@AuthProvider.Registry.get("mendeley").getUrl()" title="Sign in with Mendeley" rel="nofollow">
-                    <i class="fa fa-facebook"></i>
+
+                <a class="btn btn-lg btn-social-icon btn-google-plus" href="@AuthProvider.Registry.get("mendeley").getUrl()" title="Sign in with Mendeley" rel="nofollow">
+                    <i class="fa fa-google-plus"></i>
+@*>>>>>>> authorisation_mendeley*@
                 </a>
           </div>
 <hr>
