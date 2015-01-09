@@ -33,6 +33,7 @@ public class User extends Model {
     public String password;
     public boolean emailValidated;
     public boolean active=false;
+    public boolean mendeleyConnected=false;
 
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -208,7 +209,7 @@ public class User extends Model {
         }
 
         if(authUser instanceof MendeleyAuthUser){
-
+            user.mendeleyConnected=true;
         }
 
         user.save();

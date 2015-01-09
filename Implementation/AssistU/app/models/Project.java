@@ -62,12 +62,7 @@ public class Project extends Model {
      * @param
      * @return
      */
-//<<<<<<< HEAD
     public static Project create(String folder, String name,  Long owner ,String description){
-//=======
-//    public static Project create(String folder, String name,  String owner ,String description){
-//        Logger.debug("CREATE: " + folder + ", " + name + ", " + owner + ", " + description);
-//>>>>>>> authorisation_mendeley
         Project project = new Project(folder, name ,User.find.ref(owner),description);
         project.active=true;
         project.save();

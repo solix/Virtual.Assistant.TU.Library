@@ -13,7 +13,7 @@
                             <i class="fa fa-cogs fa-fw"></i> <u class="hidden-xs">Settings</u><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
-                            <li><a href="#" data-toggle="modal" data-target="#editProject@p.id"><i class="fa fa-pencil fa-fw"></i> Edit project details...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#editProject@p.id"><i class="fa fa-pencil fa-fw"></i> Edit project_old details...</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#projectMemberList@p.id"><i class="fa fa-clipboard fa-fw"></i> List of members...</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#projectMemberList@p.id"><i class="fa fa-comment fa-fw"></i> Start a discussion...</a></li>
                             <li class="divider"></li>
@@ -24,7 +24,7 @@
                             <li class="divider"></li>
                             @*TODO: make if statement, and change to "Archive Project" if the user is the single owner*@
                             <li><a href="#" data-toggle="modal" data-target="#archiveProject@p.id"><i class="fa fa-archive fa-fw"></i> Archive Project</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#leaveProject@p.id"><i class="fa fa-sign-out fa-fw"></i> Leave project</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#leaveProject@p.id"><i class="fa fa-sign-out fa-fw"></i> Leave project_old</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -159,7 +159,7 @@
 @template.smallmodal("addReviewerToProject"+p.id.toString)("info")("Add a Reviewer to "+p.name) {<p>Form with email address</p>}
 @*Archive Project Confirmation Modal*@
 @template.smallmodal("archiveProject"+p.id.toString)("danger")("Request to archive "+p.name) {
-    <p>Are you sure you want to archive project @p.name, and all of its files?</p>
+    <p>Are you sure you want to archive project_old @p.name, and all of its files?</p>
     <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
         <div class="btn-group" role="group">
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
@@ -171,7 +171,7 @@
 }
 @*Leave Project Confirmation Modal*@
 @template.smallmodal("leaveProject"+p.id.toString)("danger")("Leaving "+p.name) {
-    <p>Are you sure you want to leave project @p.name?</p>
+    <p>Are you sure you want to leave project_old @p.name?</p>
     <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
         <div class="btn-group" role="group">
             <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>

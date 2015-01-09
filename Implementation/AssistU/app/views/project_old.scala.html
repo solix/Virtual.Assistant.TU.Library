@@ -1,0 +1,102 @@
+@(title: String)(currentUser:User)
+@defining(Project.find.where().in("users", currentUser)) { projectListQuery =>
+<html lang="en">
+<head>
+    @linkLoader.headlinks(title)
+</head>
+<body>
+<div id="wrapper">
+    @dashboard("project_old", currentUser)
+    <div id="page-wrapper">
+        @template.headericon("fa fa-line-chart fa-5x")
+        <div class="row">
+            <div class="col-xs-12" style="text-align: center; margin: 1% 0">
+                <div class="btn-group" role="group">
+                    <button style="width: 190px" type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">Create a new project_old</button>
+                    <button style="width: 190px" type="button" class="btn btn-default"
+                    data-toggle="modal" data-target="#archivedProjectList"
+                    @if(projectListQuery.eq("active", false).findList().isEmpty){disabled}>Archived projects</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" style="text-align: center; margin: 1% 0">
+                @projects.projectNavBar(currentUser)
+            </div>
+        </div>
+        @projects.projectContent(currentUser)
+    </div>
+</div>
+<!-- /#wrapper -->
+@*Modal for the creation of a new Project*@
+@template.smallmodal("newProject")("success")("Create a new Project") {
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+            @helper.form(action = routes.ProjectData.createProject(currentUser.id)) {
+                <div class="form-group">
+                    <label for="validate-text">Folder Name</label>
+                    <div class="input-group" data-validate="length" data-length="3">
+                        <input type="text" class="form-control" name="folder" id="validate-text" placeholder="Required" required>
+                        <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                    </div>
+                    <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
+                </div>
+                <div class="form-group">
+                    <label for="validate-text">Project Name</label>
+                    <div class="input-group" data-validate="length" data-length="3">
+                        <input type="text" class="form-control" name="name" id="validate-text" placeholder="Required" required>
+                        <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                    </div>
+                    <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
+                </div>
+                <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                    <button type="submit" class="btn btn-success col-xs-12" disabled>Create!</button>
+                </div>
+                <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                    <button type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+}
+@*Member List Modal*@
+@template.mediummodal("archivedProjectList")("info")("List of Archived Projects") {
+        <!-- Table -->
+    <table class="table" style="table-layout: fixed">
+        <thead>
+            <tr>
+                <th>Folder Name</th>
+                <th>Project Name</th>
+                <th>Date Archived</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @projectListQuery.eq("active", false).findList().map{ p =>
+            <tr>
+                <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.folder</td>
+                <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.name</td>
+                <td><span class="text-muted small">00-00-00</span></td>
+                <td>N/A</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+        <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+
+        <!-- Form Validation Icons -->
+    <script src="@routes.Assets.at("javascripts/formValidationSetup.js")"></script>
+
+        <!--bootstrap-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+        <!--sb-Admin-->
+    <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+
+    <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+</body>
+</html>
+}

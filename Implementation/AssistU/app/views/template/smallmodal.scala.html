@@ -1,13 +1,13 @@
 @(id: String)(theme: String)(title: String)(content: Html)
 
 <div class="modal fade" id="@id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-content" style="margin:8% 15%">
+    <div class="modal-content" style="width: 400px; margin:10% auto">
         <div class="panel panel-@theme">
             <div class="panel-heading" style="text-align: center">
                 <strong>@title</strong>
             </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="margin: 0 20px">
         @content
         </div>
     </div>
