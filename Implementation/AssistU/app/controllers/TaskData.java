@@ -39,6 +39,15 @@ public class TaskData extends Controller {
 
     }
 
+    public static Result doneTask(long id){
+
+        Task t = Task.find.byId(id);
+        t.done=true;
+
+        return redirect(controllers.routes.Application.task());
+
+    }
+
 
 
 }
