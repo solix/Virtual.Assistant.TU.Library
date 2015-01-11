@@ -23,60 +23,68 @@ public class ProjectTest extends WithApplication {
     }
 
     @Test
-    public void createAndArchiveProject(){
-        Project.create("Thesis", "first thesis", "ah@gmail.com", "nanana");
-        Project T = Project.find.where().eq("folder" , "Thesis").findUnique();
-        assertNotNull(T);
-        assertEquals("Thesis" , T.folder);
-        assertEquals("first thesis" , T.name);
-        assertEquals(true , T.users.contains(User.find.byId("ah@gmail.com")));
-        Application.archiveProject("ah@gmail.com", T.id);
-        Project Td = Project.find.where().eq("folder" , "Thesis").findUnique();
-        assertEquals(Td.active, false);
+    public void createProjectTest(){
+        User user = User.create("testuser", "testuser@test.nl", "test");
+        Project.create("testfolder", "testname", user.id, "testdescription");
+        Project testproject = Project.find.where().eq("folder" , "testfolder").findUnique();
+        assertNotNull(testproject);
+        assertEquals("testfolder" , testproject.folder);
+        assertEquals("testname" , testproject.name);
+        assertEquals(true, testproject.users.contains(User.find.byId(user.id)));
     }
 
     @Test
-    public void createAndEditProject(){
-        Project.create("Thesis", "first thesis", "ah@gmail.com", "hahaha");
-        Project T = Project.find.where().eq("folder" , "Thesis").findUnique();
-        assertNotNull(T);
-        assertEquals("Thesis" , T.folder);
-        Project.edit(T.id, "Report", "first thesis");
-        Project Tu = Project.find.where().eq("name" , "first thesis").findUnique();
-        assertEquals(Tu.folder, "Report");
-        assertEquals("Report", Project.find.byId(T.id).folder);
-        assertTrue(Project.find.where().eq("folder", "Report").findUnique().users.contains(User.find.byId("ah@gmail.com")));
+    public void editProjectTest(){
+        User user = User.create("testuser", "testuser@test.nl", "test");
+        Project.create("testfolder", "testname", user.id, "testdescription");
+        Project testproject = Project.find.where().eq("folder" , "testfolder").findUnique();
+        Project.edit(testproject.id, "edittestfolder", "edittestname");
+        testproject = Project.find.byId(testproject.id);
+        assertNotNull(testproject);
+        assertEquals("edittestfolder" , testproject.folder);
+        assertEquals("edittestname" , testproject.name);
+        assertEquals(true , testproject.users.contains(User.find.byId(user.id)));
     }
 
-    /**
-     * User Arnaud (arnaud@assistu.nl) creates a new project called "Thesis", invites Soheil (soheil@assistu.nl), and then leaves it himself
-     * Now Soheil is the only member of the project
-     */
     @Test
-    public void projectScene1(){
-        Project thesis = Project.create("Thesis", "Final Thesis", "ah@gmail.com", "booboo");
-        assertEquals(thesis.name, "Final Thesis");
-        Project.addMemberAs(thesis.id, "soli@gmail.com");
-        Application.removeMemberFromProject(thesis.id, "ah@gmail.com");
-        //TODO: You need to reinstantiate the same project again, if you don't the test will fail, need to find out whether this is a bug or expected behaviour
-        Project updated = Project.find.byId(thesis.id);
-        assertFalse(updated.users.contains(User.find.byId("ah@gmail.com")));
-        assertTrue(updated.users.contains(User.find.byId("soli@gmail.com")));
-        assertTrue(updated.users.size() == 1);
+    public void archiveProjectTest() {
+        User user = User.create("testuser", "testuser@test.nl", "test");
+        Project.create("testfolder", "testname", user.id, "testdescription");
+        Project testproject = Project.find.where().eq("folder", "testfolder").findUnique();
+        Project.archive(testproject.id);
+        testproject = Project.find.byId(testproject.id);
+        assertNotNull(testproject);
+        assertEquals(false, testproject.active);
     }
 
-    /**
-     * find involving in the projects
-     */
-//    @Test
-//    public void findProjectsinvolvingTest(){
-//        new User("tom@gmail.com" , "apple").save();
-//        new User("kim@yahoo.com" , "candy").save();
+    @Test
+    public void addMemberAsTest() {
+        User user1 = User.create("testuser1", "testuser1@test.nl", "test");
+        User user2 = User.create("testuser2", "testuser2@test.nl", "test");
+        Project.create("testfolder", "testname", user1.id, "testdescription");
+        Project testproject = Project.find.where().eq("folder", "testfolder").findUnique();
+        Project.addMemberAs(testproject.id, user2.id);
+        testproject = Project.find.byId(testproject.id);
+        assertNotNull(testproject);
+        assertEquals(true , testproject.users.contains(User.find.byId(user1.id)));
+        assertEquals(true , testproject.users.contains(User.find.byId(user2.id)));
+    }
 
-       // Project.create("science article" , "")
-
-
-//    }
-
-
+    @Test
+    public void removeMemberFromTest() {
+        User user1 = User.create("testuser1", "testuser1@test.nl", "test");
+        User user2 = User.create("testuser2", "testuser2@test.nl", "test");
+        Project.create("testfolder", "testname", user1.id, "testdescription");
+        Project testproject = Project.find.where().eq("folder", "testfolder").findUnique();
+        Project.addMemberAs(testproject.id, user2.id);
+        testproject = Project.find.byId(testproject.id);
+        assertNotNull(testproject);
+        assertEquals(true, testproject.users.contains(User.find.byId(user1.id)));
+        assertEquals(true, testproject.users.contains(User.find.byId(user2.id)));
+        Project.removeMemberFrom(testproject.id, user2.id);
+        testproject = Project.find.byId(testproject.id);
+        assertNotNull(testproject);
+        assertEquals(true, testproject.users.contains(User.find.byId(user1.id)));
+        assertEquals(false, testproject.users.contains(User.find.byId(user2.id)));
+    }
 }

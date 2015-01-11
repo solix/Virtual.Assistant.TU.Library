@@ -14,13 +14,13 @@ public class UserTest extends WithApplication {
         start(fakeApplication(inMemoryDatabase()));
     }
 
-    @Test
-    public void createUser() {
-        Application.("admin@AssisTU.nl","secret");
-        User solix = User.find.where().eq("email", "admin@AssisTU.nl").findUnique();
-        assertNotNull(solix);
-        assertEquals("solix", solix.email);
-    }
+//    @Test
+//    public void createUser() {
+//        Application.("admin@AssisTU.nl","secret");
+//        User solix = User.find.where().eq("email", "admin@AssisTU.nl").findUnique();
+//        assertNotNull(solix);
+//        assertEquals("solix", solix.email);
+//    }
 //
 //    @Test
 //    public void authenticateTest(){
