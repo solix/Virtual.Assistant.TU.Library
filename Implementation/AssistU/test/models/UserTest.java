@@ -14,6 +14,13 @@ public class UserTest extends WithApplication {
         start(fakeApplication(inMemoryDatabase()));
     }
 
+    @Test
+    public void createUserTest(){
+        User user = User.create("testuser", "testuser@test.nl", "test");
+        assertNotNull(user);
+        assertEquals("testuser" , user.name);
+        assertEquals("testuser@test.nl" , user.email);
+    }
 //    @Test
 //    public void createUser() {
 //        Application.("admin@AssisTU.nl","secret");

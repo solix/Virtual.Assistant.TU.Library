@@ -32,7 +32,7 @@ public class UserService extends UserServicePlugin {
      * @return
      */
     @Override
-    public User save(final AuthUser authUser) {
+    public Object save(final AuthUser authUser) {
         final boolean isLinked = User.existsByAuthUserIdentity(authUser);
         if(!isLinked){
             return User.createAuthUser(authUser);
