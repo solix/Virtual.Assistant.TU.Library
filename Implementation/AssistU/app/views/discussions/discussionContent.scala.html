@@ -1,0 +1,33 @@
+@(currentUser: User)
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+    <div class="tab-content">
+    @for(p <- activeProjectList){
+        @if(p.equals(activeProjectList.last)){
+            <div class="tab-pane fade in active" id="discussion@p.id">
+            } else {
+            <div class="tab-pane fade" id="discussion@p.id">
+            }
+                <div class="container-fluid" style="margin-top: 10px">
+                    <div ng-app="sseChat">
+                        <div ng-controller="ChatCtrl">
+                            <div id="chat">
+                                <div class="{{msg.who}} msg" ng-repeat="msg in msgs | limitTo:-4">
+                                @*ng-class="msg.user === 'Juliet' ? 'juliet' : msg.user !== user ? 'others' : ''">*@
+                                    <label style="font-size: 8pt; font-family: Arial; color: darkgray;">{{msg.time}}</label><br/>
+                                    <strong>{{msg.user}} says: </strong>{{msg.text}}<br/>
+                                </div>
+                            </div>
+                            <div id="footer">
+                                <form ng-submit="submitMsg()" ng-user="@currentUser.name">
+                                    <input type="text" name="chat" id="textField" ng-model="inputText"
+                                    placeholder="Comment..." class="ng-pristine ng-valid input-block-level" />
+                                    <input type="button" class="btn btn-primary" id="saySomething" value="Submit" ng-click="submitMsg()" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+    </div>
+}

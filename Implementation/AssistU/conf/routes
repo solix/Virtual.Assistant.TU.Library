@@ -10,7 +10,7 @@ GET         /task                                  controllers.Application.task(
 POST        /task/new                              controllers.TaskData.addTask()
 GET         /task/get                              controllers.TaskData.getTasks()
 GET         /task/delete/:tid                      controllers.TaskData.deleteTask(tid: Long)
-GET         /task/done/:tid                      controllers.TaskData.doneTask(tid: Long)
+GET         /task/done/:tid                        controllers.TaskData.doneTask(tid: Long)
 
 
 #login
@@ -35,13 +35,16 @@ GET         /project/:pid/removeMember/:uid        controllers.ProjectData.remov
 POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
 GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
 
+#discussion
+GET         /discussion                            controllers.Application.discussion()
+GET         /chatFeed/:room                        controllers.ChatData.chatFeed(room: String)
+POST        /chat                                  controllers.ChatData.postMessage
 
 #Suggestions
 GET         /suggestions                           controllers.Application.suggestions()
 GET         /suggestions/:subject                  controllers.SuggestionData.suggestion(subject: String)
 
-#inbox
-GET         /discussion                            controllers.Application.discussion()
+
 
 
 
