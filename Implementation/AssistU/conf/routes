@@ -7,6 +7,11 @@ GET         /                                      controllers.Application.index
 
 #task
 GET         /task                                  controllers.Application.task()
+POST        /task/new                              controllers.TaskData.addTask()
+GET         /task/get                              controllers.TaskData.getTasks()
+GET         /task/delete/:tid                      controllers.TaskData.deleteTask(tid: Long)
+GET         /task/done/:tid                      controllers.TaskData.doneTask(tid: Long)
+
 
 #login
 GET         /login                                 controllers.Authentication.login()

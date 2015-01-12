@@ -1,47 +1,74 @@
-@(title: String)(currentUser :User)
-
+@(title: String)(currentUser :User, tasks: List[Task])
+@import helper._
+@import helper.twitterBootstrap
 <html>
 <head>
     @linkLoader.headlinks(title)
-    <!-- loading Full calendar stylesheet -->
-    <link href="@routes.Assets.at("css/task.css")" rel="stylesheet">
+    <!-- loading task stylesheet(s)& script(s) -->
+    <link href="@routes.Assets.at("css/datepicker.css")" rel="stylesheet">
 
-
+        <!-- jQuery -->
+    <script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+    <script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery-ui.min.js"))'></script>
+    <script src='@routes.Assets.at("javascripts/sortable.js")'></script>
+    <script src='@routes.Assets.at("javascripts/bootstrap-datepicker.js")'></script>
+    <script>
+    $(document).ready(function() {
+    $('#datepicker').datepicker();})
+    </script>
 </head>
 <body>
 <div id="wrapper">
-@dashboard("task", currentUser)
-</div>
-
-<div id="page-wrapper">
-    <!-- Header Icon puts an icon on top the page using font awsome -->
-    <div class="container-fluid "> 
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <i class="fa fa-wrench fa-5x"></i>
+    @dashboard("task", currentUser)
+    <div id="page-wrapper">
+        @template.headericon("fa fa-wrench fa-5x")
+        @form(action = routes.TaskData.addTask()){
+            <fieldset>
+                <div class="col-sm-8 col-sm-offset-2">
+                    <span class="input-group-btn">
+                        <div id="main_input_box">
+                            <div class="input-group input-group-lg">
+                                <input  type= "text" class="form-control input" id="custom_textbox" name="name" autofocus="autofocus" placeholder="What needs to be done?" />
+                                <div class="input-group-btn">
+                                <a class="btn btn-default">
+                                    <div class="input-append date" id="datepicker" data-date="today" data-date-format="dd-mm-yyyy">
+                                        <span class="add-on"><i class="fa fa-calendar fa-fw"></i></span>
+                                    </div>
+                                </a>
+                                <button id= "addTaskButton" type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>                        
-            </div>
-        </div>  
-    </div> 
-    <!-- /#header icon --> 
+                    </span>
+                </div>
+            </fieldset>
+        }
 
+       <div class="col-sm-12 steps">
+           <ul id="sortable" class="list-group" >
+            @for(t <- tasks){
+                @if(t.done != true) {
+                    <li class="list-group-item">
+                        @t.name
+                        <span class="pull-right">
+                            <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
+                            <a class="btn btn-success" href="@routes.TaskData.doneTask(t.id)" ><i class="fa fa-check "></i></a>
+                        </span>
+                    </li>
+                }
+            }
+            </ul>
+       </div>
+    </div>
 
-@tasks.taskform()
-</div>
-
-<!-- jQuery -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 <!--bootstrap-->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <!--sb-Admin-->
 <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
-
 <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+
+
 
 </body>
 </html>

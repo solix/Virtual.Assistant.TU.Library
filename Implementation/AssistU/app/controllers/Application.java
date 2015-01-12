@@ -8,6 +8,7 @@ import com.feth.play.module.pa.user.AuthUser;
 import com.feth.play.module.pa.user.AuthUserIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 
+import java.util.List;
 
 
 public class Application extends Controller {
@@ -31,12 +32,23 @@ public class Application extends Controller {
      * @return
      */
     public static Result task() {
+//<<<<<<< HEAD
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(task.render("My tasks", user));
-        else
+        if(user != null) {
+            List<Task> tasks = Task.find.all();
+            return ok(task.render("My tasks", user, tasks));
+        }else
             return Authentication.login();
     }
+//=======
+
+
+//        return ok(task.render("Task List",tasks));
+
+//    }
+
+
+//>>>>>>> task
 
     /**
      * Calendar page
