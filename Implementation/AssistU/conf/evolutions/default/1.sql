@@ -47,6 +47,7 @@ create table user (
   password                  varchar(255),
   email_validated           boolean,
   active                    boolean,
+  mendeley_connected        boolean,
   constraint pk_user primary key (id))
 ;
 
