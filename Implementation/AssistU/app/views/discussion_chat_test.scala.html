@@ -1,0 +1,106 @@
+@(title: String)(currentUser:User)
+
+<html lang="en">
+    <head>
+        @linkLoader.headlinks(title)
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/chat-TBD.css")">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
+    <script type="text/javascript">
+        'use strict';
+
+        /** app level module which depends on services and controllers */
+        angular.module('sseChat', ['sseChat.services', 'sseChat.controllers']);
+    </script>
+    <script type="text/javascript">
+        'use strict';
+
+        /** chatModel service, provides chat rooms (could as well be loaded from server) */
+        angular.module('sseChat.services', []).service('chatModel', function () {
+            var getRooms = function () {
+                return [ {name: 'Project 1', value: '1'}, {name: 'Virtual Assistant', value: '2'}];
+        };
+        return { getRooms: getRooms };
+        });
+    </script>
+    <script type="text/javascript">
+        'use strict';
+
+        /** Controllers */
+        angular.module('sseChat.controllers', ['sseChat.services']).
+        controller('ChatCtrl', function ($scope, $http, chatModel) {
+            $scope.rooms = chatModel.getRooms();
+            $scope.msgs = [];
+            $scope.inputText = "";
+            $scope.currentRoom = $scope.rooms[1];
+
+        /** change current room, restart EventSource connection */
+        $scope.setCurrentRoom = function (room) {
+        $scope.currentRoom = room;
+        $scope.chatFeed.close();
+        $scope.msgs = [];
+        $scope.listen();
+        };
+
+        /** posting chat text to server */
+        $scope.submitMsg = function () {
+        $http.post("/chat", { text: $scope.inputText, user: $scope.user,
+        time: (new Date()).toUTCString(), room: $scope.currentRoom.value });
+        $scope.inputText = "";
+        };
+
+        /** handle incoming messages: add to messages array */
+        $scope.addMsg = function (msg) {
+        $scope.$apply(function () { $scope.msgs.push(JSON.parse(msg.data)); });
+        };
+
+        /** start listening on messages from selected room */
+        $scope.listen = function () {
+        $scope.chatFeed = new EventSource("/chatFeed/" + $scope.currentRoom.value);
+        $scope.chatFeed.addEventListener("message", $scope.addMsg, false);
+        };
+
+        $scope.listen();
+        });
+    </script>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            @dashboard("discussion", currentUser)
+            <div id="page-wrapper">
+                <div ng-app="sseChat">
+                    <div ng-controller="ChatCtrl">
+                        <div id="header">
+                            <select ng-model="currentRoom" ng-change="setCurrentRoom(currentRoom)"
+                            ng-options="r.name for r in rooms" id="roomSelect"></select>
+                        </div>
+                        <div id="chat">
+                            <div class="{{msg.who}} msg" ng-repeat="msg in msgs | limitTo:-4">
+                                {{msg.time}}<br/>
+                                <strong>{{msg.user}} says: </strong>{{msg.text}}<br/>
+                            </div>
+                        </div>
+                        <div id="footer">
+                            <form ng-submit="submitMsg()">
+                                <input type="text" name="chat" id="textField" ng-model="inputText"
+                                placeholder="Comment..." class="ng-pristine ng-valid input-block-level" />
+                                <input ng-bind="user='@currentUser.name'" type="button" class="btn btn-primary" id="saySomething" value="Submit" ng-click="submitMsg()" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- jQuery -->
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+
+                <!--bootstrap-->
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+                <!--sb-Admin-->
+            <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+
+
+            <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+
+
+    </body>

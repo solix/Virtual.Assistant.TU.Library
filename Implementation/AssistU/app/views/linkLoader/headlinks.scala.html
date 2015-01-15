@@ -62,29 +62,29 @@
         <!--Tag Cloud CSS-->
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/jqcloud.css")">
 
-        <script type="text/javascript">
-        /*!
-         * Create an array of word objects, each representing a word in the cloud
-         */
-        //        TODO: The random number generators and subset is only for presentation purposes, for production mode the weights need to be
-        //        stored and retrieved from a static list
-                @defining("Lorem ipsum dolor sit amet consectetur adipiscing elit Fusce lobortis nulla venenatis egestas varius nisl sem tincidunt risus quis tempor mauris mauris non tellus Vestibulum consectetur auctor nunc non fringilla dolor feugiat sed Ut ut bibendum ex ut ultrices dui Class aptent taciti sociosqu ad litora torquent per conubia nostra per inceptos himenaeos Etiam quis erat sit amet libero porttitor scelerisque sed a ligula Proin nec massa eu lacus tempor maximus ac vel dui Donec quam suscipit dapibus elit nec viverra magna Praesent vestibulum elementum augue quis condimentum Nam fringilla ante a bibendum varius Aliquam fringilla lacus ultrices ipsum laoreet lacinia Duis non lectus eget metus tempor feugiat sed ut est Donec vestibulum et mauris ac consectetur sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus Phasellus et neque in ante ultrices consequat in elit volutpat tincidunt lectus et semper dui Cras quis consectetur eros Sed erat dui porttitor ut massa id condimentum tincidunt odio Sed augue justo aliquet eu elit a commodo pellentesque lectus Suspendisse molestie iaculis mattis".split(" ")) { words =>
-                var word_array = [
-                        @defining(words.slice(0 , scala.util.Random.nextInt(words.length))){ subset =>
-                                @for(word <- subset) {
-                                        @if(!word.equals(words.last)) {
-                                                { text: "@word", weight: @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" },
-                                        } else {
-                                                { text: "@word", weight: @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" }
-                                        }
-                                }
-                        }
-                ];
-                }
-
-
-        $(function() {
-        // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
-        $("#tag_cloud").jQCloud(word_array);
-        });
-        </script>
+        @*<script type="text/javascript">*@
+        @*/*!*@
+         @** Create an array of word objects, each representing a word in the cloud*@
+         @**/*@
+        @*//        TODO: The random number generators and subset is only for presentation purposes, for production mode the weights need to be*@
+        @*//        stored and retrieved from a static list*@
+@*//                defining("Lorem ipsum dolor sit amet consectetur adipiscing elit Fusce lobortis nulla venenatis egestas varius nisl sem tincidunt risus quis tempor mauris mauris non tellus Vestibulum consectetur auctor nunc non fringilla dolor feugiat sed Ut ut bibendum ex ut ultrices dui Class aptent taciti sociosqu ad litora torquent per conubia nostra per inceptos himenaeos Etiam quis erat sit amet libero porttitor scelerisque sed a ligula Proin nec massa eu lacus tempor maximus ac vel dui Donec quam suscipit dapibus elit nec viverra magna Praesent vestibulum elementum augue quis condimentum Nam fringilla ante a bibendum varius Aliquam fringilla lacus ultrices ipsum laoreet lacinia Duis non lectus eget metus tempor feugiat sed ut est Donec vestibulum et mauris ac consectetur sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus Phasellus et neque in ante ultrices consequat in elit volutpat tincidunt lectus et semper dui Cras quis consectetur eros Sed erat dui porttitor ut massa id condimentum tincidunt odio Sed augue justo aliquet eu elit a commodo pellentesque lectus Suspendisse molestie iaculis mattis".split(" ")) { words =>*@
+                @*var word_array = [*@
+@*//                        defining(words.slice(0 , scala.util.Random.nextInt(words.length))){ subset =>*@
+@*//                                for(word <- subset) {*@
+@*//                                        if(!word.equals(words.last)) {*@
+                                                @*{ text: "@word", weight: @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" },*@
+@*//                                        } else {*@
+                                                @*{ text: "@word", weight: @scala.util.Random.nextInt(100) + 1, link : "http://tulib.tudelft.nl/" }*@
+@*//                                        }*@
+@*//                                }*@
+@*//                        }*@
+                @*];*@
+@*//                }*@
+@*//*@
+@**@
+        @*$(function() {*@
+        @*// When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.*@
+        @*$("#tag_cloud").jQCloud(word_array);*@
+        @*});*@
+        @*</script>*@

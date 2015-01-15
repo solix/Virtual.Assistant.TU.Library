@@ -1,4 +1,4 @@
-@(currentUser: User, subject: String)
+@(currentUser: User)
 @defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
     <div class="container-fluid" style="text-align: center; margin: 1% 0">
         <div role="tabpanel">
@@ -6,9 +6,9 @@
                 @for(p <- activeProjectList) {
                     @* TODO: Rewrite below to the last updated project *@
                     @if(p.equals(activeProjectList.last)) {
-                        <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap"><a href="#@subject@p.id" data-toggle="tab">@p.folder</a></li>
+                        <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap"><a href="#project@p.id" data-toggle="tab">@p.folder</a></li>
                     } else {
-                        <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis"><a href="#@subject@p.id" data-toggle="tab">@p.folder</a></li>
+                        <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis"><a href="#project@p.id" data-toggle="tab">@p.folder</a></li>
                     }
                 }
             </ul>
