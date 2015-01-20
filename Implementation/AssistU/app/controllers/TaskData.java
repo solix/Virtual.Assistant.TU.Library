@@ -43,6 +43,17 @@ public class TaskData extends Controller {
 
         Task t = Task.find.byId(id);
         t.done=true;
+        t.save();
+
+        return redirect(controllers.routes.Application.task());
+
+    }
+
+    public static Result undoTask(long id){
+
+        Task t = Task.find.byId(id);
+        t.done=false;
+        t.save();
 
         return redirect(controllers.routes.Application.task());
 
