@@ -1,4 +1,4 @@
-@(title: String)(currentUser :User, tasks: List[Task])
+@(title: String)(currentUser :User, tasks: List[Task], taskform: Form[Task])
 @import helper._
 @import helper.twitterBootstrap
 <html>
@@ -23,22 +23,7 @@
             <div id="page-wrapper">
                 @template.headericon("fa fa-wrench fa-5x")
 
-
-
-
-                @*here the form for adding new task is provided*@
-
-                @*<div class="col-sm-8 col-sm-offset-2">*@
-                @*<span class="input-group-btn">*@
-                @*<div id="main_input_box">*@
-                @*<div class="input-group input-group-lg">*@
-                @*<input  type= "text" class="form-control input" id="custom_textbox" name="name" autofocus="autofocus" placeholder="What needs to be done?" />*@
                 <div class="input-group-btn text-center">
-                    @*<a class="btn btn-default">*@
-                    @*<div class="input-append date" id="datepicker" data-date="today" data-date-format="dd-mm-yyyy">*@
-                    @*<span class="add-on"><i class="fa fa-calendar fa-fw"></i></span>*@
-                    @*</div>*@
-                    @*</a>*@
                     <button  type="button" class="btn btn-success btn-lg" data-toggle="collapse" data-target="#taskform" aria-expanded="false" aria-controls="taskform"><i class="glyphicon glyphicon-plus"></i></button>
 
                 </div>
@@ -53,10 +38,10 @@
                             <input  type= "text" class="form-control input" id="todo_textbox" name="name" autofocus="autofocus" placeholder="what todo?" />
 
                         </div>
-                        <div class="input-append date form-group-sm" id="datepicker" data-date="today" data-date-format="dd-mm-yyyy">
+                        <div class="input-append date form-group-sm" id="datepicker" data-date="12-12-2014" data-date-format="dd-mm-yyyy">
 
-                            <input value="add due date"   id="txt" class="form-control input">
-                            <span class="add-on fa fa-calendar fa-fw "></span>
+                            <input type="text" size="16" name="dueDate" value="12-12-2014"   id="txt" class="form-control input" readonly>
+                            <span class="add-on"><i class="fa fa-calendar fa-2x"></i></span>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary col-xs-2">Save</button>
@@ -74,17 +59,6 @@
                 </div>
 
 
-                @*</span>*@
-                @*</div>*@
-
-
-
-
-
-
-
-
-
                 <div class="col-sm-12 steps">
                     <h2 class=" text-center">TO DO(s)</h2>
                     <ul id="sortable" class="list-group" >
@@ -95,8 +69,8 @@
                                 @t.name
 
                                 <span class="pull-right">
-                                    <a class="btn btn-default" href="#"><i class="fa fa-clock-o "></i></a>
-                                    <a class="btn btn-default" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
+                                    <button type="text"   class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="left" title="task due on: @t.dueDate"><i class="fa fa-clock-o "></i></button>
+                                    <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
                                     <a class="btn btn-success" href="@routes.TaskData.doneTask(t.id)" ><i class="fa fa-check "></i></a>
                                 </span>
 
@@ -118,9 +92,9 @@
                                 @t.name
 
                                 <span class="pull-right">
-                                    <a class="btn` btn-default" href="#"><i class="fa fa-clock-o "></i></a>
-                                    <a class="btn btn-default" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
-                                    <a class="btn btn-danger" href="@routes.TaskData.undoTask(t.id)" ><i class="fa fa-close "></i></a>
+                                    <button type="text"   class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="left" title="task due on: @t.dueDate"><i class="fa fa-clock-o "></i></button>
+                                    <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
+                                    <a class="btn btn-warning" href="@routes.TaskData.undoTask(t.id)" ><i class="fa fa-refresh "></i></a>
                                 </span>
 
                             </li>

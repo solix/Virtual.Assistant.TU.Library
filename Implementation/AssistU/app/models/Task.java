@@ -18,8 +18,8 @@ public class Task extends Model {
     public long id;
     @Constraints.Required
     public String name;
-    @Formats.DateTime(pattern="dd/MM/yyyy")
-    public Date dueDate = new Date();
+    @Formats.DateTime(pattern="dd-MM-yyyy")
+    public Date dueDate;
 
     public boolean done=false;
 
