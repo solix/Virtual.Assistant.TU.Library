@@ -32,7 +32,6 @@ public class Application extends Controller {
      * @return
      */
     public static Result task() {
-//<<<<<<< HEAD
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             List<Task> tasks = Task.find.all();
@@ -40,15 +39,11 @@ public class Application extends Controller {
         }else
             return Authentication.login();
     }
-//=======
 
 
-//        return ok(task.render("Task List",tasks));
-
-//    }
 
 
-//>>>>>>> task
+
 
     /**
      * Calendar page

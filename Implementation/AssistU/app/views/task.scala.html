@@ -1,4 +1,4 @@
-@(title: String)(currentUser :User, tasks: List[Task],taskform: Form[Task])
+@(title: String)(currentUser :User, tasks: List[Task])
 @import helper._
 @import helper.twitterBootstrap
 <html>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="input-append date form-group-sm" id="datepicker" data-date="today" data-date-format="dd-mm-yyyy">
 
-                            <input value="add due date" id="txt" class="form-control input">
+                            <input value="add due date"   id="txt" class="form-control input">
                             <span class="add-on fa fa-calendar fa-fw "></span>
                         </div>
                         <div class="form-group">
