@@ -31,24 +31,30 @@
                 <div class="collapse" id="taskform">
 
                 @form(action = routes.TaskData.addTask()){
-                    <fieldset class="col-sm-12">
 
                         <div class="form-group">
                             <label for="todo_textbox" class="control-label">Name</label>
                             <input  type= "text" class="form-control input" id="todo_textbox" name="name" autofocus="autofocus" placeholder="what todo?" />
 
                         </div>
-                        <div class="input-append date form-group-sm" id="datepicker" data-date="12-12-2014" data-date-format="dd-mm-yyyy">
+                    <div class="raw">
+                        <div class="col-xs-12 col-lg-8">
 
-                            <input type="text" size="16" name="dueDate" value="12-12-2014"   id="txt" class="form-control input" readonly>
-                            <span class="add-on"><i class="fa fa-calendar fa-2x"></i></span>
+                        <div class="input-append date form-group-sm" id="datepicker" data-date="today" data-date-format="dd-mm-yyyy">
+                            <div class="col-xs-10">
+                            <input type="text" name="dueDate" value="e.g. 12-12-2015"   id="txt" class="form-control input" readonly />
+                            </div>
+                            <div class="col-xs-2">
+                            <span class="add-on "><i class="fa fa-calendar fa-2x"></i></span>
+                            </div>
                         </div>
+                        </div>
+                    </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary col-xs-2">Save</button>
-                            <button type="button" class="btn btn-default col-xs-2" >Cancel</button>
+                            <button type="submit" class="btn btn-primary ">Save</button>
+                            <button type="button" class="btn btn-default " >Cancel</button>
                         </div>
 
-                    </fieldset>
 
 
 
@@ -69,7 +75,7 @@
                                 @t.name
 
                                 <span class="pull-right">
-                                    <button type="text"   class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="left" title="task due on: @t.dueDate"><i class="fa fa-clock-o "></i></button>
+                                    <button type="text"   class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="left" title="task due on: @t.dueDate.toString.substring(0,10)"><i class="fa fa-clock-o "></i></button>
                                     <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
                                     <a class="btn btn-success" href="@routes.TaskData.doneTask(t.id)" ><i class="fa fa-check "></i></a>
                                 </span>
