@@ -12,6 +12,14 @@ create table document_file (
   constraint pk_document_file primary key (id))
 ;
 
+create table event (
+  id                        bigint not null,
+  title                     varchar(255),
+  start_date                timestamp,
+  end_date                  timestamp,
+  constraint pk_event primary key (id))
+;
+
 create table linked_account (
   id                        bigint not null,
   user_id                   bigint,
@@ -48,6 +56,7 @@ create table user (
   email_validated           boolean,
   active                    boolean,
   mendeley_connected        boolean,
+  event_id                  bigint,
   constraint pk_user primary key (id))
 ;
 
@@ -72,6 +81,8 @@ create table user_project (
 ;
 create sequence document_file_seq;
 
+create sequence event_seq;
+
 create sequence linked_account_seq;
 
 create sequence project_seq;
@@ -88,6 +99,8 @@ alter table linked_account add constraint fk_linked_account_user_2 foreign key (
 create index ix_linked_account_user_2 on linked_account (user_id);
 alter table task add constraint fk_task_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_task_user_3 on task (user_id);
+alter table user add constraint fk_user_event_4 foreign key (event_id) references event (id) on delete restrict on update restrict;
+create index ix_user_event_4 on user (event_id);
 
 
 
@@ -104,6 +117,8 @@ alter table user_project add constraint fk_user_project_project_02 foreign key (
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists document_file;
+
+drop table if exists event;
 
 drop table if exists linked_account;
 
@@ -122,6 +137,8 @@ drop table if exists user_role;
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists document_file_seq;
+
+drop sequence if exists event_seq;
 
 drop sequence if exists linked_account_seq;
 

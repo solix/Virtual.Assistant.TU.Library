@@ -52,10 +52,12 @@ public class Application extends Controller {
      * Calendar page
      * @return
      */
+    private static Form<Event> calForm = Form.form(Event.class);
+
     public static Result calendar() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(calendar.render("My Calendar", user));
+            return ok(calendar.render("My Calendar", user,calForm));
         else
             return Authentication.login();
     }
