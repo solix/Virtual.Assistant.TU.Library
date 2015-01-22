@@ -1,10 +1,7 @@
 package models;
 
-import java.util.*;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
@@ -14,13 +11,15 @@ import play.db.ebean.Model;
  */
 @Entity
 
-public class ChatMessage extends Model {
+public class Comment extends Model {
 
     @Id @GeneratedValue
     public long id;
     @Constraints.Required
     public long senderID;
+    public String subject;
     public String sender;
+    @Column(columnDefinition="TEXT")
     public String text;
     public String date;
     public boolean edited;
@@ -28,9 +27,10 @@ public class ChatMessage extends Model {
     @ManyToOne
     public Project project;
 
-    public ChatMessage (String sender, Long senderID, String text, String date, Long pid){
-        this.sender = sender;
+    public Comment(Long senderID, String sender, String subject, String text, String date, Long pid){
+        this.subject = subject;
         this.senderID = senderID;
+        this.sender = sender;
         this.project = Project.find.byId(pid);
         this.text = text;
         this.date= date;
@@ -40,15 +40,15 @@ public class ChatMessage extends Model {
     /**
      * Finder to  make queries from database via Ebeans
      */
-    public static Model.Finder<Long,ChatMessage> find = new Model.Finder(
-            Long.class, ChatMessage.class
+    public static Model.Finder<Long, Comment> find = new Model.Finder(
+            Long.class, Comment.class
     );
 
     /**
      * creates new chatmessage
      */
-    public static ChatMessage create(String sender, Long senderID, String text, String date, Long pid){
-        ChatMessage cm = new ChatMessage(sender, senderID, text, date, pid);
+    public static Comment create(Long senderID, String sender, String subject, String text, String date, Long pid){
+        Comment cm = new Comment(senderID, sender, subject, text, date, pid);
         cm.save();
         return cm;
     }

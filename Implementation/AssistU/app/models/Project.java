@@ -2,15 +2,9 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import static play.libs.Json.toJson;
-import play.Logger;
-import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
 /**
@@ -30,7 +24,7 @@ public class Project extends Model {
     @OneToMany(mappedBy = "project")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
     @OneToMany(mappedBy = "project")
-    public List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+    public List<Comment> comments = new ArrayList<Comment>();
 
     /**
      * Constructor
@@ -118,32 +112,10 @@ public class Project extends Model {
 //        p.saveManyToManyAssociations("users");
     }
 
-    public static void addChatMessage(ChatMessage cm, Long pid){
+    public static void addComment(Comment cm, Long pid){
         Project p =Project.find.byId(pid);
-        p.chatMessages.add(cm);
+        p.comments.add(cm);
         p.save();
-    }
-
-    public static JsonNode getMessagesAsJson(Long pid){
-//        Project p = Project.find.byId(pid);
-        List<ChatMessage> cml = ChatMessage.find.where().eq("project", Project.find.byId(pid)).findList();
-        List<TreeMap<String, String>> messages = new ArrayList<TreeMap<String, String>>();
-        TreeMap<String, String> message;
-        for(int i =0; i < cml.size(); i++){
-            ChatMessage cm = cml.get(i);
-            message = new TreeMap<String, String>();
-            message.put("text", cm.text);
-            message.put("sender", cm.sender);
-            message.put("senderID", "" + cm.senderID);
-            message.put("date", cm.date);
-            message.put("projectID", "" + cm.project.id);
-            Logger.debug("Message as Json: " + toJson(message.toString()));
-            messages.add(message);
-        }
-        Logger.debug("Messages as Json: " + toJson(messages));
-//        Logger.debug("Messages as Json: " + toJson(cml));
-//        return toJson(p.chatMessages);
-        return toJson(messages);
     }
 
 }

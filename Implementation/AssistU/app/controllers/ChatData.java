@@ -6,7 +6,7 @@ import play.Logger;
 import play.libs.EventSource;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.util.parsing.json.JSON;
+
 import static play.libs.Json.toJson;
 
 import java.util.*;
@@ -22,35 +22,34 @@ public class ChatData extends Controller {
   public static Result postMessage() {
     JsonNode message = request().body().asJson();
     Logger.debug("" + message);
-    String sender = message.get("sender").asText();
+    String subject = message.get("subject").asText();
     Long senderID = message.get("senderID").asLong();
+    String sender = message.get("sender").asText();
     Long pid = message.get("projectID").asLong();
     String text = message.get("text").asText();
     String date = message.get("date").asText();
-    ChatMessage cm = ChatMessage.create(sender, senderID, text, date, pid);
-    Project.addChatMessage(cm, message.get("projectID").asLong());
+    Comment cm = Comment.create(senderID, sender, subject, text, date, pid);
+    Project.addComment(cm, message.get("projectID").asLong());
     sendEvent(message);
     return ok();
   }
 
   public static Result getOldMessages(Long pid){
-    List<ChatMessage> cml = ChatMessage.find.where().eq("project", Project.find.byId(pid)).findList();
+    List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(pid)).findList();
     List<TreeMap<String, String>> messages = new ArrayList<TreeMap<String, String>>();
     TreeMap<String, String> message;
     for(int i =0; i < cml.size(); i++){
-      ChatMessage cm = cml.get(i);
+      Comment cm = cml.get(i);
       message = new TreeMap<String, String>();
       message.put("text", cm.text);
-      message.put("sender", cm.sender);
+      message.put("subject", cm.subject);
       message.put("senderID", "" + cm.senderID);
+      message.put("sender", "" + cm.sender);
       message.put("date", cm.date);
       message.put("projectID", "" + cm.project.id);
       Logger.debug("Message as Json: " + toJson(message.toString()));
       messages.add(message);
     }
-    Logger.debug("Messages as Json: " + toJson(messages));
-//        Logger.debug("Messages as Json: " + toJson(cml));
-//        return toJson(p.chatMessages);
     return ok(toJson(messages));
   }
 

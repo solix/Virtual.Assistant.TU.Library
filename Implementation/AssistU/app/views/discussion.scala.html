@@ -1,126 +1,176 @@
 @(title: String)(currentUser:User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
-    <html lang="en">
-    <head>
-        @linkLoader.headlinks(title)
-        @*<link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/chat-TBD.css")">*@
-        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
-        <script type="text/javascript">
-            'use strict';
-            /** app level module which depends on services and controllers */
-            angular.module('sseChat', ['sseChat.services', 'sseChat.controllers']);
-        </script>
-        <script type="text/javascript">
-            'use strict';
-            /** chatModel service, provides chat rooms (could as well be loaded from server) */
-            angular.module('sseChat.services', []).service('chatModel', function () {
-                var getProjects = function () {
-                    return [@for(p <- activeProjectList){@if(!p.equals(activeProjectList.last)){{name: '@p.name', value: '@p.id.toInt'},
-                                    }else{{name: '@p.name', value: '@p.id.toInt'}}}];
-                };
-
-                return { getProjects: getProjects };
-            });
-        </script>
-        <script type="text/javascript">
-            'use strict';
-            /** Controllers */
-            angular.module('sseChat.controllers', ['sseChat.services']).
-                controller('ChatCtrl', function ($scope, $http, chatModel) {
-                $scope.projects = chatModel.getProjects();
-                $scope.msgs = @{Html(Project.getMessagesAsJson(activeProjectList.get(0).id).toString)};
-                $scope.inputText = "";
-                $scope.currentProject = $scope.projects[0];
-                console.log("Discussion set to " + $scope.projects[0].name + " - " + $scope.projects[0].value);
-
-                /** change current room, restart EventSource connection */
-                $scope.setCurrentProject = function (pid) {
-                    console.log("Trying to change discussion to " + pid.toString());
-                    $scope.currentProject = $.grep($scope.projects, function(p){return p.value === pid;})[0 ];
-                    console.log("Changed discussion to " + $.grep($scope.projects, function(p){return p.value === pid;})[0].value);
-                    $scope.chatFeed.close();
-                    $scope.msgs = @{Html(Project.getMessagesAsJson(pid).toString)};
-                    $scope.listen();
-                };
-
-                /** posting chat text to server */
-                $scope.submitMsg = function () {
-                    $http.post("/chat", { text: $scope.inputText, sender: $scope.user, senderID: @currentUser.id,
-                        date: (new Date()).toUTCString(), projectID: $scope.currentProject.value });
-                    console.log("Posted message <" + $scope.inputText + "> to discussion <" + $scope.currentProject.value + ">");
+    @defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+        <html lang="en">
+            <head>
+                @linkLoader.headlinks(title)
+                @*<link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/chat-TBD.css")">*@
+            <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
+            <script type="text/javascript">
+                'use strict';
+                /** app level module which depends on services and controllers */
+                angular.module('sseChat', ['sseChat.controllers']);
+            </script>
+            <script id="controller" type="text/javascript">
+                'use strict';
+                /** Controllers */
+                angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scope, $http) {
+                    $scope.projectids = [];
+                    $.ajax({url: "/" + @currentUser.id + "/projectids", async: false, dataType: 'json', success: function(response){ $scope.projectids = response}});
+                    $scope.comments = [];
+                    $.ajax({url: "/comments/" + $scope.projectids[0].projectID, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
                     $scope.inputText = "";
-                };
+                    $scope.inputSubject = "";
+//                    $scope.type = "comment";
+                    $scope.subjectReadOnly = false;
+                    $scope.currentProject = $scope.projectids[0];
 
-                /** handle incoming messages: add to messages array */
-                $scope.addMsg = function (msg) {
-                    $scope.$apply(function () { $scope.msgs.push(JSON.parse(msg.data)); });
-                };
+                    /** change current room, restart EventSource connection */
+                    $scope.setCurrentProject = function (pid) {
+                        $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
+                        $scope.chatFeed.close();
+                        $scope.comments = [];
+                        $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
+                        $scope.listen();
+                    };
 
-                /** start listening on messages from selected room */
-                $scope.listen = function () {
-                    $scope.chatFeed = new EventSource("/chatFeed/" + $scope.currentProject.value);
-                    $scope.chatFeed.addEventListener("message", $scope.addMsg, false);
-                };
+                    /** change current subject, restart EventSource connection */
+                    $scope.setCurrentSubject = function (subject) {
+                        $scope.inputSubject = subject;
+//                        $scope.type = "subcomment";
+                        $scope.listen();
+                    };
 
-            $scope.listen();
-            });
-        </script>
-    </head>
-    <body>
-        <div id="wrapper">
-            @dashboard("discussion", currentUser)
-            <div id="page-wrapper">
-                @template.headericon("fa fa-comment fa-5x")
-                <div ng-app="sseChat">
-                    <div ng-controller="ChatCtrl">
-                        @*<div id="header">*@
-                            @*<select ng-model="currentRoom" ng-change="setCurrentRoom(currentRoom)"*@
-                            @*ng-options="r.name for r in rooms"></select>*@
-                        @*</div>*@
-                        <div class="container-fluid" style="text-align: center; margin: 1% 0">
-                            <div role="tabpanel">
-                                <ul class="nav nav-tabs">
-                                @for(p <- activeProjectList) {
-                                    @* TODO: Rewrite below to the last updated project *@
-                                    @if(p.equals(activeProjectList.last)) {
-                                        <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                            <a ng-click="setCurrentProject('@p.id')" href="#" data-toggle="tab">@p.folder</a>
-                                        </li>
-                                    } else {
-                                        <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                                            <a ng-click="setCurrentProject('@p.id')" href="#" data-toggle="tab">@p.folder</a>
-                                        </li>
-                                    }
-                                }
-                                </ul>
+                    $scope.setSubjectReadOnly = function (bool) {
+                        $scope.subjectReadOnly = bool;
+                    };
+
+                    /** posting chat text to server */
+                    $scope.submitMsg = function () {
+                        $http.post("/chat", { subject: $scope.inputSubject, text: $scope.inputText, senderID: @currentUser.id, sender: $scope.user, date: (new Date()).toUTCString(), projectID: $scope.currentProject.projectID });
+                        $scope.inputText = "";
+                        $scope.inputSubject = "";
+                    };
+
+                    /** handle incoming messages: add to messages array */
+                    $scope.addMsg = function (msg) {
+                        $scope.$apply(function () { $scope.comments.push(JSON.parse(msg.data));});
+                    };
+
+                    /** start listening on messages from selected room */
+                    $scope.listen = function () {
+                        $scope.chatFeed = new EventSource("/chatFeed/" + $scope.currentProject.projectID);
+                        $scope.chatFeed.addEventListener("message", $scope.addMsg, false);
+                    };
+
+                    $scope.listen();
+                });
+            </script>
+            </head>
+            <body>
+                <div id="wrapper">
+                    @dashboard("discussion", currentUser)
+                    <div id="page-wrapper">
+                        @template.headericon("fa fa-comment fa-5x")
+                        <div ng-app="sseChat">
+                            <div ng-controller="ChatCtrl">
+                                <div class="container-fluid" style="text-align: center; margin: 1% 0">
+                                    <div role="tabpanel">
+                                        <ul class="nav nav-tabs">
+                                        @for(p <- activeProjectList) {
+                                            @* TODO: Rewrite below to the last updated project *@
+                                            @if(p.equals(activeProjectList.head)) {
+                                                <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                                                    <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh1" data-toggle="tab">@p.folder</a>
+                                                </li>
+                                            } else {
+                                                <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
+                                                    <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh2" data-toggle="tab">@p.folder</a>
+                                                </li>
+                                            }
+                                        }
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <h3 style="margin: 5px 0 0 30px;">@activeProjectList.head.name: Discussions</h3>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubject('');" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
+                                    </div>
+                                </div>
+                                <hr class="hr" style="margin: 10px 0 0 0">
+                                <div class="panel-body" style="padding-top: 5px">
+                                    <div id="chat">
+                                        <div class="{{comment.who}} comment" ng-repeat="comment in comments"> @* | limitTo:-8*@
+                                            <div class="row">
+                                                <div class="col-xs-2" style="text-align: center">
+                                                    <div class="thumbnail" style="width: 75px; height: 75px; margin: 10px auto 5px auto">
+                                                        <img src="http://tansolutions.co/wp-content/uploads/2013/09/765-default-avatar-75x75.png" alt="User Avatar" class="img-circle" />
+                                                    </div>
+                                                    <strong>{{comment.sender}}</strong>
+                                                </div>
+                                                <div class="col-xs-10">
+                                                    <div class="row">
+                                                        <div class="col-xs-9">
+                                                            <b><u>{{comment.subject}}</u></b>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <small class="pull-right text-muted">
+                                                                <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    {{comment.text}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <small class="pull-right" style="padding-right: 15px">
+                                                    <a data-toggle="collapse" href="#comment" ng-click="setCurrentSubject('Commenting on topic: ' + comment.subject); setSubjectReadOnly(true)">
+                                                        <i class="fa fa-comment-o fa-fw"></i> Add a comment...
+                                                    </a>
+                                                </small>
+                                            </div>
+                                            <hr class="hr" style="margin: 5px 0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="comment" class="panel-footer collapse" style="position:fixed; bottom: 0; margin-left: -30px">
+                                    <div class="row" style="padding: 0 20px">
+                                        Subject:
+                                    </div>
+                                    <div class="row" style="padding: 0 20px 5px 20px">
+                                        <input type="text" name="chat" id="textField" ng-model="inputSubject" ng-readonly="subjectReadOnly"
+                                            placeholder="Your eye-catching subject title here..." class="ng-pristine ng-valid form-control input-sm" />
+                                    </div>
+                                    <div class="row" style="padding: 0 20px">
+                                        Comment:
+                                    </div>
+                                    <div class="row" style="padding: 0 20px">
+                                        <div class="input-group">
+                                            <input ng-submit="submitMsg()" type="text" name="chat" id="textField" ng-model="inputText"
+                                            placeholder="Your text here..." class="ng-pristine ng-valid form-control input-sm" />
+                                            <span class="input-group-btn">
+                                                <input ng-bind="user='@currentUser.name'" type="button" class="btn btn-warning btn-sm" id="saySomething" value="Submit" ng-click="submitMsg()" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div id="chat">
-                            <div class="{{msg.who}} msg" ng-repeat="msg in msgs | limitTo:-4">
-                                {{msg.date}}<br/>
-                                <strong>{{msg.sender}} says: </strong>{{msg.text}}<br/>
-                            </div>
-                        </div>
-                        <div id="footer">
-                            <form ng-submit="submitMsg()">
-                                <input type="text" name="chat" id="textField" ng-model="inputText"
-                                placeholder="Comment..." class="ng-pristine ng-valid input-block-level" />
-                                <input ng-bind="user='@currentUser.name'" type="button" class="btn btn-primary" id="saySomething" value="Submit" ng-click="submitMsg()" />
-                            </form>
-                        </div>
+
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- jQuery -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+                    <!-- jQuery -->
+                <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 
-        <!--bootstrap-->
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                    <!--bootstrap-->
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-        <!--sb-Admin-->
-        <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+                    <!--sb-Admin-->
+                <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 
-        <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
-    </body>
-</html>}
+                <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+            </body>
+        </html>
+    }
