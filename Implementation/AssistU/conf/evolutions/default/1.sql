@@ -15,8 +15,10 @@ create table document_file (
 create table event (
   id                        bigint not null,
   title                     varchar(255),
-  start_date                timestamp,
-  end_date                  timestamp,
+  all_day                   boolean,
+  start                     timestamp,
+  end                       timestamp,
+  ends_same_day             boolean,
   constraint pk_event primary key (id))
 ;
 

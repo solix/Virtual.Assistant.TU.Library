@@ -1,35 +1,75 @@
 package models;
 
+
+import com.avaje.ebean.Expr;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-/**
- * Calendar model will be used to hold variables regarding planning events
- */
 @Entity
 public class Event extends Model {
 
     @Id
-    public long id;
+    public Long id;
+
+
     @Constraints.Required
     public String title;
-    @Constraints.Required
-    @Formats.DateTime(pattern="dd-MM-yyyy")
-    public Date startDate;
+    public Boolean allDay;
 
     @Constraints.Required
-    @Formats.DateTime(pattern="dd-MM-yyyy")
-    public Date endDate;
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
+    public Date start = new Date();
 
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
+    public Date end = new Date();
+
+    public Boolean endsSameDay;
     @OneToOne(mappedBy = "event")
-    public User user;
+    User user;
 
-    public static Model.Finder<Long,Event> find = new Model.Finder(
-            Long.class, Event.class
-    );
+    public static Finder<Long,Event> find = new Finder<Long,Event>(Long.class, Event.class);
+
+    public Event(String title, Date start, Date end, Boolean allDay) {
+        this.title = title;
+        this.start = start;
+        this.end = end;
+        this.allDay = allDay;
+
+    }
+
+    /**
+     * returns list of all availible events within the date range
+     * @param start
+     * @param end
+     * @return
+     */
+    public static List<Event> findInDateRange(Date start, Date end) {
+
+
+        return find.where().or(
+                Expr.and(
+                        Expr.lt("start", start),
+                        Expr.gt("end", end)
+                ),
+                Expr.or(
+                        Expr.and(
+                                Expr.gt("start", start),
+                                Expr.lt("start", end)
+                        ),
+                        Expr.and(
+                                Expr.gt("end", start),
+                                Expr.lt("end", end)
+                        )
+                )
+        ).findList();
+    }
+
+
+
 
 }
