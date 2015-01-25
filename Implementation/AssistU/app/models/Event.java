@@ -6,7 +6,8 @@ import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +30,7 @@ public class Event extends Model {
     public Date end = new Date();
 
     public Boolean endsSameDay;
-    @OneToOne(mappedBy = "event")
-    User user;
+
 
     public static Finder<Long,Event> find = new Finder<Long,Event>(Long.class, Event.class);
 
@@ -42,12 +42,7 @@ public class Event extends Model {
 
     }
 
-    /**
-     * returns list of all availible events within the date range
-     * @param start
-     * @param end
-     * @return
-     */
+
     public static List<Event> findInDateRange(Date start, Date end) {
 
 

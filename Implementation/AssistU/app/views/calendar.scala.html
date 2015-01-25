@@ -1,82 +1,13 @@
-@(title: String)(currentUser:User,cform: Form[Event] )
-<html lang="en">
+@(title: String)(currentUser:User,eventForm: Form[Event] )
+
+  @import helper._
+  @import helper.twitterBootstrap
+
 <head>
 
   @linkLoader.headlinks(title)
 @linkLoader.calendarlinks()
-  <script>
-  $(document).ready(function() {
 
-  $('#calendar').fullCalendar({
-  header: {
-  left: 'today prev,next',
-  center: 'title',
-  right: 'month,basicWeek,basicDay'
-  },
-  defaultDate: '2014-11-12',
-  editable: true,
-  eventLimit: true, // allow "more" link when too many events
-  events: [
-  {
-  title: 'Write intro',
-  start: '2014-11-01'
-  },
-  {
-  title: 'Long Event',
-  start: '2014-11-07',
-  end: '2014-11-10'
-  },
-  {
-  id: 999,
-  title: 'Repeating Event',
-  start: '2014-11-09T16:00:00'
-  },
-  {
-  id: 999,
-  title: 'Repeating Event',
-  start: '2014-11-16T16:00:00'
-  },
-  {
-  title: 'Conference',
-  start: '2014-11-11',
-  end: '2014-11-13'
-  },
-  {
-  title: 'Meeting',
-  start: '2014-11-12T10:30:00',
-  end: '2014-11-12T12:30:00'
-  },
-  {
-  title: 'Lunch',
-  start: '2014-11-12T12:00:00'
-  },
-  {
-  title: 'Meeting',
-  start: '2014-11-12T14:30:00'
-  },
-  {
-  title: 'Happy Hour',
-  start: '2014-11-12T17:30:00'
-  },
-  {
-  title: 'Dinner',
-  start: '2014-11-12T20:00:00'
-  },
-  {
-  title: 'Birthday Party',
-  start: '2014-11-13T07:00:00'
-  },
-  {
-  title: 'Click for Google',
-  url: 'http://google.com/',
-  start: '2014-11-28'
-  }
-  ]
-  });
-
-  });
-
-  </script>
 </head>
 <body>
 
@@ -84,10 +15,47 @@
   @dashboard("calendar", currentUser)
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
-    <div class="row">
-      <div id='calendar'></div>
+      @layouts.calendarLayout("Full calendar") {
+
+
+        <div style="display: none;">
+          <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">
+            <input type="text" name="title" id="newTitle"/>
+            <input type="text" name="start" id="newStart"/>
+            <input type="text" name="end" id="newEnd"/>
+            <input type="text" name="allDay" id="newAllDay"/>
+          </form>
+
+
+          <br/>
+
+          <form action="@routes.CalData.move()" method="POST" id="eventFormMove">
+            <input type="text" name="id" id="moveId"/>
+            <input type="text" name="dayDelta" id="moveDayDelta"/>
+            <input type="text" name="minuteDelta" id="moveMinuteDelta"/>
+            <input type="text" name="allDay" id="moveAllDay"/>
+          </form>
+
+
+          <form action="@routes.CalData.resize()" method="POST" id="eventFormResize">
+            <input type="text" name="id" id="resizeId"/>
+            <input type="text" name="dayDelta" id="resizeDayDelta"/>
+            <input type="text" name="minuteDelta" id="resizeMinuteDelta"/>
+          </form>
+        </div>
+
+        <div id='calendar'></div>
+
+
+
+
+
+
+      }
+
+
+
     </div>
-  </div>
 
 </div>
 
@@ -100,4 +68,3 @@
 <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
 
 </body>
-</html>
