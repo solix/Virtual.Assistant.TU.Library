@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.data.Form;
 import play.mvc.*;
 import views.html.*;
 import com.feth.play.module.pa.PlayAuthenticate;
@@ -31,24 +32,21 @@ public class Application extends Controller {
      *
      * @return
      */
+    private static Form<Task> taskForm = Form.form(Task.class);
+
     public static Result task() {
-//<<<<<<< HEAD
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             List<Task> tasks = Task.find.all();
-            return ok(task.render("My tasks", user, tasks));
+            return ok(task.render("My tasks", user, tasks,taskForm));
         }else
             return Authentication.login();
     }
-//=======
 
 
-//        return ok(task.render("Task List",tasks));
-
-//    }
 
 
-//>>>>>>> task
+
 
     /**
      * Calendar page

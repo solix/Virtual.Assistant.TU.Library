@@ -15,12 +15,17 @@ import static play.libs.Json.toJson;
  */
 public class TaskData extends Controller {
 
-
+private static final Form<Task> tForm = Form.form(Task.class);
 
     public static Result addTask(){
-        Form<Task> taskForm = Form.form(Task.class).bindFromRequest();
+        Form<Task> taskForm = tForm.bindFromRequest();
+        if(taskForm.hasErrors()) {
+            flash("error", "Please correct the form below.");
+            return badRequest(views.html.task.render("My tasks", null, Task.find.all(),taskForm)
+            ); }
         Task task= taskForm.get();
         task.save();
+        flash("success", String.format("Successfully added task %s", task));
         return redirect(controllers.routes.Application.task());
     }
 
@@ -43,6 +48,17 @@ public class TaskData extends Controller {
 
         Task t = Task.find.byId(id);
         t.done=true;
+        t.save();
+
+        return redirect(controllers.routes.Application.task());
+
+    }
+
+    public static Result undoTask(long id){
+
+        Task t = Task.find.byId(id);
+        t.done=false;
+        t.save();
 
         return redirect(controllers.routes.Application.task());
 
