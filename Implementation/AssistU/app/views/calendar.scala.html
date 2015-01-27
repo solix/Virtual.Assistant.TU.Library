@@ -1,4 +1,4 @@
-@(title: String)(currentUser:User,eventForm: Form[Event] )
+@(title: String)(currentUser:User,eventForm: Form[Event],events : List[Event] )
 
   @import helper._
   @import helper.twitterBootstrap
@@ -6,13 +6,16 @@
 <head>
 
   @linkLoader.headlinks(title)
-@*//@linkLoader.calendarlinks()*@
   <link rel="stylesheet" media="screen" href='@routes.Assets.at("fullcalendar-1.5.3/fullcalendar/fullcalendar.css")'>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+  @*<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>*@
+  @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>*@
   <script src='@routes.Assets.at("bootstrap-2.0.2/js/bootstrap.min.js")' type="text/javascript"></script>
   <script src='@routes.Assets.at("fullcalendar-1.5.3/fullcalendar/fullcalendar.min.js")' type="text/javascript"></script>
   <script src='@routes.Assets.at("javascripts/renderCalendar.js")' type="text/javascript"></script>
+  <script src='@routes.Assets.at("bootstrap-2.0.2/js/bootstrap.min.js")' type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -22,12 +25,14 @@
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
 
+<div class="row">
       <ul class="nav pull-right">
         <li >
           <a href="@routes.CalData.list()">
             <i class="icon-list icon-white"></i> Event's list</a>
         </li>
       </ul>
+</div>
 
         <div style="display: none;">
           <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">

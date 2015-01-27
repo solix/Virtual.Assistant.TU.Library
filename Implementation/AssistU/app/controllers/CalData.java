@@ -71,19 +71,22 @@ public class CalData extends Controller {
     public static Result calendar() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(calendar.render("My Calendar", user,eventForm));
+            return ok(calendar.render("My Calendar", user,eventForm,Event.find.all()));
         else
-        return ok(calendar.render("My Calendar", null, eventForm));
+        return ok(calendar.render("My Calendar", null, eventForm,Event.find.all()));
     }
 
 
     /**
      * List of events in table view
      * @return Result
+     * TODO: USER must be impemented
      */
     public static Result list() {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
         List<Event> events = Event.find.order().desc("start").findList();
-        return ok(list.render(events));
+        return ok(list.render("List of events",user,events));
     }
 
 
@@ -92,7 +95,9 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result blank() {
-        return ok(formNew.render(eventForm));
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
+        return ok(formNew.render("new event form",user,eventForm));
     }
 
 
@@ -102,8 +107,10 @@ public class CalData extends Controller {
      */
     public static Result add() {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
         if (eventForm.hasErrors()) {
-            return badRequest(formNew.render(eventForm));
+            return badRequest(formNew.render("new event form",user,eventForm));
         }
 
         Event newEvent = eventForm.get();
@@ -125,8 +132,10 @@ public class CalData extends Controller {
      */
     public static Result edit(Long id) {
         Event event = Event.find.byId(id);
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
         Form<Event> eventForm = Form.form(Event.class).fill(event);
-        return ok(formEdit.render(id, eventForm, event));
+        return ok(formEdit.render("Edit events",user,id, eventForm, event));
     }
 
 
@@ -136,9 +145,11 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result update(Long id) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
         if (eventForm.hasErrors()) {
-            return badRequest(formEdit.render(id, eventForm, Event.find.byId(id)));
+            return badRequest(formEdit.render("update",user,id, eventForm, Event.find.byId(id)));
         }
         Event updatedEvent = eventForm.get();
         updatedEvent.allDay = updatedEvent.allDay != null;

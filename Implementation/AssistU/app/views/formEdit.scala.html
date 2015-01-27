@@ -1,10 +1,10 @@
-@(id: Long, eventForm: Form[Event], event: Event)
+@(title: String,currentUser:User)(id: Long, eventForm: Form[Event], event: Event)
 
 @import helper._
 
 @implicitField = @{ FieldConstructor(fields.twoColumns.f) }
 
-@layouts.mainLayout("Edit event: "+ event.title){
+@layouts.mainLayout("Edit event: "+ event.title,currentUser){
 <div class="container">
 
     <h3>Edit event: @event.title </h3>

@@ -1,8 +1,8 @@
-@(eventForm: Form[Event])
+@(title: String,currentUser:User)(eventForm: Form[Event])
 @import helper._
 @implicitField = @{ FieldConstructor(fields.twoColumns.f) }
 
-@layouts.mainLayout("Create new event"){
+@layouts.mainLayout("Create new event",currentUser ){
 <div class="container">
     @helper.form(action = routes.CalData.add, 'id->"eventFormNew") {
 
