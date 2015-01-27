@@ -3,7 +3,6 @@
         <html lang="en">
             <head>
                 @linkLoader.headlinks(title)
-                @*<link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/chat-TBD.css")">*@
             <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
             <script type="text/javascript">
                 'use strict';
@@ -20,7 +19,8 @@
                     $.ajax({url: "/comments/" + $scope.projectids[0].projectID, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
                     $scope.inputText = "";
                     $scope.inputSubject = "";
-//                    $scope.type = "comment";
+                    $scope.user = "@currentUser.name";
+                    $scope.parentID = -1;
                     $scope.subjectReadOnly = false;
                     $scope.currentProject = $scope.projectids[0];
 
@@ -34,26 +34,33 @@
                     };
 
                     /** change current subject, restart EventSource connection */
-                    $scope.setCurrentSubject = function (subject) {
+                    $scope.setCurrentSubjectAndParent = function (subject, parentID) {
                         $scope.inputSubject = subject;
-//                        $scope.type = "subcomment";
-                        $scope.listen();
+                        $scope.parentID = parentID;
                     };
 
                     $scope.setSubjectReadOnly = function (bool) {
                         $scope.subjectReadOnly = bool;
                     };
 
+                    $scope.eraseInputText = function () {
+                        $scope.inputText = "";
+                    };
+
                     /** posting chat text to server */
                     $scope.submitMsg = function () {
-                        $http.post("/chat", { subject: $scope.inputSubject, text: $scope.inputText, senderID: @currentUser.id, sender: $scope.user, date: (new Date()).toUTCString(), projectID: $scope.currentProject.projectID });
+                        $http.post("/chat", { subject: $scope.inputSubject, text: $scope.inputText, senderID: @currentUser.id, parentID: $scope.parentID,
+                                                sender: $scope.user, date: (new Date()).toUTCString(), projectID: $scope.currentProject.projectID });
                         $scope.inputText = "";
                         $scope.inputSubject = "";
                     };
 
                     /** handle incoming messages: add to messages array */
                     $scope.addMsg = function (msg) {
-                        $scope.$apply(function () { $scope.comments.push(JSON.parse(msg.data));});
+                        $scope.$apply(function () {
+                            $scope.comments.push(JSON.parse(msg.data));
+                            console.log("" + JSON.stringify(JSON.parse(msg.data)));
+                        });
                     };
 
                     /** start listening on messages from selected room */
@@ -96,11 +103,11 @@
                                         <h3 style="margin: 5px 0 0 30px;">@activeProjectList.head.name: Discussions</h3>
                                     </div>
                                     <div class="col-xs-2">
-                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubject('');" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
+                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubjectAndParent('', -1);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
                                     </div>
                                 </div>
                                 <hr class="hr" style="margin: 10px 0 0 0">
-                                <div class="panel-body" style="padding-top: 5px">
+                                <div class="panel-body" style="padding: 5px 0 200px 0">
                                     <div id="chat">
                                         <div class="{{comment.who}} comment" ng-repeat="comment in comments"> @* | limitTo:-8*@
                                             <div class="row">
@@ -125,8 +132,8 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <small class="pull-right" style="padding-right: 15px">
-                                                    <a data-toggle="collapse" href="#comment" ng-click="setCurrentSubject('Commenting on topic: ' + comment.subject); setSubjectReadOnly(true)">
+                                                <small class="pull-right" style="padding-right: 30px">
+                                                    <a data-toggle="collapse" href="#comment" ng-click="setCurrentSubject('Replying to topic: ' + comment.subject, comment.commentID); setSubjectReadOnly(true)">
                                                         <i class="fa fa-comment-o fa-fw"></i> Add a comment...
                                                     </a>
                                                 </small>
@@ -135,30 +142,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="comment" class="panel-footer collapse" style="position:fixed; bottom: 0; margin-left: -30px">
+                                <div id="comment" class="panel-footer collapse" style="position: fixed; bottom:0; margin-left: -30px; padding: 15px 50px">
                                     <div class="row" style="padding: 0 20px">
                                         Subject:
                                     </div>
-                                    <div class="row" style="padding: 0 20px 5px 20px">
-                                        <input type="text" name="chat" id="textField" ng-model="inputSubject" ng-readonly="subjectReadOnly"
-                                            placeholder="Your eye-catching subject title here..." class="ng-pristine ng-valid form-control input-sm" />
+                                    <div class="row" style="padding: 0 20px 5px 20px;">
+                                        <span class="input-group-btn">
+                                            <input type="text" name="chat" id="textField" ng-model="inputSubject" ng-readonly="subjectReadOnly"
+                                            placeholder="Your eye-catching subject title here..." class="ng-pristine ng-valid form-control input-sm"/>
+                                        </span>
                                     </div>
                                     <div class="row" style="padding: 0 20px">
                                         Comment:
                                     </div>
                                     <div class="row" style="padding: 0 20px">
-                                        <div class="input-group">
+                                        <span class="input-group-btn">
                                             <input ng-submit="submitMsg()" type="text" name="chat" id="textField" ng-model="inputText"
-                                            placeholder="Your text here..." class="ng-pristine ng-valid form-control input-sm" />
-                                            <span class="input-group-btn">
-                                                <input ng-bind="user='@currentUser.name'" type="button" class="btn btn-warning btn-sm" id="saySomething" value="Submit" ng-click="submitMsg()" />
-                                            </span>
-                                        </div>
+                                            placeholder="Your text here..." class="ng-pristine ng-valid form-control input-sm"/>
+                                        </span>
+                                    </div>
+                                    <div class="row pull-right" style="margin: 10px">
+                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubject('', -1); eraseInputText();" class="btn btn-default btn-sm"
+                                        data-toggle="collapse" data-target="#comment" type="button" style="width: 80px">Cancel</button>
+                                        <button type="button" class="btn btn-success btn-sm" style="width: 80px"
+                                        id="saySomething" data-toggle="collapse" data-target="#comment" ng-click="submitMsg()">Submit</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                     <!-- jQuery -->

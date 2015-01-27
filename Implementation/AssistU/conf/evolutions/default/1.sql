@@ -3,6 +3,25 @@
 
 # --- !Ups
 
+create table comment (
+  id                        bigint not null,
+  sender_id                 bigint,
+  parent_id                 bigint,
+  subject                   varchar(255),
+  sender                    varchar(255),
+  text                      TEXT,
+  date                      varchar(255),
+  edited                    boolean,
+  project_id                bigint,
+  constraint pk_comment primary key (id))
+;
+
+create table discussion (
+  id                        bigint not null,
+  open                      boolean,
+  constraint pk_discussion primary key (id))
+;
+
 create table document_file (
   id                        bigint not null,
   name                      varchar(255),
@@ -29,6 +48,16 @@ create table project (
   constraint pk_project primary key (id))
 ;
 
+create table sub_comment (
+  id                        bigint not null,
+  sender_id                 bigint,
+  text                      TEXT,
+  date                      varchar(255),
+  edited                    boolean,
+  parent_comment_id         bigint,
+  constraint pk_sub_comment primary key (id))
+;
+
 create table task (
   id                        bigint not null,
   name                      varchar(255),
@@ -47,6 +76,7 @@ create table user (
   password                  varchar(255),
   email_validated           boolean,
   active                    boolean,
+  mendeley_connected        boolean,
   constraint pk_user primary key (id))
 ;
 
@@ -69,11 +99,17 @@ create table user_project (
   project_id                     bigint not null,
   constraint pk_user_project primary key (user_id, project_id))
 ;
+create sequence comment_seq;
+
+create sequence discussion_seq;
+
 create sequence document_file_seq;
 
 create sequence linked_account_seq;
 
 create sequence project_seq;
+
+create sequence sub_comment_seq;
 
 create sequence task_seq;
 
@@ -81,12 +117,16 @@ create sequence user_seq;
 
 create sequence user_role_seq;
 
-alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_document_file_project_1 on document_file (project_id);
-alter table linked_account add constraint fk_linked_account_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_linked_account_user_2 on linked_account (user_id);
-alter table task add constraint fk_task_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_3 on task (user_id);
+alter table comment add constraint fk_comment_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_comment_project_1 on comment (project_id);
+alter table document_file add constraint fk_document_file_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_document_file_project_2 on document_file (project_id);
+alter table linked_account add constraint fk_linked_account_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_3 on linked_account (user_id);
+alter table sub_comment add constraint fk_sub_comment_parentComment_4 foreign key (parent_comment_id) references comment (id) on delete restrict on update restrict;
+create index ix_sub_comment_parentComment_4 on sub_comment (parent_comment_id);
+alter table task add constraint fk_task_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_5 on task (user_id);
 
 
 
@@ -102,6 +142,10 @@ alter table user_project add constraint fk_user_project_project_02 foreign key (
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
+drop table if exists comment;
+
+drop table if exists discussion;
+
 drop table if exists document_file;
 
 drop table if exists linked_account;
@@ -109,6 +153,8 @@ drop table if exists linked_account;
 drop table if exists project;
 
 drop table if exists user_project;
+
+drop table if exists sub_comment;
 
 drop table if exists task;
 
@@ -120,11 +166,17 @@ drop table if exists user_role;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
+drop sequence if exists comment_seq;
+
+drop sequence if exists discussion_seq;
+
 drop sequence if exists document_file_seq;
 
 drop sequence if exists linked_account_seq;
 
 drop sequence if exists project_seq;
+
+drop sequence if exists sub_comment_seq;
 
 drop sequence if exists task_seq;
 

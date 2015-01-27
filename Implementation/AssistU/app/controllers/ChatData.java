@@ -1,9 +1,12 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.*;
 import models.*;
 import play.Logger;
 import play.libs.EventSource;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -21,16 +24,23 @@ public class ChatData extends Controller {
    */
   public static Result postMessage() {
     JsonNode message = request().body().asJson();
-    Logger.debug("" + message);
-    String subject = message.get("subject").asText();
-    Long senderID = message.get("senderID").asLong();
-    String sender = message.get("sender").asText();
-    Long pid = message.get("projectID").asLong();
-    String text = message.get("text").asText();
-    String date = message.get("date").asText();
-    Comment cm = Comment.create(senderID, sender, subject, text, date, pid);
-    Project.addComment(cm, message.get("projectID").asLong());
-    sendEvent(message);
+    Map<String, String> postMessage = new TreeMap<String, String>();
+    postMessage.put("subject", message.get("subject").asText());
+    postMessage.put("senderID", "" + message.get("senderID").asLong());
+    postMessage.put("sender", message.get("sender").asText());
+    postMessage.put("projectID", "" + message.get("projectID").asLong());
+    postMessage.put("text", message.get("text").asText());
+    postMessage.put("date", message.get("date").asText());
+    if(message.get("parentID").asInt() == -1) {
+      Logger.debug("parentID was " + message.get("parentID").asInt());
+        Comment cm = Comment.create(message.get("senderID").asLong(), message.get("sender").asText(),
+                message.get("subject").asText(), message.get("text").asText(), message.get("date").asText(),
+                message.get("projectID").asLong());
+        Project.addComment(cm, message.get("projectID").asLong());
+        postMessage.put("commentID", "" + cm.id);
+    }
+    Logger.debug("" + Json.toJson(postMessage));
+    sendEvent(Json.toJson(postMessage));
     return ok();
   }
 
@@ -41,13 +51,14 @@ public class ChatData extends Controller {
     for(int i =0; i < cml.size(); i++){
       Comment cm = cml.get(i);
       message = new TreeMap<String, String>();
+      message.put("commentID", "" + cm.id);
       message.put("text", cm.text);
       message.put("subject", cm.subject);
       message.put("senderID", "" + cm.senderID);
       message.put("sender", "" + cm.sender);
       message.put("date", cm.date);
       message.put("projectID", "" + cm.project.id);
-      Logger.debug("Message as Json: " + toJson(message.toString()));
+//      Logger.debug("Message as Json: " + toJson(message.toString()));
       messages.add(message);
     }
     return ok(toJson(messages));

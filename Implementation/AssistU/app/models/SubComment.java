@@ -22,7 +22,7 @@ public class SubComment extends Model {
     public String date;
     public boolean edited;
 
-    @ManyToMany
+    @ManyToOne
     public Comment parentComment;
 
     public SubComment(Long senderID, String text, String date, Long cid){
