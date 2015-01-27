@@ -6,7 +6,13 @@
 <head>
 
   @linkLoader.headlinks(title)
-@linkLoader.calendarlinks()
+@*//@linkLoader.calendarlinks()*@
+  <link rel="stylesheet" media="screen" href='@routes.Assets.at("fullcalendar-1.5.3/fullcalendar/fullcalendar.css")'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+  <script src='@routes.Assets.at("bootstrap-2.0.2/js/bootstrap.min.js")' type="text/javascript"></script>
+  <script src='@routes.Assets.at("fullcalendar-1.5.3/fullcalendar/fullcalendar.min.js")' type="text/javascript"></script>
+  <script src='@routes.Assets.at("javascripts/renderCalendar.js")' type="text/javascript"></script>
 
 </head>
 <body>
@@ -15,8 +21,13 @@
   @dashboard("calendar", currentUser)
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
-      @layouts.calendarLayout("Full calendar") {
 
+      <ul class="nav pull-right">
+        <li >
+          <a href="@routes.CalData.list()">
+            <i class="icon-list icon-white"></i> Event's list</a>
+        </li>
+      </ul>
 
         <div style="display: none;">
           <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">
@@ -51,7 +62,7 @@
 
 
 
-      }
+
 
 
 
