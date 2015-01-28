@@ -22,18 +22,12 @@
   @dashboard("calendar", currentUser)
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
-<div class="container">
-<div class="row">
-  <div class="col-sm-6 col-lg-3">
+
   <a  class="btn btn-default btn=sm" href="@routes.CalData.list()">
     <span class="fa fa-bars"></span> View as List
   </a>
-    </div>
-      @*<div class="col-sm-6 col-lg-3">*@
-           @*<button type="button" href="@routes.CalData.list()" class="btn btn-warning " ><span class="fa fa-bars" aria-hidden="true"></span>List view</button>*@
-      @*</div>*@
 
-</div>
+    <hr class="hr" style="margin-top: 10px">
 
         <div style="display: none;">
           <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">
@@ -90,7 +84,6 @@
 
     </div>
 
-</div>
 
 
 <!--bootstrap-->
