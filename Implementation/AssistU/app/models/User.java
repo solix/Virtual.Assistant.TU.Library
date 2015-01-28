@@ -47,8 +47,8 @@ public class User extends Model {
 
     @OneToMany(mappedBy = "user")
     public List<Task> tasks= new ArrayList<Task>();
-    @OneToOne
-    public Event event;
+    @OneToMany(mappedBy = "user")
+    public List<Event> events;
 
     public User(String name, String email, String password) {
         this.name=name;

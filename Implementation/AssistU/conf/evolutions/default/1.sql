@@ -19,6 +19,7 @@ create table event (
   start                     timestamp,
   end                       timestamp,
   ends_same_day             boolean,
+  user_id                   bigint,
   constraint pk_event primary key (id))
 ;
 
@@ -58,7 +59,6 @@ create table user (
   email_validated           boolean,
   active                    boolean,
   mendeley_connected        boolean,
-  event_id                  bigint,
   constraint pk_user primary key (id))
 ;
 
@@ -97,12 +97,12 @@ create sequence user_role_seq;
 
 alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_document_file_project_1 on document_file (project_id);
-alter table linked_account add constraint fk_linked_account_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_linked_account_user_2 on linked_account (user_id);
-alter table task add constraint fk_task_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_3 on task (user_id);
-alter table user add constraint fk_user_event_4 foreign key (event_id) references event (id) on delete restrict on update restrict;
-create index ix_user_event_4 on user (event_id);
+alter table event add constraint fk_event_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_event_user_2 on event (user_id);
+alter table linked_account add constraint fk_linked_account_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_3 on linked_account (user_id);
+alter table task add constraint fk_task_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_4 on task (user_id);
 
 
 

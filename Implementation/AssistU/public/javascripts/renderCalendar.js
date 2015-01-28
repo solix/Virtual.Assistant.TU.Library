@@ -16,7 +16,6 @@ $(document).ready(function () {
         selectHelper:true,
         select:function (start, end, allDay) {
             var title = prompt('Event Title:');
-//            var title = "Quick test title...";
             if (title) {
                 jQuery("#newTitle").val(title);
                 jQuery("#newStart").val(convertDate(start));
@@ -77,7 +76,6 @@ $(document).ready(function () {
             jQuery("#resizeId").val(event.id);
             jQuery("#resizeDayDelta").val(dayDelta);
             jQuery("#resizeMinuteDelta").val(minuteDelta);
-//            jQuery.post(jQuery("#eventFormResize").attr("action"), jQuery("#eventFormResize").serialize());
 
             jQuery.ajax({
                 type:   'POST',

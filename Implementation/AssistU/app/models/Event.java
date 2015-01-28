@@ -8,6 +8,8 @@ import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
 
@@ -31,9 +33,19 @@ public class Event extends Model {
 
     public Boolean endsSameDay;
 
+    @ManyToOne
+    User user ;
+
 
     public static Finder<Long,Event> find = new Finder<Long,Event>(Long.class, Event.class);
 
+    /**
+     * Cosntructor to create an event
+     * @param title
+     * @param start
+     * @param end
+     * @param allDay
+     */
     public Event(String title, Date start, Date end, Boolean allDay) {
         this.title = title;
         this.start = start;

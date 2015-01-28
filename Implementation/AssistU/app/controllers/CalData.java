@@ -85,7 +85,7 @@ public class CalData extends Controller {
     public static Result list() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
-        List<Event> events = Event.find.order().desc("start").findList();
+        List<Event> events = Event.find.order().asc("start").findList();
         return ok(list.render("List of events",user,events));
     }
 
