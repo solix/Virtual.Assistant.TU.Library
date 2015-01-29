@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
@@ -25,54 +26,37 @@ public class ChatData extends Controller {
    * Controller action for POSTing chat messages
    */
   public static Result postMessage() {
-    JsonNode message = request().body().asJson();
+    ObjectNode message = (ObjectNode)request().body().asJson();
     Logger.debug(Json.stringify(message));
-    Map<String, String> postMessage = new HashMap<String, String>();
-    //String subject,content,date;
-    //long uid,pid;
-Comment comment=Json.fromJson(message,Comment.class);
-    Logger.debug("This is fromJSON :"+comment.subject);
-//    comment.user=User.find.byId(uid);
-//    comment.project=Project.find.byId(pid);
-
-    comment.save();
-//    postMessage.put("subject", message.get("subject").asText());
-//    postMessage.put("senderID", "" + message.get("senderID").asLong());
-//    postMessage.put("sender", message.get("sender").asText());
-//    postMessage.put("projectID", "" + message.get("projectID").asLong());
-//    postMessage.put("text", message.get("text").asText());
-//    postMessage.put("date", message.get("date").asText());
-////    if(message.get("parentID").asInt() == -1) {
-//      Logger.debug("parentID was " + message.get("parentID").asInt());
-//        Comment cm = Comment.create(message.get("senderID").asLong(),
-//                message.get("subject").asText(), message.get("text").asText(), message.get("date").asText(),
-//                message.get("projectID").asLong());
-//        Project.addComment(cm, message.get("projectID").asLong());
-//        postMessage.put("commentID", "" + cm.id);
-//    }
-    Logger.debug("" + Json.toJson(postMessage));
-    sendEvent(Json.toJson(postMessage));
+    Comment comment = Comment.create(
+            message.get("uid").asLong(),
+            message.get("subject").asText(),
+            message.get("content").asText(),
+            message.get("date").asText(),
+            message.get("pid").asLong(),
+            false);
+    message.put("cid", comment.cid);
+    Logger.debug("New Comment: " + Json.stringify(message));
+    sendEvent(message);
     return ok();
   }
 
   public static Result getOldMessages(Long pid){
     List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(pid)).findList();
-    List<TreeMap<String, String>> messages = new ArrayList<TreeMap<String, String>>();
-    TreeMap<String, String> message;
+    List<HashMap<String, String>> messages = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> message;
     for(int i =0; i < cml.size(); i++){
       Comment cm = cml.get(i);
-      message = new TreeMap<String, String>();
-      message.put("commentID", "" + cm.mid);
-      message.put("text", cm.content);
+      message = new HashMap<String, String>();
+      message.put("uid", "" + cm.user.id);
       message.put("subject", cm.subject);
-//      message.put("senderID", "" + cm.senderID);
-      message.put("sender", "" + cm.user.name);
+      message.put("content", cm.content);
       message.put("date", cm.date);
-      message.put("projectID", "" + cm.project.id);
-//      Logger.debug("Message as Json: " + toJson(message.toString()));
+      message.put("pid", "" + cm.project.id);
+      message.put("cid", "" + cm.cid);
       messages.add(message);
     }
-//    JsonObject value = Json.createObjectBuilder().build();
+    Logger.debug("Old messages: " + Json.stringify(toJson(messages)));
     return ok(toJson(messages));
   }
 

@@ -17,7 +17,7 @@ import java.util.List;
 public class Comment extends Model {
 
     @Id
-    public long mid;
+    public long cid;
     @Constraints.Required
     public String subject;
     @Constraints.Required @Column(columnDefinition="TEXT")

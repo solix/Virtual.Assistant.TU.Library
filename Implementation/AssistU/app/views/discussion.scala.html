@@ -49,8 +49,8 @@
 
                     /** posting chat text to server */
                     $scope.submitMsg = function () {
-                        $http.post("/chat", { subject: $scope.inputSubject, content: $scope.inputText,
-                                                 date: (new Date()).toUTCString()});
+                        $http.post("/chat", { uid: @currentUser.id, subject: $scope.inputSubject, content: $scope.inputText,
+                                                 date: (new Date()).toUTCString(), pid: $scope.currentProject});
                         $scope.inputText = "";
                         $scope.inputSubject = "";
                     };
@@ -115,7 +115,7 @@
                                                     <div class="thumbnail" style="width: 75px; height: 75px; margin: 10px auto 5px auto">
                                                         <img src="http://tansolutions.co/wp-content/uploads/2013/09/765-default-avatar-75x75.png" alt="User Avatar" class="img-circle" />
                                                     </div>
-                                                    <strong>{{comment.sender}}</strong>
+                                                    <strong>Dummy, only uid available</strong>
                                                 </div>
                                                 <div class="col-xs-10">
                                                     <div class="row">
@@ -128,7 +128,7 @@
                                                             </small>
                                                         </div>
                                                     </div>
-                                                    {{comment.text}}
+                                                    {{comment.content}}
                                                 </div>
                                             </div>
                                             <div class="row">
