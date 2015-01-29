@@ -49,8 +49,8 @@
 
                     /** posting chat text to server */
                     $scope.submitMsg = function () {
-                        $http.post("/chat", { subject: $scope.inputSubject, text: $scope.inputText, senderID: @currentUser.id, parentID: $scope.parentID,
-                                                sender: $scope.user, date: (new Date()).toUTCString(), projectID: $scope.currentProject.projectID });
+                        $http.post("/chat", { subject: $scope.inputSubject, content: $scope.inputText,
+                                                 date: (new Date()).toUTCString()});
                         $scope.inputText = "";
                         $scope.inputSubject = "";
                     };

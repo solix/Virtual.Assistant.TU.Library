@@ -38,7 +38,7 @@ GET         /project/download/:fileid              controllers.Datafile.download
 #discussion
 GET         /discussion                            controllers.Application.discussion()
 GET         /chatFeed/:project                     controllers.ChatData.chatFeed(project: String)
-POST        /chat                                  controllers.ChatData.postMessage
+POST        /chat                                  controllers.ChatData.postMessage()
 GET         /comments/:pid                         controllers.ChatData.getOldMessages(pid: Long)
 GET         /:uid/projectids                       controllers.ProjectData.getProjectIdsAsJson(uid: Long)
 

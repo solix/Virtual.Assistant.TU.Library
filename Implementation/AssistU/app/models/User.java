@@ -48,6 +48,9 @@ public class User extends Model {
     @OneToMany(mappedBy = "user")
     public List<Task> tasks= new ArrayList<Task>();
 
+    @OneToMany(mappedBy = "user")
+    List<Comment> comments=new ArrayList<Comment>();
+
     public User(String name, String email, String password) {
         this.name=name;
         this.email = email;

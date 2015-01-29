@@ -26,14 +26,23 @@ public class ChatData extends Controller {
    */
   public static Result postMessage() {
     JsonNode message = request().body().asJson();
-    Map<String, String> postMessage = new TreeMap<String, String>();
+    Logger.debug(Json.stringify(message));
+    Map<String, String> postMessage = new HashMap<String, String>();
+    //String subject,content,date;
+    //long uid,pid;
+Comment comment=Json.fromJson(message,Comment.class);
+    Logger.debug("This is fromJSON :"+comment.subject);
+//    comment.user=User.find.byId(uid);
+//    comment.project=Project.find.byId(pid);
+
+    comment.save();
 //    postMessage.put("subject", message.get("subject").asText());
 //    postMessage.put("senderID", "" + message.get("senderID").asLong());
 //    postMessage.put("sender", message.get("sender").asText());
 //    postMessage.put("projectID", "" + message.get("projectID").asLong());
 //    postMessage.put("text", message.get("text").asText());
 //    postMessage.put("date", message.get("date").asText());
-//    if(message.get("parentID").asInt() == -1) {
+////    if(message.get("parentID").asInt() == -1) {
 //      Logger.debug("parentID was " + message.get("parentID").asInt());
 //        Comment cm = Comment.create(message.get("senderID").asLong(),
 //                message.get("subject").asText(), message.get("text").asText(), message.get("date").asText(),
@@ -53,8 +62,8 @@ public class ChatData extends Controller {
     for(int i =0; i < cml.size(); i++){
       Comment cm = cml.get(i);
       message = new TreeMap<String, String>();
-      message.put("commentID", "" + cm.id);
-      message.put("text", cm.text);
+      message.put("commentID", "" + cm.mid);
+      message.put("text", cm.content);
       message.put("subject", cm.subject);
 //      message.put("senderID", "" + cm.senderID);
       message.put("sender", "" + cm.user.name);
