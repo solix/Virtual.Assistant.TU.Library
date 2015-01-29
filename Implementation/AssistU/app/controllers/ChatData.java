@@ -14,6 +14,8 @@ import static play.libs.Json.toJson;
 
 import java.util.*;
 
+//import javax.json;
+
 public class ChatData extends Controller {
 
   /** Keeps track of all connected browsers per room **/
@@ -25,20 +27,20 @@ public class ChatData extends Controller {
   public static Result postMessage() {
     JsonNode message = request().body().asJson();
     Map<String, String> postMessage = new TreeMap<String, String>();
-    postMessage.put("subject", message.get("subject").asText());
-    postMessage.put("senderID", "" + message.get("senderID").asLong());
-    postMessage.put("sender", message.get("sender").asText());
-    postMessage.put("projectID", "" + message.get("projectID").asLong());
-    postMessage.put("text", message.get("text").asText());
-    postMessage.put("date", message.get("date").asText());
-    if(message.get("parentID").asInt() == -1) {
-      Logger.debug("parentID was " + message.get("parentID").asInt());
-        Comment cm = Comment.create(message.get("senderID").asLong(), message.get("sender").asText(),
-                message.get("subject").asText(), message.get("text").asText(), message.get("date").asText(),
-                message.get("projectID").asLong());
-        Project.addComment(cm, message.get("projectID").asLong());
-        postMessage.put("commentID", "" + cm.id);
-    }
+//    postMessage.put("subject", message.get("subject").asText());
+//    postMessage.put("senderID", "" + message.get("senderID").asLong());
+//    postMessage.put("sender", message.get("sender").asText());
+//    postMessage.put("projectID", "" + message.get("projectID").asLong());
+//    postMessage.put("text", message.get("text").asText());
+//    postMessage.put("date", message.get("date").asText());
+//    if(message.get("parentID").asInt() == -1) {
+//      Logger.debug("parentID was " + message.get("parentID").asInt());
+//        Comment cm = Comment.create(message.get("senderID").asLong(),
+//                message.get("subject").asText(), message.get("text").asText(), message.get("date").asText(),
+//                message.get("projectID").asLong());
+//        Project.addComment(cm, message.get("projectID").asLong());
+//        postMessage.put("commentID", "" + cm.id);
+//    }
     Logger.debug("" + Json.toJson(postMessage));
     sendEvent(Json.toJson(postMessage));
     return ok();
@@ -54,13 +56,14 @@ public class ChatData extends Controller {
       message.put("commentID", "" + cm.id);
       message.put("text", cm.text);
       message.put("subject", cm.subject);
-      message.put("senderID", "" + cm.senderID);
-      message.put("sender", "" + cm.sender);
+//      message.put("senderID", "" + cm.senderID);
+      message.put("sender", "" + cm.user.name);
       message.put("date", cm.date);
       message.put("projectID", "" + cm.project.id);
 //      Logger.debug("Message as Json: " + toJson(message.toString()));
       messages.add(message);
     }
+//    JsonObject value = Json.createObjectBuilder().build();
     return ok(toJson(messages));
   }
 

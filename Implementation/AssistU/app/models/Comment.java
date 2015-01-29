@@ -16,33 +16,28 @@ import java.util.List;
 
 public class Comment extends Model {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     public long id;
-    @Constraints.Required
-    public long senderID;
-    public long parentID;
     public String subject;
-    public String sender;
     @Column(columnDefinition="TEXT")
     public String text;
     public String date;
-    public boolean edited;
-
+    @ManyToMany
+    public User user;
     @ManyToOne
     public Project project;
 
-    @OneToMany
-    public List<SubComment> subcomments = new ArrayList<SubComment>();
+    public boolean isParent;
+    public boolean isChild;
 
-    public Comment(Long senderID, String sender, String subject, String text, String date, Long projectID, Long parentID){
-        this.subject = subject;
-        this.senderID = senderID;
-        this.sender = sender;
+    public Comment(Long uid, String subject, String text, String date, Long projectID, Boolean isChild){
+        this.user = User.find.byId(uid);
         this.project = Project.find.byId(projectID);
+        this.subject = subject;
         this.text = text;
         this.date= date;
-        this.edited=false;
-        this.parentID=parentID;
+        this.isParent = !isChild;
+        this.isChild = isChild;
     }
 
     /**
@@ -55,19 +50,9 @@ public class Comment extends Model {
     /**
      * creates new chatmessage
      */
-    public static Comment create(Long senderID, String sender, String subject, String text, String date, Long projectID){
-        Comment cm = new Comment(senderID, sender, subject, text, date, projectID, -1L);
+    public static Comment create(Long uid, String subject, String text, String date, Long pid, Boolean isChild){
+        Comment cm = new Comment(uid, subject, text, date, pid, isChild);
         cm.save();
         return cm;
-    }
-
-    public static Comment createChild(Long senderID, String sender, String subject, String text, String date, Long projectID, Long parentID){
-        Comment cm = new Comment(senderID, sender, subject, text, date, projectID, parentID);
-        cm.save();
-        return cm;
-    }
-
-    public void addSubComment(SubComment scm){
-        this.subcomments.add(scm);
     }
 }
