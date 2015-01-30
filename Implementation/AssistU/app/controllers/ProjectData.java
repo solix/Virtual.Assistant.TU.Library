@@ -94,14 +94,14 @@ public class ProjectData extends Controller {
 
     public static Result getProjectIdsAsJson(Long uid){
         List<Project> projects = Project.find.where().in("users", User.find.byId(uid)).eq("active", "true").findList();
-//        List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
-//        TreeMap<String, String> project;
-        List<Long> result = new ArrayList<Long>();
+        List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
+        TreeMap<String, String> project;
+//        List<Long> result = new ArrayList<Long>();
         for(int i =0; i < projects.size(); i++){
-//            project = new TreeMap<String, String>();
-//            project.put("name", projects.get(i).name);
-//            project.put("projectID", "" + projects.get(i).id);
-            result.add(projects.get(i).id);
+            project = new TreeMap<String, String>();
+            project.put("name", projects.get(i).name);
+            project.put("projectID", "" + projects.get(i).id);
+            result.add(project);
         }
         return ok(toJson(result));
     }
