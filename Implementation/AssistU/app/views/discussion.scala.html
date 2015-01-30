@@ -15,13 +15,15 @@
                 angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scope, $http) {
                     $scope.projectids = [];
                     $.ajax({url: "/" + @currentUser.id + "/projectids", async: false, dataType: 'json', success: function(response){ $scope.projectids = response}});
+                    console.log($scope.projectids[0 ].projectID);
                     $scope.comments = [];
                     $.ajax({url: "/comments/" + $scope.projectids[0].projectID, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
+                    console.log($scope.comments);
                     $scope.inputText = "";
                     $scope.inputSubject = "";
                     $scope.user = "@currentUser.name";
-                    $scope.parentID = -1;
                     $scope.subjectReadOnly = false;
+                    $scope.isChild = false;
                     $scope.currentProject = $scope.projectids[0];
 
                     /** change current room, restart EventSource connection */
@@ -34,9 +36,9 @@
                     };
 
                     /** change current subject, restart EventSource connection */
-                    $scope.setCurrentSubjectAndParent = function (subject, parentID) {
+                    $scope.setCurrentSubjectAndisChild = function (subject, isChild) {
                         $scope.inputSubject = subject;
-                        $scope.parentID = parentID;
+                        $scope.isChild = isChild;
                     };
 
                     $scope.setSubjectReadOnly = function (bool) {
@@ -50,7 +52,7 @@
                     /** posting chat text to server */
                     $scope.submitMsg = function () {
                         $http.post("/chat", { uid: @currentUser.id, subject: $scope.inputSubject, content: $scope.inputText,
-                                                 date: (new Date()).toUTCString(), pid: $scope.currentProject});
+                                                 date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
                         $scope.inputText = "";
                         $scope.inputSubject = "";
                     };
@@ -103,42 +105,51 @@
                                         <h3 style="margin: 5px 0 0 30px;">@activeProjectList.head.name: Discussions</h3>
                                     </div>
                                     <div class="col-xs-2">
-                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubjectAndParent('', -1);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
+                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
                                     </div>
                                 </div>
                                 <hr class="hr" style="margin: 10px 0 0 0">
                                 <div class="panel-body" style="padding: 5px 0 200px 0">
                                     <div id="chat">
                                         <div class="{{comment.who}} comment" ng-repeat="comment in comments"> @* | limitTo:-8*@
-                                            <div class="row">
-                                                <div class="col-xs-2" style="text-align: center">
-                                                    <div class="thumbnail" style="width: 75px; height: 75px; margin: 10px auto 5px auto">
-                                                        <img src="http://tansolutions.co/wp-content/uploads/2013/09/765-default-avatar-75x75.png" alt="User Avatar" class="img-circle" />
-                                                    </div>
-                                                    <strong>User</strong>
-                                                </div>
-                                                <div class="col-xs-10">
+                                            @*<div class="media">*@
+                                                @*<div class="media body">*@
                                                     <div class="row">
-                                                        <div class="col-xs-9">
-                                                            <b><u>{{comment.subject}}</u></b>
+                                                        <div class="col-xs-2" style="text-align: center">
+                                                            <div class="thumbnail" style="width: 75px; height: 75px; margin: 10px auto 5px auto">
+                                                                <img src="http://tansolutions.co/wp-content/uploads/2013/09/765-default-avatar-75x75.png" alt="User Avatar" class="img-circle" />
+                                                            </div>
+                                                            <strong>User</strong>
                                                         </div>
-                                                        <div class="col-xs-3">
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
-                                                            </small>
+                                                        <div class="col-xs-10">
+                                                            <div class="row">
+                                                                <div class="col-xs-9">
+                                                                    <b><u>{{comment.subject}}</u></b>
+                                                                </div>
+                                                                <div class="col-xs-3">
+                                                                    <small class="pull-right text-muted">
+                                                                        <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            {{comment.content}}
                                                         </div>
                                                     </div>
-                                                    {{comment.content}}
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <small class="pull-right" style="padding-right: 30px">
-                                                    <a data-toggle="collapse" href="#comment" ng-click="setCurrentSubject('Replying to topic: ' + comment.subject, comment.commentID); setSubjectReadOnly(true)">
-                                                        <i class="fa fa-comment-o fa-fw"></i> Add a comment...
-                                                    </a>
-                                                </small>
-                                            </div>
-                                            <hr class="hr" style="margin: 5px 0">
+                                                    <div class="row">
+                                                        <small class="pull-right" style="padding-right: 30px">
+                                                            <a data-toggle="collapse" href="#comment" ng-click="setCurrentSubjectAndisChild(comment.subject, true); setSubjectReadOnly(true)">
+                                                                <i class="fa fa-comment-o fa-fw"></i> Add a comment...
+                                                            </a>
+                                                        </small>
+                                                    </div>
+                                                    <hr class="hr" style="margin: 5px 0">
+                                                    @*<div class="media">*@
+                                                        @*<div class="media body">*@
+                                                            @*NESTED SAMPLE*@
+                                                        @*</div>*@
+                                                    @*</div>*@
+                                                @*</div>*@
+                                            @*</div>*@
                                         </div>
                                     </div>
                                 </div>

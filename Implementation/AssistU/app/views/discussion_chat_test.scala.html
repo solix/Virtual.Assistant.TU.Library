@@ -1,125 +1,13 @@
-@(title: String)(currentUser:User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
-<html lang="en">
-    <head>
-        @linkLoader.headlinks(title)
-        @*<link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/chat-TBD.css")">*@
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
-    <script type="text/javascript">
-    'use strict';
-    /** app level module which depends on services and controllers */
-    angular.module('sseChat', ['sseChat.services', 'sseChat.controllers']);
-    </script>
-    <script type="text/javascript">
-    'use strict';
-    /** chatModel service, provides chat rooms (could as well be loaded from server) */
-    angular.module('sseChat.services', []).service('chatModel', function () {
-        var getProjects = function () {
-            return [@for(p <- activeProjectList){
-                        @if(!p.equals(activeProjectList.last)){{name: '@p.name', value: '@p.id'},
-                        }else{{name: '@p.name', value: '@p.id'}}}];
-        };
-        return { getProjects: getProjects };
-    });
-    </script>
-    <script id="controller" type="text/javascript">
-    'use strict';
-    /** Controllers */
-    angular.module('sseChat.controllers', ['sseChat.services']).controller('ChatCtrl', function ($scope, $http, chatModel) {
-        $scope.projects = chatModel.getProjects();
-        $scope.msgs = [];
-        $.ajax({url: "/messages/" + $scope.projects[0].value, async: false, dataType: 'json', success: function(response){ $scope.msgs = response}});
-        $scope.inputText = "";
-        $scope.currentProject = $scope.projects[0];
-        console.log("Discussion set to " + $scope.projects[0].name + " - " + $scope.projects[0].value);
-
-        /** change current room, restart EventSource connection */
-        $scope.setCurrentProject = function (pid) {
-            $scope.currentProject = $.grep($scope.projects, function(p){return p.value === pid;})[0 ];
-            $scope.chatFeed.close();
-            $scope.msgs = [];
-            $.ajax({url: "/messages/" + pid, async: false, dataType: 'json', success: function(response){ $scope.msgs = response}});
-            $scope.listen();
-        };
-
-        /** posting chat text to server */
-        $scope.submitMsg = function () {
-            $http.post("/chat", { text: $scope.inputText, sender: $scope.user, senderID: @currentUser.id,
-            date: (new Date()).toUTCString(), projectID: $scope.currentProject.value });
-            $scope.inputText = "";
-        };
-
-        /** handle incoming messages: add to messages array */
-        $scope.addMsg = function (msg) {
-            $scope.$apply(function () { $scope.msgs.push(JSON.parse(msg.data));});
-        };
-
-        /** start listening on messages from selected room */
-        $scope.listen = function () {
-            $scope.chatFeed = new EventSource("/chatFeed/" + $scope.currentProject.value);
-            $scope.chatFeed.addEventListener("message", $scope.addMsg, false);
-        };
-
-        $scope.listen();
-    });
-    </script>
-    </head>
-    <body>
-        <div id="wrapper">
-            @dashboard("discussion", currentUser)
-        <div id="page-wrapper">
-            @template.headericon("fa fa-comment fa-5x")
-        <div ng-app="sseChat">
-            <div ng-controller="ChatCtrl">
-                <div class="container-fluid" style="text-align: center; margin: 1% 0">
-                    <div role="tabpanel">
-                        <ul class="nav nav-tabs">
-                        @for(p <- activeProjectList) {
-                            @* TODO: Rewrite below to the last updated project *@
-                            @if(p.equals(activeProjectList.head)) {
-                                <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                    <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh1" data-toggle="tab">@p.folder</a>
-                                </li>
-                            } else {
-                                <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                                    <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh2" data-toggle="tab">@p.folder</a>
-                                </li>
-                            }
-                        }
-                        </ul>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div id="chat">
-                        <div class="{{msg.who}} msg" ng-repeat="msg in msgs | limitTo:-4">
-                                    {{msg.date}}<br/>
-                            <strong>{{msg.sender}} says: </strong>{{msg.text}}<br/>
-                                </div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="input-group">
-                    <input ng-submit="submitMsg()" type="text" name="chat" id="textField" ng-model="inputText"
-                    placeholder="Comment..." class="ng-pristine ng-valid form-control input-sm" />
-                    <span class="input-group-btn">
-                        <input ng-bind="user='@currentUser.name'" type="button" class="btn btn-warning btn-sm" id="saySomething" value="Send" ng-click="submitMsg()" />
-                    </span>
-                    </div>
-                </div>
-            </div>
+<ul class="media-list">
+    <li class="media">
+        <div class="media-left">
+            <a href="#">
+                <img class="media-object" src="no img" alt="...">
+            </a>
         </div>
-
+        <div class="media-body">
+            <h4 class="media-heading">Media heading</h4>
+            lorem gtrtryolp;optetetrererere
         </div>
-        </div>
-            <!-- jQuery -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-
-            <!--bootstrap-->
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-            <!--sb-Admin-->
-        <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
-
-        <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
-</body>
-</html>}
+    </li>
+</ul>

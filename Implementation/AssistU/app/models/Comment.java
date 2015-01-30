@@ -31,10 +31,13 @@ public class Comment extends Model {
 
     public boolean isChild =false;
 
-    public Comment( String subject, String text, String date){
+    public Comment(Long uid, String subject, String text, String date, Long pid, Boolean isChild){
         this.subject = subject;
         this.content = text;
         this.date= date;
+        this.user = User.find.byId(uid);
+        this.project = Project.find.byId(pid);
+        this.isChild = isChild;
     }
 
     /**
@@ -48,18 +51,8 @@ public class Comment extends Model {
      * creates new chatmessage
      */
     public static Comment create(Long uid, String subject, String text, String date, Long pid, Boolean isChild){
-        Comment cm = new Comment(subject, text, date);
+        Comment cm = new Comment(uid, subject, text, date, pid, isChild);
         cm.save();
         return cm;
-    }
-
-    /**
-     * if the comment is sub-type then child is set to true
-     * @param mid
-     */
-    public static void setCommentToChild(long mid){
-        Comment comment = Comment.find.byId(mid);
-        comment.isChild=true;
-        comment.save();
     }
 }

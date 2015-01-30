@@ -4,14 +4,14 @@
 # --- !Ups
 
 create table comment (
-  mid                       bigint not null,
+  cid                       bigint not null,
   subject                   varchar(255),
   content                   TEXT,
   date                      varchar(255),
   user_id                   bigint,
   project_id                bigint,
   is_child                  boolean,
-  constraint pk_comment primary key (mid))
+  constraint pk_comment primary key (cid))
 ;
 
 create table document_file (
