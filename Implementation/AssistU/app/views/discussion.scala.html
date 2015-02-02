@@ -1,198 +1,222 @@
 @(title: String)(currentUser:User)
-    @defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
-        <html lang="en">
-            <head>
-                @linkLoader.headlinks(title)
-            <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
-            <script type="text/javascript">
-                'use strict';
-                /** app level module which depends on services and controllers */
-                angular.module('sseChat', ['sseChat.controllers']);
-            </script>
-            <script id="controller" type="text/javascript">
-                'use strict';
-                /** Controllers */
-                angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scope, $http) {
-                    $scope.projectids = [];
-                    $.ajax({url: "/" + @currentUser.id + "/projectids", async: false, dataType: 'json', success: function(response){ $scope.projectids = response}});
-                    console.log($scope.projectids[0 ].projectID);
-                    $scope.comments = [];
-                    $.ajax({url: "/comments/" + $scope.projectids[0].projectID, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
-                    console.log($scope.comments);
-                    $scope.inputText = "";
-                    $scope.inputSubject = "";
-                    $scope.user = "@currentUser.name";
-                    $scope.subjectReadOnly = false;
-                    $scope.isChild = false;
-                    $scope.currentProject = $scope.projectids[0];
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+    <html lang="en">
+        <head>
+            @linkLoader.headlinks(title)
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+        <script type="text/javascript">
+        'use strict';
+        /** app level module which depends on services and controllers */
+        angular.module('sseChat', ['sseChat.controllers']);
+        </script>
+        <script id="controller" type="text/javascript">
+        'use strict';
+        /** Controllers */
+        angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scope, $http) {
 
-                    /** change current room, restart EventSource connection */
-                    $scope.setCurrentProject = function (pid) {
-                        $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
-                        $scope.chatFeed.close();
-                        $scope.comments = [];
-                        $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
-                        $scope.listen();
-                    };
+        $scope.projectids =[ ] ;
+        $.ajax ( { url : "/" + @currentUser.id + "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
+        $scope.comments =[ ] ;
+        $.ajax ( { url : "/comments/" + $scope.projectids[ 0 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
+        $scope.message = { } ;
+        $scope.message.subject = "" ;
+        $scope.message.content = "" ;
+        $scope.uid = " @currentUser.id ";
+        $scope.isChild = false ;
+        $scope.currentProject = $scope.projectids[ 0 ] ;
 
-                    /** change current subject, restart EventSource connection */
-                    $scope.setCurrentSubjectAndisChild = function (subject, isChild) {
-                        $scope.inputSubject = subject;
-                        $scope.isChild = isChild;
-                    };
+        $scope.refresh = function () {
+        $scope.projectids =[ ] ;
+        $.ajax ( { url : "/" + @currentUser.id + "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
+        $scope.comments =[ ] ;
+        $.ajax ( { url : "/comments/" + $scope.projectids[ 0 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
+        };
 
-                    $scope.setSubjectReadOnly = function (bool) {
-                        $scope.subjectReadOnly = bool;
-                    };
+        /** change current room, restart EventSource connection */
+        $scope.setCurrentProject = function (pid) {
+        $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
+        $scope.chatFeed.close();
+        $scope.comments = [];
+        $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
+        $scope.listen();
+        };
 
-                    $scope.eraseInputText = function () {
-                        $scope.inputText = "";
-                    };
+        /** change current subject, restart EventSource connection */
+        $scope.setCurrentSubjectAndisChild = function (subject, isChild) {
+        $scope.message.subject = subject;
+        $scope.isChild = isChild;
+        };
 
-                    /** posting chat text to server */
-                    $scope.submitMsg = function () {
-                        $http.post("/chat", { uid: @currentUser.id, subject: $scope.inputSubject, content: $scope.inputText,
-                                                 date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
-                        $scope.inputText = "";
-                        $scope.inputSubject = "";
-                    };
+        $scope.reset = function () {
+        $scope.message.subject = "";
+        $scope.message.content = "";
+        };
 
-                    /** handle incoming messages: add to messages array */
-                    $scope.addMsg = function (msg) {
-                        $scope.$apply(function () {
-                            $scope.comments.push(JSON.parse(msg.data));
-                            console.log("" + JSON.stringify(JSON.parse(msg.data)));
-                        });
-                    };
+        /** posting chat text to server */
+        $scope.submitMsg = function () {
+        $http.post("/chat", { uid: $scope.uid, subject: $scope.message.subject, content: $scope.message.content,
+        date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
+        $scope.reset();
+        };
 
-                    /** start listening on messages from selected room */
-                    $scope.listen = function () {
-                        $scope.chatFeed = new EventSource("/chatFeed/" + $scope.currentProject.projectID);
-                        $scope.chatFeed.addEventListener("message", $scope.addMsg, false);
-                    };
+        /** handle incoming messages: add to messages array */
+        $scope.addMsg = function (msg) {
+        $scope.$apply(function () {
+        $scope.refresh();
+        });
+        };
 
-                    $scope.listen();
-                });
-            </script>
-            </head>
-            <body>
-                <div id="wrapper">
-                    @dashboard("discussion", currentUser)
-                    <div id="page-wrapper">
-                        @template.headericon("fa fa-comment fa-5x")
-                        <div ng-app="sseChat">
-                            <div ng-controller="ChatCtrl">
-                                <div class="container-fluid" style="text-align: center; margin: 1% 0">
-                                    <div role="tabpanel">
-                                        <ul class="nav nav-tabs">
-                                        @for(p <- activeProjectList) {
-                                            @* TODO: Rewrite below to the last updated project *@
-                                            @if(p.equals(activeProjectList.head)) {
-                                                <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                                    <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh1" data-toggle="tab">@p.folder</a>
-                                                </li>
-                                            } else {
-                                                <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                                                    <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh2" data-toggle="tab">@p.folder</a>
-                                                </li>
-                                            }
+        /** start listening on messages from selected room */
+        $scope.listen = function () {
+        $scope.chatFeed = new EventSource("/chatFeed/" + $scope.currentProject.projectID);
+        $scope.chatFeed.addEventListener("message", $scope.addMsg, false);
+        };
+
+        $scope.listen();
+        });
+        </script>
+        </head>
+        <body>
+            <div id="wrapper">
+                @dashboard("discussion", currentUser)
+                <div id="page-wrapper">
+                    @template.headericon("fa fa-comment fa-5x")
+                    <div ng-app="sseChat">
+                        <div ng-controller="ChatCtrl">
+                            <div class="container-fluid" style="text-align: center; margin: 0 0 1% 0">
+                                <div role="tabpanel">
+                                    <ul class="nav nav-tabs">
+                                    @for(p <- activeProjectList) {
+                                        @* TODO: Rewrite below to the last updated project *@
+                                        @if(p.equals(activeProjectList.head)) {
+                                            <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                                                <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh1" data-toggle="tab">@p.folder</a>
+                                            </li>
+                                        } else {
+                                            <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
+                                                <a ng-click="setCurrentProject('@p.id')" href="#" id="refresh2" data-toggle="tab">@p.folder</a>
+                                            </li>
                                         }
-                                        </ul>
-                                    </div>
+                                    }
+                                    </ul>
                                 </div>
-                                <div class="row">
-                                    <div class="col-xs-10">
-                                        <h3 style="margin: 5px 0 0 30px;">@activeProjectList.head.name: Discussions</h3>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <h3 style="margin: 5px 0 0 30px;">@activeProjectList.head.name: Discussions</h3>
                                 </div>
-                                <hr class="hr" style="margin: 10px 0 0 0">
-                                <div class="panel-body" style="padding: 5px 0 200px 0">
-                                    <div id="chat">
-                                        <div class="{{comment.who}} comment" ng-repeat="comment in comments"> @* | limitTo:-8*@
-                                            @*<div class="media">*@
-                                                @*<div class="media body">*@
-                                                    <div class="row">
-                                                        <div class="col-xs-2" style="text-align: center">
-                                                            <div class="thumbnail" style="width: 75px; height: 75px; margin: 10px auto 5px auto">
-                                                                <img src="http://tansolutions.co/wp-content/uploads/2013/09/765-default-avatar-75x75.png" alt="User Avatar" class="img-circle" />
-                                                            </div>
-                                                            <strong>User</strong>
+                                <div class="col-xs-2">
+                                    <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
+                                </div>
+                            </div>
+                            <hr class="hr" style="margin: 10px 30px 0 30px">
+                            <div class="panel-body" style="padding: 5px 0 200px 0">
+                                <div id="chat">
+                                    <div class="{{comment.who}} comment" ng-repeat="comment in comments">
+                                        <div class="panel panel-primary" style="margin-bottom: 0">
+                                            <div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">
+                                                <div class="row">
+                                                    <div class="col-xs-2" style="text-align: center">
+                                                        <div class="thumbnail" style="width: 50px; height: 50px; margin: 5px auto 5px auto">
+                                                            <img src="http://www.33plus1.ru/Decor/02_OUTDOOR_INSTALL/131008_Katusha/SMI/ria.ru_files/default-avatar-50x50.jpg" alt="User Avatar" class="img-circle" />
                                                         </div>
-                                                        <div class="col-xs-10">
-                                                            <div class="row">
-                                                                <div class="col-xs-9">
-                                                                    <b><u>{{comment.subject}}</u></b>
-                                                                </div>
-                                                                <div class="col-xs-3">
-                                                                    <small class="pull-right text-muted">
-                                                                        <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
-                                                                    </small>
-                                                                </div>
+                                                        <strong>{{comment.username}}</strong>
+                                                    </div>
+                                                    <div class="col-xs-10">
+                                                        <div class="row">
+                                                            <div class="col-xs-9">
+                                                                <b>{{comment.subject}}</b>
+                                                                <hr class="hr" style="margin: 0 0 5px 0">
                                                             </div>
-                                                            {{comment.content}}
+                                                            <div class="col-xs-3">
+                                                                <small class="pull-right text-muted">
+                                                                    <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        {{comment.content}}
+                                                        <div class="container-fluid">
+                                                            <a class="pull-right" data-toggle="collapse" href="#comment{{comment.cid}}"
+                                                            style="margin: 0; margin-right: 30px;">Leave a comment...</a>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <small class="pull-right" style="padding-right: 30px">
-                                                            <a data-toggle="collapse" href="#comment" ng-click="setCurrentSubjectAndisChild(comment.subject, true); setSubjectReadOnly(true)">
-                                                                <i class="fa fa-comment-o fa-fw"></i> Add a comment...
-                                                            </a>
-                                                        </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-11 col-xs-offset-1">
+                                                <div class="panel panel-primary" style="margin-top: -1px">
+                                                    @*<div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">*@
+                                                    <div class="panel-body" style="padding: 0">
+                                                        <div class="container-fluid" ng-repeat="subcomment in comment.subcomments" style="padding: 0">
+                                                            <b>{{subcomment.username}}</b> - {{subcomment.content}}
+                                                            <small class="pull-right text-muted">
+                                                                <i class="fa fa-clock-o fa-fw"></i> {{subcomment.date}}
+                                                            </small>
+                                                        </div>
                                                     </div>
-                                                    <hr class="hr" style="margin: 5px 0">
-                                                    @*<div class="media">*@
-                                                        @*<div class="media body">*@
-                                                            @*NESTED SAMPLE*@
-                                                        @*</div>*@
-                                                    @*</div>*@
-                                                @*</div>*@
-                                            @*</div>*@
+                                                    <div id="comment{{comment.cid}}" class="panel-footer collapse" style="margin-top: -5px ;">
+                                                        <button type="button" class="close pull-left" data-toggle="collapse" data-target="#comment{{comment.cid}}"
+                                                        style="padding: 4px 20px 6px 5px"
+                                                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <div class="input-group">
+                                                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="{{comment.username}} says..."
+                                                            ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message.content"/>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-warning btn-sm" ng-click="submitMsg()">React!</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="comment" class="panel-footer collapse" style="position: fixed; bottom:0; margin-left: -30px; padding: 15px 50px">
-                                    <div class="row" style="padding: 0 20px">
-                                        Subject:
-                                    </div>
-                                    <div class="row" style="padding: 0 20px 5px 20px;">
-                                        <span class="input-group-btn">
-                                            <input type="text" name="chat" id="textField" ng-model="inputSubject" ng-readonly="subjectReadOnly"
-                                            placeholder="Your eye-catching subject title here..." class="ng-pristine ng-valid form-control input-sm"/>
-                                        </span>
-                                    </div>
-                                    <div class="row" style="padding: 0 20px">
-                                        Comment:
-                                    </div>
-                                    <div class="row" style="padding: 0 20px">
-                                        <span class="input-group-btn">
-                                            <input ng-submit="submitMsg()" type="text" name="chat" id="textField" ng-model="inputText"
-                                            placeholder="Your text here..." class="ng-pristine ng-valid form-control input-sm"/>
-                                        </span>
-                                    </div>
-                                    <div class="row pull-right" style="margin: 10px">
-                                        <button ng-click="setSubjectReadOnly(false); setCurrentSubject('', -1); eraseInputText();" class="btn btn-default btn-sm"
-                                        data-toggle="collapse" data-target="#comment" type="button" style="width: 80px">Cancel</button>
-                                        <button type="button" class="btn btn-success btn-sm" style="width: 80px"
-                                        id="saySomething" data-toggle="collapse" data-target="#comment" ng-click="submitMsg()">Submit</button>
-                                    </div>
+                            </div>
+                            <div id="comment" class="panel-footer collapse" style="position: fixed; bottom:0; margin-left: -30px; padding: 15px 50px">
+                                <div class="row" style="padding: 0; text-align: center">
+                                    <button type="button" class="close pull-right" data-toggle="collapse" data-target="#comment" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="padding: 0; margin: 0">Start a new Discussion</h3>
+                                </div>
+                                <div class="row" style="padding: 0 20px">
+                                    Subject:
+                                </div>
+                                <div class="row" style="padding: 0 20px 5px 20px;">
+                                    <span class="input-group-btn">
+                                        <input type="text" name="chat" id="textField" ng-model="message.subject"
+                                        placeholder="Your eye-catching subject title here..." class="ng-pristine ng-valid form-control input-sm"/>
+                                    </span>
+                                </div>
+                                <div class="row" style="padding: 0 20px">
+                                    Comment:
+                                </div>
+                                <div class="row" style="padding: 0 20px">
+                                    <span class="input-group-btn">
+                                        <input ng-submit="submitMsg()" type="text" name="chat" id="textField" ng-model="message.content"
+                                        placeholder="Your text here..." class="ng-pristine ng-valid form-control input-sm"/>
+                                    </span>
+                                </div>
+                                <div class="row pull-right" style="margin: 10px">
+                                    <button ng-click="reset();" class="btn btn-default btn-sm"
+                                    data-toggle="collapse" data-target="#comment" type="button" style="width: 80px">Cancel</button>
+                                    <button type="button" class="btn btn-success btn-sm" style="width: 80px"
+                                    id="saySomething" data-toggle="collapse" data-target="#comment" ng-click="submitMsg()">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                    <!-- jQuery -->
-                <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+            </div>
+                <!-- jQuery -->
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 
-                    <!--bootstrap-->
-                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                <!--bootstrap-->
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-                    <!--sb-Admin-->
-                <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+                <!--sb-Admin-->
+            <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 
-                <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
-            </body>
-        </html>
-    }
+            <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+        </body>
+    </html>
+}

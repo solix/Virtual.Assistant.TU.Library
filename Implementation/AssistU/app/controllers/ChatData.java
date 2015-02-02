@@ -42,15 +42,16 @@ public class ChatData extends Controller {
   }
 
   public static Result getOldMessages(Long pid){
-    Logger.debug("Retrieving old messages from project: " + pid);
+    ObjectNode result = new ObjectMapper().createObjectNode();
     List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(pid)).eq("isChild", false).findList();
-    Logger.debug("Number of comments: " + cml.size());
-    List<HashMap<String, String>> messages = new ArrayList<HashMap<String, String>>();
-    HashMap<String, String> message;
+    List<ObjectNode> messages = new ArrayList<ObjectNode>();
+    ObjectNode message;
     for(int i =0; i < cml.size(); i++){
       Comment cm = cml.get(i);
-      message = new HashMap<String, String>();
+      message = new ObjectMapper().createObjectNode();
       message.put("uid", "" + cm.user.id);
+//      message.put("uid", "7");
+      message.put("username", cm.user.name);
       message.put("subject", cm.subject);
       message.put("content", cm.content);
       message.put("date", cm.date);
@@ -58,20 +59,23 @@ public class ChatData extends Controller {
       message.put("isChild", "" + cm.isChild);
       message.put("cid", "" + cm.cid);
       List<Comment> scml = Comment.find.where().eq("project", Project.find.byId(pid)).eq("isChild", true).eq("subject", cm.subject).findList();
-      List<HashMap<String, String>> submessages = new ArrayList<HashMap<String, String>>();
-      HashMap<String, String> submessage;
+      ObjectNode submessages = new ObjectMapper().createObjectNode();
+      ObjectNode submessage;
       for(int j =0; j < scml.size(); j++) {
         Comment scm = scml.get(j);
-        submessage = new HashMap<String, String>();
+        submessage = new ObjectMapper().createObjectNode();
         submessage.put("uid", "" + scm.user.id);
+//        submessage.put("uid", "7");
+        submessage.put("username", scm.user.name);
         submessage.put("subject", scm.subject);
         submessage.put("content", scm.content);
         submessage.put("date", scm.date);
         submessage.put("pid", "" + scm.project.id);
         submessage.put("isChild", "" + scm.isChild);
         submessage.put("cid", "" + scm.cid);
-        submessages.add(submessage);
+        submessages.put("submessage" + j, submessage);
       }
+      message.put("subcomments", submessages);
       messages.add(message);
     }
     Logger.debug("Old messages: " + Json.stringify(toJson(messages)));
