@@ -4,6 +4,7 @@ import com.feth.play.module.pa.PlayAuthenticate;
 import models.Event;
 import models.User;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -44,7 +45,8 @@ public class CalData extends Controller {
 
         Date startDate = new Date(start*1000);
         Date endDate = new Date(end*1000);
-
+//        Event event1 = new Event("Plan 1",new Date(2015-02-24),new Date(2015-02-25),true);
+//        event1.save();
         List<Event> resultList = Event.findInDateRange(startDate, endDate);
         ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -120,10 +122,22 @@ public class CalData extends Controller {
             newEvent.end = new DateTime(newEvent.start).plusMinutes(30).toDate();
         }
         newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+        user.events.add(newEvent);
+        //Event.addPlanningArticle();
+        Logger.debug("Add new event manually is used :" + newEvent.title);
         newEvent.save();
+
         return redirect(controllers.routes.CalData.list());
     }
 
+    /**
+     * TODO: gives new planning of the project
+     * @return Result
+     */
+
+    public static Result defaultPlanning() {
+        return TODO;
+    }
 
     /**
      * Dislays form for editing existing event
@@ -140,7 +154,7 @@ public class CalData extends Controller {
 
 
     /**
-     * Save new event in DB (a.k.a. submit action in other examples)
+     * Save updated event in DB
      * @param id Long
      * @return Result
      */
@@ -158,6 +172,7 @@ public class CalData extends Controller {
         }
         updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
         updatedEvent.update(id);
+
         return redirect(controllers.routes.CalData.list());
     }
 
@@ -190,7 +205,7 @@ public class CalData extends Controller {
         Map<String, String> result = new HashMap<String, String>();
         result.put("id", newEvent.id.toString());
         result.put("url", controllers.routes.CalData.edit(newEvent.id).toString());
-
+        Logger.debug("add By ajax is used: " + result);
         return ok(play.libs.Json.toJson(result));
     }
 
@@ -212,9 +227,6 @@ public class CalData extends Controller {
         event.endsSameDay = endsSameDay(event.start, event.end);
         event.update();
 
-//        if (thereIsSomeError){
-//            return badRequest("You can not move this event!");
-//        }
 
         return ok("changed");
     }
@@ -234,12 +246,10 @@ public class CalData extends Controller {
         event.endsSameDay = endsSameDay(event.start, event.end);
         event.update();
 
-//        if (thereIsSomeError){
-//            return badRequest("You can not resize this event!");
-//        }
 
         return ok("changed");
     }
+
 
 
 }

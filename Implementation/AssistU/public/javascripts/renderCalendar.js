@@ -32,6 +32,7 @@ $(document).ready(function () {
                             calendar.fullCalendar('renderEvent',{id:data.id,title:title,start:start,end:end,allDay:allDay, url:data.url },true);
                         }
                     }
+
                 });
             } else {
                 alert("Title is required!");
@@ -109,4 +110,13 @@ function convertDate(date){
 function setNewHeight() {
     newHeight = jQuery(window).height() - 70; // 60 is padding of the body tag in main.css (required for Bootstrap's header)
     $('#calendar').fullCalendar('option', 'height', newHeight);
+}
+
+function loadEvent() {
+    var newEvent = {
+        title: 'NEW EVENT',
+        start: new Date(y, m, d)
+    };
+    $('#calendar').fullCalendar( 'renderEvent', newEvent , 'stick');
+
 }

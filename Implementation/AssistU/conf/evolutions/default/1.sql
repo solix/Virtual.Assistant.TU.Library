@@ -37,6 +37,7 @@ create table project (
   folder                    varchar(255),
   description               varchar(255),
   active                    boolean,
+  date_created              timestamp,
   constraint pk_project primary key (id))
 ;
 

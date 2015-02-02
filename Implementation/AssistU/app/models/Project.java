@@ -1,12 +1,16 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.*;
 
 import play.Logger;
+import play.data.format.Formats;
 import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
@@ -22,6 +26,8 @@ public class Project extends Model {
     public String folder;
     public String description;
     public Boolean active=false;
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
+    public Date dateCreated ;
     @ManyToMany(mappedBy = "projects")
     public List<User> users = new ArrayList<User>();
     @OneToMany(mappedBy = "project")
@@ -65,6 +71,8 @@ public class Project extends Model {
     public static Project create(String folder, String name,  Long owner ,String description){
         Project project = new Project(folder, name ,User.find.ref(owner),description);
         project.active=true;
+        project.dateCreated =new Date();
+        Logger.debug("Project with the name of ("+project.name+ ") has been created on: " + project.dateCreated);
         project.save();
         return project;
     }
