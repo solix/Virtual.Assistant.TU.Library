@@ -1,9 +1,16 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import models.*;
+import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import java.lang.String;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import static play.libs.Json.toJson;
 
 /**
  * Created by arnaud on 13-12-14.
@@ -83,5 +90,19 @@ public class ProjectData extends Controller {
     public static Result removeMemberFromProject(Long uid, Long pid){
         Project.removeMemberFrom(pid, uid);
         return redirect(routes.Application.project());
+    }
+
+    public static Result getProjectIdsAsJson(Long uid){
+        List<Project> projects = Project.find.where().in("users", User.find.byId(uid)).eq("active", "true").findList();
+        List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
+        TreeMap<String, String> project;
+//        List<Long> result = new ArrayList<Long>();
+        for(int i =0; i < projects.size(); i++){
+            project = new TreeMap<String, String>();
+            project.put("name", projects.get(i).name);
+            project.put("projectID", "" + projects.get(i).id);
+            result.add(project);
+        }
+        return ok(toJson(result));
     }
 }

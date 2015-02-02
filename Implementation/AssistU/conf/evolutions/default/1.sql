@@ -3,6 +3,17 @@
 
 # --- !Ups
 
+create table comment (
+  cid                       bigint not null,
+  subject                   varchar(255),
+  content                   TEXT,
+  date                      varchar(255),
+  user_id                   bigint,
+  project_id                bigint,
+  is_child                  boolean,
+  constraint pk_comment primary key (cid))
+;
+
 create table document_file (
   id                        bigint not null,
   name                      varchar(255),
@@ -70,6 +81,8 @@ create table user_project (
   project_id                     bigint not null,
   constraint pk_user_project primary key (user_id, project_id))
 ;
+create sequence comment_seq;
+
 create sequence document_file_seq;
 
 create sequence linked_account_seq;
@@ -82,12 +95,16 @@ create sequence user_seq;
 
 create sequence user_role_seq;
 
-alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_document_file_project_1 on document_file (project_id);
-alter table linked_account add constraint fk_linked_account_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_linked_account_user_2 on linked_account (user_id);
-alter table task add constraint fk_task_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_3 on task (user_id);
+alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_comment_user_1 on comment (user_id);
+alter table comment add constraint fk_comment_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_comment_project_2 on comment (project_id);
+alter table document_file add constraint fk_document_file_project_3 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_document_file_project_3 on document_file (project_id);
+alter table linked_account add constraint fk_linked_account_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_4 on linked_account (user_id);
+alter table task add constraint fk_task_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_5 on task (user_id);
 
 
 
@@ -102,6 +119,8 @@ alter table user_project add constraint fk_user_project_project_02 foreign key (
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
+
+drop table if exists comment;
 
 drop table if exists document_file;
 
@@ -120,6 +139,8 @@ drop table if exists user_user_role;
 drop table if exists user_role;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists comment_seq;
 
 drop sequence if exists document_file_seq;
 

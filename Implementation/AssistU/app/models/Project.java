@@ -2,12 +2,9 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.*;
 
-import play.Logger;
-import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
 /**
@@ -26,8 +23,8 @@ public class Project extends Model {
     public List<User> users = new ArrayList<User>();
     @OneToMany(mappedBy = "project")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
-
-
+    @OneToMany(mappedBy = "project")
+    public List<Comment> comments = new ArrayList<Comment>();
 
     /**
      * Constructor
@@ -113,6 +110,12 @@ public class Project extends Model {
         p.users.remove(User.find.byId(uid));
         p.update();
 //        p.saveManyToManyAssociations("users");
+    }
+
+    public static void addComment(Comment cm, Long pid){
+        Project p =Project.find.byId(pid);
+        p.comments.add(cm);
+        p.save();
     }
 
 }

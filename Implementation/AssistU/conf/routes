@@ -36,13 +36,18 @@ GET         /project/:pid/removeMember/:uid        controllers.ProjectData.remov
 POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
 GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
 
+#discussion
+GET         /discussion                            controllers.Application.discussion()
+GET         /chatFeed/:project                     controllers.ChatData.chatFeed(project: String)
+POST        /chat                                  controllers.ChatData.postMessage()
+GET         /comments/:pid                         controllers.ChatData.getOldMessages(pid: Long)
+GET         /:uid/projectids                       controllers.ProjectData.getProjectIdsAsJson(uid: Long)
 
 #Suggestions
 GET         /suggestions                           controllers.Application.suggestions()
 GET         /suggestions/:subject                  controllers.SuggestionData.suggestion(subject: String)
 
-#inbox
-GET         /discussion                            controllers.Application.discussion()
+
 
 
 
