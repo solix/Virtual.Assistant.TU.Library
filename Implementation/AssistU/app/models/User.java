@@ -50,6 +50,8 @@ public class User extends Model {
     @OneToMany(mappedBy = "user")
     public List<Event> events;
 
+    @ManyToMany(mappedBy = "users")
+    List<Role> role= new ArrayList<Role>();
     @OneToMany(mappedBy = "user")
     List<Comment> comments=new ArrayList<Comment>();
 

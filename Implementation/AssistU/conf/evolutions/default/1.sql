@@ -109,27 +109,18 @@ create sequence user_seq;
 
 create sequence user_role_seq;
 
-<<<<<<< HEAD
 alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_user_1 on comment (user_id);
 alter table comment add constraint fk_comment_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_comment_project_2 on comment (project_id);
 alter table document_file add constraint fk_document_file_project_3 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_document_file_project_3 on document_file (project_id);
-alter table linked_account add constraint fk_linked_account_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_linked_account_user_4 on linked_account (user_id);
-alter table task add constraint fk_task_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_5 on task (user_id);
-=======
-alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_document_file_project_1 on document_file (project_id);
-alter table event add constraint fk_event_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_event_user_2 on event (user_id);
-alter table linked_account add constraint fk_linked_account_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_linked_account_user_3 on linked_account (user_id);
-alter table task add constraint fk_task_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_4 on task (user_id);
->>>>>>> calendar
+alter table event add constraint fk_event_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_event_user_4 on event (user_id);
+alter table linked_account add constraint fk_linked_account_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_5 on linked_account (user_id);
+alter table task add constraint fk_task_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_6 on task (user_id);
 
 
 
