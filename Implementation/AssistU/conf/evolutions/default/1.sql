@@ -23,6 +23,17 @@ create table document_file (
   constraint pk_document_file primary key (id))
 ;
 
+create table event (
+  id                        bigint not null,
+  title                     varchar(255),
+  all_day                   boolean,
+  start                     timestamp,
+  end                       timestamp,
+  ends_same_day             boolean,
+  user_id                   bigint,
+  constraint pk_event primary key (id))
+;
+
 create table linked_account (
   id                        bigint not null,
   user_id                   bigint,
@@ -37,6 +48,7 @@ create table project (
   folder                    varchar(255),
   description               varchar(255),
   active                    boolean,
+  date_created              timestamp,
   constraint pk_project primary key (id))
 ;
 
@@ -85,6 +97,8 @@ create sequence comment_seq;
 
 create sequence document_file_seq;
 
+create sequence event_seq;
+
 create sequence linked_account_seq;
 
 create sequence project_seq;
@@ -95,6 +109,7 @@ create sequence user_seq;
 
 create sequence user_role_seq;
 
+<<<<<<< HEAD
 alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_user_1 on comment (user_id);
 alter table comment add constraint fk_comment_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
@@ -105,6 +120,16 @@ alter table linked_account add constraint fk_linked_account_user_4 foreign key (
 create index ix_linked_account_user_4 on linked_account (user_id);
 alter table task add constraint fk_task_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_task_user_5 on task (user_id);
+=======
+alter table document_file add constraint fk_document_file_project_1 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_document_file_project_1 on document_file (project_id);
+alter table event add constraint fk_event_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_event_user_2 on event (user_id);
+alter table linked_account add constraint fk_linked_account_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_3 on linked_account (user_id);
+alter table task add constraint fk_task_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_4 on task (user_id);
+>>>>>>> calendar
 
 
 
@@ -123,6 +148,8 @@ SET REFERENTIAL_INTEGRITY FALSE;
 drop table if exists comment;
 
 drop table if exists document_file;
+
+drop table if exists event;
 
 drop table if exists linked_account;
 
@@ -143,6 +170,8 @@ SET REFERENTIAL_INTEGRITY TRUE;
 drop sequence if exists comment_seq;
 
 drop sequence if exists document_file_seq;
+
+drop sequence if exists event_seq;
 
 drop sequence if exists linked_account_seq;
 

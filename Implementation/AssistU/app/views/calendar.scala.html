@@ -1,9 +1,20 @@
-@(title: String)(currentUser:User)
-<html lang="en">
+@(title: String)(currentUser:User,eventForm: Form[Event],events : List[Event] )
+
+  @import helper._
+  @import helper.twitterBootstrap
+
 <head>
 
   @linkLoader.headlinks(title)
-  @linkLoader.calendarlinks()
+  <link rel="stylesheet" media="screen" href='@routes.Assets.at("fullcalendar-1.5.3/fullcalendar/fullcalendar.css")'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+  <script src='@routes.Assets.at("bootstrap-2.0.2/js/bootstrap.min.js")' type="text/javascript"></script>
+  <script src='@routes.Assets.at("fullcalendar-1.5.3/fullcalendar/fullcalendar.min.js")' type="text/javascript"></script>
+  <script src='@routes.Assets.at("javascripts/renderCalendar.js")' type="text/javascript"></script>
+  <script src='@routes.Assets.at("bootstrap-2.0.2/js/bootstrap.min.js")' type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js" type="text/javascript"></script>
+
 </head>
 <body>
 
@@ -11,12 +22,99 @@
   @dashboard("calendar", currentUser)
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
-    <div class="row">
-      <div id='calendar'></div>
-    </div>
-  </div>
+
+  <a  class="btn btn-default btn=sm" href="@routes.CalData.list()">
+    <span class="fa fa-bars"></span> View as List
+  </a>
+
+    <hr class="hr" style="margin-top: 10px">
+
+        <div style="display: none;">
+          <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">
+            <input type="text" name="title" id="newTitle"/>
+            <input type="text" name="start" id="newStart"/>
+            <input type="text" name="end" id="newEnd"/>
+            <input type="text" name="allDay" id="newAllDay"/>
+          </form>
+
+
+          <br/>
+
+          <form action="@routes.CalData.move()" method="POST" id="eventFormMove">
+            <input type="text" name="id" id="moveId"/>
+            <input type="text" name="dayDelta" id="moveDayDelta"/>
+            <input type="text" name="minuteDelta" id="moveMinuteDelta"/>
+            <input type="text" name="allDay" id="moveAllDay"/>
+          </form>
+
+
+          <form action="@routes.CalData.resize()" method="POST" id="eventFormResize">
+            <input type="text" name="id" id="resizeId"/>
+            <input type="text" name="dayDelta" id="resizeDayDelta"/>
+            <input type="text" name="minuteDelta" id="resizeMinuteDelta"/>
+          </form>
+        </div>
+
+      @*<div id="fullCalModal" class="modal fade">*@
+        @*<div class="modal-dialog">*@
+          @*<div class="modal-content">*@
+            @*<div class="modal-header">*@
+              @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>*@
+              @*<h4 id="modalTitle" class="modal-title"></h4>*@
+            @*</div>*@
+            @*<div id="modalBody" class="modal-body"></div>*@
+            @*<div class="modal-footer">*@
+              @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+              @*<button class="btn btn-primary"><a id="eventUrl" target="_blank">Event Page</a></button>*@
+            @*</div>*@
+          @*</div>*@
+        @*</div>*@
+      @*</div>*@
+
+        <div id='calendar'></div>
+
+      @*Try to replace prompt with modal*@
+
+      <div id="createEventModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+          <h3 id="myModalLabel1">Create Appointment</h3>
+        </div>
+        <div class="modal-body">
+          <form id="createAppointmentForm" class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label" for="inputPatient">Patient:</label>
+              <div class="controls">
+                <input type="text" name="patientName" id="patientName" tyle="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="[&quot;Value 1&quot;,&quot;Value 2&quot;,&quot;Value 3&quot;]">
+                <input type="hidden" id="apptStartTime"/>
+                <input type="hidden" id="apptEndTime"/>
+                <input type="hidden" id="apptAllDay" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="when">When:</label>
+              <div class="controls controls-row" id="when" style="margin-top:5px;">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
+        </div>
+      </div>
+
 
 </div>
+
+
+
+
+
+
+
+    </div>
+
 
 
 <!--bootstrap-->
@@ -27,4 +125,3 @@
 <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
 
 </body>
-</html>

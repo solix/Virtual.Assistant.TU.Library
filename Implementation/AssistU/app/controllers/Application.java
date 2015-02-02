@@ -37,7 +37,7 @@ public class Application extends Controller {
     public static Result task() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-            List<Task> tasks = Task.find.all();
+            List<Task> tasks = Task.ordered() ;
             return ok(task.render("My tasks", user, tasks,taskForm));
         }else
             return Authentication.login();
@@ -52,13 +52,15 @@ public class Application extends Controller {
      * Calendar page
      * @return
      */
-    public static Result calendar() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(calendar.render("My Calendar", user));
-        else
-            return Authentication.login();
-    }
+//    private static Form<Event> calForm = Form.form(Event.class);
+//
+//    public static Result calendar() {
+//        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+//        if(user != null)
+//            return ok(calendar.render("My Calendar", user,calForm));
+//        else
+//            return Authentication.login();
+//    }
 
     /**
      * TODO: Unify the plugin/regular style login
