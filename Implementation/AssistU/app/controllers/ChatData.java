@@ -50,7 +50,6 @@ public class ChatData extends Controller {
       Comment cm = cml.get(i);
       message = new ObjectMapper().createObjectNode();
       message.put("uid", "" + cm.user.id);
-//      message.put("uid", "7");
       message.put("username", cm.user.name);
       message.put("subject", cm.subject);
       message.put("content", cm.content);
@@ -65,7 +64,6 @@ public class ChatData extends Controller {
         Comment scm = scml.get(j);
         submessage = new ObjectMapper().createObjectNode();
         submessage.put("uid", "" + scm.user.id);
-//        submessage.put("uid", "7");
         submessage.put("username", scm.user.name);
         submessage.put("subject", scm.subject);
         submessage.put("content", scm.content);

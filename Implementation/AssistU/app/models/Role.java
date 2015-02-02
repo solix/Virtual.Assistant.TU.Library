@@ -11,15 +11,15 @@ import java.util.*;
 @Entity
 public class Role extends Model {
 
-@Id
-public long rid;
-public String role;
+    @Id
+    public long rid;
+    public String role;
 
-public Role(String role){
-    this.role=role;
-}
-@ManyToMany
-List<User> users= new ArrayList<User>();
+    public Role(String role){
+        this.role=role;
+    }
+    @ManyToMany
+    List<User> users= new ArrayList<User>();
 
     public static Model.Finder<Long,Role> find = new Model.Finder(
             Long.class, Role.class
@@ -27,20 +27,18 @@ List<User> users= new ArrayList<User>();
 
     /**
      * creates a owner role which is immutable
-      * @param
+     * @param
      */
-public void ownerRole( ){
-
-    final String o = "Owner";
-    Role ownerRole = new Role(o);
-    ownerRole.save();
-}
+    public static void ownerRole( ){
+        final String o = "Owner";
+        Role ownerRole = new Role(o);
+        ownerRole.save();
+    }
 
     /**
      * creates a reviewer role which is immutable
      */
     public void reviewerRole(){
-
         final String r = "Reviewer";
         Role reviewerRole = new Role(r);
         reviewerRole.save();
