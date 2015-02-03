@@ -80,26 +80,8 @@ public class Event extends Model {
     }
 
 
-    /**
-     * Creates Default planning for owners of the project
-     * @return list of events
-     */
-    public static List<Event> defaultPlanningArticle(){
-            List<Event> articleTodo= new ArrayList<Event>();
-            Event event1=createArticleEvent("Key points",new Date(),1);
-            Event event2=createArticleEvent("Publish Strategy",event1.end,2);
-            Event event3=createArticleEvent("Title",event2.end,0);
-            event3.endsSameDay=true;
-            Event event4=createArticleEvent("Introduction",event3.end,7);
-            Event event5=createArticleEvent("Materials & Methods",event4.end,2);
-            Event event6=createArticleEvent("Results & Discussion",new Date(),4);
-            Event event7=createArticleEvent("Abstract ",new Date(),2);
-            Event event8=createArticleEvent("References and Acknowledgment",new Date(),1);
 
 
-
-        return articleTodo;
-    }
 
     /**
      * Creates an event with the time interval for default planning of writing an article/dissertion
@@ -116,8 +98,22 @@ public class Event extends Model {
         Event event = new Event(title,sd.toDate(),ed.toDate(),true);
         event.endsSameDay=false;
         event.allDay=true;
-
+        event.save();
         return event;
+
+    }
+
+    /**
+     * increment date to number of  desired days
+     * @param d
+     * @param i
+     * @return
+     */
+    public static Date movedate(Date d){
+            DateTime getIt= new DateTime(d);
+            DateTime res= getIt.plusDays(1);
+            return res.toDate();
+
 
     }
 

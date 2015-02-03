@@ -6,9 +6,7 @@ import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import java.lang.String;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 import static play.libs.Json.toJson;
 
@@ -31,7 +29,12 @@ public class ProjectData extends Controller {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, user.id , "Description");
+            Project project = Project.create(projectData.folder, projectData.name, user.id , "Description");
+            Role role=Role.ownerRole(uid);
+            user.roles.add(role);
+            addRoleToDictionary(uid,project.id,role);
+            user.update();
+            defaultPlanningArticle(project);
             return redirect(routes.Application.project());
         }
     }
@@ -47,11 +50,15 @@ public class ProjectData extends Controller {
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
+
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name);
             return redirect(routes.Application.project());
         }
 
     }
+
+
+
 
     /**
      * This function refers to the model's archive function. The unused uid is to check whether the person is an
@@ -74,7 +81,24 @@ public class ProjectData extends Controller {
      */
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
-        Project.addMemberAs(pid, User.find.where().eq("email",emailform.get("email")).findUnique().id);
+        User user = User.find.where().eq("email", emailform.get("email")).findUnique();
+        Project.addMember(pid, user.id);
+        if(emailform.get("role").equals("Owner")) {
+            Project p=Project.find.byId(pid);
+            Role role=Role.ownerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+            defaultPlanningArticle(p);
+        } else if(emailform.get("role").equals("Reviewer")) {
+            Role role=Role.reviewerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+        }else{
+            Role role=Role.guestRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+        }
+        user.update();
         return redirect(routes.Application.project());
     }
 
@@ -105,4 +129,59 @@ public class ProjectData extends Controller {
         }
         return ok(toJson(result));
     }
+
+    /**
+     * Creates Default planning for articles owners of the project
+     *
+     */
+    public static void defaultPlanningArticle(Project p){
+        Date startDate = p.dateCreated;
+        Event event1=Event.createArticleEvent("Getting Started", startDate, 0);
+        event1.endsSameDay=true;
+        event1.update();
+        Event event2=Event.createArticleEvent("Keypoints", Event.movedate(event1.end), 1);
+        Event event3=Event.createArticleEvent("Publication Strategy", Event.movedate(event2.end), 2);
+        Event event4=Event.createArticleEvent("Introduction", Event.movedate(event3.end), 7);
+        Event event5=Event.createArticleEvent("Materials & Methods", Event.movedate(event4.end), 4);
+        Event event6=Event.createArticleEvent("Results & Discussion", Event.movedate(event5.end), 2);
+        Event event7=Event.createArticleEvent("Abstract, keywords & Title ", Event.movedate(event6.end), 1);
+        Event event8=Event.createArticleEvent("References and Acknowledgment",Event.movedate( event7.end), 0);
+        event8.endsSameDay=true;
+        event8.update();
+        Event event9=Event.createArticleEvent("Layout & Styles", Event.movedate(event8.end), 0);
+        event8.endsSameDay=true;
+        event8.update();
+    }
+    /**
+     * This is the helper to identify user and their roles within a project
+     */
+    static Map<Long,HashMap<Long,Role>> projectScope=new HashMap<Long,HashMap<Long,Role>>();
+
+    /**
+     * this functions searches for a role of a specific user in the specific project
+     * @param uid
+     * @param pid
+     * @return
+     */
+    private static Role roleFinder(long uid,long pid){
+        HashMap<Long,Role> roleScope = projectScope.get(pid);
+        return roleScope.get(uid);
+    }
+
+    /**
+     *
+     * @param uid
+     * @param pid
+     * @param role
+     */
+    private static void addRoleToDictionary(long uid,long pid, Role role ){
+        HashMap<Long,Role> newRoleScope = new HashMap<Long,Role>();
+        newRoleScope.put(uid,role);
+        projectScope.put(pid,newRoleScope);
+
+        Logger.debug("<Dictionary>: username: "+User.find.byId(uid).name+ " Role: " + projectScope.get(pid).get(uid).role);
+
+    }
+
+
 }
