@@ -7,6 +7,7 @@ import play.data.*;
 import play.mvc.*;
 import java.lang.String;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -34,6 +35,7 @@ public class ProjectData extends Controller {
             Project project = Project.create(projectData.folder, projectData.name, user.id , "Description");
             user.roles.add(Role.ownerRole(uid));
             user.update();
+            defaultPlanningArticle(project);
             return redirect(routes.Application.project());
         }
     }
@@ -107,4 +109,30 @@ public class ProjectData extends Controller {
         }
         return ok(toJson(result));
     }
+
+    /**
+     * Creates Default planning for articles owners of the project
+     *
+     */
+    public static void defaultPlanningArticle(Project p){
+        Date startDate = p.dateCreated;
+        Event event1=Event.createArticleEvent("Getting Started", startDate, 0);
+        event1.endsSameDay=true;
+        event1.update();
+        Event event2=Event.createArticleEvent("Keypoints", Event.movedate(event1.end), 1);
+        Event event3=Event.createArticleEvent("Publication Strategy", Event.movedate(event2.end), 2);
+        Event event4=Event.createArticleEvent("Introduction", Event.movedate(event3.end), 7);
+        Event event5=Event.createArticleEvent("Materials & Methods", Event.movedate(event4.end), 4);
+        Event event6=Event.createArticleEvent("Results & Discussion", Event.movedate(event5.end), 2);
+        Event event7=Event.createArticleEvent("Abstract, keywords & Title ", Event.movedate(event6.end), 1);
+        Event event8=Event.createArticleEvent("References and Acknowledgment",Event.movedate( event7.end), 0);
+        event8.endsSameDay=true;
+        event8.update();
+        Event event9=Event.createArticleEvent("Layout & Styles", Event.movedate(event8.end), 0);
+        event8.endsSameDay=true;
+        event8.update();
+    }
+
+
+
 }
