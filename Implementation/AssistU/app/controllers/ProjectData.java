@@ -76,7 +76,16 @@ public class ProjectData extends Controller {
      */
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
-        Project.addMemberAs(pid, User.find.where().eq("email", emailform.get("email")).findUnique().id);
+        User user = User.find.where().eq("email", emailform.get("email")).findUnique();
+        Project.addMember(pid, user.id);
+        if(emailform.get("role").equals("Owner")) {
+            user.roles.add(Role.ownerRole(user.id));
+        } else if(emailform.get("role").equals("Reviewer")) {
+            user.roles.add(Role.reviewerRole(user.id));
+        }else{
+            user.roles.add(Role.guestRole(user.id));
+        }
+        user.update();
         return redirect(routes.Application.project());
     }
 

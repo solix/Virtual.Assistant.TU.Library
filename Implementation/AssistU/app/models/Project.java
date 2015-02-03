@@ -112,7 +112,7 @@ public class Project extends Model {
      * TODO: Set role as third parameter? no,better to set role as seperate function
      * This method invites another user to a project by its user id
      */
-    public static void addMemberAs(Long pid, Long uid){
+    public static void addMember(Long pid, Long uid){
         Project p = Project.find.ref(pid);
         p.users.add(User.find.byId(uid));
         p.update();
