@@ -29,29 +29,29 @@ List<User> users= new ArrayList<User>();
      * creates a owner role which is immutable
       * @param
      */
-public void ownerRole( ){
+public Role ownerRole( ){
 
     final String o = "Owner";
     Role ownerRole = new Role(o);
-    ownerRole.save();
+    return ownerRole;
 }
 
     /**
      * creates a reviewer role which is immutable
      */
-    public void reviewerRole(){
+    public Role reviewerRole(){
 
         final String r = "Reviewer";
         Role reviewerRole = new Role(r);
-        reviewerRole.save();
+        return reviewerRole;
     }
 
     /**
      * creates a guest role which is immutable
      */
-    public void guestRole( ){
+    public Role guestRole( ){
         final String g = "Guest";
         Role guestRole = new Role(g);
-        guestRole.save();
+        return guestRole;
     }
 }
