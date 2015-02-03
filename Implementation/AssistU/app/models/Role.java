@@ -43,7 +43,7 @@ public class Role extends Model {
     /**
      * creates a reviewer role which is immutable
      */
-    public Role reviewerRole(long uid){
+    public static Role reviewerRole(long uid){
         final String r = "Reviewer";
         Role reviewerRole = new Role(r);
         reviewerRole.user=User.find.byId(uid);
@@ -54,7 +54,7 @@ public class Role extends Model {
     /**
      * creates a guest role which is immutable
      */
-    public Role guestRole(long uid ){
+    public static Role guestRole(long uid ){
         final String g = "Guest";
         Role guestRole = new Role(g);
         guestRole.user=User.find.byId(uid);

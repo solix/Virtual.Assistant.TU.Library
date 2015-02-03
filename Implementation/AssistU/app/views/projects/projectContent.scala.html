@@ -131,13 +131,19 @@
             @*Add Member Modal*@
             @template.smallmodal("addMemberToProject"+p.id.toString)("info")("Add a Member to "+p.name) {
                 @helper.form(action = routes.ProjectData.addMemberToProjectAs(p.id)) {
-                    @*//            TODO: FIND EMAIL REGEXX*@
                     <div class="form-group">
                         <label for="validate-email">E-mail</label>
                         <div class="input-group" data-validate="length" data-length="1">
                             <input type="email" class="form-control" name="email" id="validate-email" placeholder="Email" required>
                             <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
                         </div>
+                        <br>
+                        <label>Add this person as a: </label>
+                        <select class="form-control" name="role">
+                            <option>Guest</option>
+                            <option>Owner</option>
+                            <option>Reviewer</option>
+                        </select>
                     </div>
                     <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
                         <button type="submit" class="btn btn-info col-xs-12" disabled>Invite!</button>
