@@ -6,10 +6,7 @@ import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import java.lang.String;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 import static play.libs.Json.toJson;
 
@@ -33,7 +30,9 @@ public class ProjectData extends Controller {
         } else {
             Project projectData = filledProjectForm.get();
             Project project = Project.create(projectData.folder, projectData.name, user.id , "Description");
-            user.roles.add(Role.ownerRole(uid));
+            Role role=Role.ownerRole(uid);
+            user.roles.add(role);
+            addRoleToDictionary(uid,project.id,role);
             user.update();
             defaultPlanningArticle(project);
             return redirect(routes.Application.project());
@@ -51,11 +50,15 @@ public class ProjectData extends Controller {
         if(filledProjectForm.hasErrors()) {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
+
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name);
             return redirect(routes.Application.project());
         }
 
     }
+
+
+
 
     /**
      * This function refers to the model's archive function. The unused uid is to check whether the person is an
@@ -81,11 +84,19 @@ public class ProjectData extends Controller {
         User user = User.find.where().eq("email", emailform.get("email")).findUnique();
         Project.addMember(pid, user.id);
         if(emailform.get("role").equals("Owner")) {
-            user.roles.add(Role.ownerRole(user.id));
+            Project p=Project.find.byId(pid);
+            Role role=Role.ownerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+            defaultPlanningArticle(p);
         } else if(emailform.get("role").equals("Reviewer")) {
-            user.roles.add(Role.reviewerRole(user.id));
+            Role role=Role.reviewerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
         }else{
-            user.roles.add(Role.guestRole(user.id));
+            Role role=Role.guestRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
         }
         user.update();
         return redirect(routes.Application.project());
@@ -141,7 +152,36 @@ public class ProjectData extends Controller {
         event8.endsSameDay=true;
         event8.update();
     }
+    /**
+     * This is the helper to identify user and their roles within a project
+     */
+    static Map<Long,HashMap<Long,Role>> projectScope=new HashMap<Long,HashMap<Long,Role>>();
 
+    /**
+     * this functions searches for a role of a specific user in the specific project
+     * @param uid
+     * @param pid
+     * @return
+     */
+    private static Role roleFinder(long uid,long pid){
+        HashMap<Long,Role> roleScope = projectScope.get(pid);
+        return roleScope.get(uid);
+    }
+
+    /**
+     *
+     * @param uid
+     * @param pid
+     * @param role
+     */
+    private static void addRoleToDictionary(long uid,long pid, Role role ){
+        HashMap<Long,Role> newRoleScope = new HashMap<Long,Role>();
+        newRoleScope.put(uid,role);
+        projectScope.put(pid,newRoleScope);
+
+        Logger.debug("<Dictionary>: username: "+User.find.byId(uid).name+ " Role: " + projectScope.get(pid).get(uid).role);
+
+    }
 
 
 }

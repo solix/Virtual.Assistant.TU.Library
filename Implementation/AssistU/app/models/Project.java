@@ -77,10 +77,7 @@ public class Project extends Model {
         project.dateCreated =new Date();
         User user=User.find.byId(uid);
         user.projects.add(project);
-        Logger.debug("Project with the name of ("+project.name+ ") has been created on: " + project.dateCreated);
-
         project.save();
-       // Logger.debug(User.find.where().in("projects", project).eq("active", "true"));
         return project;
     }
 
