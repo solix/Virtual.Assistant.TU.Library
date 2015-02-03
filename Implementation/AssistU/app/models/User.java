@@ -39,8 +39,6 @@ public class User extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public List<LinkedAccount> linkedAccounts;
 
-    @ManyToMany
-    List<UserRole> userroles = new ArrayList<UserRole>();
 
     @ManyToMany
     List<Project> projects = new ArrayList<Project>();
@@ -50,10 +48,10 @@ public class User extends Model {
     @OneToMany(mappedBy = "user")
     public List<Event> events;
 
-    @ManyToMany(mappedBy = "users")
-    List<Role> role= new ArrayList<Role>();
     @OneToMany(mappedBy = "user")
-    List<Comment> comments=new ArrayList<Comment>();
+    public List<Role> roles= new ArrayList<Role>();
+    @OneToMany(mappedBy = "user")
+    public List<Comment> comments=new ArrayList<Comment>();
 
     public User(String name, String email, String password) {
         this.name=name;

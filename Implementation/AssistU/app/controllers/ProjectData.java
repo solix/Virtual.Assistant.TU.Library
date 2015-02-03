@@ -31,7 +31,9 @@ public class ProjectData extends Controller {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, user.id , "Description");
+            Project project = Project.create(projectData.folder, projectData.name, user.id , "Description");
+            user.roles.add(Role.ownerRole(uid));
+            user.update();
             return redirect(routes.Application.project());
         }
     }
@@ -74,7 +76,7 @@ public class ProjectData extends Controller {
      */
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
-        Project.addMemberAs(pid, User.find.where().eq("email",emailform.get("email")).findUnique().id);
+        Project.addMemberAs(pid, User.find.where().eq("email", emailform.get("email")).findUnique().id);
         return redirect(routes.Application.project());
     }
 

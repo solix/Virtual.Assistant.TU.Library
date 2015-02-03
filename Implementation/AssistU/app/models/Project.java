@@ -70,13 +70,17 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name,  Long owner ,String description){
-        Project project = new Project(folder, name ,User.find.ref(owner),description);
-        project.setOwner(owner);
+    public static Project create(String folder, String name,  Long uid ,String description){
+        Project project = new Project(folder, name ,User.find.ref(uid),description);
+       // project.setOwner(uid);
         project.active=true;
         project.dateCreated =new Date();
+        User user=User.find.byId(uid);
+        user.projects.add(project);
         Logger.debug("Project with the name of ("+project.name+ ") has been created on: " + project.dateCreated);
+
         project.save();
+       // Logger.debug(User.find.where().in("projects", project).eq("active", "true"));
         return project;
     }
 
@@ -126,25 +130,25 @@ public class Project extends Model {
 //        p.saveManyToManyAssociations("users");
     }
 
-    public void setOwner(Long uid){
-        if(Role.find.where().eq("role", "Owner").findRowCount() == 0) {
-            Role.ownerRole();
-        }
-        this.relations.put(uid,Role.find.where().eq("role", "Owner").findUnique());
-    }
-
-    public void setGuest(Long uid){
-        if(Role.find.where().eq("role", "Guest").findRowCount() == 0) {
-            Role.ownerRole();
-        }
-        this.relations.put(uid,Role.find.where().eq("role", "Guest").findUnique());
-    }
-
-    public void setReviewer(Long uid){
-        if(Role.find.where().eq("role", "Reviewer").findRowCount() == 0) {
-            Role.ownerRole();
-        }
-        this.relations.put(uid,Role.find.where().eq("role", "Reviewer").findUnique());
-    }
+//    public void setOwner(Long uid){
+//        if(Role.find.where().eq("role", "Owner").findRowCount() == 0) {
+//          //  Role.ownerRole();
+//        }
+//        this.relations.put(uid,Role.find.where().eq("role", "Owner").findUnique());
+//    }
+//
+//    public void setGuest(Long uid){
+//        if(Role.find.where().eq("role", "Guest").findRowCount() == 0) {
+//            Role.ownerRole();
+//        }
+//        this.relations.put(uid,Role.find.where().eq("role", "Guest").findUnique());
+//    }
+//
+//    public void setReviewer(Long uid){
+//        if(Role.find.where().eq("role", "Reviewer").findRowCount() == 0) {
+//            Role.ownerRole();
+//        }
+//        this.relations.put(uid,Role.find.where().eq("role", "Reviewer").findUnique());
+//    }
 
 }

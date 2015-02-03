@@ -84,7 +84,7 @@ public class Event extends Model {
      * Creates Default planning for owners of the project
      * @return list of events
      */
-    public static List<Event> defaultPlanningArticle(){
+    public static List<Event> defaultPlanningList(){
             List<Event> articleTodo= new ArrayList<Event>();
             Event event1=createArticleEvent("Key points",new Date(),1);
             Event event2=createArticleEvent("Publish Strategy",event1.end,2);
@@ -99,6 +99,15 @@ public class Event extends Model {
 
 
         return articleTodo;
+    }
+
+    public static Event defaultPlanningArticle(){
+
+        for(Event e : defaultPlanningList()){
+            return e;
+        }
+
+        return null;
     }
 
     /**
