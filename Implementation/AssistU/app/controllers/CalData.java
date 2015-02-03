@@ -130,14 +130,8 @@ public class CalData extends Controller {
         return redirect(controllers.routes.CalData.list());
     }
 
-    /**
-     * TODO: gives new planning of the project
-     * @return Result
-     */
 
-    public static Result defaultPlanning() {
-        return TODO;
-    }
+
 
     /**
      * Dislays form for editing existing event
@@ -192,19 +186,21 @@ public class CalData extends Controller {
      * Adds event after clicking on calendar
      * @return Result
      */
-    public static Result addByAjax() {
+    public static Result addByAjax(long uid) {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+        User user = User.find.byId(uid);
         Event newEvent = eventForm.get();
-        newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
-        newEvent.save();
+        Event event = new Event(user,newEvent.title,newEvent.start,newEvent.end,newEvent.allDay);
+        event.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+        event.save();
 
         if (eventForm.hasErrors()){
             return badRequest("There was some errors in form");
         }
 
         Map<String, String> result = new HashMap<String, String>();
-        result.put("id", newEvent.id.toString());
-        result.put("url", controllers.routes.CalData.edit(newEvent.id).toString());
+        result.put("id", event.id.toString());
+        result.put("url", controllers.routes.CalData.edit(event.id).toString());
         Logger.debug("add By ajax is used: " + result);
         return ok(play.libs.Json.toJson(result));
     }

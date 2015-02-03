@@ -30,7 +30,7 @@
     <hr class="hr" style="margin-top: 10px">
 
         <div style="display: none;">
-          <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">
+          <form action="@routes.CalData.addByAjax(currentUser.id)" method="POST" id="eventFormNew">
             <input type="text" name="title" id="newTitle"/>
             <input type="text" name="start" id="newStart"/>
             <input type="text" name="end" id="newEnd"/>

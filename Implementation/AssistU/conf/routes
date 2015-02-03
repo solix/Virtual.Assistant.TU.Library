@@ -27,14 +27,12 @@ GET         /authenticate/:provider/denied         controllers.Authentication.OA
 GET         /calendar                              controllers.CalData.calendar()
 GET         /events                                controllers.CalData.list()
 GET         /events.json                           controllers.CalData.json(start: Long , end: Long )
-
 GET         /event/:id/edit                       controllers.CalData.edit(id:Long)
 POST        /event/:id/update                     controllers.CalData.update(id:Long)
 POST        /event                                controllers.CalData.add()
 GET     /event/new                                controllers.CalData.blank()
 GET     /event/:id/delete                         controllers.CalData.delete(id:Long)
-
-POST    /event-ajax                               controllers.CalData.addByAjax()
+POST    /:id/event-ajax                               controllers.CalData.addByAjax(id:Long)
 POST    /event-move                               controllers.CalData.move()
 POST    /event-resize                             controllers.CalData.resize()
 

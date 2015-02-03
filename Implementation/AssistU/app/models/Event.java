@@ -49,10 +49,11 @@ public class Event extends Model {
      * @param end
      * @param allDay
      */
-    public Event(String title, Date start, Date end, Boolean allDay) {
+    public Event(User owner,String title, Date start, Date end, Boolean allDay) {
         this.title = title;
         this.start = start;
         this.end = end;
+        this.user=owner;
         this.allDay = allDay;
 
     }
@@ -90,12 +91,12 @@ public class Event extends Model {
      * @param interval
      * @return
      */
-    public static Event createArticleEvent(String title,Date startDate,int interval){
+    public static Event createArticleEvent(User owner,String title,Date startDate,int interval){
 
         Date start=startDate;
         DateTime sd=new DateTime(start);
         DateTime ed=sd.plusDays(interval);
-        Event event = new Event(title,sd.toDate(),ed.toDate(),true);
+        Event event = new Event(owner,title,sd.toDate(),ed.toDate(),true);
         event.endsSameDay=false;
         event.allDay=true;
         event.save();
@@ -106,7 +107,6 @@ public class Event extends Model {
     /**
      * increment date to number of  desired days
      * @param d
-     * @param i
      * @return
      */
     public static Date movedate(Date d){
