@@ -25,7 +25,7 @@ GET         /authenticate/:provider/denied         controllers.Authentication.OA
 
 #calendar
 GET         /calendar                              controllers.CalData.calendar()
-GET         /events                                controllers.CalData.list()
+GET         /:id/events                                controllers.CalData.list(id: Long)
 GET         /events.json                           controllers.CalData.json(start: Long , end: Long )
 GET         /event/:id/edit                       controllers.CalData.edit(id:Long)
 POST        /event/:id/update                     controllers.CalData.update(id:Long)
