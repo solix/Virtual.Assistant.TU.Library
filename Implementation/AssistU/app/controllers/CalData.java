@@ -191,6 +191,7 @@ public class CalData extends Controller {
         Event newEvent = eventForm.get();
         Event event = new Event(user,newEvent.title,newEvent.start,newEvent.end,newEvent.allDay);
         event.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+        event.description=newEvent.description;
         event.save();
 
         if (eventForm.hasErrors()){

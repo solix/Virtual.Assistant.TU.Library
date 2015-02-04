@@ -38,8 +38,10 @@ public class Task extends Model {
      * creates new task
      * @param t
      */
-    public static void createTask(Task t){
+    public static Task createTask(Task t,User user){
+        t.user=user;
         t.save();
+        return t;
     }
 
     /**
@@ -54,16 +56,16 @@ public class Task extends Model {
      * list all the task
      * @return
      */
-    public static List<Task> alltask(){
-        return Task.find.all();
+    public static List<Task> alltask(User user){
+        return Task.find.where().in("user",user).findList();
     }
 
     /**
      * order the task in ascending order
      * @return
      */
-    public static List<Task> ordered(){
-        List<Task> tasks= Task.find.where().orderBy("dueDate asc").findList();
+    public static List<Task> ordered(User user){
+        List<Task> tasks= Task.find.where().in("user",user).orderBy("dueDate asc").findList();
         return tasks;
     }
 }

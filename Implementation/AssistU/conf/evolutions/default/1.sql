@@ -26,6 +26,7 @@ create table document_file (
 create table event (
   id                        bigint not null,
   title                     varchar(255),
+  description               varchar(255),
   all_day                   boolean,
   start                     timestamp,
   end                       timestamp,

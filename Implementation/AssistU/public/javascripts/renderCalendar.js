@@ -16,8 +16,10 @@ $(document).ready(function () {
         selectHelper:true,
         select:function (start, end, allDay) {
             var title = prompt('Event Title:');
+            var description = prompt('Description:')
             if (title) {
                 jQuery("#newTitle").val(title);
+                jQuery("#newDescription").val(description);
                 jQuery("#newStart").val(convertDate(start));
                 jQuery("#newEnd").val(convertDate(end));
                 jQuery("#newAllDay").val(allDay);
@@ -29,7 +31,7 @@ $(document).ready(function () {
                     dataType: "json",
                     statusCode: {
                         200: function(data) {
-                            calendar.fullCalendar('renderEvent',{id:data.id,title:title,start:start,end:end,allDay:allDay, url:data.url },true);
+                            calendar.fullCalendar('renderEvent',{id:data.id,title:title,description:description,start:start,end:end,allDay:allDay, url:data.url },true);
                         }
                     }
 
@@ -95,10 +97,13 @@ $(document).ready(function () {
         },
         editable:true,
 
-        events: {
+        events:
+            {
             url:"/events.json",
             cache: true
         }
+
+
     });
     setNewHeight();
 });
@@ -112,11 +117,4 @@ function setNewHeight() {
     $('#calendar').fullCalendar('option', 'height', newHeight);
 }
 
-function loadEvent() {
-    var newEvent = {
-        title: 'NEW EVENT',
-        start: new Date(y, m, d)
-    };
-    $('#calendar').fullCalendar( 'renderEvent', newEvent , 'stick');
 
-}

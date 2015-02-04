@@ -25,6 +25,7 @@ public class Event extends Model {
 
     @Constraints.Required
     public String title;
+    public String description;
     public Boolean allDay;
 
     @Constraints.Required

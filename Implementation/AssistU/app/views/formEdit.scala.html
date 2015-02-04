@@ -14,7 +14,15 @@
         @inputText(eventForm("title"), args =
             '_label -> "Title",
             'size ->18,
-            'placeholder -> "But not too long...",
+            'placeholder -> "event title",
+            'class -> "required",
+            'minlength -> "3"
+        )
+
+        @inputText(eventForm("description"), args =
+            '_label -> "Description",
+            'size ->50,
+            'placeholder -> "say what is it about",
             'class -> "required",
             'minlength -> "3"
         )
