@@ -3,35 +3,59 @@ package controllers;
 import models.User;
 import play.data.*;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import views.html.login;
-
+import com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
 import com.feth.play.module.pa.controllers.Authenticate;
+import views.html.signup;
+import providers.localUsernamePassword.*;
+
+import com.feth.play.module.pa.PlayAuthenticate;
+import com.feth.play.module.pa.user.AuthUser;
 
 /**
  * Created by spyruo on 12-12-14.
  */
 public class Authentication extends Controller {
 
+    public static final String FLASH_MESSAGE_KEY = "message";
+    public static final String FLASH_ERROR_KEY = "error";
+    public static final String USER_ROLE = "user";
+
+    public static Result doLogin() {
+        com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+        final Form<LocalUsernamePasswordAuthProvider.NativeLogin> filledForm = LocalUsernamePasswordAuthProvider.LOGIN_FORM
+                .bindFromRequest();
+        if (filledForm.hasErrors()) {
+            // User did not fill everything properly
+//            return badRequest(home.render("Could not log you in", null, true, "danger",
+//                    "The combination of your email and password did not match any account"));
+            return ok(login.render(true, "Your credentials did not match any user"));
+        } else {
+            // Everything was filled
+            return UsernamePasswordAuthProvider.handleLogin(ctx());
+        }
+    }
 
     /**
      * inner class login
      */
-    public static class Login {
-        public  String email;
-        public  String password;
-        /**
-         * validate the form
-         */
-        public String validate(){
-            if(User.authenticate(email,password) == null){
-                return "invalid user name or password";
-            }
-            return null;
-        }
-    }
+//    public static class Login {
+//        public  String email;
+//        public  String password;
+//        /**
+//         * validate the form
+//         */
+//        public String validate(){
+//            if(User.authenticate(email,password) == null){
+//                return "invalid user name or password";
+//            }
+//            return null;
+//        }
+//    }
 
-    private static final Form<Login> loginform = Form.form(Login.class);
+//    private static final Form<Login> loginform = Form.form(Login.class);
 
     /**
      * login page
@@ -42,21 +66,39 @@ public class Authentication extends Controller {
         User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
         if(user != null)
             OAuthLogout();
-        return ok(login.render(loginform));
+        return ok(login.render(false, ""));
+    }
+
+    /**
+     * signup page
+     *
+     * @return
+     */
+    public static Result signup() {
+        User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        if(user != null)
+            OAuthLogout();
+        return ok(signup.render(false, ""));
     }
 
     /**
      * authenticate the user
      */
-    public static Result authenticate(){
-        Form<Login> signinform = loginform.bindFromRequest();
-        if(signinform.hasErrors()){
-            return badRequest(login.render(loginform));
-        }else {
-            session().clear();
-            session("email" , signinform.get().email);
-            return redirect(routes.Application.index());
-        }
+//    public static Result authenticate(){
+//        Form<Login> signinform = loginform.bindFromRequest();
+//        if(signinform.hasErrors()){
+//            return badRequest(login.render(loginform));
+//        }else {
+//            session().clear();
+//            session("email" , signinform.get().email);
+//            return redirect(routes.Application.index());
+//        }
+//    }
+
+    public static User getLocalUser(final Http.Session session) {
+        final AuthUser currentAuthUser = PlayAuthenticate.getUser(session);
+        final User localUser = User.findByAuthUserIdentity(currentAuthUser);
+        return localUser;
     }
 
     /**
