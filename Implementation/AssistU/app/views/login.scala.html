@@ -2,50 +2,35 @@
 @import com.feth.play.module.pa.views.html._
 @import com.feth.play.module.pa.providers.AuthProvider
 <head>
-
     @linkLoader.loginhead()
-
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <!--script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-
-
-
     <![endif]-->
 </head>
 
 <body>
-
-
 <div class="container">
-     <a href="https://github.com/you"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6286ade715e9bea433b4705870de482a654f78a/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png"></a>
-
+    <a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
     <div class="page-header">
        <div class="container-fluid "> 
         <div class="row">
-            <div class="col-lg-6 col-md-6">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3 text-center">
-                                <i class="fa fa-sign-in fa-5x"></i>
-                            </div>
-                            
-                        </div>
-                    </div>                        
+            <div class="col-lg-6 offset-col-lg-3">
+                <div class="panel-heading">
+                        <p>TU Library </p>
+                </div>
             </div>
         </div>  
         </div>  
     </div>
 <!-- the sign in from with email and Adress -->
-    @if(form.hasGlobalErrors) {
-        <p class="error">
-        @form.globalError.message
-        </p>
-    }
+    @*if(form.hasGlobalErrors) {*@
+        @*<p class="error">*@
+        @*form.globalError.message*@
+        @*</p>*@
+    @*}*@
 
     <div class="row">
 
@@ -91,18 +76,11 @@
                 <a class="btn btn-lg btn-social-icon btn-google-plus" href="@AuthProvider.Registry.get("google").getUrl()" title="Sign in with Google" rel="nofollow">
                     <i class="fa fa-google-plus"></i>
                 </a>
-                <a class="btn btn-lg btn-social-icon btn-twitter" href="/signin/twitter/?next=%2F" title="Sign in with Twitter" rel="nofollow">
-                    <p style="font-size: 12pt"><i>TU</i></p>
-                </a>
-
                 <a class="btn btn-lg btn-social-icon btn-google-plus" href="@AuthProvider.Registry.get("mendeley").getUrl()" title="Sign in with Mendeley" rel="nofollow">
                     <p style="font-size: 12pt"><i>M</i></p>
                 </a>
           </div>
 <hr>
-            <div class="checkbox remember">
-                 <label><input type="checkbox" checked>Keep me signed in</label>
-            </div>
         </div>
     </div>
   </div>
