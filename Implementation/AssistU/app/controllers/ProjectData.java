@@ -29,7 +29,7 @@ public class ProjectData extends Controller {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
             Project projectData = filledProjectForm.get();
-            Project project = Project.create(projectData.folder, projectData.name, user.id , "Description");
+            Project project = Project.create(projectData.folder, projectData.name, user.id, projectData.description, projectData.template);
             Role role=Role.ownerRole(uid);
             user.roles.add(role);
             addRoleToDictionary(uid,project.id,role);
@@ -51,7 +51,7 @@ public class ProjectData extends Controller {
             return badRequest("The form had errors. Need to implement in-style validation");
         } else {
 
-            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name);
+            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
             return redirect(routes.Application.project());
         }
 
@@ -113,6 +113,7 @@ public class ProjectData extends Controller {
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
         Project.removeMemberFrom(pid, uid);
+        removeMemberFromDictionary(uid, pid);
         return redirect(routes.Application.project());
     }
 
@@ -183,5 +184,14 @@ public class ProjectData extends Controller {
 
     }
 
+    /**
+     *
+     * @param uid
+     * @param pid
+     */
+    private static void removeMemberFromDictionary(long uid,long pid){
+        HashMap<Long,Role> roleScope = projectScope.get(pid);
+        roleScope.remove(uid);
+    }
 
 }

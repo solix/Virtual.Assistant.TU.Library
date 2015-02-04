@@ -25,6 +25,7 @@ public class Project extends Model {
     public String name;
     public String folder;
     public String description;
+    public String template;
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateCreated ;
@@ -32,8 +33,8 @@ public class Project extends Model {
     public List<User> users = new ArrayList<User>();
     @OneToMany(mappedBy = "project")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
-//    @OneToMany(mappedBy = "project")
-//    public List<Comment> comments = new ArrayList<Comment>();
+    @OneToMany(mappedBy = "project")
+    public List<Comment> comments = new ArrayList<Comment>();
 
     public Map<Long, Role> relations = new HashMap<Long, Role>();
 
@@ -42,11 +43,12 @@ public class Project extends Model {
      * @param folder
      * @param name
      */
-    public Project (String folder, String name, User owner,String description){
+    public Project (String folder, String name, User owner,String description, String template){
 
         this.folder = folder;
         this.name = name;
         this.description=description;
+        this.template=template;
         this.users.add(owner);
     }
 
@@ -70,8 +72,8 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name,  Long uid ,String description){
-        Project project = new Project(folder, name ,User.find.ref(uid),description);
+    public static Project create(String folder, String name,  Long uid ,String description, String template){
+        Project project = new Project(folder, name ,User.find.ref(uid),description, template);
        // project.setOwner(uid);
         project.active=true;
         project.dateCreated =new Date();
@@ -86,10 +88,11 @@ public class Project extends Model {
      * TODO: project need to be find by id and only then new data will be updated using update method (need to check hashmap support)
      * @return
      */
-    public static void edit(Long pid, String folder, String name){
+    public static void edit(Long pid, String folder, String name, String description){
         Project p = Project.find.byId(pid);
         p.folder = folder;
         p.name = name;
+        p.description = description;
         p.update();
     }
 

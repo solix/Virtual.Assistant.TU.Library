@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+\usepackage{xcolor}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{caption}
+\usepackage{verbatim}
+%\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{qtree}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{frame,color}
+\usepackage{datetime}
+\usepackage{etoolbox}
+\usepackage{emerald}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt,left=11mm,margin=1in]{geometry} % Document margins
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{hyperref} % For hyperlinks in the PDF
+%\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space 
+\usepackage{abstract} % Allows abstract customizationbetween them
+
+\usepackage{amsfonts}
+\usepackage{pifont}
+
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\definecolor{shadecolor}{rgb}{184,184,184}
+\lstset{language=Matlab,
+        frame = single,
+        breaklines=true
+}
+\usetikzlibrary{calc,positioning}
+\usetikzlibrary{arrows,automata}
+\renewcommand{\familydefault}{\sfdefault}
+\fancyhead{} % Blank out the default header
+\fancyhead[C]{Project AssistU $\bullet$ TI3800 $\bullet$ TU Delft Library} % Custom header text
+\begin{document}
+\thispagestyle{fancy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE PAGE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+    \begin{minipage}[H]{0.33\textwidth}
+		\vspace{0.3cm}
+		\includegraphics[scale=0.8]{img/TUDelftLogo.eps}
+	\end{minipage}
+	\begin{minipage}[H]{0.34\textwidth}
+		\begin{center}
+			\fontfamily{lmdh}\selectfont \textcolor{blue}{}
+		\end{center}
+		
+	
+	\end{minipage}
+	\begin{minipage}[H]{0.33\textwidth}
+			\begin{flushright}
+
+				\small{Arnaud Hambenne \qquad 4047575}\\
+				\small{Soheil Jahanshahi \qquad 4127617}\\
+				
+
+			\end{flushright}
+			
+	\end{minipage}
+\end{figure}
+
+
+\begin{minipage}[H]{\textwidth}
+\vspace{0.3cm}
+		\begin{center}
+		
+		\vspace{0.3cm}
+			\Large{\fontfamily{lmr}\selectfont \textbf{Reflection Sprint 7}}\\
+		\vspace{0.3cm}	
+		
+		\vspace{0.7cm}	
+		\end{center}
+	\end{minipage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TITLE ENDS HERE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+%%%%%%%%%%%%%%%%%ALL Sections
+%\section{}
+
+\begin{center}
+    \begin{tabular}{ | l | l | c | c | c | c | p{5cm} |}
+    \hline
+    \multicolumn{7}{ |c| }{Sprint 7} \\
+    \hline
+    \textbf{Task} & \textbf{Subtasks} & \textbf{Estimated} & \textbf{Actual} & \textbf{Done} & \textbf{Tested} & \textbf{Remarks} \\ \hline
+    Discussions & - & 6 & ? & $\times$ & $\times$ & Needed to rework the discussion classes to improve their design and subcomment functionality \\ \hline
+    Calendar & - & 6 & ? & $\times$ & $\times$ & REMARKS \\ \hline
+    \end{tabular}
+\end{center}
+
+
+
+\section*{Main problems encountered}
+
+Below are a few main issues we encountered:
+\begin{itemize}
+
+	\item Making the discussions work in a robust and straightforward way proved difficult
+	\item 
+	
+	
+
+\end{itemize}
+
+\section*{Adjustment for next sprint plan}
+
+None
+
+%%%%%%%%%%%%%%%%ALL Sections ENDS here
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Refrences%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\bibliographystyle{plain}
+\bibliography{refrences}
+
+
+	\end{document}

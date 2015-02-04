@@ -7,6 +7,7 @@ import com.feth.play.module.pa.user.FirstLastNameIdentity;
 import com.feth.play.module.pa.user.PicturedIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 import com.feth.play.module.pa.user.ProfiledIdentity;
+import play.Logger;
 
 /**
  * Created by arnaud on 18-12-14.
@@ -34,6 +35,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
         public static final String DISCIPLINE = "discipline"; //nested "name"
         public static final String PROFILE_PIC = "photo"; //nested "standard" or "square"
         public static final String EMAIL_VERIFIED = "verified";
+        public static final String DOCUMENTS = "documents";
     }
 
     private String id;
@@ -46,6 +48,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
     private String discipline;
     private String profile_pic;
     private Boolean email_verified; //TODO: should not matter, safer is to reverify here too
+    private String documents;
 
     public MendeleyAuthUser(final JsonNode node, final OAuth2AuthInfo info, final String state) {
         super(node.get(Constants.ID).asText(), info, state);
@@ -76,6 +79,10 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
         }
         if (node.has(Constants.EMAIL_VERIFIED)) {
             this.email_verified = node.get(Constants.EMAIL_VERIFIED).asBoolean();
+        }
+        if (node.has(Constants.DOCUMENTS)) {
+            this.documents = node.get(Constants.DOCUMENTS).asText();
+            Logger.debug("DOCUMENTS: " + documents);
         }
     }
 
@@ -116,6 +123,8 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
     public String getPicture() {
         return profile_pic;
     }
+
+    public String getDocuments() {return documents;}
 
     @Override
     public String getEmail() {
