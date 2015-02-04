@@ -1,5 +1,5 @@
 @(currentUser: User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").orderBy("dateCreated").findList()) { activeProjectList =>
     <div class="tab-content">
         @for(p <- activeProjectList){
             @*TODO: Same as in projectNavBar, rewrite in the future when the time/update class has been added*@
@@ -10,15 +10,20 @@
                 }
             <div class="container-fluid" style="margin-top: 10px">
                 <div class="row">
-                    <div class="col-md-8">
+                    @*<div class="col-md-8">*@
                         <div class="panel panel-info">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-10">
                                         <p style="font-size: 15pt;"><b>@p.name</b></p>
                                         <p><i>@p.description</i><p>
-                                        <p><i>Created on: @p.dateCreated.toString.substring(0,10)</i><p>
-
+                                        @*<p><i>Created on: @p.dateCreated.toString.substring(0,10)</i><p>*@
+                                        <p>
+                                            <i>Template: @p.template</i>
+                                            <a href="#" title="Download the @p.template template">
+                                                <i class="fa fa-cloud-download fa-fw"></i>
+                                            </a>
+                                        <p>
                                     </div>
                                     <div class="col-xs-2">
                                         <ul class="nav navbar-top-links navbar-right" style="text-align: right">
@@ -28,6 +33,10 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-right dropdown-messages" style="width: 200px">
                                                     <li><a href="#" data-toggle="modal" data-target="#editProject@p.id"><i class="fa fa-pencil fa-fw"></i> Edit project details...</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#" data-toggle="modal" data-target="#memberList@p.id"><i class="fa fa-users fa-fw"></i> Show members...</a></li>
+                                                    <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user-plus fa-fw"></i> Add a member...</a></li>
+                                                    <li class="divider"></li>
                                                     <li><a href="#" data-toggle="modal" data-target="#archiveProject@p.id"><i class="fa fa-archive fa-fw"></i> Archive Project</a></li>
                                                     <li><a href="#" data-toggle="modal" data-target="#leaveProject@p.id"><i class="fa fa-sign-out fa-fw"></i> Leave project</a></li>
                                                 </ul>
@@ -40,40 +49,38 @@
                                 @*<hr class="hr">*@
                                 @projects.projectUploadButtons(p)
                             </div>
-                        </div>
+                        @*</div>*@
                     </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-info">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-xs-9">
-                                        <p><b>Owners</b></p>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <ul class="nav navbar-top-links navbar-right" style="text-align: right">
-                                            <li class="dropdown" style="height: 20px">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="margin: 0; padding: 0">
-                                                    <i class="fa fa-cog fa-fw"></i><span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-right dropdown-messages" style="width: 200px">
-                                                    <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user fa-fw"></i> Add a member...</a></li>
-                                                    <li><a href="#" data-toggle="modal" data-target="#addReviewerToProject@p.id"><i class="fa fa-edit fa-fw"></i> Add a reviewer...</a></li>
-                                                    <li><a href="#" data-toggle="modal" data-target="#removeMemberFromProject@p.id"><i class="fa fa-remove fa-fw"></i> Remove someone...</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <hr class="hr" style="margin-top: 0">
-                                @for(user <- p.users){
-                                    <p style="text-align: left">@user.name <br> @user.email</p> <br>
-                                }
-                                <p><b>Reviewers</b></p>
-                                <hr class="hr" style="margin-top: 0">
-                                <p style="text-align: left">Hubert J. Farnsworth <br> h.j.farnsworth@@planetexpress.nnyc</p> <br>
-                            </div>
-                        </div>
-                    </div>
+                    @*<div class="col-md-4">*@
+                        @*<div class="panel panel-info">*@
+                            @*<div class="panel-body">*@
+                                @*<div class="row">*@
+                                    @*<div class="col-xs-9">*@
+                                        @*<p><b>Owners</b></p>*@
+                                    @*</div>*@
+                                    @*<div class="col-xs-3">*@
+                                        @*<ul class="nav navbar-top-links navbar-right" style="text-align: right">*@
+                                            @*<li class="dropdown" style="height: 20px">*@
+                                                @*<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="margin: 0; padding: 0">*@
+                                                    @*<i class="fa fa-cog fa-fw"></i><span class="caret"></span>*@
+                                                @*</a>*@
+                                                @*<ul class="dropdown-menu dropdown-menu-right dropdown-messages" style="width: 200px">*@
+                                                    @*<li><a href="#" data-toggle="modal" data-target="#addReviewerToProject@p.id"><i class="fa fa-edit fa-fw"></i> Add a reviewer...</a></li>*@
+                                                @*</ul>*@
+                                            @*</li>*@
+                                        @*</ul>*@
+                                    @*</div>*@
+                                @*</div>*@
+                                @*<hr class="hr" style="margin-top: 0">*@
+                                @*for(user <- p.users){*@
+                                    @*<p style="text-align: left">@user.name <br> @user.email</p> <br>*@
+                                @*}*@
+                                @*<p><b>Reviewers</b></p>*@
+                                @*<hr class="hr" style="margin-top: 0">*@
+                                @*<p style="text-align: left">Hubert J. Farnsworth <br> h.j.farnsworth@@planetexpress.nnyc</p> <br>*@
+                            @*</div>*@
+                        @*</div>*@
+                    @*</div>*@
                 </div>
             </div>
         </div>
@@ -96,6 +103,15 @@
                         </div>
                         <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
                     </div>
+                    <div class="form-group">
+                        <label for="validate-optional">Description</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="description" value="@p.description" id="validate-optional" placeholder="Optional">
+                            <span class="input-group-addon info"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <label>Chosen template: </label>
+                    <p>@p.template</p>
                     <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
                         <button type="submit" class="btn btn-info col-xs-12" disabled>Edit!</button>
                     </div>
@@ -154,7 +170,7 @@
                 }
             }
             @*Remove Member Modal*@
-            @template.mediummodal("removeMemberFromProject"+p.id.toString)("danger")("Members of "+p.name) {
+            @template.mediummodal("memberList"+p.id.toString)("danger")("Members of "+p.name) {
                     <!-- Table -->
                 <table class="table table-condensed">
                     <thead>
@@ -167,14 +183,16 @@
                     </thead>
                     <tbody>
                     @p.users.map{ u =>
-                        @if(!u.equals(currentUser)){
-                            <tr>
-                                <td>@u.name</td>
-                                <td>@u.email</td>
-                                <td>Not Applicable yet</td>
-                                <td><a href="@{routes.ProjectData.removeMemberFromProject(u.id, p.id)}" ><i class="fa fa-remove fa-fw"></i></a></td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>@u.name</td>
+                            <td>@u.email</td>
+                            <td>Not applicable yet</td>
+                            @if(!u.equals(currentUser)) {
+                                <td><a href="@{routes.ProjectData.removeMemberFromProject(u.id, p.id)}" ><i class="fa fa-user-times fa-fw"></i></a></td>
+                            }else{
+                                <td> </td>
+                            }
+                        </tr>
                     }
                     </tbody>
                 </table>

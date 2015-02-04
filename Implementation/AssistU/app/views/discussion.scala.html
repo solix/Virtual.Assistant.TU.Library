@@ -1,5 +1,5 @@
 @(title: String)(currentUser:User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").orderBy("dateCreated").findList()) { activeProjectList =>
     <html lang="en">
         <head>
             @linkLoader.headlinks(title)

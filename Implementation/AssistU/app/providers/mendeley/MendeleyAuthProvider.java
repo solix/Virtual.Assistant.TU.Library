@@ -1,6 +1,8 @@
 package providers.mendeley;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.feth.play.module.pa.exceptions.AccessTokenException;
 import com.feth.play.module.pa.exceptions.AuthException;
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthProvider;
@@ -19,6 +21,7 @@ public class MendeleyAuthProvider extends
     static final String PROVIDER_KEY = "mendeley";
 
     private static final String USER_INFO_URL_SETTING_KEY = "userInfoUrl";
+    private static final String USER_DOCUMENTS_URL_SETTING_KEY = "userDocumentsUrl";
     private static final String OAUTH_TOKEN = "access_token";
 
     public MendeleyAuthProvider(Application app) {
@@ -43,18 +46,33 @@ public class MendeleyAuthProvider extends
     protected AuthUserIdentity transform(final MendeleyAuthInfo info, final String state)
             throws AuthException {
 
-        final String url = getConfiguration().getString(
+        final String infoUrl = getConfiguration().getString(
                 USER_INFO_URL_SETTING_KEY);
-        Logger.debug("URL: " + url);
-        final WSResponse r = WS
-                .url(url)
+        final WSResponse infoResult = WS
+                .url(infoUrl)
                 .setQueryParameter(OAUTH_TOKEN,
                         info.getAccessToken())
                 .get()
                 .get(getTimeout());
 
-        final JsonNode result = r.asJson();
-        if (r.getStatus() >= 400) {
+        final ObjectNode userinfo = (ObjectNode)infoResult.asJson();
+
+        final String libraryUrl = getConfiguration().getString(
+                USER_DOCUMENTS_URL_SETTING_KEY);
+        final WSResponse libraryResult = WS
+                .url(libraryUrl)
+                .setQueryParameter(OAUTH_TOKEN,
+                        info.getAccessToken())
+                .get()
+                .get(getTimeout());
+
+        final ArrayNode libraryinfo = (ArrayNode)libraryResult.asJson();
+
+        userinfo.put("documents", libraryinfo);
+
+        final JsonNode result = userinfo;
+
+        if (infoResult.getStatus() >= 400) {
             throw new AuthException(result.get("meta").get("errorDetail").asText());
         } else {
             Logger.debug(result.toString());
