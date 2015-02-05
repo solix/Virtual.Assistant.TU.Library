@@ -36,6 +36,7 @@ public class ChatData extends Controller {
             message.get("pid").get("projectID").asLong(),
             message.get("isChild").asBoolean());
     message.put("cid", comment.cid);
+//    message.put("username", comment.user.name);
     Logger.debug("New Comment: " + Json.stringify(message));
     sendEvent(message);
     return ok();

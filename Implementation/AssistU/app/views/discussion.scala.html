@@ -21,15 +21,21 @@
             $scope.message = { } ;
             $scope.message.subject = "" ;
             $scope.message.content = "" ;
-            $scope.uid = " @currentUser.id ";
+            for(var i = 0; i < $scope.comments.length; i++){
+                $scope.message["subcomment" + $scope.comments[i].cid] = "";
+            }
+            $scope.uid = "@currentUser.id";
             $scope.isChild = false ;
-            $scope.currentProject = $scope.projectids[ 0 ] ;
+            $scope.currentProject = $scope.projectids[ 0 ];
 
             $scope.refresh = function () {
                 $scope.projectids =[ ] ;
                 $.ajax ( { url : "/" + @currentUser.id + "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
                 $scope.comments =[ ] ;
                 $.ajax ( { url : "/comments/" + $scope.projectids[ 0 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
+                for(var i = 0; i < $scope.comments.length; i++){
+                    $scope.message["subcomment" + $scope.comments[i].cid] = "";
+                }
             };
 
             /** change current room, restart EventSource connection */
@@ -53,8 +59,8 @@
                 $scope.message.content = "";
             };
 
-            $scope.test = function (cid) {
-                console.log("submessage: " + $scope.message.cid);
+            $scope.setSubmessageAsContent = function (cid) {
+                $scope.message.content = $scope.message["subcomment" + cid];
             };
 
             /** posting chat text to server */
@@ -114,71 +120,8 @@
                                     <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
                                 </div>
                             </div>
-                            <hr class="hr" style="margin: 10px 30px 0 30px">
-                            <div class="panel-body" style="padding: 5px 0 200px 0">
-                                <div id="chat">
-                                    <div class="{{comment.who}} comment" ng-repeat="comment in comments">
-                                        <div class="panel panel-primary" style="margin-bottom: 0">
-                                            <div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">
-                                                <div class="row">
-                                                    <div class="col-xs-2" style="text-align: center">
-                                                        <div class="thumbnail" style="width: 50px; height: 50px; margin: 5px auto 5px auto">
-                                                            <img src="http://www.33plus1.ru/Decor/02_OUTDOOR_INSTALL/131008_Katusha/SMI/ria.ru_files/default-avatar-50x50.jpg" alt="User Avatar" class="img-circle" />
-                                                        </div>
-                                                        <strong>{{comment.username}}</strong>
-                                                    </div>
-                                                    <div class="col-xs-10">
-                                                        <div class="row">
-                                                            <div class="col-xs-9">
-                                                                <b>{{comment.subject}}</b>
-                                                                <hr class="hr" style="margin: 0 0 5px 0">
-                                                            </div>
-                                                            <div class="col-xs-3">
-                                                                <small class="pull-right text-muted">
-                                                                    <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
-                                                                </small>
-                                                            </div>
-                                                        </div>
-                                                        {{comment.content}}
-                                                        <div class="container-fluid">
-                                                            <a class="pull-right" data-toggle="collapse" href="#comment{{comment.cid}}"
-                                                            style="margin: 0; margin-right: 30px;">Leave a comment...</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-11 col-xs-offset-1">
-                                                <div class="panel panel-primary" style="margin-top: -1px">
-                                                    @*<div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">*@
-                                                    <div class="panel-body" style="padding: 0">
-                                                        <div class="container-fluid" ng-repeat="subcomment in comment.subcomments" style="padding: 0">
-                                                            <b>{{subcomment.username}}</b> - {{subcomment.content}}
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i> {{subcomment.date}}
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div id="comment{{comment.cid}}" class="panel-footer collapse" style="margin-top: -5px ;">
-                                                        <button type="button" class="close pull-left" data-toggle="collapse" data-target="#comment{{comment.cid}}"
-                                                        style="padding: 4px 20px 6px 5px"
-                                                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                        <div class="input-group">
-                                                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="{{comment.username}} says..."
-                                                            ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message.submessage{{comment.cid}}"/>
-                                                            <span class="input-group-btn">
-                                                                <button class="btn btn-warning btn-sm" ng-click="test('submessage{{comment.cid}}');submitMsg()">React!</button>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="comment" class="panel-footer collapse" style="position: fixed; bottom:0; margin-left: -30px; padding: 15px 50px">
+                            @*<hr class="hr" style="margin: 10px 30px 0 30px">*@
+                            <div id="comment" class="panel-footer collapse" style="margin-left: -30px; margin-right: -30px; padding: 15px 50px 50px">
                                 <div class="row" style="padding: 0; text-align: center">
                                     <button type="button" class="close pull-right" data-toggle="collapse" data-target="#comment" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h3 style="padding: 0; margin: 0">Start a new Discussion</h3>
@@ -206,6 +149,72 @@
                                     data-toggle="collapse" data-target="#comment" type="button" style="width: 80px">Cancel</button>
                                     <button type="button" class="btn btn-success btn-sm" style="width: 80px"
                                     id="saySomething" data-toggle="collapse" data-target="#comment" ng-click="submitMsg()">Submit</button>
+                                </div>
+                            </div>
+                            <div class="panel-body" style="padding: 5px 0 200px 0">
+                                <div id="chat">
+                                    <div class="{{comment.who}} comment" ng-repeat="comment in comments">
+                                        <hr class="hr" style="margin: 2px 0">
+                                        @*<div class="panel panel-primary" style="margin-bottom: 0">*@
+                                            @*<div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">*@
+                                                <div class="row">
+                                                    <div class="col-xs-2" style="text-align: center">
+                                                        <div class="thumbnail" style="width: 50px; height: 50px; margin: 5px auto 5px auto">
+                                                            <img src="http://www.33plus1.ru/Decor/02_OUTDOOR_INSTALL/131008_Katusha/SMI/ria.ru_files/default-avatar-50x50.jpg" alt="User Avatar" class="img-circle" />
+                                                        </div>
+                                                        <strong>{{comment.username}}</strong>
+                                                    </div>
+                                                    <div class="col-xs-10">
+                                                        <div class="row">
+                                                            <div class="col-xs-9">
+                                                                <b>{{comment.subject}}</b>
+                                                                <hr class="hr" style="margin: 0 0 5px 0">
+                                                            </div>
+                                                            <div class="col-xs-3">
+                                                                <small class="pull-right text-muted">
+                                                                    <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        {{comment.content}}
+                                                        <div class="container-fluid">
+                                                            <a class="pull-right" data-toggle="collapse" href="#comment{{comment.cid}}"
+                                                            style="margin: 0; margin-right: 30px;">Leave a comment...</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @*</div>*@
+                                        @*</div>*@
+                                        <hr class="hr" style="margin: 2px 0">
+                                        <div class="row">
+                                            <div class="col-xs-11 col-xs-offset-1">
+                                                @*<div class="panel panel-primary" style="margin-top: -1px">*@
+                                                    @*<div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">*@
+                                                    @*<div class="panel-body" style="padding: 0">*@
+                                                        <div class="container-fluid" ng-repeat="subcomment in comment.subcomments" style="padding: 0">
+                                                            <b>{{subcomment.username}}</b> - {{subcomment.content}}
+                                                            <small class="pull-right text-muted">
+                                                                <i class="fa fa-clock-o fa-fw"></i> {{subcomment.date}}
+                                                            </small>
+                                                            <hr class="hr" style="margin: 2px 0">
+                                                        </div>
+                                                    @*</div>*@
+                                                    <div id="comment{{comment.cid}}" class="panel-footer collapse" style="margin-top: -5px ;">
+                                                        <button type="button" class="close pull-left" data-toggle="collapse" data-target="#comment{{comment.cid}}"
+                                                        style="padding: 4px 20px 6px 5px"
+                                                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <div class="input-group">
+                                                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="{{comment.username}} says..."
+                                                            ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message['subcomment' + comment.cid]"/>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-warning btn-sm" ng-click="setSubmessageAsContent(comment.cid);submitMsg()">React!</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                @*</div>*@
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
