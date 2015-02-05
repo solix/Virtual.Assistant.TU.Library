@@ -18,6 +18,7 @@ import com.feth.play.module.pa.user.NameIdentity;
 import com.feth.play.module.pa.user.FirstLastNameIdentity;
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthUser;
 import com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
+import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
 import providers.mendeley.MendeleyAuthUser;
 
 @Entity
@@ -39,8 +40,6 @@ public class User extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public List<LinkedAccount> linkedAccounts;
 
-    @ManyToMany
-    List<UserRole> userroles = new ArrayList<UserRole>();
 
     @ManyToMany
     List<Project> projects = new ArrayList<Project>();
@@ -50,19 +49,17 @@ public class User extends Model {
     @OneToMany(mappedBy = "user")
     public List<Event> events;
 
-    @ManyToMany(mappedBy = "users")
-    List<Role> role= new ArrayList<Role>();
     @OneToMany(mappedBy = "user")
-    List<Comment> comments=new ArrayList<Comment>();
+    public List<Role> roles= new ArrayList<Role>();
+    @OneToMany(mappedBy = "user")
+    public List<Comment> comments=new ArrayList<Comment>();
 
-    public User(String name, String email, String password) {
-        this.name=name;
-        this.email = email;
-        this.password = password;
-        this.active= true;
-
-
-    }
+//    public User(String name, String email, String password) {
+//        this.name=name;
+//        this.email = email;
+//        this.password = password;
+//        this.active= true;
+//    }
 
     public static Model.Finder<Long,User> find = new Model.Finder(
             Long.class, User.class
@@ -79,11 +76,11 @@ public class User extends Model {
     }
 
 
-    public static User create(String name, String email, String password ) {
-        User user = new User(name, email, password);
-        user.save();
-        return user;
-    }
+//    public static User create(String name, String email, String password ) {
+//        User user = new User(name, email, password);
+//        user.save();
+//        return user;
+//    }
 
     public static User update(final AuthUser authUser) {
         final User user = User.findByAuthUserIdentity(authUser);
@@ -149,11 +146,33 @@ public class User extends Model {
                 .eq("linkedAccounts.providerKey", identity.getProvider());
     }
 
+//    public static User findByAuthUserIdentity(final AuthUserIdentity identity) {
+//        if (identity == null) {
+//            return null;
+//        }
+//        return getAuthUserFind(identity).findUnique();
+//    }
+
     public static User findByAuthUserIdentity(final AuthUserIdentity identity) {
         if (identity == null) {
             return null;
         }
-        return getAuthUserFind(identity).findUnique();
+        if (identity instanceof UsernamePasswordAuthUser) {
+            return findByUsernamePasswordIdentity((UsernamePasswordAuthUser) identity);
+        } else {
+            return getAuthUserFind(identity).findUnique();
+        }
+    }
+
+    public static User findByUsernamePasswordIdentity(
+            final UsernamePasswordAuthUser identity) {
+        return getUsernamePasswordAuthUserFind(identity).findUnique();
+    }
+
+    private static ExpressionList<User> getUsernamePasswordAuthUserFind(
+            final UsernamePasswordAuthUser identity) {
+        return getEmailUserFind(identity.getEmail()).eq(
+                "linkedAccounts.providerKey", identity.getProvider());
     }
 
     public void merge(final User otherUser) {
@@ -172,9 +191,8 @@ public class User extends Model {
      * @param authUser
      * @return user
      */
-    public static User createAuthUser(final AuthUser authUser) {
-//        TODO: Remove parameters from constructor once defaultlogin is implemented
-        final User user = new User(null,null,null);
+    public static User create(final AuthUser authUser) {
+        final User user = new User();
         user.active = true;
         user.linkedAccounts = Collections.singletonList(LinkedAccount
                 .create(authUser));
@@ -254,6 +272,36 @@ public class User extends Model {
 
     public LinkedAccount getAccountByProvider(final String providerKey) {
         return LinkedAccount.findByProviderKey(this, providerKey);
+    }
+
+    public static void verify(final User unverified) {
+        // You might want to wrap this into a transaction
+        unverified.emailValidated = true;
+        unverified.save();
+        TokenAction.deleteByUser(unverified, TokenAction.Type.EMAIL_VERIFICATION);
+    }
+
+    public void resetPassword(final UsernamePasswordAuthUser authUser,
+                              final boolean create) {
+        // You might want to wrap this into a transaction
+        this.changePassword(authUser, create);
+        TokenAction.deleteByUser(this, TokenAction.Type.PASSWORD_RESET);
+    }
+
+    public void changePassword(final UsernamePasswordAuthUser authUser,
+                               final boolean create) {
+        LinkedAccount a = this.getAccountByProvider(authUser.getProvider());
+        if (a == null) {
+            if (create) {
+                a = LinkedAccount.create(authUser);
+                a.user = this;
+            } else {
+                throw new RuntimeException(
+                        "Account not enabled for password usage");
+            }
+        }
+        a.providerUserId = authUser.getHashedPassword();
+        a.save();
     }
 
 }

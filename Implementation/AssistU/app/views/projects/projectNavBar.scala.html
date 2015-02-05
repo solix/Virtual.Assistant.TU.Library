@@ -1,5 +1,5 @@
 @(currentUser: User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").findList()) { activeProjectList =>
+@defining(Project.find.where().in("users", currentUser).eq("active", "true").orderBy("dateCreated").findList()) { activeProjectList =>
     <div class="container-fluid" style="text-align: center; margin: 1% 0">
         <div role="tabpanel">
             <ul class="nav nav-tabs">

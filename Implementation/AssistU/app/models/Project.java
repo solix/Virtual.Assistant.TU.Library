@@ -4,7 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -21,9 +22,13 @@ public class Project extends Model {
 
     @Id
     public Long id;
+    @MinLength(3)
     public String name;
+    @MinLength(3)
     public String folder;
     public String description;
+    @Required
+    public String template;
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateCreated ;
@@ -34,16 +39,19 @@ public class Project extends Model {
     @OneToMany(mappedBy = "project")
     public List<Comment> comments = new ArrayList<Comment>();
 
+    public Map<Long, Role> relations = new HashMap<Long, Role>();
+
     /**
      * Constructor
      * @param folder
      * @param name
      */
-    public Project (String folder, String name, User owner,String description){
+    public Project (String folder, String name, User owner,String description, String template){
 
         this.folder = folder;
         this.name = name;
         this.description=description;
+        this.template=template;
         this.users.add(owner);
     }
 
@@ -67,11 +75,13 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name,  Long owner ,String description){
-        Project project = new Project(folder, name ,User.find.ref(owner),description);
+    public static Project create(String folder, String name,  Long uid ,String description, String template){
+        Project project = new Project(folder, name ,User.find.ref(uid),description, template);
+       // project.setOwner(uid);
         project.active=true;
         project.dateCreated =new Date();
-        Logger.debug("Project with the name of ("+project.name+ ") has been created on: " + project.dateCreated);
+        User user=User.find.byId(uid);
+        user.projects.add(project);
         project.save();
         return project;
     }
@@ -81,10 +91,11 @@ public class Project extends Model {
      * TODO: project need to be find by id and only then new data will be updated using update method (need to check hashmap support)
      * @return
      */
-    public static void edit(Long pid, String folder, String name){
+    public static void edit(Long pid, String folder, String name, String description){
         Project p = Project.find.byId(pid);
         p.folder = folder;
         p.name = name;
+        p.description = description;
         p.update();
     }
 
@@ -104,7 +115,7 @@ public class Project extends Model {
      * TODO: Set role as third parameter? no,better to set role as seperate function
      * This method invites another user to a project by its user id
      */
-    public static void addMemberAs(Long pid, Long uid){
+    public static void addMember(Long pid, Long uid){
         Project p = Project.find.ref(pid);
         p.users.add(User.find.byId(uid));
         p.update();
@@ -122,10 +133,25 @@ public class Project extends Model {
 //        p.saveManyToManyAssociations("users");
     }
 
-    public static void addComment(Comment cm, Long pid){
-        Project p =Project.find.byId(pid);
-        p.comments.add(cm);
-        p.save();
-    }
+//    public void setOwner(Long uid){
+//        if(Role.find.where().eq("role", "Owner").findRowCount() == 0) {
+//          //  Role.ownerRole();
+//        }
+//        this.relations.put(uid,Role.find.where().eq("role", "Owner").findUnique());
+//    }
+//
+//    public void setGuest(Long uid){
+//        if(Role.find.where().eq("role", "Guest").findRowCount() == 0) {
+//            Role.ownerRole();
+//        }
+//        this.relations.put(uid,Role.find.where().eq("role", "Guest").findUnique());
+//    }
+//
+//    public void setReviewer(Long uid){
+//        if(Role.find.where().eq("role", "Reviewer").findRowCount() == 0) {
+//            Role.ownerRole();
+//        }
+//        this.relations.put(uid,Role.find.where().eq("role", "Reviewer").findUnique());
+//    }
 
 }

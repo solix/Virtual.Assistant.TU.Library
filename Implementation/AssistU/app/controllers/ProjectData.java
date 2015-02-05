@@ -5,10 +5,11 @@ import models.*;
 import play.Logger;
 import play.data.*;
 import play.mvc.*;
+import views.html.*;
+import com.feth.play.module.pa.PlayAuthenticate;
+
 import java.lang.String;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 import static play.libs.Json.toJson;
 
@@ -19,19 +20,41 @@ public class ProjectData extends Controller {
 
     static Form<Project> projectForm = Form.form(Project.class);
 
+    public static Result createProjectPage() {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null)
+            return ok(projectNew.render("Create a new Project", projectForm, false, "", user));
+        else
+            return Authentication.login();
+    }
+
+    public static Result editProjectPage(Long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Project p = Project.find.byId(pid);
+        if(user != null)
+            return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", user));
+        else
+            return Authentication.login();
+    }
+
     /**
      * TODO: Adapt this function after login is implemented and the current user is known
      * This function creates a new Project initiated by a user that automatically becomes its owner.
      * @return
      */
-    public static Result createProject(Long uid) {
-        User user = User.find.ref(uid);
+    public static Result createProject() {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style validation");
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
         } else {
             Project projectData = filledProjectForm.get();
-            Project.create(projectData.folder, projectData.name, user.id , "Description");
+            Project project = Project.create(projectData.folder, projectData.name, user.id, projectData.description, projectData.template);
+            Role role=Role.ownerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id,project.id,role);
+            user.update();
+            defaultPlanningArticle(user,project);
             return redirect(routes.Application.project());
         }
     }
@@ -43,15 +66,22 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result editProject(Long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Project p = Project.find.byId(pid);
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style validation");
+            Logger.debug(filledProjectForm.errors().toString());
+            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
         } else {
-            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name);
+
+            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
             return redirect(routes.Application.project());
         }
 
     }
+
+
+
 
     /**
      * This function refers to the model's archive function. The unused uid is to check whether the person is an
@@ -74,7 +104,24 @@ public class ProjectData extends Controller {
      */
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
-        Project.addMemberAs(pid, User.find.where().eq("email",emailform.get("email")).findUnique().id);
+        User user = User.find.where().eq("email", emailform.get("email")).findUnique();
+        Project.addMember(pid, user.id);
+        if(emailform.get("role").equals("Owner")) {
+            Project p=Project.find.byId(pid);
+            Role role=Role.ownerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+            defaultPlanningArticle(user,p);
+        } else if(emailform.get("role").equals("Reviewer")) {
+            Role role=Role.reviewerRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+        }else{
+            Role role=Role.guestRole(user.id);
+            user.roles.add(role);
+            addRoleToDictionary(user.id, pid, role);
+        }
+        user.update();
         return redirect(routes.Application.project());
     }
 
@@ -89,6 +136,7 @@ public class ProjectData extends Controller {
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
         Project.removeMemberFrom(pid, uid);
+        removeMemberFromDictionary(uid, pid);
         return redirect(routes.Application.project());
     }
 
@@ -105,4 +153,68 @@ public class ProjectData extends Controller {
         }
         return ok(toJson(result));
     }
+
+    /**
+     * Creates full planning for writing an article article owners of the project
+     *
+     */
+    public static void defaultPlanningArticle(User user,Project p){
+        Date startDate = p.dateCreated;
+        Event event1=Event.createArticleEvent(user,"Getting Started", startDate, 0);
+        event1.endsSameDay=true;
+        event1.update();
+        Event event2=Event.createArticleEvent(user,"Keypoints", Event.movedate(event1.end), 1);
+        Event event3=Event.createArticleEvent(user,"Publication Strategy", Event.movedate(event2.end), 2);
+        Event event4=Event.createArticleEvent(user,"Introduction", Event.movedate(event3.end), 7);
+        Event event5=Event.createArticleEvent(user,"Materials & Methods", Event.movedate(event4.end), 4);
+        Event event6=Event.createArticleEvent(user,"Results & Discussion", Event.movedate(event5.end), 2);
+        Event event7=Event.createArticleEvent(user,"Abstract, keywords & Title ", Event.movedate(event6.end), 1);
+        Event event8=Event.createArticleEvent(user,"References and Acknowledgment",Event.movedate( event7.end), 0);
+        event8.endsSameDay=true;
+        event8.update();
+        Event event9=Event.createArticleEvent(user,"Layout & Styles", Event.movedate(event8.end), 0);
+        event8.endsSameDay=true;
+        event8.update();
+    }
+    /**
+     * This is the helper to identify user and their roles within a project
+     */
+    static Map<Long,HashMap<Long,Role>> projectScope=new HashMap<Long,HashMap<Long,Role>>();
+
+    /**
+     * this functions searches for a role of a specific user in the specific project
+     * @param uid
+     * @param pid
+     * @return
+     */
+    private static Role roleFinder(long uid,long pid){
+        HashMap<Long,Role> roleScope = projectScope.get(pid);
+        return roleScope.get(uid);
+    }
+
+    /**
+     *
+     * @param uid
+     * @param pid
+     * @param role
+     */
+    private static void addRoleToDictionary(long uid,long pid, Role role ){
+        HashMap<Long,Role> newRoleScope = new HashMap<Long,Role>();
+        newRoleScope.put(uid,role);
+        projectScope.put(pid,newRoleScope);
+
+        Logger.debug("<Dictionary>: username: "+User.find.byId(uid).name+ " Role: " + projectScope.get(pid).get(uid).role);
+
+    }
+
+    /**
+     *
+     * @param uid
+     * @param pid
+     */
+    private static void removeMemberFromDictionary(long uid,long pid){
+        HashMap<Long,Role> roleScope = projectScope.get(pid);
+        roleScope.remove(uid);
+    }
+
 }

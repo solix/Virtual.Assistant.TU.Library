@@ -26,6 +26,7 @@ create table document_file (
 create table event (
   id                        bigint not null,
   title                     varchar(255),
+  description               varchar(255),
   all_day                   boolean,
   start                     timestamp,
   end                       timestamp,
@@ -47,9 +48,17 @@ create table project (
   name                      varchar(255),
   folder                    varchar(255),
   description               varchar(255),
+  template                  varchar(255),
   active                    boolean,
   date_created              timestamp,
   constraint pk_project primary key (id))
+;
+
+create table role (
+  rid                       bigint not null,
+  role                      varchar(255),
+  user_id                   bigint,
+  constraint pk_role primary key (rid))
 ;
 
 create table task (
@@ -74,19 +83,6 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
-create table user_role (
-  id                        bigint not null,
-  tag                       varchar(255),
-  description               varchar(255),
-  constraint pk_user_role primary key (id))
-;
-
-
-create table user_user_role (
-  user_id                        bigint not null,
-  user_role_id                   bigint not null,
-  constraint pk_user_user_role primary key (user_id, user_role_id))
-;
 
 create table user_project (
   user_id                        bigint not null,
@@ -103,11 +99,11 @@ create sequence linked_account_seq;
 
 create sequence project_seq;
 
+create sequence role_seq;
+
 create sequence task_seq;
 
 create sequence user_seq;
-
-create sequence user_role_seq;
 
 alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_user_1 on comment (user_id);
@@ -119,14 +115,12 @@ alter table event add constraint fk_event_user_4 foreign key (user_id) reference
 create index ix_event_user_4 on event (user_id);
 alter table linked_account add constraint fk_linked_account_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_linked_account_user_5 on linked_account (user_id);
-alter table task add constraint fk_task_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_6 on task (user_id);
+alter table role add constraint fk_role_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_role_user_6 on role (user_id);
+alter table task add constraint fk_task_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_7 on task (user_id);
 
 
-
-alter table user_user_role add constraint fk_user_user_role_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
-
-alter table user_user_role add constraint fk_user_user_role_user_role_02 foreign key (user_role_id) references user_role (id) on delete restrict on update restrict;
 
 alter table user_project add constraint fk_user_project_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
@@ -148,13 +142,11 @@ drop table if exists project;
 
 drop table if exists user_project;
 
+drop table if exists role;
+
 drop table if exists task;
 
 drop table if exists user;
-
-drop table if exists user_user_role;
-
-drop table if exists user_role;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
@@ -168,9 +160,9 @@ drop sequence if exists linked_account_seq;
 
 drop sequence if exists project_seq;
 
+drop sequence if exists role_seq;
+
 drop sequence if exists task_seq;
 
 drop sequence if exists user_seq;
-
-drop sequence if exists user_role_seq;
 

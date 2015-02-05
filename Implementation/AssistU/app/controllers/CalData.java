@@ -45,9 +45,8 @@ public class CalData extends Controller {
 
         Date startDate = new Date(start*1000);
         Date endDate = new Date(end*1000);
-//        Event event1 = new Event("Plan 1",new Date(2015-02-24),new Date(2015-02-25),true);
-//        event1.save();
-        List<Event> resultList = Event.findInDateRange(startDate, endDate);
+        User user =User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        List<Event> resultList = Event.findInDateRange(startDate, endDate, user);
         ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -55,6 +54,7 @@ public class CalData extends Controller {
             Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
             eventRemapped.put("id", event.id);
             eventRemapped.put("title", event.title);
+            eventRemapped.put("description", event.description);
             eventRemapped.put("start", df.format(event.start));
             eventRemapped.put("end", df.format(event.end));
             eventRemapped.put("allDay", event.allDay);
@@ -73,21 +73,20 @@ public class CalData extends Controller {
     public static Result calendar() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(calendar.render("My Calendar", user,eventForm,Event.find.all()));
+            return ok(calendar.render("My Calendar", user,eventForm,Event.find.where().in("user",user).order().asc("start").findList()));
         else
-        return ok(calendar.render("My Calendar", null, eventForm,Event.find.all()));
+        return ok(calendar.render("My Calendar", user, eventForm, Event.find.where().in("user", user).order().asc("start").findList()));
     }
 
 
     /**
      * List of events in table view
      * @return Result
-     * TODO: USER must be impemented
+     *
      */
-    public static Result list() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        List<Event> events = Event.find.order().asc("start").findList();
+    public static Result list(long uid) {
+        User user = User.find.byId(uid);
+        List<Event> events = Event.find.where().in("user",user).order().asc("start").findList();
         return ok(list.render("List of events",user,events));
     }
 
@@ -123,21 +122,14 @@ public class CalData extends Controller {
         }
         newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
         user.events.add(newEvent);
-        //Event.addPlanningArticle();
-        Logger.debug("Add new event manually is used :" + newEvent.title);
+        Logger.debug("add new event function in CalData is used :" + newEvent.title);
         newEvent.save();
 
-        return redirect(controllers.routes.CalData.list());
+        return redirect(controllers.routes.CalData.list(user.id));
     }
 
-    /**
-     * TODO: gives new planning of the project
-     * @return Result
-     */
 
-    public static Result defaultPlanning() {
-        return TODO;
-    }
+
 
     /**
      * Dislays form for editing existing event
@@ -173,7 +165,7 @@ public class CalData extends Controller {
         updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
         updatedEvent.update(id);
 
-        return redirect(controllers.routes.CalData.list());
+        return redirect(controllers.routes.CalData.list(user.id));
     }
 
 
@@ -183,8 +175,10 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result delete(Long id) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
         Event.find.ref(id).delete();
-        return redirect(controllers.routes.CalData.list());
+        return redirect(controllers.routes.CalData.list(user.id));
     }
 
 
@@ -192,19 +186,22 @@ public class CalData extends Controller {
      * Adds event after clicking on calendar
      * @return Result
      */
-    public static Result addByAjax() {
+    public static Result addByAjax(long uid) {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+        User user = User.find.byId(uid);
         Event newEvent = eventForm.get();
-        newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
-        newEvent.save();
+        Event event = new Event(user,newEvent.title,newEvent.start,newEvent.end,newEvent.allDay);
+        event.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+        event.description=newEvent.description;
+        event.save();
 
         if (eventForm.hasErrors()){
             return badRequest("There was some errors in form");
         }
 
         Map<String, String> result = new HashMap<String, String>();
-        result.put("id", newEvent.id.toString());
-        result.put("url", controllers.routes.CalData.edit(newEvent.id).toString());
+        result.put("id", event.id.toString());
+        result.put("url", controllers.routes.CalData.edit(event.id).toString());
         Logger.debug("add By ajax is used: " + result);
         return ok(play.libs.Json.toJson(result));
     }

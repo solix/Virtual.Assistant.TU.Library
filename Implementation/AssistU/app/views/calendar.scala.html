@@ -23,15 +23,16 @@
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
 
-  <a  class="btn btn-default btn=sm" href="@routes.CalData.list()">
+  <a  class="btn btn-default btn=sm" href="@routes.CalData.list(currentUser.id)">
     <span class="fa fa-bars"></span> View as List
   </a>
 
     <hr class="hr" style="margin-top: 10px">
 
         <div style="display: none;">
-          <form action="@routes.CalData.addByAjax()" method="POST" id="eventFormNew">
+          <form action="@routes.CalData.addByAjax(currentUser.id)" method="POST" id="eventFormNew">
             <input type="text" name="title" id="newTitle"/>
+            <input type="text" name="description" id="newDescription"/>
             <input type="text" name="start" id="newStart"/>
             <input type="text" name="end" id="newEnd"/>
             <input type="text" name="allDay" id="newAllDay"/>
@@ -55,21 +56,7 @@
           </form>
         </div>
 
-      @*<div id="fullCalModal" class="modal fade">*@
-        @*<div class="modal-dialog">*@
-          @*<div class="modal-content">*@
-            @*<div class="modal-header">*@
-              @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>*@
-              @*<h4 id="modalTitle" class="modal-title"></h4>*@
-            @*</div>*@
-            @*<div id="modalBody" class="modal-body"></div>*@
-            @*<div class="modal-footer">*@
-              @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
-              @*<button class="btn btn-primary"><a id="eventUrl" target="_blank">Event Page</a></button>*@
-            @*</div>*@
-          @*</div>*@
-        @*</div>*@
-      @*</div>*@
+
 
         <div id='calendar'></div>
 
