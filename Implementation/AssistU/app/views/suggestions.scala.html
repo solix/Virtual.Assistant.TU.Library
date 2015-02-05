@@ -3,15 +3,16 @@
 <html lang="en">
     <head>
         @linkLoader.headlinks(title)
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/suggestion.css")">
 
         <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 
-        <!--Wheel Menu JS-->
-    <script src="@routes.Assets.at("javascripts/jquery.suggestionwheelmenuprimary.js")" ></script>
+        @*<!--Wheel Menu JS-->*@
+    @*<script src="@routes.Assets.at("javascripts/jquery.suggestionwheelmenuprimary.js")" ></script>*@
 
-        <!--Wheel Menu CSS-->
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/suggestionwheelmenuprimary.css")">
+        @*<!--Wheel Menu CSS-->*@
+    @*<link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/suggestionwheelmenuprimary.css")">*@
 
     </head>
 
@@ -22,135 +23,81 @@
                 @template.headericon("fa fa-lightbulb-o fa-5x")
 
 
-            <div class="container">
-                <div class="page-header text-center">
-                    <h1 id="timeline">Timeline 2.0</h1>
+            <div class="container-fluid">
+                <div class="page-header">
+                    <h1 id="timeline">Step by Step Guide :</h1>
                 </div>
                 <ul class="timeline">
                     <li>
-                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-badge"><i class="">1</i></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
-                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
+                                <h4 class="timeline-title">Getting Started</h4>
+                                <a class="btn btn-primary" data-toggle="collapse" href="#gettingStarted" aria-expanded="false" aria-controls="collapseExample">
+                                     More..
+                                </a>
                             </div>
-                            <div class="timeline-body">
-                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+                            <br>
+                            <div class="collapse" id="gettingStarted">
+                                <div class="well">
+                                    <div class="timeline-body">
+                                        <p>In research (and in your every day life) you acquire knowledge and experience. You start with observations that arise questions
+                                            that need to be answered and shared. The steps that lead from an observation to a valid, ready to be made public,
+                                            answer form a methodology known as “the scientific method”.</p>
+                                        <p>The scientific inquiry was built up in time by many, beginning with Aristotle and is the basis for the modern science as we
+                                            know it today. It developed in close relationship with the epistemology (acquiring knowledge) and with the philosophy of science.</p>
 
+                                        <div class = "image">
+                                            <img  src="@routes.Assets.at("images/tulib/sm1.png")" />
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="timeline-footer">
-                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-                                <a><i class="glyphicon glyphicon-share"></i></a>
-                                <a class="pull-right">Continuar Lendo</a>
-                            </div>
                         </div>
                     </li>
-
-                    <li  class="timeline-inverted">
-                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                    <li class="timeline-inverted">
+                        <div class="timeline-badge warning"><i class="">2</i></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
-                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
+                                <h4 class="timeline-title">Getting Started</h4>
+                                <a class="btn btn-primary" data-toggle="collapse" href="#second" aria-expanded="false" aria-controls="collapseExample">
+                                    More..
+                                </a>
                             </div>
-                            <div class="timeline-body">
-                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+                            <br>
+                            <div class="collapse" id="second">
+                                <div class="well">
+                                    <div class="timeline-body">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita nostrum sit tempora vero. Error ipsam laborum maxime ratione reprehenderit? Animi at excepturi illo iste labore nemo saepe sapiente voluptas voluptatibus.</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet atque consectetur cumque dignissimos dolorem est exercitationem in magnam magni maxime nam nemo officiis quod sint, tempora ut voluptatibus voluptatum?</p>
 
-                            </div>
+                                        <div class = "image">
+                                            <img  src="@routes.Assets.at("images/tulib/sm1.png")" />
+                                        </div>
 
-                            <div class="timeline-footer">
-                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-                                <a><i class="glyphicon glyphicon-share"></i></a>
-                                <a class="pull-right">Continuar Lendo</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
-                            </div>
-                            <div class="timeline-body">
-                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="timeline-footer">
-                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-                                <a><i class="glyphicon glyphicon-share"></i></a>
-                                <a class="pull-right">Continuar Lendo</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li  class="timeline-inverted">
-                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
-                            </div>
-                            <div class="timeline-body">
-                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-
-                            </div>
-
-                            <div class="timeline-footer">
-                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-                                <a><i class="glyphicon glyphicon-share"></i></a>
-                                <a class="pull-right">Continuar Lendo</a>
-                            </div>
                         </div>
                     </li>
                     <li>
-                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-badge danger"><i class="">3</i></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
-                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
+                                <h4 class="timeline-title">Mussum ipsum cacilds</h4>
                             </div>
                             <div class="timeline-body">
                                 <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-
-                            </div>
-
-                            <div class="timeline-footer">
-                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-                                <a><i class="glyphicon glyphicon-share"></i></a>
-                                <a class="pull-right">Continuar Lendo</a>
                             </div>
                         </div>
                     </li>
-
-                    <li  class="timeline-inverted">
-                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
-                            </div>
-                            <div class="timeline-body">
-                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-
-                            </div>
-
-                            <div class="timeline-footer primary">
-                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
-                                <a><i class="glyphicon glyphicon-share"></i></a>
-                                <a class="pull-right">Continuar Lendo</a>
-                            </div>
-                        </div>
-                    </li>
-
 
 
                 </ul>
             </div>
-
-
 
 
 
@@ -217,6 +164,7 @@
 
                 <!--sb-Admin-->
             <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+        @*<script src="@routes.Assets.at("javascripts/suggestions.js")"></script>*@
 
 
             <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>

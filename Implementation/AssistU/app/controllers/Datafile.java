@@ -71,4 +71,15 @@ public class Datafile extends Controller {
 
 
     }
+
+    public static Result downloadTemplate(){
+
+
+        String temple="template.doc";
+        String path ="/Users/soheil/Desktop/libtempl/";
+
+        return  ok(new File(path,temple));
+
+
+    }
 }
