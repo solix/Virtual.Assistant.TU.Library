@@ -20,51 +20,195 @@
             @dashboard("suggestion", currentUser)
             <div id="page-wrapper">
                 @template.headericon("fa fa-lightbulb-o fa-5x")
-                <div class="panel panel-info">
-                    <div class="panel-body" style="height: 600px">
-                        <a href="#wheel" class="wheel-button"><p style="margin-top: 30px">Menu</p></a>
-                        <ul id="wheel">
-                            <li class="item" style="background: #B6212D;border-radius: 50px;">
-                                <a href="@routes.SuggestionData.suggestion("Literature Search")">
-                                    <i class="fa fa-book fa-2x"><br><p style="font-size: 8pt">Literature Search</p></i>
-                                </a>
-                            </li>
-                            <li class="item" style="background: #7F171F;border-radius: 50px;">
-                                <a href="@routes.SuggestionData.suggestion("Processing")">
-                                    <i class="fa fa-sitemap fa-2x"><br><p style="font-size: 8pt">Processing</p></i>
-                                </a>
-                            </li>
-                            <li class="item" style="background: #B67721;border-radius: 50px;">
-                                <a href="@routes.SuggestionData.suggestion("Keeping Up-to-date")">
-                                    <i class="fa fa-refresh fa-2x"><br><p style="font-size: 8pt">Up-to-date</p></i>
-                                </a>
-                            </li>
-                            <li class="item" style="background: #7F5417;border-radius: 50px;">
-                                <a href="@routes.SuggestionData.suggestion("Publish")">
-                                    <i class="fa fa-newspaper-o fa-2x"><br><p style="font-size: 8pt">Publish</p></i>
-                                </a>
-                            </li>
-                            <li class="item" style="background: #21B6A8;border-radius: 50px;">
-                                <a href="@routes.SuggestionData.suggestion("Orientation")">
-                                    <i class="fa fa-eye fa-2x"><br><p style="font-size: 8pt">Orientation</p></i>
-                                </a>
-                            </li>
-                            <li class="item" style="background: #177F75;border-radius: 50px;">
-                                <a href="@routes.SuggestionData.suggestion("Exploration")">
-                                    <i class="fa fa-arrows-alt fa-2x"><br><p style="font-size: 8pt">Exploration</p></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+
+
+            <div class="container">
+                <div class="page-header text-center">
+                    <h1 id="timeline">Timeline 2.0</h1>
                 </div>
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                            </div>
+                            <div class="timeline-body">
+                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+
+                            </div>
+
+                            <div class="timeline-footer">
+                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+                                <a><i class="glyphicon glyphicon-share"></i></a>
+                                <a class="pull-right">Continuar Lendo</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li  class="timeline-inverted">
+                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                            </div>
+                            <div class="timeline-body">
+                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+
+                            </div>
+
+                            <div class="timeline-footer">
+                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+                                <a><i class="glyphicon glyphicon-share"></i></a>
+                                <a class="pull-right">Continuar Lendo</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                            </div>
+                            <div class="timeline-body">
+                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+
+                            </div>
+
+                            <div class="timeline-footer">
+                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+                                <a><i class="glyphicon glyphicon-share"></i></a>
+                                <a class="pull-right">Continuar Lendo</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li  class="timeline-inverted">
+                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                            </div>
+                            <div class="timeline-body">
+                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+
+                            </div>
+
+                            <div class="timeline-footer">
+                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+                                <a><i class="glyphicon glyphicon-share"></i></a>
+                                <a class="pull-right">Continuar Lendo</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                            </div>
+                            <div class="timeline-body">
+                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+
+                            </div>
+
+                            <div class="timeline-footer">
+                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+                                <a><i class="glyphicon glyphicon-share"></i></a>
+                                <a class="pull-right">Continuar Lendo</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li  class="timeline-inverted">
+                        <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                            </div>
+                            <div class="timeline-body">
+                                <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+
+                            </div>
+
+                            <div class="timeline-footer primary">
+                                <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
+                                <a><i class="glyphicon glyphicon-share"></i></a>
+                                <a class="pull-right">Continuar Lendo</a>
+                            </div>
+                        </div>
+                    </li>
+
+
+
+                </ul>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                @*<div class="panel panel-info">*@
+                    @*<div class="panel-body" style="height: 600px">*@
+                        @*<a href="#wheel" class="wheel-button"><p style="margin-top: 30px">Menu</p></a>*@
+                        @*<ul id="wheel">*@
+                            @*<li class="item" style="background: #B6212D;border-radius: 50px;">*@
+                                @*<a href="@routes.SuggestionData.suggestion("Literature Search")">*@
+                                    @*<i class="fa fa-book fa-2x"><br><p style="font-size: 8pt">Literature Search</p></i>*@
+                                @*</a>*@
+                            @*</li>*@
+                            @*<li class="item" style="background: #7F171F;border-radius: 50px;">*@
+                                @*<a href="@routes.SuggestionData.suggestion("Processing")">*@
+                                    @*<i class="fa fa-sitemap fa-2x"><br><p style="font-size: 8pt">Processing</p></i>*@
+                                @*</a>*@
+                            @*</li>*@
+                            @*<li class="item" style="background: #B67721;border-radius: 50px;">*@
+                                @*<a href="@routes.SuggestionData.suggestion("Keeping Up-to-date")">*@
+                                    @*<i class="fa fa-refresh fa-2x"><br><p style="font-size: 8pt">Up-to-date</p></i>*@
+                                @*</a>*@
+                            @*</li>*@
+                            @*<li class="item" style="background: #7F5417;border-radius: 50px;">*@
+                                @*<a href="@routes.SuggestionData.suggestion("Publish")">*@
+                                    @*<i class="fa fa-newspaper-o fa-2x"><br><p style="font-size: 8pt">Publish</p></i>*@
+                                @*</a>*@
+                            @*</li>*@
+                            @*<li class="item" style="background: #21B6A8;border-radius: 50px;">*@
+                                @*<a href="@routes.SuggestionData.suggestion("Orientation")">*@
+                                    @*<i class="fa fa-eye fa-2x"><br><p style="font-size: 8pt">Orientation</p></i>*@
+                                @*</a>*@
+                            @*</li>*@
+                            @*<li class="item" style="background: #177F75;border-radius: 50px;">*@
+                                @*<a href="@routes.SuggestionData.suggestion("Exploration")">*@
+                                    @*<i class="fa fa-arrows-alt fa-2x"><br><p style="font-size: 8pt">Exploration</p></i>*@
+                                @*</a>*@
+                            @*</li>*@
+                        @*</ul>*@
+                    @*</div>*@
+                @*</div>*@
             </div>
         </div>
-            <script type="text/javascript">
-            $(".wheel-button").wheelmenu({
-            animation: "fly",
-            animationSpeed: "slow"
-            });
-            </script>
+            @*<script type="text/javascript">*@
+            @*$(".wheel-button").wheelmenu({*@
+            @*animation: "fly",*@
+            @*animationSpeed: "slow"*@
+            @*});*@
+            @*</script>*@
 
 
 

@@ -54,7 +54,7 @@ public class ProjectData extends Controller {
             user.roles.add(role);
             addRoleToDictionary(user.id,project.id,role);
             user.update();
-            defaultPlanningArticle(user,project);
+            Event.defaultPlanningArticle(user, project);
             return redirect(routes.Application.project());
         }
     }
@@ -111,7 +111,7 @@ public class ProjectData extends Controller {
             Role role=Role.ownerRole(user.id);
             user.roles.add(role);
             addRoleToDictionary(user.id, pid, role);
-            defaultPlanningArticle(user,p);
+            Event.defaultPlanningArticle(user, p);
         } else if(emailform.get("role").equals("Reviewer")) {
             Role role=Role.reviewerRole(user.id);
             user.roles.add(role);
@@ -154,35 +154,14 @@ public class ProjectData extends Controller {
         return ok(toJson(result));
     }
 
-    /**
-     * Creates full planning for writing an article article owners of the project
-     *
-     */
-    public static void defaultPlanningArticle(User user,Project p){
-        Date startDate = p.dateCreated;
-        Event event1=Event.createArticleEvent(user,"Getting Started", startDate, 0);
-        event1.endsSameDay=true;
-        event1.update();
-        Event event2=Event.createArticleEvent(user,"Keypoints", Event.movedate(event1.end), 1);
-        Event event3=Event.createArticleEvent(user,"Publication Strategy", Event.movedate(event2.end), 2);
-        Event event4=Event.createArticleEvent(user,"Introduction", Event.movedate(event3.end), 7);
-        Event event5=Event.createArticleEvent(user,"Materials & Methods", Event.movedate(event4.end), 4);
-        Event event6=Event.createArticleEvent(user,"Results & Discussion", Event.movedate(event5.end), 2);
-        Event event7=Event.createArticleEvent(user,"Abstract, keywords & Title ", Event.movedate(event6.end), 1);
-        Event event8=Event.createArticleEvent(user,"References and Acknowledgment",Event.movedate( event7.end), 0);
-        event8.endsSameDay=true;
-        event8.update();
-        Event event9=Event.createArticleEvent(user,"Layout & Styles", Event.movedate(event8.end), 0);
-        event8.endsSameDay=true;
-        event8.update();
-    }
-    /**
-     * This is the helper to identify user and their roles within a project
-     */
-    static Map<Long,HashMap<Long,Role>> projectScope=new HashMap<Long,HashMap<Long,Role>>();
 
     /**
-     * this functions searches for a role of a specific user in the specific project
+     * This map plays as a helper to identify user and their roles within a project
+     */
+   private static Map<Long,HashMap<Long,Role>> projectScope=new HashMap<Long,HashMap<Long,Role>>();
+
+    /**
+     *  searches for a role of a specific user in the specific project
      * @param uid
      * @param pid
      * @return
@@ -193,7 +172,7 @@ public class ProjectData extends Controller {
     }
 
     /**
-     *
+     * add a new user and his/her role to the Dictionary
      * @param uid
      * @param pid
      * @param role
@@ -202,8 +181,6 @@ public class ProjectData extends Controller {
         HashMap<Long,Role> newRoleScope = new HashMap<Long,Role>();
         newRoleScope.put(uid,role);
         projectScope.put(pid,newRoleScope);
-
-        Logger.debug("<Dictionary>: username: "+User.find.byId(uid).name+ " Role: " + projectScope.get(pid).get(uid).role);
 
     }
 
