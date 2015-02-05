@@ -34,7 +34,7 @@ public class ProjectData extends Controller {
             user.roles.add(role);
             addRoleToDictionary(uid,project.id,role);
             user.update();
-            defaultPlanningArticle(project);
+            defaultPlanningArticle(user,project);
             return redirect(routes.Application.project());
         }
     }
@@ -88,7 +88,7 @@ public class ProjectData extends Controller {
             Role role=Role.ownerRole(user.id);
             user.roles.add(role);
             addRoleToDictionary(user.id, pid, role);
-            defaultPlanningArticle(p);
+            defaultPlanningArticle(user,p);
         } else if(emailform.get("role").equals("Reviewer")) {
             Role role=Role.reviewerRole(user.id);
             user.roles.add(role);
@@ -132,24 +132,24 @@ public class ProjectData extends Controller {
     }
 
     /**
-     * Creates Default planning for articles owners of the project
+     * Creates full planning for writing an article article owners of the project
      *
      */
-    public static void defaultPlanningArticle(Project p){
+    public static void defaultPlanningArticle(User user,Project p){
         Date startDate = p.dateCreated;
-        Event event1=Event.createArticleEvent("Getting Started", startDate, 0);
+        Event event1=Event.createArticleEvent(user,"Getting Started", startDate, 0);
         event1.endsSameDay=true;
         event1.update();
-        Event event2=Event.createArticleEvent("Keypoints", Event.movedate(event1.end), 1);
-        Event event3=Event.createArticleEvent("Publication Strategy", Event.movedate(event2.end), 2);
-        Event event4=Event.createArticleEvent("Introduction", Event.movedate(event3.end), 7);
-        Event event5=Event.createArticleEvent("Materials & Methods", Event.movedate(event4.end), 4);
-        Event event6=Event.createArticleEvent("Results & Discussion", Event.movedate(event5.end), 2);
-        Event event7=Event.createArticleEvent("Abstract, keywords & Title ", Event.movedate(event6.end), 1);
-        Event event8=Event.createArticleEvent("References and Acknowledgment",Event.movedate( event7.end), 0);
+        Event event2=Event.createArticleEvent(user,"Keypoints", Event.movedate(event1.end), 1);
+        Event event3=Event.createArticleEvent(user,"Publication Strategy", Event.movedate(event2.end), 2);
+        Event event4=Event.createArticleEvent(user,"Introduction", Event.movedate(event3.end), 7);
+        Event event5=Event.createArticleEvent(user,"Materials & Methods", Event.movedate(event4.end), 4);
+        Event event6=Event.createArticleEvent(user,"Results & Discussion", Event.movedate(event5.end), 2);
+        Event event7=Event.createArticleEvent(user,"Abstract, keywords & Title ", Event.movedate(event6.end), 1);
+        Event event8=Event.createArticleEvent(user,"References and Acknowledgment",Event.movedate( event7.end), 0);
         event8.endsSameDay=true;
         event8.update();
-        Event event9=Event.createArticleEvent("Layout & Styles", Event.movedate(event8.end), 0);
+        Event event9=Event.createArticleEvent(user,"Layout & Styles", Event.movedate(event8.end), 0);
         event8.endsSameDay=true;
         event8.update();
     }

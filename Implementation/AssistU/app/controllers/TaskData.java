@@ -1,5 +1,6 @@
 package controllers;
 
+import com.feth.play.module.pa.PlayAuthenticate;
 import models.*;
 import play.db.ebean.Model;
 import play.mvc.*;
@@ -17,13 +18,20 @@ public class TaskData extends Controller {
 
 private static final Form<Task> tForm = Form.form(Task.class);
 
+
+    /**
+     * adds a new task and saves it to DB
+     * @return
+     */
     public static Result addTask(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Task> taskForm = tForm.bindFromRequest();
         if(taskForm.hasErrors()) {
             flash("error", "Please correct the form below.");
-            return badRequest(views.html.task.render("My tasks", null, Task.find.all(),taskForm)
+            return badRequest(views.html.task.render("My tasks", user, Task.alltask(user),taskForm)
             ); }
-        Task task= taskForm.get();
+        Task taskdata= taskForm.get();
+        Task task=Task.createTask(taskdata,user);
         task.save();
         flash("success", String.format("Successfully added task %s", task));
         return redirect(controllers.routes.Application.task());

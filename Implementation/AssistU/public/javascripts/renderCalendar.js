@@ -16,8 +16,10 @@ $(document).ready(function () {
         selectHelper:true,
         select:function (start, end, allDay) {
             var title = prompt('Event Title:');
+            var description = prompt('Description:')
             if (title) {
                 jQuery("#newTitle").val(title);
+                jQuery("#newDescription").val(description);
                 jQuery("#newStart").val(convertDate(start));
                 jQuery("#newEnd").val(convertDate(end));
                 jQuery("#newAllDay").val(allDay);
@@ -29,7 +31,7 @@ $(document).ready(function () {
                     dataType: "json",
                     statusCode: {
                         200: function(data) {
-                            calendar.fullCalendar('renderEvent',{id:data.id,title:title,start:start,end:end,allDay:allDay, url:data.url },true);
+                            calendar.fullCalendar('renderEvent',{id:data.id,title:title,description:description,start:start,end:end,allDay:allDay, url:data.url },true);
                         }
                     }
 
@@ -95,10 +97,32 @@ $(document).ready(function () {
         },
         editable:true,
 
-        events: {
+        events:
+            {
             url:"/events.json",
             cache: true
+        },
+        eventMouseover: function(event) {
+
+            var tooltip = '<div class="tooltipevent" style="width:200px;height:150px;background:#F0FFFF;position:absolute;z-index:10001;">' + event.description + '</div>';
+            $("body").append(tooltip);
+            $(this).mouseover(function(e) {
+                $(this).css('z-index', 10000);
+                $('.tooltipevent').fadeIn('500');
+                $('.tooltipevent').fadeTo('10', 1.9);
+            }).mousemove(function(e) {
+                $('.tooltipevent').css('top', e.pageY + 10);
+                $('.tooltipevent').css('left', e.pageX + 20);
+            });
+        },
+
+        eventMouseout: function(event) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
         }
+
+
+
     });
     setNewHeight();
 });
@@ -112,11 +136,4 @@ function setNewHeight() {
     $('#calendar').fullCalendar('option', 'height', newHeight);
 }
 
-function loadEvent() {
-    var newEvent = {
-        title: 'NEW EVENT',
-        start: new Date(y, m, d)
-    };
-    $('#calendar').fullCalendar( 'renderEvent', newEvent , 'stick');
 
-}

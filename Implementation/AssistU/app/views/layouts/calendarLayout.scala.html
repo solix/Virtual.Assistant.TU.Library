@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(user: User,content: Html)
 <!DOCTYPE html>
 
 <html>
@@ -24,7 +24,7 @@
 
             <ul class="nav pull-right">
                 <li >
-                    <a href="@routes.CalData.list()">
+                    <a href="@routes.CalData.list(user.id)">
                         <i class="icon-list icon-white"></i> Event's list</a>
                 </li>
             </ul>

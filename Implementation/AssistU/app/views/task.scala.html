@@ -10,7 +10,7 @@
             <!-- jQuery -->
         <script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
         <script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery-ui.min.js"))'></script>
-        <script src='@routes.Assets.at("javascripts/sortable.js")'></script>
+        @*<script src='@routes.Assets.at("javascripts/sortable.js")'></script>*@
         <script src='@routes.Assets.at("javascripts/bootstrap-datepicker.js")'></script>
         <script>
         $(document).ready(function() {
@@ -75,9 +75,9 @@
                                 @t.name
 
                                 <span class="pull-right">
-                                    <button type="text"   class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="left" title="task due on: @t.dueDate.toString.substring(0,10)"><i class="fa fa-clock-o "></i></button>
-                                    <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
-                                    <a class="btn btn-success" href="@routes.TaskData.doneTask(t.id)" ><i class="fa fa-check "></i></a>
+                                    <button type="text"  href="#" data-toggle="tooltip" data-placement="left" title="task is due on: @t.dueDate.toString.substring(0,10)"><i class="fa fa-clock-o "></i></button>
+                                    <a  href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
+                                    <a  href="@routes.TaskData.doneTask(t.id)" ><i class="fa fa-check "></i></a>
                                 </span>
 
                             </li>
@@ -98,9 +98,9 @@
                                 @t.name
 
                                 <span class="pull-right">
-                                    <button type="text"   class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="left" title="task due on: @t.dueDate"><i class="fa fa-clock-o "></i></button>
-                                    <a class="btn btn-danger" href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
-                                    <a class="btn btn-warning" href="@routes.TaskData.undoTask(t.id)" ><i class="fa fa-refresh "></i></a>
+                                    <button type="text"   href="#" data-toggle="tooltip" data-placement="left" title="task was due on: @t.dueDate.toString.substring(0,10)"><i class="fa fa-clock-o "></i></button>
+                                    <a  href="@routes.TaskData.deleteTask(t.id)"><i class="fa fa-trash-o "></i></a>
+                                    <a  href="@routes.TaskData.undoTask(t.id)" ><i class="fa fa-refresh "></i></a>
                                 </span>
 
                             </li>
