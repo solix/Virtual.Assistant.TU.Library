@@ -48,6 +48,7 @@ create table project (
   name                      varchar(255),
   folder                    varchar(255),
   description               varchar(255),
+  template                  varchar(255),
   active                    boolean,
   date_created              timestamp,
   constraint pk_project primary key (id))

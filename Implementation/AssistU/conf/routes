@@ -13,28 +13,38 @@ GET         /task/delete/:tid                      controllers.TaskData.deleteTa
 GET         /task/done/:tid                        controllers.TaskData.doneTask(tid: Long)
 GET         /task/undo/:tid                        controllers.TaskData.undoTask(tid: Long)
 
-
 #login
 GET         /login                                 controllers.Authentication.login()
-POST        /login                                 controllers.Authentication.authenticate()
+POST        /logingin                              controllers.Authentication.doLogin()
 
-#OAuth 2 - Google+
+#signup
+GET         /signup                                controllers.Authentication.signup()
+POST        /signingup                             controllers.Signup.doSignup()
+
+#Local Login Account routes
+GET         /accounts/unverified                   controllers.Signup.unverified
+GET         /accounts/verify/:token                controllers.Signup.verify(token: String)
+GET         /accounts/password/reset/:token        controllers.Signup.resetPassword(token: String)
+GET         /accounts/exists                       controllers.Signup.exists
+
+#OAuth2
 GET         /logout                                controllers.Authentication.OAuthLogout()
 GET         /authenticate/:provider                controllers.Authentication.OAuth(provider: String)
 GET         /authenticate/:provider/denied         controllers.Authentication.OAuthDenied(provider: String)
 
 #calendar
 GET         /calendar                              controllers.CalData.calendar()
-GET         /:id/events                                controllers.CalData.list(id: Long)
+GET         /:id/events                            controllers.CalData.list(id: Long)
 GET         /events.json                           controllers.CalData.json(start: Long , end: Long )
-GET         /event/:id/edit                       controllers.CalData.edit(id:Long)
-POST        /event/:id/update                     controllers.CalData.update(id:Long)
-POST        /event                                controllers.CalData.add()
-GET     /event/new                                controllers.CalData.blank()
-GET     /event/:id/delete                         controllers.CalData.delete(id:Long)
-POST    /:id/event-ajax                               controllers.CalData.addByAjax(id:Long)
-POST    /event-move                               controllers.CalData.move()
-POST    /event-resize                             controllers.CalData.resize()
+GET         /event/:id/edit                        controllers.CalData.edit(id:Long)
+POST        /event/:id/update                      controllers.CalData.update(id:Long)
+POST        /event                                 controllers.CalData.add()
+GET         /event/new                             controllers.CalData.blank()
+GET         /event/:id/delete                      controllers.CalData.delete(id:Long)
+POST        /:id/event-ajax                        controllers.CalData.addByAjax(id:Long)
+POST        /event-move                            controllers.CalData.move()
+POST        /event-resize                          controllers.CalData.resize()
+
 
 
 #project
