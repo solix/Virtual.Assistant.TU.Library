@@ -84,7 +84,7 @@ public class LocalUsernamePasswordAuthProvider
 			com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.UsernamePassword {
 
 		@Required
-		@MinLength(8)
+		@MinLength(6)
 		public String password;
 
 		@Override
@@ -101,7 +101,7 @@ public class LocalUsernamePasswordAuthProvider
 	public static class NativeSignup extends NativeLogin {
 
 		@Required
-		@MinLength(8)
+		@MinLength(6)
 		public String repeatPassword;
 
 		@Required

@@ -26,7 +26,7 @@ public class Signup extends Controller {
 			// User did not fill everything properly
 //			return badRequest(signup.render(filledForm));
 			User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-			return ok(signup.render(true, "The form contained errors..."));
+			return badRequest(signup.render(filledForm, true, "The form contained errors, please make sure everything is filled in correctly."));
 		} else {
 			Logger.debug("Signup form passed: " + filledForm.toString());
 			// Everything was filled
@@ -40,7 +40,7 @@ public class Signup extends Controller {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 //		return ok(unverified.render());
 //		return ok(error.render("Please verify your email address", true, "info", "Please verify your email address by clicking on the link in the email"));
-		return ok(login.render(true, "Please verify your email."));
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Please verify your email before continuing."));
 	}
 
 	public static class PasswordReset extends Account.PasswordChange {
@@ -213,7 +213,7 @@ public class Signup extends Controller {
 	public static Result oAuthDenied(final String getProviderKey) {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 //		return ok(home.render("Could not log you in with " + getProviderKey, null, true, "danger", "Could not log you in with " + getProviderKey));
-		return ok(login.render(true, "Could not log you in with " + getProviderKey));
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Could not log you in with " + getProviderKey));
 	}
 
 	public static Result exists() {
@@ -247,7 +247,7 @@ public class Signup extends Controller {
 		} else {
 //			return redirect(routes.Application.signup());
 //			return ok(error.render("Oops!", true, "danger", "The local user's session is null or something"));
-			return ok(login.render(true, "You have been verified, please log in below"));
+			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "You have been verified, please log in below"));
 		}
 	}
 

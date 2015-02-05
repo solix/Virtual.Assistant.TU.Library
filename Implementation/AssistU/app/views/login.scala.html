@@ -1,4 +1,4 @@
-@(info: Boolean, message: String)
+@(loginForm: Form[_],info: Boolean, message: String)
 @import com.feth.play.module.pa.views.html._
 @import com.feth.play.module.pa.providers.AuthProvider
 <html>
@@ -26,7 +26,7 @@
                     @helper.form(routes.Authentication.doLogin){
                         <div class="form-group">
                             <label class="control-label" for="email">Email</label>
-                            <input autofocus class="form-control input-sm" id="email" name="email" type="email" placeholder="Email">
+                            <input autofocus class="form-control input-sm" id="email" name="email" value="@loginForm("email").value" type="email" placeholder="Email">
                         </div>
                         <div class="form-group ">
                             <label class="control-label pull-left" for="password">Password</label><br>

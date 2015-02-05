@@ -31,7 +31,7 @@ public class Authentication extends Controller {
             // User did not fill everything properly
 //            return badRequest(home.render("Could not log you in", null, true, "danger",
 //                    "The combination of your email and password did not match any account"));
-            return ok(login.render(true, "Your credentials did not match any user"));
+            return ok(login.render(filledForm, true, "Your credentials did not match any user"));
         } else {
             // Everything was filled
             return UsernamePasswordAuthProvider.handleLogin(ctx());
@@ -66,7 +66,7 @@ public class Authentication extends Controller {
         User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
         if(user != null)
             OAuthLogout();
-        return ok(login.render(false, ""));
+        return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, ""));
     }
 
     /**
@@ -78,7 +78,7 @@ public class Authentication extends Controller {
         User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
         if(user != null)
             OAuthLogout();
-        return ok(signup.render(false, ""));
+        return ok(signup.render(LocalUsernamePasswordAuthProvider.SIGNUP_FORM, false, ""));
     }
 
     /**
@@ -107,7 +107,6 @@ public class Authentication extends Controller {
      * @return call to the plugin that passes the name of the service to user
      */
     public static Result OAuth(String provider){
-//        TODO: NetID does not have credentials yet, overriding to google
         return Authenticate.authenticate(provider);
     }
 
@@ -117,14 +116,13 @@ public class Authentication extends Controller {
      */
     public static Result OAuthDenied(String provider){
         Authenticate.noCache(response());
-        return redirect(routes.Authentication.login());
+        return badRequest(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Could not log you in"));
     }
 
     /**
      * OAuth Logout
      */
     public static Result OAuthLogout(){
-
         return Authenticate.logout();
     }
 
