@@ -5,6 +5,9 @@ import models.*;
 import play.Logger;
 import play.data.*;
 import play.mvc.*;
+import views.html.*;
+import com.feth.play.module.pa.PlayAuthenticate;
+
 import java.lang.String;
 import java.util.*;
 
@@ -17,22 +20,39 @@ public class ProjectData extends Controller {
 
     static Form<Project> projectForm = Form.form(Project.class);
 
+    public static Result createProjectPage() {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null)
+            return ok(projectNew.render("Create a new Project", projectForm, false, "", user));
+        else
+            return Authentication.login();
+    }
+
+    public static Result editProjectPage(Long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Project p = Project.find.byId(pid);
+        if(user != null)
+            return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", user));
+        else
+            return Authentication.login();
+    }
+
     /**
      * TODO: Adapt this function after login is implemented and the current user is known
      * This function creates a new Project initiated by a user that automatically becomes its owner.
      * @return
      */
-    public static Result createProject(Long uid) {
-        User user = User.find.ref(uid);
+    public static Result createProject() {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style validation");
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
         } else {
             Project projectData = filledProjectForm.get();
             Project project = Project.create(projectData.folder, projectData.name, user.id, projectData.description, projectData.template);
-            Role role=Role.ownerRole(uid);
+            Role role=Role.ownerRole(user.id);
             user.roles.add(role);
-            addRoleToDictionary(uid,project.id,role);
+            addRoleToDictionary(user.id,project.id,role);
             user.update();
             defaultPlanningArticle(user,project);
             return redirect(routes.Application.project());
@@ -46,9 +66,12 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result editProject(Long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Project p = Project.find.byId(pid);
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest("The form had errors. Need to implement in-style validation");
+            Logger.debug(filledProjectForm.errors().toString());
+            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
         } else {
 
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
