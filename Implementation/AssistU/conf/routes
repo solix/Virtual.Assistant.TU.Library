@@ -49,8 +49,10 @@ POST        /event-resize                          controllers.CalData.resize()
 
 #project
 GET         /project                               controllers.Application.project()
-POST        /:uid/project/create                   controllers.ProjectData.createProject(uid: Long)
-GET         /project/:pid/edit                     controllers.ProjectData.editProject(pid: Long)
+GET         /project/new                           controllers.ProjectData.createProjectPage()
+POST        /project/create                        controllers.ProjectData.createProject()
+GET         /project/:pid/edit                     controllers.ProjectData.editProjectPage(pid: Long)
+GET         /project/:pid/editing                  controllers.ProjectData.editProject(pid: Long)
 GET         /:uid/project/:pid/archive             controllers.ProjectData.archiveProject(uid: Long, pid: Long)
 GET         /project/:pid/addMember                controllers.ProjectData.addMemberToProjectAs(pid: Long)
 GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)

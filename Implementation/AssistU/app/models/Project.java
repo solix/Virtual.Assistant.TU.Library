@@ -22,9 +22,12 @@ public class Project extends Model {
 
     @Id
     public Long id;
+    @MinLength(3)
     public String name;
+    @MinLength(3)
     public String folder;
     public String description;
+    @Required
     public String template;
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
