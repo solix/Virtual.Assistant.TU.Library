@@ -104,7 +104,7 @@ $(document).ready(function () {
         },
         eventMouseover: function(event) {
 
-            var tooltip = '<div class="tooltipevent well" style="width:200px;height:150px;background:#e5e8ff;position:absolute;z-index:10001;"><p><b>Quick Tip :</b></p><p>' + event.description + '</p></div>';
+            var tooltip = '<div class="tooltipevent well" style="width:250px;height:250px;background:#e5e8ff;position:absolute;z-index:10001;"><p><b>'+ event.title +'</b><br></p><p>' + event.description + '</p></div>';
             //var tooltip='<div class="timeline-panel"><div class="timeline-body"><p>'+ event.description+'</p></div></div>';
             $("body").append(tooltip);
             $(this).mouseover(function(e) {
