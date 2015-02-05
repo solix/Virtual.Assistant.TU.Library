@@ -101,7 +101,26 @@ $(document).ready(function () {
             {
             url:"/events.json",
             cache: true
+        },
+        eventMouseover: function(event) {
+
+            var tooltip = '<div class="tooltipevent" style="width:200px;height:300px;background:#F5A9F2;position:absolute;z-index:10001;">' + event.description + '</div>';
+            $("body").append(tooltip);
+            $(this).mouseover(function(e) {
+                $(this).css('z-index', 10000);
+                $('.tooltipevent').fadeIn('500');
+                $('.tooltipevent').fadeTo('10', 1.9);
+            }).mousemove(function(e) {
+                $('.tooltipevent').css('top', e.pageY + 10);
+                $('.tooltipevent').css('left', e.pageX + 20);
+            });
+        },
+
+        eventMouseout: function(event) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
         }
+
 
 
     });

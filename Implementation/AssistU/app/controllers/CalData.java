@@ -46,7 +46,7 @@ public class CalData extends Controller {
         Date startDate = new Date(start*1000);
         Date endDate = new Date(end*1000);
         User user =User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        List<Event> resultList = Event.findInDateRange(startDate, endDate,user);
+        List<Event> resultList = Event.findInDateRange(startDate, endDate, user);
         ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -54,6 +54,7 @@ public class CalData extends Controller {
             Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
             eventRemapped.put("id", event.id);
             eventRemapped.put("title", event.title);
+            eventRemapped.put("description", event.description);
             eventRemapped.put("start", df.format(event.start));
             eventRemapped.put("end", df.format(event.end));
             eventRemapped.put("allDay", event.allDay);
@@ -74,7 +75,7 @@ public class CalData extends Controller {
         if(user != null)
             return ok(calendar.render("My Calendar", user,eventForm,Event.find.where().in("user",user).order().asc("start").findList()));
         else
-        return ok(calendar.render("My Calendar", null, eventForm, Event.find.where().in("user", user).order().asc("start").findList()));
+        return ok(calendar.render("My Calendar", user, eventForm, Event.find.where().in("user", user).order().asc("start").findList()));
     }
 
 
