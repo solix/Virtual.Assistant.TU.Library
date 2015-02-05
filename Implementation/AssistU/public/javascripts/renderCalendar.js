@@ -104,7 +104,7 @@ $(document).ready(function () {
         },
         eventMouseover: function(event) {
 
-            var tooltip = '<div class="tooltipevent" style="width:200px;height:300px;background:#F5A9F2;position:absolute;z-index:10001;">' + event.description + '</div>';
+            var tooltip = '<div class="tooltipevent" style="width:200px;height:150px;background:#F0FFFF;position:absolute;z-index:10001;">' + event.description + '</div>';
             $("body").append(tooltip);
             $(this).mouseover(function(e) {
                 $(this).css('z-index', 10000);
