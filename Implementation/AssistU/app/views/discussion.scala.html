@@ -140,13 +140,13 @@
                                                 <h3 style="margin: 5px 0 0 30px;">Discussions</h3>
                                             </div>
                                             <div class="col-xs-2">
-                                                <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment@p.id" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
+                                                <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#newdiscussion@p.id" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
                                             </div>
                                         </div>
                                         @*<hr class="hr" style="margin: 10px 30px 0 30px">*@
-                                        <div id="comment@p.id" class="panel-footer collapse" style="margin-left: -30px; margin-right: -30px; padding: 15px 50px 50px">
+                                        <div id="newdiscussion@p.id" class="panel-footer collapse" style="margin-left: -30px; margin-right: -30px; padding: 15px 50px 50px">
                                             <div class="row" style="padding: 0; text-align: center">
-                                                <button type="button" class="close pull-right" data-toggle="collapse" data-target="#comment@p.id" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <button type="button" class="close pull-right" data-toggle="collapse" data-target="#newdiscussion@p.id" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 <h3 style="padding: 0; margin: 0">Start a new Discussion</h3>
                                             </div>
                                             <div class="row" style="padding: 0 20px">
@@ -169,9 +169,9 @@
                                             </div>
                                             <div class="row pull-right" style="margin: 10px">
                                                 <button ng-click="reset();" class="btn btn-default btn-sm"
-                                                data-toggle="collapse" data-target="#comment@p.id" type="button" style="width: 80px">Cancel</button>
+                                                data-toggle="collapse" data-target="#newdiscussion@p.id" type="button" style="width: 80px">Cancel</button>
                                                 <button type="button" class="btn btn-success btn-sm" style="width: 80px"
-                                                id="saySomething" data-toggle="collapse" data-target="#comment@p.id" ng-click="submitMsg()">Submit</button>
+                                                id="saySomething" data-toggle="collapse" data-target="#newdiscussion@p.id" ng-click="submitMsg()">Submit</button>
                                             </div>
                                         </div>
                                         <div class="panel-body" style="padding: 5px 0 200px 0">
@@ -201,7 +201,7 @@
                                                                     </div>
                                                                     {{comment.content}}
                                                                     <div class="container-fluid">
-                                                                        <a class="pull-right" data-toggle="collapse" href="#subcomment{{comment.cid}}"
+                                                                        <a class="pull-right" data-toggle="collapse" href="#newsubcomment{{comment.cid}}"
                                                                         style="margin: 0; margin-right: 30px;">Leave a comment...</a>
                                                                     </div>
                                                                 </div>
@@ -218,8 +218,8 @@
                                                                 </small>
                                                                 <hr class="hr" style="margin: 2px 0">
                                                             </div>
-                                                            <div id="subcomment{{comment.cid}}" class="panel-footer collapse">
-                                                                <button type="button" class="close pull-left" data-toggle="collapse" data-target="#subcomment{{comment.cid}}"
+                                                            <div id="newsubcomment{{comment.cid}}" class="panel-footer collapse">
+                                                                <button type="button" class="close pull-left" data-toggle="collapse" data-target="#newsubcomment{{comment.cid}}"
                                                                 style="padding: 4px 20px 6px 5px"
                                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                 <div class="input-group">
