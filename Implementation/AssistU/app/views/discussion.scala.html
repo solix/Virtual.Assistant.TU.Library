@@ -37,16 +37,23 @@
                 $.ajax ( { url : "/" + @currentUser.id + "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
                 $scope.comments =[ ] ;
                 if($scope.projectids.length > 0) {
-                    $.ajax ( { url : "/comments/" + $scope.projectids[ $scope.projectids.length - 1 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
+//                    console.log("The length of the projectIDs was " + $scope.projectids.length);
+//                    console.log("Attempting to load the comments from project " + $scope.currentProject.projectID);
+                    $.ajax ( { url : "/comments/" + $scope.currentProject.projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
                 }
                 for(var i = 0; i < $scope.comments.length; i++){
                     $scope.message["subcomment" + $scope.comments[i].cid] = "";
                 }
+//                console.log("Data has been refreshed:");
+//                console.log("Current Project is: " + JSON.stringify($scope.currentProject));
+//                console.log("ProjectIDs: " + JSON.stringify($scope.projectids));
+//                console.log("Comments: " + JSON.stringify($scope.comments));
             };
 
             /** change current room, restart EventSource connection */
             $scope.setCurrentProject = function (pid) {
                 $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
+//                console.log("Current Project is set to: " + JSON.stringify($scope.currentProject));
                 $scope.chatFeed.close();
                 $scope.comments = [];
                 $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
@@ -60,6 +67,7 @@
             };
 
             $scope.reset = function () {
+//                console.log("input has been reset");
                 $scope.message = {};
                 $scope.message.subject = "";
                 $scope.message.content = "";
@@ -73,6 +81,7 @@
             $scope.submitMsg = function () {
                 $http.post("/chat", { uid: $scope.uid, subject: $scope.message.subject, content: $scope.message.content,
                 date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
+//                console.log("Message has been submitted");
                 $scope.reset();
             };
 
