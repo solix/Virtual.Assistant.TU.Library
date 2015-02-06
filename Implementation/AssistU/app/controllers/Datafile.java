@@ -36,7 +36,7 @@ public class Datafile extends Controller {
                 //this creates folder and  will be changed in future to the name of the project
                 //String pname=project.folder;
 
-                FileUtils.moveFile(file, new File("/home/spyruo/projectfolder/", fileName));
+                FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libUpload/"+project.folder, fileName));
             } catch (IOException ioe) {
                 System.out.println("Problem operating on filesystem");
             }
@@ -62,11 +62,23 @@ public class Datafile extends Controller {
     public static Result downloadDocument(Long id){
 
         //this creates folder and  will be changed in future to the name of the project
-        String pname="projectfolder";
+        //String pname="projectfolder";
         DocumentFile documentFile = DocumentFile.find.byId(id);
-        String path ="/home/spyruo/projectfolder/";
+        Project project = Project.find.where().in("documentFiles",documentFile).findUnique();
+        String path ="/Users/soheil/Desktop/libUpload/"+project.folder;
 
         return  ok(new File(path,documentFile.name));
+
+
+    }
+
+    public static Result downloadTemplate(){
+
+
+        String temple="template.doc";
+        String path ="/Users/soheil/Desktop/libtempl/";
+
+        return  ok(new File(path,temple));
 
 
     }

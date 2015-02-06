@@ -70,6 +70,18 @@ create table task (
   constraint pk_task primary key (id))
 ;
 
+create table token_action (
+  id                        bigint not null,
+  token                     varchar(255),
+  target_user_id            bigint,
+  type                      varchar(2),
+  created                   timestamp,
+  expires                   timestamp,
+  constraint ck_token_action_type check (type in ('PR','EV')),
+  constraint uq_token_action_token unique (token),
+  constraint pk_token_action primary key (id))
+;
+
 create table user (
   id                        bigint not null,
   email                     varchar(255),
@@ -103,6 +115,8 @@ create sequence role_seq;
 
 create sequence task_seq;
 
+create sequence token_action_seq;
+
 create sequence user_seq;
 
 alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
@@ -119,6 +133,8 @@ alter table role add constraint fk_role_user_6 foreign key (user_id) references 
 create index ix_role_user_6 on role (user_id);
 alter table task add constraint fk_task_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_task_user_7 on task (user_id);
+alter table token_action add constraint fk_token_action_targetUser_8 foreign key (target_user_id) references user (id) on delete restrict on update restrict;
+create index ix_token_action_targetUser_8 on token_action (target_user_id);
 
 
 
@@ -146,6 +162,8 @@ drop table if exists role;
 
 drop table if exists task;
 
+drop table if exists token_action;
+
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
@@ -163,6 +181,8 @@ drop sequence if exists project_seq;
 drop sequence if exists role_seq;
 
 drop sequence if exists task_seq;
+
+drop sequence if exists token_action_seq;
 
 drop sequence if exists user_seq;
 

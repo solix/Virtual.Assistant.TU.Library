@@ -40,7 +40,7 @@
                                     <th >From</th>
                                     <th >To</th>
                                     @*<th ><a href="@routes.CalData.blank()" title="Add new event"><i class="fa fa-plus"></i></a></th>*@
-                                    <th></th>
+                                    @*<th></th>*@
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,7 +57,12 @@
                                             <td>@if(event.end == null){ - } else {@event.end.format("dd.MM.yyyy H:mm")}</td>
                                         }
                                     }
-                                    <td><a href="@routes.CalData.delete(event.id)"><i class="fa fa-trash"></i></a> </td>
+                                    <td>
+                                        <a href="@routes.CalData.delete(event.id)"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                    <td>
+                                        <a href="@routes.CalData.edit(event.id)"><i class="fa fa-pencil"></i></a>
+                                    </td>
                                 </tr>
                             }
                             </tbody>
