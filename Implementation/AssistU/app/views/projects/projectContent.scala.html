@@ -18,8 +18,8 @@
                                         <p><i>@p.description</i><p>
                                         @*<p><i>Created on: @p.dateCreated.toString.substring(0,10)</i><p>*@
                                         <p>
-                                            <i>Template: @p.template</i>
-                                            <a href="#" title="Download the @p.template template">
+                                            <i><b>download</b> @p.template here</i>
+                                            <a href="@{routes.Datafile.downloadTemplate()}" title="Download the @p.template template">
                                                 <i class="fa fa-cloud-download fa-fw"></i>
                                             </a>
                                         <p>
@@ -168,7 +168,7 @@
                     </div>
                 }
             }
-            @*Remove Member Modal*@
+            @*TODO:Remove Member Modal*@
             @template.mediummodal("memberList"+p.id.toString)("danger")("Members of "+p.name) {
                     <!-- Table -->
                 <table class="table table-condensed">

@@ -58,6 +58,7 @@ GET         /project/:pid/addMember                controllers.ProjectData.addMe
 GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
 POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
 GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
+GET         /project/downloadTemplate              controllers.Datafile.downloadTemplate()
 
 #discussion
 GET         /discussion                            controllers.Application.discussion()

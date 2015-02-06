@@ -19,12 +19,11 @@
             'minlength -> "3"
         )
 
-        @inputText(eventForm("description"), args =
+        @textarea(eventForm("description"), args =
             '_label -> "Description",
-            'size ->50,
+            'raws ->10,
             'placeholder -> "say what is it about",
-            'class -> "required",
-            'minlength -> "3"
+            'class -> "required"
         )
 
         @checkbox(field = eventForm("allDay"), args =
