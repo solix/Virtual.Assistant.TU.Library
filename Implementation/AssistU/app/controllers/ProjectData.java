@@ -141,7 +141,7 @@ public class ProjectData extends Controller {
     }
 
     public static Result getProjectIdsAsJson(Long uid){
-        List<Project> projects = Project.find.where().in("users", User.find.byId(uid)).eq("active", "true").findList();
+        List<Project> projects = Project.find.where().in("users", User.find.byId(uid)).eq("active", "true").orderBy("dateCreated").findList();
         List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
         TreeMap<String, String> project;
 //        List<Long> result = new ArrayList<Long>();
