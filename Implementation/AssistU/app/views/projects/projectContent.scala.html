@@ -1,16 +1,15 @@
 @(currentUser: User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").orderBy("dateCreated").findList()) { activeProjectList =>
+@defining(UserData.findActiveProjects) { activeProjectList =>
     <div class="tab-content">
         @for(p <- activeProjectList){
-            @if(p.equals(activeProjectList.last)){
+            @if(p.equals(UserData.getLastUsedProject)){
                 <div class="tab-pane fade in active" id="project@p.id">
                 } else {
                 <div class="tab-pane fade" id="project@p.id">
                 }
             <div class="container-fluid" style="margin-top: 10px">
                 <div class="row">
-                    @*<div class="col-md-8">*@
-                        <div class="panel panel-info">
+                    <div class="panel panel-info">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-10">
@@ -181,18 +180,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @p.users.map{ u =>
-                        <tr>
-                            <td>@u.name</td>
-                            <td>@u.email</td>
-                            <td>Not applicable yet</td>
-                            @if(!u.equals(currentUser)) {
-                                <td><a href="@{routes.ProjectData.removeMemberFromProject(u.id, p.id)}" ><i class="fa fa-user-times fa-fw"></i></a></td>
-                            }else{
-                                <td> </td>
-                            }
-                        </tr>
-                    }
+                    @*p.users.map{ u =>*@
+                        @*<tr>*@
+                            @*<td>@u.name</td>*@
+                            @*<td>@u.email</td>*@
+                            @*<td>Not applicable yet</td>*@
+                            @*if(!u.equals(currentUser)) {*@
+                                @*<td><a href="@{routes.ProjectData.removeMemberFromProject(u.id, p.id)}" ><i class="fa fa-user-times fa-fw"></i></a></td>*@
+                            @*}else{*@
+                                @*<td> </td>*@
+                            @*}*@
+                        @*</tr>*@
+                    @*}*@
                     </tbody>
                 </table>
             }

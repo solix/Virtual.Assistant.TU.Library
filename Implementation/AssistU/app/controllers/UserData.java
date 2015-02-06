@@ -1,32 +1,41 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
+
+import java.util.List;
+import com.feth.play.module.pa.PlayAuthenticate;
 
 /**
  * Created by arnaud on 16-12-14.
  */
 public class UserData  extends Controller {
 
-    static Form<User> userForm = Form.form(User.class);
-
-    /**
-     * The creation of a user through the registration form
-     * @return
-     */
-    public static Result createUser() {
-        return redirect(routes.Authentication.login());
+    public static List<Project> findActiveProjects(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        List<Role> roles = Role.find.where().eq("user", user).eq("project.active", true).findList();
+        List<Project> projects = Project.find.where().in("roles", roles).orderBy("dateCreated").findList();
+        return projects;
     }
 
-    /**
-     * The creation of a user when he logs in through a social
-     * service.
-     * @return
-     */
-    public static Result createSocialUser() {
-        return redirect(routes.Application.index());
+    public static List<Project> findArchivedProjects(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        List<Role> roles = Role.find.where().eq("user", user).eq("project.active", false).findList();
+        List<Project> projects = Project.find.where().in("roles", roles).orderBy("dateCreated").findList();
+        return projects;
+    }
+
+    public static Project getLastUsedProject(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        List<Role> roles = Role.find.where().eq("user", user).eq("project.active", true).findList();
+        List<Project> projects = Project.find.where().in("roles", roles).orderBy("lastAccessed").findList();
+        Project p = null;
+        if(projects.size() > 0)
+            p = projects.get(projects.size() -1);
+        return p;
     }
 
 }

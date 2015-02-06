@@ -1,5 +1,5 @@
 @(title: String)(currentUser:User)
-@defining(Project.find.where().in("users", currentUser).eq("active", "true").orderBy("dateCreated").findList()) { activeProjectList =>
+@defining(UserData.findActiveProjects()) { activeProjectList =>
     <html lang="en">
         <head>
             @linkLoader.headlinks(title)
@@ -14,92 +14,80 @@
             /** Controllers */
             angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scope, $http) {
 
-            $scope.projectids =[ ];
-            $.ajax ( { url : "/" + @currentUser.id + "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
-            $scope.comments =[ ] ;
-            if($scope.projectids.length > 0) {
-                $.ajax ( { url : "/comments/" + $scope.projectids[ $scope.projectids.length - 1 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
-            }
-            $scope.message = { } ;
-            $scope.message.subject = "" ;
-            $scope.message.content = "" ;
-            for(var i = 0; i < $scope.comments.length; i++){
-                $scope.message["subcomment" + $scope.comments[i].cid] = "";
-            }
-            $scope.uid = "@currentUser.id";
-            $scope.isChild = false ;
-            if($scope.projectids.length > 0){
-                $scope.currentProject = $scope.projectids[$scope.projectids.length - 1];
-            }
-
-            $scope.refresh = function () {
-                $scope.projectids =[ ] ;
-                $.ajax ( { url : "/" + @currentUser.id + "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
+                $scope.projectids =[ ];
+                $.ajax ( { url : "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
+                $scope.lastpid = "";
+                $.ajax ( { url : "/projectid", async : false, dataType : 'json', success : function ( response ) { $scope.lastpid = response } } ) ;
                 $scope.comments =[ ] ;
                 if($scope.projectids.length > 0) {
-//                    console.log("The length of the projectIDs was " + $scope.projectids.length);
-//                    console.log("Attempting to load the comments from project " + $scope.currentProject.projectID);
-                    $.ajax ( { url : "/comments/" + $scope.currentProject.projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
+                    $.ajax ( { url : "/comments/" + $.grep($scope.projectids, function(p){return p.projectID === $scope.lastpid.projectID;})[0 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
                 }
+                $scope.message = { } ;
+                $scope.message.subject = "" ;
+                $scope.message.content = "" ;
                 for(var i = 0; i < $scope.comments.length; i++){
                     $scope.message["subcomment" + $scope.comments[i].cid] = "";
                 }
-//                console.log("Data has been refreshed:");
-//                console.log("Current Project is: " + JSON.stringify($scope.currentProject));
-//                console.log("ProjectIDs: " + JSON.stringify($scope.projectids));
-//                console.log("Comments: " + JSON.stringify($scope.comments));
-            };
+                $scope.uid = "@currentUser.id";
+                $scope.isChild = false ;
+                if($scope.projectids.length > 0){
+                    $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === $scope.lastpid.projectID;})[0 ];
+                }
 
+                $scope.refresh = function () {
+                    $scope.projectids =[ ] ;
+                    $.ajax ( { url : "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
+                    $scope.comments =[ ] ;
+                    if($scope.projectids.length > 0) {
+                        $.ajax ( { url : "/comments/" + $scope.currentProject.projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
+                    }
+                    for(var i = 0; i < $scope.comments.length; i++){
+                        $scope.message["subcomment" + $scope.comments[i].cid] = "";
+                    }
+                };
             /** change current room, restart EventSource connection */
             $scope.setCurrentProject = function (pid) {
-                $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
-//                console.log("Current Project is set to: " + JSON.stringify($scope.currentProject));
-                $scope.chatFeed.close();
-                $scope.comments = [];
-                $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
-                $scope.listen();
+            $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
+            //                console.log("Current Project is set to: " + JSON.stringify($scope.currentProject));
+            $scope.chatFeed.close();
+            $scope.comments = [];
+            $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
+            $scope.listen();
             };
-
             /** change current subject, restart EventSource connection */
             $scope.setCurrentSubjectAndisChild = function (subject, isChild) {
-                $scope.message.subject = subject;
-                $scope.isChild = isChild;
+            $scope.message.subject = subject;
+            $scope.isChild = isChild;
             };
-
             $scope.reset = function () {
-//                console.log("input has been reset");
-                $scope.message = {};
-                $scope.message.subject = "";
-                $scope.message.content = "";
+            //                console.log("input has been reset");
+            $scope.message = {};
+            $scope.message.subject = "";
+            $scope.message.content = "";
             };
-
             $scope.setSubmessageAsContent = function (cid) {
-                $scope.message.content = $scope.message["subcomment" + cid];
+            $scope.message.content = $scope.message["subcomment" + cid];
             };
-
             /** posting chat text to server */
             $scope.submitMsg = function () {
-                $http.post("/chat", { uid: $scope.uid, subject: $scope.message.subject, content: $scope.message.content,
-                date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
-//                console.log("Message has been submitted");
-                $scope.reset();
+            $http.post("/chat", { uid: $scope.uid, subject: $scope.message.subject, content: $scope.message.content,
+            date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
+            //                console.log("Message has been submitted");
+            $scope.reset();
             };
-
             /** handle incoming messages: add to messages array */
             $scope.addMsg = function (msg) {
-                $scope.$apply(function () {
-                    $scope.refresh();
-                });
+            $scope.$apply(function () {
+            $scope.refresh();
+            });
             };
-
             /** start listening on messages from selected room */
             $scope.listen = function () {
-                if($scope.projectids.length > 0) {
-                    $scope.chatFeed = new EventSource ( "/chatFeed/" + $scope.currentProject.projectID ) ;
-                    $scope.chatFeed.addEventListener ( "message", $scope.addMsg, false ) ;
-                }
+            if($scope.projectids.length > 0) {
+            $scope.chatFeed = new EventSource ( "/chatFeed/" + $scope.currentProject.projectID ) ;
+            $scope.chatFeed.addEventListener ( "message", $scope.addMsg, false ) ;
+            }
             };
-
             $scope.listen();
         });
         </script>
@@ -115,7 +103,7 @@
                                 <div role="tabpanel">
                                     <ul class="nav nav-tabs">
                                     @for(p <- activeProjectList) {
-                                        @if(p.equals(activeProjectList.last)) {
+                                        @if(p.equals(UserData.getLastUsedProject)) {
                                             <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
                                                 <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
                                             </li>
@@ -130,7 +118,7 @@
                             </div>
                             <div class="tab-content">
                             @for(p <- activeProjectList){
-                                @if(p.equals(activeProjectList.last)){
+                                @if(p.equals(UserData.getLastUsedProject)){
                                     <div class="tab-pane fade in active" id="discussion@p.id">
                                 } else {
                                     <div class="tab-pane fade" id="discussion@p.id">

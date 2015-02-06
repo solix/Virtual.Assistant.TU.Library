@@ -31,7 +31,7 @@
                         <i class="fa fa fa-line-chart fa-4x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">@Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList().size()</div>
+                        <div class="huge">@UserData.findActiveProjects.size()</div>
                         <div> Projects</div>
                     </div>
                 </div>

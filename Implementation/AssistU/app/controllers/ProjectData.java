@@ -49,12 +49,9 @@ public class ProjectData extends Controller {
             return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
         } else {
             Project projectData = filledProjectForm.get();
-            Project project = Project.create(projectData.folder, projectData.name, user.id, projectData.description, projectData.template);
-            Role role=Role.ownerRole(user.id);
-            user.roles.add(role);
-            addRoleToDictionary(user.id,project.id,role);
-            user.update();
-            Event.defaultPlanningArticle(user, project);
+            Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
+            p.addOwner(p.id, user.id);
+            Event.defaultPlanningArticle(user, p);
             return redirect(routes.Application.project());
         }
     }
@@ -73,15 +70,11 @@ public class ProjectData extends Controller {
             Logger.debug(filledProjectForm.errors().toString());
             return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
         } else {
-
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
             return redirect(routes.Application.project());
         }
 
     }
-
-
-
 
     /**
      * This function refers to the model's archive function. The unused uid is to check whether the person is an
@@ -96,7 +89,6 @@ public class ProjectData extends Controller {
     }
 
     /**
-     * TODO: Need to add third Role parameter
      * This function catches the Dynamicform from the template with the ID of the User that needs to
      * be added to the project of which the Project ID has been passed
      * @param pid: The project to which the user in the form has to be assigned
@@ -105,23 +97,15 @@ public class ProjectData extends Controller {
     public static Result addMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
         User user = User.find.where().eq("email", emailform.get("email")).findUnique();
-        Project.addMember(pid, user.id);
+        Project p=Project.find.byId(pid);
         if(emailform.get("role").equals("Owner")) {
-            Project p=Project.find.byId(pid);
-            Role role=Role.ownerRole(user.id);
-            user.roles.add(role);
-            addRoleToDictionary(user.id, pid, role);
+            p.addOwner(p.id, user.id);
             Event.defaultPlanningArticle(user, p);
         } else if(emailform.get("role").equals("Reviewer")) {
-            Role role=Role.reviewerRole(user.id);
-            user.roles.add(role);
-            addRoleToDictionary(user.id, pid, role);
+            p.addReviewer(p.id, user.id);
         }else{
-            Role role=Role.guestRole(user.id);
-            user.roles.add(role);
-            addRoleToDictionary(user.id, pid, role);
+            p.addGuest(p.id, user.id);
         }
-        user.update();
         return redirect(routes.Application.project());
     }
 
@@ -136,15 +120,13 @@ public class ProjectData extends Controller {
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
         Project.removeMemberFrom(pid, uid);
-        removeMemberFromDictionary(uid, pid);
         return redirect(routes.Application.project());
     }
 
-    public static Result getProjectIdsAsJson(Long uid){
-        List<Project> projects = Project.find.where().in("users", User.find.byId(uid)).eq("active", "true").orderBy("dateCreated").findList();
+    public static Result getProjectIdsAsJson(){
+        List<Project> projects = UserData.findActiveProjects();
         List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
         TreeMap<String, String> project;
-//        List<Long> result = new ArrayList<Long>();
         for(int i =0; i < projects.size(); i++){
             project = new TreeMap<String, String>();
             project.put("name", projects.get(i).name);
@@ -154,44 +136,15 @@ public class ProjectData extends Controller {
         return ok(toJson(result));
     }
 
-
-    /**
-     * This map plays as a helper to identify user and their roles within a project
-     */
-   private static Map<Long,HashMap<Long,Role>> projectScope=new HashMap<Long,HashMap<Long,Role>>();
-
-    /**
-     *  searches for a role of a specific user in the specific project
-     * @param uid
-     * @param pid
-     * @return
-     */
-    private static Role roleFinder(long uid,long pid){
-        HashMap<Long,Role> roleScope = projectScope.get(pid);
-        return roleScope.get(uid);
-    }
-
-    /**
-     * add a new user and his/her role to the Dictionary
-     * @param uid
-     * @param pid
-     * @param role
-     */
-    private static void addRoleToDictionary(long uid,long pid, Role role ){
-        HashMap<Long,Role> newRoleScope = new HashMap<Long,Role>();
-        newRoleScope.put(uid,role);
-        projectScope.put(pid,newRoleScope);
-
-    }
-
-    /**
-     *
-     * @param uid
-     * @param pid
-     */
-    private static void removeMemberFromDictionary(long uid,long pid){
-        HashMap<Long,Role> roleScope = projectScope.get(pid);
-        roleScope.remove(uid);
+    public static Result getLastAccessedProjectIdAsJson(){
+        Project p = UserData.getLastUsedProject();;
+        HashMap<String, String> project = new HashMap<String, String>();
+        if(p != null) {
+            project.put("name", p.name);
+            project.put("projectID", "" + p.id);
+        }
+        Logger.debug("LAST ACCESSED AS JSON: " + toJson(project));
+        return ok(toJson(project));
     }
 
 }

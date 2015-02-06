@@ -31,38 +31,28 @@ public class Project extends Model {
     public String template;
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
-    public Date dateCreated ;
-    @ManyToMany(mappedBy = "projects")
-    public List<User> users = new ArrayList<User>();
+    public Date dateCreated;
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
+    public Date lastAccessed;
+    @OneToMany(mappedBy = "project")
+    public List<Role> roles = new ArrayList<Role>();
     @OneToMany(mappedBy = "project")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
     @OneToMany(mappedBy = "project")
     public List<Comment> comments = new ArrayList<Comment>();
-
-    public Map<Long, Role> relations = new HashMap<Long, Role>();
 
     /**
      * Constructor
      * @param folder
      * @param name
      */
-    public Project (String folder, String name, User owner,String description, String template){
-
+    public Project (String folder, String name, String description, String template){
         this.folder = folder;
         this.name = name;
         this.description=description;
         this.template=template;
-        this.users.add(owner);
     }
 
-    /**
-     * find involving members
-     */
-
-    public static List<Project> findProjectInvolving(String user){
-        List<Project> projects = find.where().eq("users.email" , user).findList();
-        return projects;
-    }
     /**
      * Finder to  make queries from database via Ebeans
      */
@@ -75,13 +65,11 @@ public class Project extends Model {
      * @param
      * @return
      */
-    public static Project create(String folder, String name,  Long uid ,String description, String template){
-        Project project = new Project(folder, name ,User.find.ref(uid),description, template);
-       // project.setOwner(uid);
+    public static Project create(String folder, String name, String description, String template){
+        Project project = new Project(folder, name, description, template);
         project.active=true;
-        project.dateCreated =new Date();
-        User user=User.find.byId(uid);
-        user.projects.add(project);
+        project.dateCreated = new Date();
+        project.lastAccessed = new Date();
         project.save();
         return project;
     }
@@ -96,62 +84,75 @@ public class Project extends Model {
         p.folder = folder;
         p.name = name;
         p.description = description;
+        p.lastAccessed = new Date();
         p.update();
     }
 
     /**
-     * TODO: Project will be find from id and is set to false
      * this method closes the project
      * @return
      */
     public static void archive(Long pid){
         Project p = Project.find.byId(pid);
         p.active = false;
+        p.lastAccessed = new Date();
         p.update();
-//        p.saveManyToManyAssociations("userlist");
     }
 
     /**
-     * TODO: Set role as third parameter? no,better to set role as seperate function
      * This method invites another user to a project by its user id
      */
-    public static void addMember(Long pid, Long uid){
+    public static void addOwner(Long pid, Long uid){
         Project p = Project.find.ref(pid);
-        p.users.add(User.find.byId(uid));
+        User u = User.find.byId(uid);
+        Role r = Role.createOwnerRole(pid, uid);
+        p.roles.add(r);
+        u.roles.add(r);
+        p.lastAccessed = new Date();
         p.update();
-        //p.saveManyToManyAssociations("users");
+        u.update();
+    }
+
+    public static void addGuest(Long pid, Long uid){
+        Project p = Project.find.ref(pid);
+        User u = User.find.byId(uid);
+        Role r = Role.createGuestRole(pid, uid);
+        p.roles.add(r);
+        u.roles.add(r);
+        p.lastAccessed = new Date();
+        p.update();
+        u.update();
+    }
+
+    public static void addReviewer(Long pid, Long uid){
+        Project p = Project.find.ref(pid);
+        User u = User.find.byId(uid);
+        Role r = Role.createReviewerRole(pid, uid);
+        p.roles.add(r);
+        u.roles.add(r);
+        p.lastAccessed = new Date();
+        p.update();
+        u.update();
     }
 
     /**
-     * TODO: Add roles accordingly
      * this method removes a member from the project
      */
     public static void removeMemberFrom(Long pid, Long uid){
         Project p = Project.find.byId(pid);
-        p.users.remove(User.find.byId(uid));
+        User u = User.find.byId(uid);
+        Role r = Role.find.where().eq("project", p).eq("user", u).findUnique();
+        p.roles.remove(r);
+        u.roles.remove(r);
+        p.lastAccessed = new Date();
         p.update();
-//        p.saveManyToManyAssociations("users");
+        u.update();
+        r.delete();
     }
 
-//    public void setOwner(Long uid){
-//        if(Role.find.where().eq("role", "Owner").findRowCount() == 0) {
-//          //  Role.ownerRole();
-//        }
-//        this.relations.put(uid,Role.find.where().eq("role", "Owner").findUnique());
-//    }
-//
-//    public void setGuest(Long uid){
-//        if(Role.find.where().eq("role", "Guest").findRowCount() == 0) {
-//            Role.ownerRole();
-//        }
-//        this.relations.put(uid,Role.find.where().eq("role", "Guest").findUnique());
-//    }
-//
-//    public void setReviewer(Long uid){
-//        if(Role.find.where().eq("role", "Reviewer").findRowCount() == 0) {
-//            Role.ownerRole();
-//        }
-//        this.relations.put(uid,Role.find.where().eq("role", "Reviewer").findUnique());
-//    }
-
+    public static void updateLastAccessed(Long pid){
+        Project p = Project.find.byId(pid);
+        p.lastAccessed = new Date();
+        p.update();
+    }
 }

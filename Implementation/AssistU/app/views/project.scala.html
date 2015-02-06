@@ -1,5 +1,4 @@
 @(title: String)(currentUser:User)
-@defining(Project.find.where().in("users", currentUser)) { projectListQuery =>
     <html lang="en">
         <head>
             @linkLoader.headlinks(title)
@@ -15,7 +14,7 @@
                                 <a style="width: 190px" type="button" class="btn btn-success" href="@routes.ProjectData.createProjectPage()">Create a new project</a>
                                 <button style="width: 190px" type="button" class="btn btn-default"
                                 data-toggle="modal" data-target="#archivedProjectList"
-                                @if(projectListQuery.eq("active", false).findList().isEmpty){disabled}>Archived projects</button>
+                                @if(UserData.findArchivedProjects.isEmpty){disabled}>Archived projects</button>
                             </div>
                         </div>
                     </div>
@@ -36,7 +35,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @projectListQuery.eq("active", false).findList().map{ p =>
+                    @UserData.findArchivedProjects.map{ p =>
                         <tr>
                             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.folder</td>
                             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.name</td>
@@ -63,4 +62,3 @@
 
         </body>
     </html>
-}

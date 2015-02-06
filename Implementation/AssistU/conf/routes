@@ -65,7 +65,8 @@ GET         /discussion                            controllers.Application.discu
 GET         /chatFeed/:project                     controllers.ChatData.chatFeed(project: String)
 POST        /chat                                  controllers.ChatData.postMessage()
 GET         /comments/:pid                         controllers.ChatData.getOldMessages(pid: Long)
-GET         /:uid/projectids                       controllers.ProjectData.getProjectIdsAsJson(uid: Long)
+GET         /projectids                            controllers.ProjectData.getProjectIdsAsJson()
+GET         /projectid                             controllers.ProjectData.getLastAccessedProjectIdAsJson()
 
 #Suggestions
 GET         /suggestions                           controllers.Application.suggestions()

@@ -40,10 +40,6 @@ public class User extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public List<LinkedAccount> linkedAccounts;
 
-
-    @ManyToMany
-    List<Project> projects = new ArrayList<Project>();
-
     @OneToMany(mappedBy = "user")
     public List<Task> tasks= new ArrayList<Task>();
     @OneToMany(mappedBy = "user")
@@ -71,9 +67,9 @@ public class User extends Model {
      * @param password
      * @return
      */
-    public static User authenticate(String email, String password){
-        return find.where().eq("email", email).eq("password", password).findUnique();
-    }
+//    public static User authenticate(String email, String password){
+//        return find.where().eq("email", email).eq("password", password).findUnique();
+//    }
 
 
 //    public static User create(String name, String email, String password ) {
@@ -303,5 +299,4 @@ public class User extends Model {
         a.providerUserId = authUser.getHashedPassword();
         a.save();
     }
-
 }

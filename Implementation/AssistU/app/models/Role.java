@@ -1,8 +1,10 @@
 package models;
 
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import java.util.*;
 
 /**
@@ -12,14 +14,25 @@ import java.util.*;
 public class Role extends Model {
 
     @Id
-    public long rid;
+    public Long rid;
+    @Constraints.Required
     public String role;
 
-    public Role(String role){
-        this.role=role;
-    }
     @ManyToOne
     User user;
+    @ManyToOne
+    Project project;
+
+    final static String OWNER = "Owner";
+    final static String GUEST = "Guest";
+    final static String REVIEWER = "Reviewer";
+
+    public Role(Long pid, Long uid, String role){
+        this.role=role;
+        this.user = User.find.byId(uid);
+        this.project = Project.find.byId(pid);
+    }
+
 
 
 
@@ -28,39 +41,29 @@ public class Role extends Model {
     );
 
     /**
-     * creates a owner role which is immutable
+     * creates a owner role
      * @param
      */
-
-    public static Role ownerRole(long uid ){
-        final String o = "Owner";
-         Role ownerRole = new Role(o);
-        ownerRole.user=User.find.byId(uid);
+    public static Role createOwnerRole(Long pid, Long uid){
+        Role ownerRole = new Role(pid, uid, OWNER);
         ownerRole.save();
-            return ownerRole;
-
+        return ownerRole;
     }
 
     /**
-     * creates a reviewer role which is immutable
+     * creates a reviewer role
      */
-
-    public static Role reviewerRole(long uid){
-        final String r = "Reviewer";
-        Role reviewerRole = new Role(r);
-        reviewerRole.user=User.find.byId(uid);
+    public static Role createReviewerRole(Long pid, Long uid){
+        Role reviewerRole = new Role(pid, uid, REVIEWER);
         reviewerRole.save();
         return reviewerRole;
     }
 
     /**
-     * creates a guest role which is immutable
+     * creates a guest role
      */
-
-    public static Role guestRole(long uid ){
-        final String g = "Guest";
-        Role guestRole = new Role(g);
-        guestRole.user=User.find.byId(uid);
+    public static Role createGuestRole(Long pid, Long uid){
+        Role guestRole = new Role(pid, uid, GUEST);
         guestRole.save();
         return guestRole;
     }
