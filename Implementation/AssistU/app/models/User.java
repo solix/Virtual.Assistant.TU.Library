@@ -287,6 +287,7 @@ public class User extends Model {
     public void changePassword(final UsernamePasswordAuthUser authUser,
                                final boolean create) {
         LinkedAccount a = this.getAccountByProvider(authUser.getProvider());
+        Logger.debug("CHANGEPASSWORD: " + a + ", " + create);
         if (a == null) {
             if (create) {
                 a = LinkedAccount.create(authUser);

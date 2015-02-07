@@ -5,10 +5,9 @@ import play.data.*;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import views.html.login;
+import views.html.*;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
 import com.feth.play.module.pa.controllers.Authenticate;
-import views.html.signup;
 import providers.localUsernamePassword.*;
 
 import com.feth.play.module.pa.PlayAuthenticate;
@@ -79,6 +78,10 @@ public class Authentication extends Controller {
         if(user != null)
             OAuthLogout();
         return ok(signup.render(LocalUsernamePasswordAuthProvider.SIGNUP_FORM, false, ""));
+    }
+
+    public static Result forgotPasswordPage(){
+        return ok(forgotPassword.render(null, false, ""));
     }
 
     /**

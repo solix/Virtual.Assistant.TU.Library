@@ -5,6 +5,7 @@ import models.TokenAction;
 import models.TokenAction.Type;
 import models.User;
 import play.Logger;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -12,6 +13,8 @@ import play.mvc.Result;
 import providers.localUsernamePassword.LocalUsernamePasswordAuthProvider.NativeIdentity;
 import providers.localUsernamePassword.*;
 import views.html.*;
+
+import java.util.HashMap;
 
 import static play.data.Form.form;
 
@@ -21,25 +24,15 @@ public class Signup extends Controller {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		final Form<LocalUsernamePasswordAuthProvider.NativeSignup> filledForm = LocalUsernamePasswordAuthProvider.SIGNUP_FORM
 				.bindFromRequest();
-		if (filledForm.hasErrors()) {
-			Logger.debug("Signup form contains errors: " + filledForm.toString());
-			// User did not fill everything properly
-//			return badRequest(signup.render(filledForm));
-			User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+		if (filledForm.hasErrors() || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
 			return badRequest(signup.render(filledForm, true, "The form contained errors, please make sure everything is filled in correctly."));
 		} else {
-			Logger.debug("Signup form passed: " + filledForm.toString());
-			// Everything was filled
-			// do something with your part of the form before handling the user
-			// signup
 			return com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.handleSignup(ctx());
 		}
 	}
 
 	public static Result unverified() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-//		return ok(unverified.render());
-//		return ok(error.render("Please verify your email address", true, "info", "Please verify your email address by clicking on the link in the email"));
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Please verify your email before continuing."));
 	}
 
@@ -67,14 +60,10 @@ public class Signup extends Controller {
 
 	private static final Form<NativeIdentity> FORGOT_PASSWORD_FORM = form(NativeIdentity.class);
 
-	public static Result forgotPassword(final String email) {
+	public static Result forgotPassword() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		Form<NativeIdentity> form = FORGOT_PASSWORD_FORM;
-		if (email != null && !email.trim().isEmpty()) {
-			form = FORGOT_PASSWORD_FORM.fill(new NativeIdentity(email));
-		}
-//		return ok(password_forgot.render(form));
-		return TODO;
+		return ok(forgotPassword.render(form, false, ""));
 	}
 
 	public static Result doForgotPassword() {
@@ -83,8 +72,7 @@ public class Signup extends Controller {
 				.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			// User did not fill in his/her email
-//			return badRequest(password_forgot.render(filledForm));
-			return TODO;
+			return badRequest(forgotPassword.render(filledForm, true, "You did not provide a valid email address."));
 		} else {
 			// The email address given *BY AN UNKNWON PERSON* to the form - we
 			// should find out if we actually have a user with this email
@@ -95,10 +83,10 @@ public class Signup extends Controller {
 			// We don't want to expose whether a given email address is signed
 			// up, so just say an email has been sent, even though it might not
 			// be true - that's protecting our user privacy.
-			flash(Authentication.FLASH_MESSAGE_KEY,
-					Messages.get(
-							"playauthenticate.reset_password.message.instructions_sent",
-							email));
+//			flash(Authentication.FLASH_MESSAGE_KEY,
+//					Messages.get(
+//							"playauthenticate.reset_password.message.instructions_sent",
+//							email));
 
 			final User user = User.findByEmail(email);
 			if (user != null) {
@@ -127,8 +115,7 @@ public class Signup extends Controller {
 				}
 			}
 
-//			return redirect(routes.Application.home());
-			return TODO;
+			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "A link has been sent to " + email + " to reset your password."));
 		}
 	}
 
@@ -147,7 +134,6 @@ public class Signup extends Controller {
 				ret = ta;
 			}
 		}
-
 		return ret;
 	}
 
@@ -155,71 +141,64 @@ public class Signup extends Controller {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		final TokenAction ta = tokenIsValid(token, Type.PASSWORD_RESET);
 		if (ta == null) {
-//			return badRequest(no_token_or_invalid.render());
-			return TODO;
+			return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "Your link was no longer valid, please try again."));
 		}
-
-//		return ok(password_reset.render(PASSWORD_RESET_FORM
-//				.fill(new PasswordReset(token))));
-		return TODO;
+		Form<PasswordReset> new_form = PASSWORD_RESET_FORM;
+		new_form.fill(new PasswordReset(token));
+		new_form.data().put("token", token);
+		Logger.debug("RESET PASSWORD FORM FIRST: " + new_form);
+		return ok(resetPassword.render(new_form, false, ""));
 	}
 
 	public static Result doResetPassword() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-		final Form<PasswordReset> filledForm = PASSWORD_RESET_FORM
-				.bindFromRequest();
-		if (filledForm.hasErrors()) {
-//			return badRequest(password_reset.render(filledForm));
-			return TODO;
+		final Form<PasswordReset> filledForm = PASSWORD_RESET_FORM.bindFromRequest();
+		Logger.debug("RESET PASSWORD FORM AFTER: " + filledForm);
+		if (filledForm.hasErrors()  || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
+			return badRequest(resetPassword.render(filledForm, true, "You did not provide a valid password."));
 		} else {
-			final String token = filledForm.get().token;
 			final String newPassword = filledForm.get().password;
-
+			final String token = filledForm.get().token;
 			final TokenAction ta = tokenIsValid(token, Type.PASSWORD_RESET);
 			if (ta == null) {
-//				return badRequest("Bad token or something");
-				return TODO;
+				return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "Your link was no longer valid, please try again."));
 			}
 			final User u = ta.targetUser;
 			try {
 				// Pass true for the second parameter if you want to
 				// automatically create a password and the exception never to
 				// happen
-				u.resetPassword(new LocalUsernamePasswordAuthUser(newPassword),
-						false);
+				u.resetPassword(new LocalUsernamePasswordAuthUser(newPassword), false);
 			} catch (final RuntimeException re) {
-				flash(Authentication.FLASH_MESSAGE_KEY,
-						Messages.get("playauthenticate.reset_password.message.no_password_account"));
+//				flash(Authentication.FLASH_MESSAGE_KEY,
+//						Messages.get("playauthenticate.reset_password.message.no_password_account"));
 			}
-			final boolean login = LocalUsernamePasswordAuthProvider.getProvider()
+			final boolean dologin = LocalUsernamePasswordAuthProvider.getProvider()
 					.isLoginAfterPasswordReset();
-			if (login) {
+			if (dologin) {
 				// automatically log in
-				flash(Authentication.FLASH_MESSAGE_KEY,
-						Messages.get("playauthenticate.reset_password.message.success.auto_login"));
+//				flash(Authentication.FLASH_MESSAGE_KEY,
+//						Messages.get("playauthenticate.reset_password.message.success.auto_login"));
 
 				return PlayAuthenticate.loginAndRedirect(ctx(),
 						new LocalLoginUsernamePasswordAuthUser(u.email));
 			} else {
 				// send the user to the signup page
-				flash(Authentication.FLASH_MESSAGE_KEY,
-						Messages.get("playauthenticate.reset_password.message.success.manual_login"));
+//				flash(Authentication.FLASH_MESSAGE_KEY,
+//						Messages.get("playauthenticate.reset_password.message.success.manual_login"));
 			}
-//			return redirect(routes.Application.signup());
-			return TODO;
+			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Your password has been successfully reset."));
 		}
 	}
 
 	public static Result oAuthDenied(final String getProviderKey) {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-//		return ok(home.render("Could not log you in with " + getProviderKey, null, true, "danger", "Could not log you in with " + getProviderKey));
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Could not log you in with " + getProviderKey));
 	}
 
 	public static Result exists() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-//		return ok(home.render("exists"));
-	return TODO;
+		return ok(testpage.render("existing user?"));
 	}
 
 	/**
@@ -240,17 +219,11 @@ public class Signup extends Controller {
 		flash(Authentication.FLASH_MESSAGE_KEY,
 				Messages.get("playauthenticate.verify_email.success", email));
 		if (Authentication.getLocalUser(session()) != null) {
-//			return redirect(routes.Application.home());
-//			return ok(error.render("Oops!", true, "danger", "The local user has a session or something"));
 			User user = Authentication.getLocalUser(session());
-			return ok(index.render("Welcome " + user.name, user));
-		} else {
-//			return redirect(routes.Application.signup());
-//			return ok(error.render("Oops!", true, "danger", "The local user's session is null or something"));
-			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "You have been verified, please log in below"));
+			if(user != null)
+				Authentication.OAuthLogout();
+//			return ok(index.render("Welcome " + user.name, user));
 		}
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "You have been verified, please log in below"));
 	}
-
-
-
 }

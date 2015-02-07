@@ -29,13 +29,13 @@
                             <input autofocus class="form-control input-sm" id="email" name="email" value="@loginForm("email").value" type="email" placeholder="Email">
                         </div>
                         <div class="form-group ">
-                            <label class="control-label pull-left" for="password">Password</label><br>
+                            <label class="control-label pull-left" for="password">Password</label><a class="pull-right" href="@routes.Signup.forgotPassword">I forgot my password</a>
                             <input autofocus class="form-control input-sm" id="password" name="password" type="password" placeholder="Password">
                         </div>
                         <br>
                         <div class="controls">
                             <button type="submit" class="btn btn-sm btn-success center-block btn-loading" data-loading-text="Signing in.."
-                            style="width: 100%; font-size: 15pt">
+                            style="width: 80%; min-width: 250px; font-size: 12pt">
                                 Sign in
                             </button>
                         </div>

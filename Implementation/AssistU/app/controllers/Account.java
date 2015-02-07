@@ -38,11 +38,11 @@ public class Account extends Controller {
 	}
 
 	public static class PasswordChange {
-		@MinLength(5)
+		@MinLength(6)
 		@Required
 		public String password;
 
-		@MinLength(5)
+		@MinLength(6)
 		@Required
 		public String repeatPassword;
 

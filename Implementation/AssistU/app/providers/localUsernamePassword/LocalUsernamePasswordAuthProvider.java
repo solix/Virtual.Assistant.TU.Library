@@ -291,10 +291,10 @@ public class LocalUsernamePasswordAuthProvider
 		final String langCode = lang.code();
 
 		final String html = getEmailTemplate(
-				"views.html.account.email.password_reset", langCode, url,
+				"views.html.email.password_reset", langCode, url,
 				token, user.name, user.email);
 		final String text = getEmailTemplate(
-				"views.txt.account.email.password_reset", langCode, url, token,
+				"views.txt.email.password_reset", langCode, url, token,
 				user.name, user.email);
 
 		return new Body(text, html);
@@ -372,10 +372,10 @@ public class LocalUsernamePasswordAuthProvider
 		final String langCode = lang.code();
 
 		final String html = getEmailTemplate(
-				"views.html.account.email.verify_email", langCode, url, token,
+				"views.html.email.verify_email", langCode, url, token,
 				user.name, user.email);
 		final String text = getEmailTemplate(
-				"views.txt.account.email.verify_email", langCode, url, token,
+				"views.txt.email.verify_email", langCode, url, token,
 				user.name, user.email);
 
 		return new Body(text, html);
