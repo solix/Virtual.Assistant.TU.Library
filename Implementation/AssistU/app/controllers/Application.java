@@ -72,7 +72,7 @@ public class Application extends Controller {
     public static Result discussion() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(discussion.render("My Discussions", user));
+            return ok(discussion_chat_test.render("My Discussions", user));
         else
             return Authentication.login();
     }
