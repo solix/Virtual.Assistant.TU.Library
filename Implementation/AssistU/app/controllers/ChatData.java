@@ -47,7 +47,8 @@ public class ChatData extends Controller {
               message.get("isChild").asBoolean());
       message.put("cid", comment.cid);
       message.put("username", comment.user.name);
-      Logger.debug("New Comment: " + Json.stringify(message));
+      message.put("role", Role.find.where().eq("user", user).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
+//      Logger.debug("New Comment: " + Json.stringify(message));
       sendEvent(message);
     }
     return ok();
@@ -80,7 +81,7 @@ public class ChatData extends Controller {
         comments.add(comment);
       }
     }
-    Logger.debug("Old Comments: " + Json.stringify(toJson(comments)));
+//    Logger.debug("Old Comments: " + Json.stringify(toJson(comments)));
     return ok(toJson(comments));
   }
 
@@ -111,7 +112,7 @@ public class ChatData extends Controller {
         comments.add(comment);
       }
     }
-    Logger.debug("Old SubComments: " + Json.stringify(toJson(comments)));
+//    Logger.debug("Old SubComments: " + Json.stringify(toJson(comments)));
     return ok(toJson(comments));
   }
 

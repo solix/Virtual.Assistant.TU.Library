@@ -137,13 +137,13 @@ public class ProjectData extends Controller {
     }
 
     public static Result getLastAccessedProjectIdAsJson(){
-        Project p = UserData.getLastUsedProject();;
+        Project p = UserData.getLastUsedProject();
         HashMap<String, String> project = new HashMap<String, String>();
         if(p != null) {
             project.put("name", p.name);
             project.put("projectID", "" + p.id);
         }
-        Logger.debug("LAST ACCESSED AS JSON: " + toJson(project));
+//        Logger.debug("LAST ACCESSED AS JSON: " + toJson(project));
         return ok(toJson(project));
     }
 
