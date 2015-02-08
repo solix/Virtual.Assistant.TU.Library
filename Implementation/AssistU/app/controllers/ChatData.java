@@ -15,7 +15,7 @@ import static play.libs.Json.toJson;
 
 import java.util.*;
 
-//import javax.json;
+import com.feth.play.module.pa.PlayAuthenticate;
 
 public class ChatData extends Controller {
 
@@ -27,58 +27,93 @@ public class ChatData extends Controller {
    */
   public static Result postMessage() {
     ObjectNode message = (ObjectNode)request().body().asJson();
-    Logger.debug(Json.stringify(message));
-    Comment comment = Comment.create(
-            message.get("uid").asLong(),
-            message.get("subject").asText(),
-            message.get("content").asText(),
-            message.get("date").asText(),
-            message.get("pid").get("projectID").asLong(),
-            message.get("isChild").asBoolean());
-    message.put("cid", comment.cid);
-//    message.put("username", comment.user.name);
-    Logger.debug("New Comment: " + Json.stringify(message));
-    sendEvent(message);
+    User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+    if(!message.get("content").asText().equals("")) {
+      if (!message.get("isChild").asBoolean()) {
+        Logger.debug("It's a main comment");
+        List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(message.get("projectID").asLong()))
+                .eq("subject", message.get("subject").asText())
+                .eq("isChild", false).findList();
+        if (cml.size() > 0) {
+          message.put("subject", message.get("subject").asText() + " (" + cml.size() + ")");
+        }
+      }
+      Comment comment = Comment.create(
+              user.id,
+              message.get("subject").asText(),
+              message.get("content").asText(),
+              message.get("date").asText(),
+              message.get("projectID").asLong(),
+              message.get("isChild").asBoolean());
+      message.put("cid", comment.cid);
+      message.put("username", comment.user.name);
+      message.put("role", Role.find.where().eq("user", user).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
+//      Logger.debug("New Comment: " + Json.stringify(message));
+      sendEvent(message);
+    }
     return ok();
   }
 
-  public static Result getOldMessages(Long pid){
-    ObjectNode result = new ObjectMapper().createObjectNode();
-    List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(pid)).eq("isChild", false).findList();
-    List<ObjectNode> messages = new ArrayList<ObjectNode>();
-    ObjectNode message;
-    for(int i =0; i < cml.size(); i++){
-      Comment cm = cml.get(i);
-      message = new ObjectMapper().createObjectNode();
-      message.put("uid", "" + cm.user.id);
-      message.put("username", cm.user.name);
-      message.put("subject", cm.subject);
-      message.put("content", cm.content);
-      message.put("date", cm.date);
-      message.put("pid", "" + cm.project.id);
-      message.put("isChild", "" + cm.isChild);
-      message.put("cid", "" + cm.cid);
-      List<Comment> scml = Comment.find.where().eq("project", Project.find.byId(pid)).eq("isChild", true).eq("subject", cm.subject).findList();
-      ObjectNode submessages = new ObjectMapper().createObjectNode();
-      ObjectNode submessage;
-      for(int j =0; j < scml.size(); j++) {
-        Comment scm = scml.get(j);
-        submessage = new ObjectMapper().createObjectNode();
-        submessage.put("uid", "" + scm.user.id);
-        submessage.put("username", scm.user.name);
-        submessage.put("subject", scm.subject);
-        submessage.put("content", scm.content);
-        submessage.put("date", scm.date);
-        submessage.put("pid", "" + scm.project.id);
-        submessage.put("isChild", "" + scm.isChild);
-        submessage.put("cid", "" + scm.cid);
-        submessages.put("submessage" + j, submessage);
+  public static Result getComments() {
+    List<Project> ownerProjects = UserData.findActiveOwnerProjects();
+    List<Project> reviewerProjects = UserData.findActiveReviewerProjects();
+    List<Project> projects = new ArrayList<Project>(ownerProjects);
+    projects.addAll(reviewerProjects);
+
+    List<ObjectNode> comments = new ArrayList<ObjectNode>();
+    ObjectNode comment;
+    for (int i = 0; i < projects.size(); i++) {
+      Project p = projects.get(i);
+      List<Comment> cml = Comment.find.where().eq("project", p).eq("isChild", false).findList();
+      for (int j = 0; j < cml.size(); j++) {
+        Comment cm = cml.get(j);
+        comment = new ObjectMapper().createObjectNode();
+        User user = User.find.byId(cm.user.id);
+        comment.put("uid", "" + user.id);
+        comment.put("username", user.name);
+        comment.put("role", Role.find.where().eq("user", cm.user).eq("project", p).findUnique().role);
+        comment.put("subject", cm.subject);
+        comment.put("content", cm.content);
+        comment.put("date", cm.date);
+        comment.put("projectID", "" + cm.project.id);
+        comment.put("isChild", "" + cm.isChild);
+        comment.put("cid", "" + cm.cid);
+        comments.add(comment);
       }
-      message.put("subcomments", submessages);
-      messages.add(message);
     }
-    Logger.debug("Old messages: " + Json.stringify(toJson(messages)));
-    return ok(toJson(messages));
+//    Logger.debug("Old Comments: " + Json.stringify(toJson(comments)));
+    return ok(toJson(comments));
+  }
+
+  public static Result getSubComments() {
+    List<Project> ownerProjects = UserData.findActiveOwnerProjects();
+    List<Project> reviewerProjects = UserData.findActiveReviewerProjects();
+    List<Project> projects = new ArrayList<Project>(ownerProjects);
+    projects.addAll(reviewerProjects);
+
+    List<ObjectNode> comments = new ArrayList<ObjectNode>();
+    ObjectNode comment;
+    for (int i = 0; i < projects.size(); i++) {
+      Project p = projects.get(i);
+      List<Comment> cml = Comment.find.where().eq("project", p).eq("isChild", true).findList();
+      for (int j = 0; j < cml.size(); j++) {
+        Comment cm = cml.get(j);
+        comment = new ObjectMapper().createObjectNode();
+        User user = User.find.byId(cm.user.id);
+        comment.put("uid", "" + user.id);
+        comment.put("username", user.name);
+        comment.put("role", Role.find.where().eq("user", cm.user).eq("project", p).findUnique().role);
+        comment.put("subject", cm.subject);
+        comment.put("content", cm.content);
+        comment.put("date", cm.date);
+        comment.put("projectID", "" + cm.project.id);
+        comment.put("isChild", "" + cm.isChild);
+        comment.put("cid", "" + cm.cid);
+        comments.add(comment);
+      }
+    }
+//    Logger.debug("Old SubComments: " + Json.stringify(toJson(comments)));
+    return ok(toJson(comments));
   }
 
   /**

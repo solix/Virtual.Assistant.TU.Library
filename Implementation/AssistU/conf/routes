@@ -67,7 +67,8 @@ GET         /project/downloadTemplate              controllers.Datafile.download
 GET         /discussion                            controllers.Application.discussion()
 GET         /chatFeed/:project                     controllers.ChatData.chatFeed(project: String)
 POST        /chat                                  controllers.ChatData.postMessage()
-GET         /comments/:pid                         controllers.ChatData.getOldMessages(pid: Long)
+GET         /comments                              controllers.ChatData.getComments()
+GET         /subcomments                           controllers.ChatData.getSubComments()
 GET         /projectids                            controllers.ProjectData.getProjectIdsAsJson()
 GET         /projectid                             controllers.ProjectData.getLastAccessedProjectIdAsJson()
 

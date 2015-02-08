@@ -18,24 +18,24 @@ public class Role extends Model {
     @Constraints.Required
     public String role;
 
+    public Date dateCreated;
+
     @ManyToOne
     User user;
     @ManyToOne
     Project project;
 
-    final static String OWNER = "Owner";
-    final static String GUEST = "Guest";
-    final static String REVIEWER = "Reviewer";
+    final public static String OWNER = "Owner";
+    final public static String GUEST = "Guest";
+    final public static String REVIEWER = "Reviewer";
 
     public Role(Long pid, Long uid, String role){
         this.role=role;
         this.user = User.find.byId(uid);
         this.project = Project.find.byId(pid);
+        this.dateCreated = new Date();
     }
-
-
-
-
+    
     public static Model.Finder<Long,Role> find = new Model.Finder(
             Long.class, Role.class
     );

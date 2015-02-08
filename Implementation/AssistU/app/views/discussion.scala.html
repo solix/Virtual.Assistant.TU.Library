@@ -1,137 +1,58 @@
 @(title: String)(currentUser:User)
-@defining(UserData.findActiveProjects()) { activeProjectList =>
-    <html lang="en">
-        <head>
-            @linkLoader.headlinks(title)
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
-        <script type="text/javascript">
-            'use strict';
-            /** app level module which depends on services and controllers */
-            angular.module('sseChat', ['sseChat.controllers']);
-        </script>
-        <script id="controller" type="text/javascript">
-            'use strict';
-            /** Controllers */
-            angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scope, $http) {
+    @defining(UserData.findActiveProjects()) { activeProjectList =>
+        <html lang="en">
+            <head>
+                @linkLoader.headlinks(title)
 
-                $scope.projectids =[ ];
-                $.ajax ( { url : "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
-                $scope.lastpid = "";
-                $.ajax ( { url : "/projectid", async : false, dataType : 'json', success : function ( response ) { $scope.lastpid = response } } ) ;
-                $scope.comments =[ ] ;
-                if($scope.projectids.length > 0) {
-                    $.ajax ( { url : "/comments/" + $.grep($scope.projectids, function(p){return p.projectID === $scope.lastpid.projectID;})[0 ].projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
-                }
-                $scope.message = { } ;
-                $scope.message.subject = "" ;
-                $scope.message.content = "" ;
-                for(var i = 0; i < $scope.comments.length; i++){
-                    $scope.message["subcomment" + $scope.comments[i].cid] = "";
-                }
-                $scope.uid = "@currentUser.id";
-                $scope.isChild = false ;
-                if($scope.projectids.length > 0){
-                    $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === $scope.lastpid.projectID;})[0 ];
-                }
+            <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/discussion.css")">
 
-                $scope.refresh = function () {
-                    $scope.projectids =[ ] ;
-                    $.ajax ( { url : "/projectids", async : false, dataType : 'json', success : function ( response ) { $scope.projectids = response } } ) ;
-                    $scope.comments =[ ] ;
-                    if($scope.projectids.length > 0) {
-                        $.ajax ( { url : "/comments/" + $scope.currentProject.projectID, async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;
-                    }
-                    for(var i = 0; i < $scope.comments.length; i++){
-                        $scope.message["subcomment" + $scope.comments[i].cid] = "";
-                    }
-                };
-            /** change current room, restart EventSource connection */
-            $scope.setCurrentProject = function (pid) {
-            $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
-            //                console.log("Current Project is set to: " + JSON.stringify($scope.currentProject));
-            $scope.chatFeed.close();
-            $scope.comments = [];
-            $.ajax({url: "/comments/" + pid, async: false, dataType: 'json', success: function(response){ $scope.comments = response}});
-            $scope.listen();
-            };
-            /** change current subject, restart EventSource connection */
-            $scope.setCurrentSubjectAndisChild = function (subject, isChild) {
-            $scope.message.subject = subject;
-            $scope.isChild = isChild;
-            };
-            $scope.reset = function () {
-            //                console.log("input has been reset");
-            $scope.message = {};
-            $scope.message.subject = "";
-            $scope.message.content = "";
-            };
-            $scope.setSubmessageAsContent = function (cid) {
-            $scope.message.content = $scope.message["subcomment" + cid];
-            };
-            /** posting chat text to server */
-            $scope.submitMsg = function () {
-            $http.post("/chat", { uid: $scope.uid, subject: $scope.message.subject, content: $scope.message.content,
-            date: (new Date()).toUTCString(), pid: $scope.currentProject, isChild: $scope.isChild});
-            //                console.log("Message has been submitted");
-            $scope.reset();
-            };
-            /** handle incoming messages: add to messages array */
-            $scope.addMsg = function (msg) {
-            $scope.$apply(function () {
-            $scope.refresh();
-            });
-            };
-            /** start listening on messages from selected room */
-            $scope.listen = function () {
-            if($scope.projectids.length > 0) {
-            $scope.chatFeed = new EventSource ( "/chatFeed/" + $scope.currentProject.projectID ) ;
-            $scope.chatFeed.addEventListener ( "message", $scope.addMsg, false ) ;
-            }
-            };
-            $scope.listen();
-        });
-        </script>
-        </head>
-        <body>
-            <div id="wrapper">
-                @dashboard("discussion", currentUser)
-                <div id="page-wrapper">
-                    @template.headericon("fa fa-comment fa-5x")
-                    <div ng-app="sseChat">
-                        <div ng-controller="ChatCtrl">
-                            <div class="container-fluid" style="text-align: center; margin: 0 0 1% 0">
-                                <div role="tabpanel">
-                                    <ul class="nav nav-tabs">
-                                    @for(p <- activeProjectList) {
-                                        @if(p.equals(UserData.getLastUsedProject)) {
-                                            <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                                <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                            </li>
-                                        } else {
-                                            <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                                                <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                            </li>
+                <!-- jQuery -->
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+            <script type="text/javascript" src="@routes.Assets.at("javascripts/discussions/app.js")"></script>
+            <script type="text/javascript" src="@routes.Assets.at("javascripts/discussions/controller.js")"></script>
+            </head>
+            <body>
+                <div id="wrapper">
+                    @dashboard("discussion", currentUser)
+                    <div id="page-wrapper">
+                        @template.headericon("fa fa-comments-o fa-5x")
+                        <div ng-app="sseChat">
+                            <div ng-controller="ChatCtrl">
+                                <div class="container-fluid" style="text-align: center; margin: 0 0 1% 0">
+                                    <div role="tabpanel">
+                                        <ul class="nav nav-tabs">
+                                        @for(p <- activeProjectList) {
+                                            @if(p.equals(UserData.getLastUsedProject)) {
+                                                <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                                                    <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                </li>
+                                            } else {
+                                                <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
+                                                    <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                </li>
+                                            }
                                         }
-                                    }
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-content">
-                            @for(p <- activeProjectList){
-                                @if(p.equals(UserData.getLastUsedProject)){
-                                    <div class="tab-pane fade in active" id="discussion@p.id">
-                                } else {
-                                    <div class="tab-pane fade" id="discussion@p.id">
-                                }
+                                <div class="tab-content">
+                                    @for(p <- activeProjectList){
+                                        @if(p.equals(UserData.getLastUsedProject)){
+                                            <div class="tab-pane fade in active" id="discussion@p.id">
+                                            } else {
+                                            <div class="tab-pane fade" id="discussion@p.id">
+                                            }
                                         <div class="row">
                                             <div class="col-xs-10">
-                                                <h3 style="margin: 5px 0 0 30px;">Discussions</h3>
+                                                <h3 style="margin: 5px 0 0 30px;"><u>Discussions</u></h3>
                                             </div>
                                             <div class="col-xs-2">
                                                 <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment@p.id" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
                                             </div>
                                         </div>
-                                        @*<hr class="hr" style="margin: 10px 30px 0 30px">*@
+                                        <hr class="hr" style="margin: 15px 15px 0">
                                         <div id="comment@p.id" class="panel-footer collapse" style="margin-left: -30px; margin-right: -30px; padding: 15px 50px 50px">
                                             <div class="row" style="padding: 0; text-align: center">
                                                 <button type="button" class="close pull-right" data-toggle="collapse" data-target="#comment@p.id" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -162,56 +83,48 @@
                                                 id="saySomething" data-toggle="collapse" data-target="#comment@p.id" ng-click="submitMsg()">Submit</button>
                                             </div>
                                         </div>
-                                        <div class="panel-body" style="padding: 5px 0 200px 0">
-                                            <div id="chat">
-                                                <div class="{{comment.who}} comment" ng-repeat="comment in comments">
-                                                    <hr class="hr" style="margin: 2px 0">
-                                                    @*<div class="panel panel-primary" style="margin-bottom: 0">*@
-                                                        @*<div class="panel-body" style="padding-bottom: 5px; padding-top: 5px">*@
-                                                            <div class="row">
-                                                                <div class="col-xs-2" style="text-align: center">
-                                                                    <div class="thumbnail" style="width: 50px; height: 50px; margin: 5px auto 5px auto">
-                                                                        <img src="http://www.33plus1.ru/Decor/02_OUTDOOR_INSTALL/131008_Katusha/SMI/ria.ru_files/default-avatar-50x50.jpg" alt="User Avatar" class="img-circle" />
-                                                                    </div>
-                                                                    <strong>{{comment.username}}</strong>
-                                                                </div>
-                                                                <div class="col-xs-10">
-                                                                    <div class="row">
-                                                                        <div class="col-xs-9">
-                                                                            <b>{{comment.subject}}</b>
-                                                                            <hr class="hr" style="margin: 0 0 5px 0">
-                                                                        </div>
-                                                                        <div class="col-xs-3">
-                                                                            <small class="pull-right text-muted">
-                                                                                <i class="fa fa-clock-o fa-fw"></i> {{comment.date}}
-                                                                            </small>
-                                                                        </div>
-                                                                    </div>
-                                                                    {{comment.content}}
-                                                                    <div class="container-fluid">
-                                                                        <a class="pull-right" data-toggle="collapse" href="#subcomment{{comment.cid}}"
-                                                                        style="margin: 0; margin-right: 30px;">Leave a comment...</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @*</div>*@
-                                                    @*</div>*@
-                                                    <hr class="hr" style="margin: 2px 0">
-                                                    <div class="row">
-                                                        <div class="col-xs-11 col-xs-offset-1">
-                                                            <div class="container-fluid" ng-repeat="subcomment in comment.subcomments" style="padding: 0">
-                                                                <b>{{subcomment.username}}</b> - {{subcomment.content}}
-                                                                <small class="pull-right text-muted">
-                                                                    <i class="fa fa-clock-o fa-fw"></i> {{subcomment.date}}
+                                        <div class="panel-body" style="padding: 0">
+
+                                            <ul class="timeline" style="margin-right: 30px; margin-bottom: 0; height: 80%">
+                                                <li class="{{comment.who}} comment" ng-repeat="comment in comments | filter:{projectID: @p.id}">
+                                                    <div class="timeline-badge primary" ng-if="comment.role=='Owner'">
+                                                        <i class="fa fa-users" style="margin-left: 1px; margin-top: 13px"></i>
+                                                    </div>
+                                                    <div class="timeline-badge warning" ng-if="comment.role=='Reviewer'">
+                                                        <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
+                                                    </div>
+                                                    <div class="timeline-panel">
+                                                        <div class="timeline-heading">
+                                                            <a class="btn btn-info pull-right" data-toggle="collapse" href="#showSubCommentsOf{{comment.cid}}" aria-expanded="false" aria-controls="collapseExample">
+                                                                Show
+                                                            </a>
+                                                            <h4 class="timeline-title" style="margin-left: 10px; margin-bottom: 0">
+                                                                <u>{{comment.subject}}</u>
+                                                                <br>
+                                                                <p style="font-size: x-small; margin-bottom: 0; margin-top: 4px">(by {{comment.username}})</p>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="collapse" id="showSubCommentsOf{{comment.cid}}">
+                                                            <hr class="hr" style="margin: 15px 0 10px">
+                                                            <div class="container-fluid" style="margin-bottom: 20px; padding-right: 0">
+                                                                <small class="pull-right text-muted" style="margin-right: 4px">
+                                                                    <i class="fa fa-clock-o fa-fw" title="{{comment.date}}"></i>
                                                                 </small>
-                                                                <hr class="hr" style="margin: 2px 0">
+                                                                {{comment.content}}
                                                             </div>
-                                                            <div id="subcomment{{comment.cid}}" class="panel-footer collapse">
-                                                                <button type="button" class="close pull-left" data-toggle="collapse" data-target="#subcomment{{comment.cid}}"
-                                                                style="padding: 4px 20px 6px 5px"
-                                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                                                            <div class="container-fluid" ng-repeat="subcomment in subcomments | hasSameSubject:comment.subject" style="padding: 0">
+                                                                <hr class="hr" style="margin: 5px 0">
+                                                                <div class="container-fluid" style="padding-right: 0">
+                                                                    <small class="pull-right text-muted" style="margin-top: 4px; margin-right: 4px">
+                                                                        <i class="fa fa-clock-o fa-fw" title="{{subcomment.date}}"></i>
+                                                                    </small>
+                                                                    <b>{{subcomment.username}}</b> - {{subcomment.content}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-footer" style="margin-left: -15px; margin-right: -15px; margin-bottom: -15px; margin-top: 5px">
                                                                 <div class="input-group">
-                                                                    <input id="btn-input" type="text" class="form-control input-sm" placeholder="{{comment.username}} says..."
+                                                                    <input id="btn-input" type="text" class="form-control input-sm" placeholder="@currentUser.name says..."
                                                                     ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message['subcomment' + comment.cid]"/>
                                                                     <span class="input-group-btn">
                                                                         <button class="btn btn-warning btn-sm" ng-click="setSubmessageAsContent(comment.cid);submitMsg()">React!</button>
@@ -220,26 +133,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                            }
+                                    }
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-                <!-- jQuery -->
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 
-                <!--bootstrap-->
-            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                        <!--bootstrap-->
+                    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-                <!--sb-Admin-->
-            <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+                        <!--sb-Admin-->
+                    <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
 
-            <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
-        </body>
-    </html>
-}
+                    <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+            </body>
+        </html>
+    }
