@@ -48,7 +48,7 @@ public class Application extends Controller {
     public static Result project() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(project.render("My Projects", user));
+            return ok(project.render("AssistU - Projects", user));
         else
             return Authentication.login();
     }
@@ -72,7 +72,7 @@ public class Application extends Controller {
     public static Result discussion() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(discussion_chat_test.render("My Discussions", user));
+            return ok(discussion_new.render("AssisTU - Discussions", user));
         else
             return Authentication.login();
     }

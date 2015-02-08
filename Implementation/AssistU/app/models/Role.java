@@ -23,9 +23,9 @@ public class Role extends Model {
     @ManyToOne
     Project project;
 
-    final static String OWNER = "Owner";
-    final static String GUEST = "Guest";
-    final static String REVIEWER = "Reviewer";
+    final public static String OWNER = "Owner";
+    final public static String GUEST = "Guest";
+    final public static String REVIEWER = "Reviewer";
 
     public Role(Long pid, Long uid, String role){
         this.role=role;
