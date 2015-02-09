@@ -251,26 +251,69 @@
                     <a @if(parentpage.equals("dashboard")){class="active"} href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
-                    @*TODO: Maybe a dropdown menu for fast project accessibility? Would require a new "loadspecificproject" though...*@
-                    @*defining(Project.find.where().in("users", User.find.ref(uid)).eq("active", "true").findList()) { projects =>*@
-                        @*if(projects.size() > 0) {*@
-                            @*<ul class="nav nav-second-level">*@
-                                @*for(p <- projects){*@
-                                    @*<li>*@
-                                        @*<a href="@routes.Application.project()">@p.name</a>*@
-                                    @*</li>*@
-                                @*}*@
-                            @*</ul>*@
-                        @*}*@
-                    @*}*@
+                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
+                    @defining(UserData.findActiveProjects()) { projects =>
+                        @if(projects.size() > 0) {
+                            <ul class="nav nav-second-level">
+                                @for(p <- projects){
+                                    @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
+                                        @if(role.equals(Role.OWNER)) {
+                                            <li>
+                                                <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-mortar-board"></i> @p.name</a>
+                                            </li>
+                                        } else {
+                                            @if(role.equals(Role.REVIEWER)){
+                                                <li>
+                                                    <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-edit"></i> @p.name</a>
+                                                </li>
+                                            } else {
+                                                @if(role.equals(Role.GUEST)){
+                                                    <li>
+                                                        <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-suitcase"></i> @p.name</a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            </ul>
+                        }
+                    }
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
                     <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalData.calendar()"><i class="fa fa-calendar-o fa-fw"></i> Calendar</a>
                 </li>
                 <li>
-                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions</a>
+                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
+                    @defining(UserData.findActiveProjects()) { projects =>
+                        @if(projects.size() > 0) {
+                            <ul class="nav nav-second-level">
+                            @for(p <- projects){
+                                @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
+                                    @if(role.equals(Role.OWNER)) {
+                                        <li>
+                                            <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-mortar-board"></i> @p.name</a>
+                                        </li>
+                                    } else {
+                                        @if(role.equals(Role.REVIEWER)){
+                                            <li>
+                                                <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-edit"></i> @p.name</a>
+                                            </li>
+                                        } else {
+                                            @if(role.equals(Role.GUEST)){
+                                                <li>
+                                                    <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-suitcase"></i> @p.name</a>
+                                                </li>
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            </ul>
+                        }
+                    }
+                        <!-- /.nav-second-level -->
                 </li>
                 <li>
                     <a @if(parentpage.equals("task")){class="active"} href="@routes.Application.task()"><i class="fa fa-wrench fa-fw"></i> Tasks</a>

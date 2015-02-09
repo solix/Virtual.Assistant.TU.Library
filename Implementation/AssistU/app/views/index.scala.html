@@ -3,10 +3,6 @@
 <html lang="en">
     <head>
     @linkLoader.headlinks(title)
-
-            <!-- jQuery -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-
     </head>
     <body>
         <div id="wrapper">
@@ -16,9 +12,13 @@
                 @home.overviewblocks(currentUser.id)
             </div>
         </div>
-
+            <!-- jQuery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" ></script>
             <!--bootstrap-->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
+            <!--sb-Admin javascript Needed for Dropdown to work-->
+        <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+            <!--MetisMenu javascript Needed for Dropdown to work-->
+        <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
     </body>
 </html>

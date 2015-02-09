@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
@@ -10,6 +11,8 @@ import com.feth.play.module.pa.user.AuthUserIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Application extends Controller {
@@ -75,6 +78,23 @@ public class Application extends Controller {
             return ok(discussion.render("AssisTU - Discussions", user, null));
         else
             return Authentication.login();
+    }
+
+    public static Boolean AllowedTitleRegex(String input){
+        Logger.debug("Into regex");
+        final String regex = "([a-zA-Z][a-zA-Z0-9]+)( {1}([a-zA-Z0-9]+))*";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(input);
+        Logger.debug("It returned: " + m.matches());
+        return m.matches();
+    }
+
+    /*TODO: FIND GOOD PASSWORD CONVENTION*/
+    public static Boolean AllowedPasswordRegex(String input){
+        final String regex = "([a-zA-Z][a-zA-Z0-9]+)( {1}([a-zA-Z0-9]+))*";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(input);
+        return m.matches();
     }
 
 }

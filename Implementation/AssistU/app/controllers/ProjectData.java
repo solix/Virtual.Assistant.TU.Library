@@ -48,7 +48,6 @@ public class ProjectData extends Controller {
     }
 
     /**
-     * TODO: Adapt this function after login is implemented and the current user is known
      * This function creates a new Project initiated by a user that automatically becomes its owner.
      * @return
      */
@@ -56,7 +55,11 @@ public class ProjectData extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "The input did not fulfill the requirements, please review your information", user));
+        } else if (!(Application.AllowedTitleRegex(filledProjectForm.get().folder)
+                && Application.AllowedTitleRegex(filledProjectForm.get().name))) {
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true,
+                    "The input did not have the allowed format, please review your information", user));
         } else {
             Project projectData = filledProjectForm.get();
             Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
@@ -67,7 +70,6 @@ public class ProjectData extends Controller {
     }
 
     /**
-     * TODO: See if there is a way to only pass values that need to be changed (Map?)
      * This function edits a project with values catched from a form.
      * @param pid: The Project ID of the Project that needs it details edited
      * @return
@@ -78,8 +80,12 @@ public class ProjectData extends Controller {
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             Logger.debug(filledProjectForm.errors().toString());
-            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "The input did not fulfill the requirements, please review your information.", user));
-        } else {
+            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "The input did not fulfill the requirements, please review your information", user));
+        } else if (!(Application.AllowedTitleRegex(filledProjectForm.get().folder)
+                && Application.AllowedTitleRegex(filledProjectForm.get().name))) {
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true,
+                    "The input did not have the allowed format, please review your information", user));
+        }  else {
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
             return redirect(routes.Application.project());
         }
