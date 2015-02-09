@@ -17,10 +17,28 @@
                                         <p><i>@p.description</i><p>
                                         @*<p><i>Created on: @p.dateCreated.toString.substring(0,10)</i><p>*@
                                         <p>
-                                            <i><b>download</b> @p.template here</i>
-                                            <a href="@{routes.Datafile.downloadTemplate()}" title="Download the @p.template template">
-                                                <i class="fa fa-cloud-download fa-fw"></i>
-                                            </a>
+                                            @if((!p.template.equals("None")) && (p.active.equals(true))) {
+                                                <i>download @p.template from here</i>
+                                                @if(p.template.equals("Own")) {
+                                                    <a href="@{
+                                                        routes.Datafile.downloadOwnTemplate(p.id)
+                                                    }" title="Download the @p.template template">
+                                                        <i class="fa fa-cloud-download fa-fw"></i>
+                                                    </a>
+                                                } else {
+                                                    <a href="@{
+                                                        routes.Datafile.downloadTemplate()
+                                                    }" title="Download the @p.template template">
+                                                        <i class="fa fa-cloud-download fa-fw"></i>
+                                                    </a>
+                                                }
+                                            }
+                                            @if(p.template.equals("None") && p.active.equals(true)){
+                                                @projects.owntemplate(p)
+                                            }
+                                            @if(p.template.equals("Own") && p.planning.equals(false)){
+                                                @projects.ownplanning(currentUser,p)
+                                            }
                                         <p>
                                     </div>
                                     <div class="col-xs-2">
