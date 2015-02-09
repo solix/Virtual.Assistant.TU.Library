@@ -16,8 +16,20 @@ import static play.libs.Json.toJson;
 import java.util.*;
 
 import com.feth.play.module.pa.PlayAuthenticate;
+import views.html.discussion;
+import views.html.project;
 
-public class ChatData extends Controller {
+public class DiscussionData extends Controller {
+
+  public static Result discussion(Long pid) {
+    User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+    if(user != null) {
+      Project.updateLastAccessed(pid);
+      Project p = Project.find.byId(pid);
+      return ok(discussion.render("AssistU - Projects", user, p));
+    }else
+      return Authentication.login();
+  }
 
   /** Keeps track of all connected browsers per room **/
   private static Map<String, List<EventSource>> socketsPerProject = new HashMap<String, List<EventSource>>();
@@ -48,7 +60,7 @@ public class ChatData extends Controller {
       message.put("cid", comment.cid);
       message.put("username", comment.user.name);
       message.put("role", Role.find.where().eq("user", user).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
-//      Logger.debug("New Comment: " + Json.stringify(message));
+      Logger.debug("New Comment: " + Json.stringify(message));
       sendEvent(message);
     }
     return ok();

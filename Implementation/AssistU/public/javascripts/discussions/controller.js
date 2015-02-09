@@ -11,6 +11,8 @@ angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scop
     $scope.subcomments =[ ] ;
     $.ajax ( { url : "/subcomments", async : false, dataType : 'json', success : function ( response ) { $scope.subcomments = response } } ) ;
 
+    console.log("COMMENTS: " + JSON.stringify($scope.comments));
+
     $scope.message = { } ;
     $scope.message.subject = "" ;
     $scope.message.content = "" ;
@@ -24,6 +26,7 @@ angular.module('sseChat.controllers', []).controller('ChatCtrl', function ($scop
     /** change current room, restart EventSource connection */
     $scope.setCurrentProject = function (pid) {
         $scope.currentProject = $.grep($scope.projectids, function(p){return p.projectID === pid;})[0 ];
+        console.log("Current project is set to " + JSON.stringify($scope.currentProject));
         $scope.chatFeed.close();
         $scope.comments =[ ] ;
         $.ajax ( { url : "/comments", async : false, dataType : 'json', success : function ( response ) { $scope.comments = response } } ) ;

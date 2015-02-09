@@ -1,4 +1,4 @@
-@(title: String)(currentUser:User)
+@(title: String)(currentUser:User)(project: Project)
     @defining(UserData.findActiveProjects()) { activeProjectList =>
         <html lang="en">
             <head>
@@ -17,21 +17,33 @@
                 <div id="wrapper">
                     @dashboard("discussion", currentUser)
                     <div id="page-wrapper">
-                        @template.headericon("fa fa-comments-o fa-5x")
+                        @template.headericon("fa fa-comments fa-5x")
                         <div ng-app="sseChat">
                             <div ng-controller="ChatCtrl">
                                 <div class="container-fluid" style="text-align: center; margin: 0 0 1% 0">
                                     <div role="tabpanel">
                                         <ul class="nav nav-tabs">
                                         @for(p <- activeProjectList) {
-                                            @if(p.equals(UserData.getLastUsedProject)) {
-                                                <li role="presentation" class="active" style="width : 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                                    <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                                </li>
+                                            @if(project != null){
+                                                @if(p.id == project.id) {
+                                                    <li role="presentation" class="active" style="width: 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                    </li>
+                                                } else {
+                                                    <li role="presentation" style="width: 18%; overflow: hidden; white-space: nowrap ; text-overflow : ellipsis">
+                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                    </li>
+                                                }
                                             } else {
-                                                <li role="presentation" style="width : 18%; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                                                    <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                                </li>
+                                                @if(p.id == UserData.getLastUsedProject.id) {
+                                                    <li role="presentation" class="active" style="width : 18% ; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                    </li>
+                                                } else {
+                                                    <li role="presentation" style="width : 18% ; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
+                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                    </li>
+                                                }
                                             }
                                         }
                                         </ul>
@@ -39,14 +51,22 @@
                                 </div>
                                 <div class="tab-content">
                                     @for(p <- activeProjectList){
-                                        @if(p.equals(UserData.getLastUsedProject)){
-                                            <div class="tab-pane fade in active" id="discussion@p.id">
+                                        @if(project != null){
+                                            @if(p.id == project.id) {
+                                                <div class="tab-pane fade in active" id="discussion@p.id">
                                             } else {
-                                            <div class="tab-pane fade" id="discussion@p.id">
+                                                <div class="tab-pane fade" id="discussion@p.id">
                                             }
+                                        } else {
+                                            @if(p.equals(UserData.getLastUsedProject)){
+                                                <div class="tab-pane fade in active" id="discussion@p.id">
+                                            } else {
+                                                <div class="tab-pane fade" id="discussion@p.id">
+                                            }
+                                        }
                                         <div class="row">
                                             <div class="col-xs-10">
-                                                <h3 style="margin: 5px 0 0 30px;"><u>Discussions</u></h3>
+                                                <h3 style="margin: 5px 0 0 30px;">Discussions of project <a href="@routes.ProjectData.project(p.id)">@p.name</a></h3>
                                             </div>
                                             <div class="col-xs-2">
                                                 <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment@p.id" style="margin: 0; margin-right: 30px;">Start new Discussion</button>
@@ -84,11 +104,10 @@
                                             </div>
                                         </div>
                                         <div class="panel-body" style="padding: 0">
-
                                             <ul class="timeline" style="margin-right: 30px; margin-bottom: 0; height: 80%">
                                                 <li class="{{comment.who}} comment" ng-repeat="comment in comments | filter:{projectID: @p.id}">
                                                     <div class="timeline-badge primary" ng-if="comment.role=='Owner'">
-                                                        <i class="fa fa-users" style="margin-left: 1px; margin-top: 13px"></i>
+                                                        <i class="fa fa-users" style="margin-top: 13px"></i>
                                                     </div>
                                                     <div class="timeline-badge warning" ng-if="comment.role=='Reviewer'">
                                                         <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
@@ -96,7 +115,7 @@
                                                     <div class="timeline-panel">
                                                         <div class="timeline-heading">
                                                             <a class="btn btn-info pull-right" data-toggle="collapse" href="#showSubCommentsOf{{comment.cid}}" aria-expanded="false" aria-controls="collapseExample">
-                                                                Show
+                                                                Show/Hide
                                                             </a>
                                                             <h4 class="timeline-title" style="margin-left: 10px; margin-bottom: 0">
                                                                 <u>{{comment.subject}}</u>
@@ -113,7 +132,7 @@
                                                                 {{comment.content}}
                                                             </div>
 
-                                                            <div class="container-fluid" ng-repeat="subcomment in subcomments | hasSameSubject:comment.subject" style="padding: 0">
+                                                            <div class="container-fluid" ng-repeat="subcomment in subcomments"> @* | hasSameSubject:comment.subject" style="padding: 0">*@
                                                                 <hr class="hr" style="margin: 5px 0">
                                                                 <div class="container-fluid" style="padding-right: 0">
                                                                     <small class="pull-right text-muted" style="margin-top: 4px; margin-right: 4px">

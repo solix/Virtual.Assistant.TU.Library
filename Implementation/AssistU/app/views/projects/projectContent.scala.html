@@ -1,12 +1,20 @@
-@(currentUser: User)
+@(currentUser: User, project: Project)
 @defining(UserData.findActiveProjects) { activeProjectList =>
     <div class="tab-content">
         @for(p <- activeProjectList){
-            @if(p.equals(UserData.getLastUsedProject)){
-                <div class="tab-pane fade in active" id="project@p.id">
+            @if(project != null){
+                @if(p.id == project.id) {
+                    <div class="tab-pane fade in active" id="project@p.id">
+                 } else {
+                    <div class="tab-pane fade" id="project@p.id">
+                 }
+            } else {
+                @if(p.equals(UserData.getLastUsedProject)){
+                    <div class="tab-pane fade in active" id="project@p.id">
                 } else {
-                <div class="tab-pane fade" id="project@p.id">
+                    <div class="tab-pane fade" id="project@p.id">
                 }
+            }
             <div class="container-fluid" style="margin-top: 10px">
                 <div class="row">
                     <div class="panel panel-info">
@@ -31,6 +39,7 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-right dropdown-messages" style="width: 200px">
                                                     <li><a href="@routes.ProjectData.editProjectPage(p.id)"><i class="fa fa-pencil fa-fw"></i> Edit project details...</a></li>
+                                                    <li><a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-comments fa-fw"></i> Go to discussions...</a></li>
                                                     <li class="divider"></li>
                                                     <li><a href="#" data-toggle="modal" data-target="#memberList@p.id"><i class="fa fa-users fa-fw"></i> Show members...</a></li>
                                                     <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user-plus fa-fw"></i> Add a member...</a></li>

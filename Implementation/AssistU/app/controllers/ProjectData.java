@@ -18,6 +18,16 @@ import static play.libs.Json.toJson;
  */
 public class ProjectData extends Controller {
 
+    public static Result project(Long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            Project.updateLastAccessed(pid);
+            Project p = Project.find.byId(pid);
+            return ok(project.render("AssistU - Projects", user, p));
+        }else
+            return Authentication.login();
+    }
+
     static Form<Project> projectForm = Form.form(Project.class);
 
     public static Result createProjectPage() {

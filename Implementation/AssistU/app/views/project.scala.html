@@ -1,4 +1,4 @@
-@(title: String)(currentUser:User)
+@(title: String)(currentUser:User)(project: Project)
     <html lang="en">
         <head>
             @linkLoader.headlinks(title)
@@ -18,8 +18,8 @@
                             </div>
                         </div>
                     </div>
-                    @projects.projectNavBar(currentUser)
-                    @projects.projectContent(currentUser)
+                    @projects.projectNavBar(currentUser, project)
+                    @projects.projectContent(currentUser, project)
                 </div>
             </div>
             @*Archived List Modal*@
