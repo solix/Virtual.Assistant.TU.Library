@@ -107,10 +107,10 @@
                                             <ul class="timeline" style="margin-right: 30px; margin-bottom: 0; height: 80%">
                                                 <li class="{{comment.who}} comment" ng-repeat="comment in comments | filter:{projectID: @p.id}">
                                                     <div class="timeline-badge primary" ng-if="comment.role=='Owner'">
-                                                        <i class="fa fa-users" style="margin-top: 13px"></i>
+                                                        <i class="fa fa-comment" style="margin-top: 13px"></i>
                                                     </div>
                                                     <div class="timeline-badge warning" ng-if="comment.role=='Reviewer'">
-                                                        <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
+                                                        <i class="fa fa-check-square-o" style="margin-left: 4px; margin-top: 15px"></i>
                                                     </div>
                                                     <div class="timeline-panel">
                                                         <div class="timeline-heading">
