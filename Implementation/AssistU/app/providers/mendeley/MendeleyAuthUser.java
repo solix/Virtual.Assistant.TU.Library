@@ -1,6 +1,8 @@
 package providers.mendeley;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.feth.play.module.pa.providers.oauth2.BasicOAuth2AuthUser;
 import com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
 import com.feth.play.module.pa.user.FirstLastNameIdentity;
@@ -48,7 +50,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
     private String discipline;
     private String profile_pic;
     private Boolean email_verified; //TODO: should not matter, safer is to reverify here too
-    private String documents;
+    private ArrayNode documents;
 
     public MendeleyAuthUser(final JsonNode node, final OAuth2AuthInfo info, final String state) {
         super(node.get(Constants.ID).asText(), info, state);
@@ -81,8 +83,8 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
             this.email_verified = node.get(Constants.EMAIL_VERIFIED).asBoolean();
         }
         if (node.has(Constants.DOCUMENTS)) {
-            this.documents = node.get(Constants.DOCUMENTS).asText();
-            Logger.debug("DOCUMENTS: " + documents);
+            this.documents = (ArrayNode)node.get(Constants.DOCUMENTS);
+            Logger.debug("DOCUMENTS: " + documents.toString());
         }
     }
 
@@ -124,7 +126,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
         return profile_pic;
     }
 
-    public String getDocuments() {return documents;}
+    public ArrayNode getDocuments() {return documents;}
 
     @Override
     public String getEmail() {

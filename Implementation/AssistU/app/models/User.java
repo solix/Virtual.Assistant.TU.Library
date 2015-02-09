@@ -82,6 +82,10 @@ public class User extends Model {
         final User user = User.findByAuthUserIdentity(authUser);
         Logger.debug("USER FOR UPDATING: " + user.name);
         user.active = true;
+
+        if(user.mendeleyConnected){
+
+        }
 //        user.linkedAccounts = Collections.singletonList(LinkedAccount
 //                .create(authUser));
 
