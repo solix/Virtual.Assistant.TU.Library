@@ -1,4 +1,4 @@
-@(signupForm: Form[_], info: Boolean, message: String)
+@(signupForm: Form[_], info: Boolean, theme: String, message: String)
 @import com.feth.play.module.pa.views.html._
 @import com.feth.play.module.pa.providers.AuthProvider
 <html>
@@ -14,13 +14,11 @@
                     </div>
                 </div>
             </div>
-            @if(info) {
-                <br>
-                <p class="error" style="text-align: center; color: red">@message</p>
-                <br>
-            }
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                    @if(info) {
+                        @template.alert(theme, message)
+                    }
                     @helper.form(routes.Signup.doSignup){
                         <div class="row">
                             <div class="col-md-6">

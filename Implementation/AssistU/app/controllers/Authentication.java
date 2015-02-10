@@ -30,7 +30,7 @@ public class Authentication extends Controller {
             // User did not fill everything properly
 //            return badRequest(home.render("Could not log you in", null, true, "danger",
 //                    "The combination of your email and password did not match any account"));
-            return ok(login.render(filledForm, true, "Your credentials did not match any user"));
+            return ok(login.render(filledForm, true, "danger", "Your credentials did not match any user"));
         } else {
             // Everything was filled
             return UsernamePasswordAuthProvider.handleLogin(ctx());
@@ -65,7 +65,14 @@ public class Authentication extends Controller {
         User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
         if(user != null)
             OAuthLogout();
-        return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, ""));
+        return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, "", ""));
+    }
+
+    public static Result relogin() {
+        User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        if(user != null)
+            OAuthLogout();
+        return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Your credentials did not match any user"));
     }
 
     /**
@@ -77,11 +84,11 @@ public class Authentication extends Controller {
         User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
         if(user != null)
             OAuthLogout();
-        return ok(signup.render(LocalUsernamePasswordAuthProvider.SIGNUP_FORM, false, ""));
+        return ok(signup.render(LocalUsernamePasswordAuthProvider.SIGNUP_FORM, false, "", ""));
     }
 
     public static Result forgotPasswordPage(){
-        return ok(forgotPassword.render(null, false, ""));
+        return ok(forgotPassword.render(null, false, "", ""));
     }
 
     /**
@@ -119,7 +126,7 @@ public class Authentication extends Controller {
      */
     public static Result OAuthDenied(String provider){
         Authenticate.noCache(response());
-        return badRequest(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Could not log you in"));
+        return badRequest(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Could not log you in"));
     }
 
     /**

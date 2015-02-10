@@ -15,6 +15,7 @@ GET         /task/undo/:tid                             controllers.TaskData.und
 
 #login
 GET         /login                                      controllers.Authentication.login()
+GET         /relogin                                    controllers.Authentication.relogin()
 POST        /logingin                                   controllers.Authentication.doLogin()
 GET         /login/forgotpassword                       controllers.Signup.forgotPassword()
 POST        /login/doforgotpassword                     controllers.Signup.doForgotPassword()

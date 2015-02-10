@@ -46,7 +46,7 @@ public class Global extends GlobalSettings {
                 @Override
                 public Call login() {
                     // Your login page
-                    return routes.Authentication.login();
+                    return routes.Authentication.relogin();
                 }
 
                 @Override
@@ -70,6 +70,7 @@ public class Global extends GlobalSettings {
 
                 @Override
                 public Call onException(final AuthException e) {
+                    Logger.debug("you're in an exception, LOL");
                     if (e instanceof AccessDeniedException) {
                         return routes.Authentication.OAuthDenied(((AccessDeniedException) e).getProviderKey());
                     }

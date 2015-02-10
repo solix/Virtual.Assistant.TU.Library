@@ -25,7 +25,7 @@ public class Signup extends Controller {
 		final Form<LocalUsernamePasswordAuthProvider.NativeSignup> filledForm = LocalUsernamePasswordAuthProvider.SIGNUP_FORM
 				.bindFromRequest();
 		if (filledForm.hasErrors() || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
-			return badRequest(signup.render(filledForm, true, "The form contained errors, please make sure everything is filled in correctly."));
+			return badRequest(signup.render(filledForm, true, "danger", "The form contained errors, please make sure everything is filled in correctly"));
 		} else {
 			return com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.handleSignup(ctx());
 		}
@@ -33,7 +33,7 @@ public class Signup extends Controller {
 
 	public static Result unverified() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Please verify your email before continuing."));
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "info", "Please verify your email before continuing"));
 	}
 
 	public static class PasswordReset extends Account.PasswordChange {
@@ -63,7 +63,7 @@ public class Signup extends Controller {
 	public static Result forgotPassword() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		Form<NativeIdentity> form = FORGOT_PASSWORD_FORM;
-		return ok(forgotPassword.render(form, false, ""));
+		return ok(forgotPassword.render(form, false, "", ""));
 	}
 
 	public static Result doForgotPassword() {
@@ -72,7 +72,7 @@ public class Signup extends Controller {
 				.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			// User did not fill in his/her email
-			return badRequest(forgotPassword.render(filledForm, true, "You did not provide a valid email address."));
+			return badRequest(forgotPassword.render(filledForm, true, "danger", "You did not provide a valid email address"));
 		} else {
 			// The email address given *BY AN UNKNWON PERSON* to the form - we
 			// should find out if we actually have a user with this email
@@ -115,7 +115,7 @@ public class Signup extends Controller {
 				}
 			}
 
-			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "A link has been sent to " + email + " to reset your password."));
+			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "success", "A link has been sent to " + email + " to reset your password"));
 		}
 	}
 
@@ -141,13 +141,13 @@ public class Signup extends Controller {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		final TokenAction ta = tokenIsValid(token, Type.PASSWORD_RESET);
 		if (ta == null) {
-			return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "Your link was no longer valid, please try again."));
+			return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "danger", "Your link was no longer valid, please try again"));
 		}
 		Form<PasswordReset> new_form = PASSWORD_RESET_FORM;
 		new_form.fill(new PasswordReset(token));
 		new_form.data().put("token", token);
 		Logger.debug("RESET PASSWORD FORM FIRST: " + new_form);
-		return ok(resetPassword.render(new_form, false, ""));
+		return ok(resetPassword.render(new_form, false, "", ""));
 	}
 
 	public static Result doResetPassword() {
@@ -155,13 +155,13 @@ public class Signup extends Controller {
 		final Form<PasswordReset> filledForm = PASSWORD_RESET_FORM.bindFromRequest();
 		Logger.debug("RESET PASSWORD FORM AFTER: " + filledForm);
 		if (filledForm.hasErrors()  || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
-			return badRequest(resetPassword.render(filledForm, true, "You did not provide a valid password."));
+			return badRequest(resetPassword.render(filledForm, true, "danger", "You did not provide a valid password"));
 		} else {
 			final String newPassword = filledForm.get().password;
 			final String token = filledForm.get().token;
 			final TokenAction ta = tokenIsValid(token, Type.PASSWORD_RESET);
 			if (ta == null) {
-				return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "Your link was no longer valid, please try again."));
+				return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "danger", "Your link was no longer valid, please try again"));
 			}
 			final User u = ta.targetUser;
 			try {
@@ -187,13 +187,13 @@ public class Signup extends Controller {
 //				flash(Authentication.FLASH_MESSAGE_KEY,
 //						Messages.get("playauthenticate.reset_password.message.success.manual_login"));
 			}
-			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Your password has been successfully reset."));
+			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "success", "Your password has been successfully reset"));
 		}
 	}
 
 	public static Result oAuthDenied(final String getProviderKey) {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "Could not log you in with " + getProviderKey));
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Could not log you in with " + getProviderKey));
 	}
 
 	public static Result exists() {
@@ -224,6 +224,6 @@ public class Signup extends Controller {
 				Authentication.OAuthLogout();
 //			return ok(index.render("Welcome " + user.name, user));
 		}
-		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "You have been verified, please log in below"));
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "success", "You have been verified, please log in below"));
 	}
 }

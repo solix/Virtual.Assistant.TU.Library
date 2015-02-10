@@ -33,7 +33,7 @@ public class ProjectData extends Controller {
     public static Result createProjectPage() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
-            return ok(projectNew.render("Create a new Project", projectForm, false, "", user));
+            return ok(projectNew.render("Create a new Project", projectForm, false, "", "", user));
         else
             return Authentication.login();
     }
@@ -42,7 +42,7 @@ public class ProjectData extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(pid);
         if(user != null)
-            return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", user));
+            return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", "", user));
         else
             return Authentication.login();
     }
@@ -55,10 +55,11 @@ public class ProjectData extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "The input did not fulfill the requirements, please review your information", user));
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
+                    "The input did not fulfill the requirements, please review your information", user));
         } else if (!(Application.AllowedTitleRegex(filledProjectForm.get().folder)
                 && Application.AllowedTitleRegex(filledProjectForm.get().name))) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true,
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
                     "The input did not have the allowed format, please review your information", user));
         } else {
             Project projectData = filledProjectForm.get();
@@ -83,10 +84,11 @@ public class ProjectData extends Controller {
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
         if(filledProjectForm.hasErrors()) {
             Logger.debug(filledProjectForm.errors().toString());
-            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "The input did not fulfill the requirements, please review your information", user));
+            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "danger",
+                    "The input did not fulfill the requirements, please review your information", user));
         } else if (!(Application.AllowedTitleRegex(filledProjectForm.get().folder)
                 && Application.AllowedTitleRegex(filledProjectForm.get().name))) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true,
+            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
                     "The input did not have the allowed format, please review your information", user));
         }  else {
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
