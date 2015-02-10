@@ -14,8 +14,8 @@ public class Emailer extends Controller {
     public static Result send() {
         final Email email = new Email();
         email.setSubject("Simple email");
-        email.setFrom("Mister FROM <from@email.com>");
-        email.addTo("Miss TO <to@email.com>");
+        email.setFrom("soheil.jahanshahi@gmail");
+        email.addTo("soheil.jahanshahi@gmail.com");
         email.addAttachment("favicon.png", new File(Play.application().classloader().getResource("public/images/favicon.png").getPath()));
         email.addAttachment("data.txt", "data".getBytes(), "text/plain", "Simple data", EmailAttachment.INLINE);
         email.setBodyText("A text message");
