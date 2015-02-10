@@ -17,6 +17,7 @@ create table comment (
 create table document_file (
   id                        bigint not null,
   name                      varchar(255),
+  owntemplate               boolean,
   filepath                  varchar(255),
   project_id                bigint,
   version                   bigint not null,
@@ -49,15 +50,19 @@ create table project (
   folder                    varchar(255),
   description               varchar(255),
   template                  varchar(255),
+  planning                  boolean,
   active                    boolean,
   date_created              timestamp,
+  last_accessed             timestamp,
   constraint pk_project primary key (id))
 ;
 
 create table role (
   rid                       bigint not null,
   role                      varchar(255),
+  date_created              timestamp,
   user_id                   bigint,
+  project_id                bigint,
   constraint pk_role primary key (rid))
 ;
 
@@ -95,12 +100,6 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
-
-create table user_project (
-  user_id                        bigint not null,
-  project_id                     bigint not null,
-  constraint pk_user_project primary key (user_id, project_id))
-;
 create sequence comment_seq;
 
 create sequence document_file_seq;
@@ -131,16 +130,14 @@ alter table linked_account add constraint fk_linked_account_user_5 foreign key (
 create index ix_linked_account_user_5 on linked_account (user_id);
 alter table role add constraint fk_role_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_role_user_6 on role (user_id);
-alter table task add constraint fk_task_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_7 on task (user_id);
-alter table token_action add constraint fk_token_action_targetUser_8 foreign key (target_user_id) references user (id) on delete restrict on update restrict;
-create index ix_token_action_targetUser_8 on token_action (target_user_id);
+alter table role add constraint fk_role_project_7 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_role_project_7 on role (project_id);
+alter table task add constraint fk_task_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_8 on task (user_id);
+alter table token_action add constraint fk_token_action_targetUser_9 foreign key (target_user_id) references user (id) on delete restrict on update restrict;
+create index ix_token_action_targetUser_9 on token_action (target_user_id);
 
 
-
-alter table user_project add constraint fk_user_project_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
-
-alter table user_project add constraint fk_user_project_project_02 foreign key (project_id) references project (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -155,8 +152,6 @@ drop table if exists event;
 drop table if exists linked_account;
 
 drop table if exists project;
-
-drop table if exists user_project;
 
 drop table if exists role;
 

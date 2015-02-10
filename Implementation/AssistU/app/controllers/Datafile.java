@@ -82,4 +82,51 @@ public class Datafile extends Controller {
 
 
     }
+
+    public static Result uploadNewTemplate(long pid) {
+        Project project=Project.find.byId(pid);
+        MultipartFormData body = request().body().asMultipartFormData();
+        //play api to get the file
+        FilePart document = body.getFile("document");
+        if (document != null) {
+            String fileName = document.getFilename();
+            String contentType = document.getContentType();
+            File file = document.getFile();
+            try {
+                //this creates folder and  will be changed in future to the name of the project
+                //String pname=project.folder;
+
+                FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libtempl/Owntemplates/"+project.folder, fileName));
+            } catch (IOException ioe) {
+                System.out.println("Problem operating on filesystem");
+            }
+            String filepath = document.getFile().toString();
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id);
+            doc.owntemplate=true;
+            project.template="Own";
+            project.update();
+            doc.update();
+
+
+            return redirect(controllers.routes.Application.project());
+        } else {
+
+            return badRequest(
+                    "PLease provide a correct file"
+            );
+        }
+    }
+
+    public static Result downloadOwnTemplate(Long id){
+
+
+        DocumentFile documentFile = DocumentFile.find.byId(id);
+        Project project = Project.find.where().in("template","Own").in("documentFiles",documentFile).findUnique();
+        String path ="/Users/soheil/Desktop/libtempl/Owntemplates/"+project.folder;
+
+        return  ok(new File(path,documentFile.name));
+
+
+    }
+
 }

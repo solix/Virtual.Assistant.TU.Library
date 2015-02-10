@@ -64,7 +64,10 @@ public class ProjectData extends Controller {
             Project projectData = filledProjectForm.get();
             Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
             p.addOwner(p.id, user.id);
-            Event.defaultPlanningArticle(user, p);
+            if(!p.template.equals("None")){
+                Event.defaultPlanningArticle(user, p);
+                p.planning=true;
+                p.save();}
             return redirect(routes.Application.project());
         }
     }
@@ -117,6 +120,8 @@ public class ProjectData extends Controller {
         if(emailform.get("role").equals("Owner")) {
             p.addOwner(p.id, user.id);
             Event.defaultPlanningArticle(user, p);
+            p.planning=true;
+            p.update();
         } else if(emailform.get("role").equals("Reviewer")) {
             p.addReviewer(p.id, user.id);
         }else{

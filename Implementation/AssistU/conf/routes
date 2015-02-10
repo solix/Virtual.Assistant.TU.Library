@@ -61,8 +61,12 @@ GET         /:uid/project/:pid/archive             controllers.ProjectData.archi
 GET         /project/:pid/addMember                controllers.ProjectData.addMemberToProjectAs(pid: Long)
 GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
 POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
+POST        /project/uploadNewTemplate             controllers.Datafile.uploadNewTemplate(pid: Long)
 GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
 GET         /project/downloadTemplate              controllers.Datafile.downloadTemplate()
+GET         /project/downloadownTemplate/:fileid   controllers.Datafile.downloadOwnTemplate(fileid :Long)
+
+
 
 #discussion
 GET         /discussions                           controllers.Application.discussion()

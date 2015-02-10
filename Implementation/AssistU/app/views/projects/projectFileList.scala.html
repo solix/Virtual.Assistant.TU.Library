@@ -12,14 +12,18 @@
     <tbody>
 
         @*TODO:NO RELATIONS YET*@
-       @filelist.map{ f =>
-        <tr>
-            <td>@f.name</td>
-            <td>Soheil Jahanshahi</td>
-            <td style="text-align: center">@f.id</td>
-            <td style="text-align: center"><a href="@{routes.Datafile.downloadDocument(f.id)}" ><i class="fa fa-download fa-fw"></i></a></td>
-        </tr>
-        }
+       @filelist.map { f =>
+           @if(f.owntemplate.equals(false)) {
+               <tr>
+                   <td>@f.name</td>
+                   <td>Soheil Jahanshahi</td>
+                   <td style="text-align : center">@f.id</td>
+                   <td style="text-align : center"><a href="@{
+                       routes.Datafile.downloadDocument(f.id)
+                   }" ><i class="fa fa-download fa-fw"></i></a></td>
+               </tr>
+           }
+       }
 
     </tbody>
 </table>

@@ -106,7 +106,7 @@ public class Event extends Model {
     }
 
     /**
-     * increment date to number of  desired days
+     * increment date one day ahead
      * @param d
      * @return
      */
@@ -155,5 +155,6 @@ public class Event extends Model {
         event9.description="Make sure the layout and style follow the journal’s style format.";
         event9.update();
     }
+
 
 }
