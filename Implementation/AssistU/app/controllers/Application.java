@@ -81,11 +81,16 @@ public class Application extends Controller {
     }
 
     public static Boolean AllowedTitleRegex(String input){
-        Logger.debug("Into regex");
-        final String regex = "([a-zA-Z][a-zA-Z0-9]+)( {1}([a-zA-Z0-9]+))*";
+        final String regex = "([a-zA-Z]+)( {1}([a-zA-Z0-9]+))*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
-        Logger.debug("It returned: " + m.matches());
+        return m.matches();
+    }
+
+    public static Boolean AllowedNameRegex(String input){
+        final String regex = "([a-zA-Z]+)( {1}([A-Z][a-zA-Z]+))";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(input);
         return m.matches();
     }
 
