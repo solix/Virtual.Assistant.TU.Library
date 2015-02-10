@@ -84,7 +84,8 @@ GET         /suggestions/:subject                  controllers.SuggestionData.su
 
 
 
-
+#Email
+GET        /send/email               controllers.Emailer.send()
 
 
 
