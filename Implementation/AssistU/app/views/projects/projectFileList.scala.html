@@ -1,29 +1,31 @@
-@(filelist : List[DocumentFile])
+@(filelist : List[DocumentFile], p: Project)
 <!-- Table -->
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th style="width: 60%">File</th>
-            <th style="width: 20%">Uploaded by</th>
-            <th style="text-align: center; width: 15%">Version</th>
-            <th style="text-align: center; width: 5%">Download</th>
-        </tr>
-    </thead>
-    <tbody>
+@if(filelist.size>0) {
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width : 60 %">File</th>
+                <th style="width : 20 %">Uploaded by</th>
+                <th style="text-align : center ; width : 15 %">Version</th>
+                <th style="text-align : center ; width : 5 %">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @filelist.map { f =>
+            @if(f.owntemplate.equals(false)) {
+                <tr>
+                    <td>@f.name</td>
+                    <td>@f.user.name</td>
+                    <td style="text-align : center">@f.id</td>
+                    <td style="text-align : center">
+                        <a href="@routes.Datafile.downloadDocument(f.id)" ><i class="fa fa-download fa-fw"></i></a>
+                        |
+                        <a href="@routes.Datafile.documentDiscussion(f.id)"><i class="fa fa-comment fa-fw"></i></a>
+                    </td>
+                </tr>
+            }
+        }
 
-        @*TODO:NO RELATIONS YET*@
-       @filelist.map { f =>
-           @if(f.owntemplate.equals(false)) {
-               <tr>
-                   <td>@f.name</td>
-                   <td>Soheil Jahanshahi</td>
-                   <td style="text-align : center">@f.id</td>
-                   <td style="text-align : center"><a href="@{
-                       routes.Datafile.downloadDocument(f.id)
-                   }" ><i class="fa fa-download fa-fw"></i></a></td>
-               </tr>
-           }
-       }
-
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}

@@ -42,16 +42,19 @@ public class DocumentFile extends Model{
     @ManyToOne
     public Project project;
 
+    @ManyToOne
+    public User user;
+
     /**
      * Constructor
      * @param name
      */
-    public DocumentFile(String name, File file ,String filepath, long pid){
+    public DocumentFile(String name, File file ,String filepath, Long pid, Long uid){
         this.name=name;
         this.filepath=filepath;
         this.file=file;
         this.project=Project.find.ref(pid);
-
+        this.user = User.find.byId(uid);
     }
 
     /**
@@ -61,9 +64,8 @@ public class DocumentFile extends Model{
             Long.class, DocumentFile.class
     );
 
-    public static DocumentFile create(String name, File file  ,String filepath,long pid){
-        Project project = Project.find.ref(pid);
-        DocumentFile documentFile = new DocumentFile(name,file,filepath,project.id);
+    public static DocumentFile create(String name, File file, String filepath, Long pid, Long uid){
+        DocumentFile documentFile = new DocumentFile(name, file, filepath, pid, uid);
         documentFile.owntemplate=false;
         documentFile.save();
 

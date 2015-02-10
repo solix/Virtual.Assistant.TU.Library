@@ -293,17 +293,17 @@
                                 @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
                                     @if(role.equals(Role.OWNER)) {
                                         <li>
-                                            <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-mortar-board"></i> @p.name</a>
+                                            <a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-mortar-board"></i> @p.name</a>
                                         </li>
                                     } else {
                                         @if(role.equals(Role.REVIEWER)){
                                             <li>
-                                                <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-edit"></i> @p.name</a>
+                                                <a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-edit"></i> @p.name</a>
                                             </li>
                                         } else {
                                             @if(role.equals(Role.GUEST)){
                                                 <li>
-                                                    <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-suitcase"></i> @p.name</a>
+                                                    <a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-suitcase"></i> @p.name</a>
                                                 </li>
                                             }
                                         }

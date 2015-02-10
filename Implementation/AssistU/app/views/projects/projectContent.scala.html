@@ -70,9 +70,10 @@
                                     </div>
                                 </div>
                                 <hr class="hr" style="margin-top: 0">
-                                @projects.projectFileList(DocumentFile.find.where().eq("project.id", p.id).findList())
-                                @*<hr class="hr">*@
-                                @projects.projectUploadButtons(p)
+                                        @projects.projectFileList(DocumentFile.find.where().eq("project", p).findList(), project)
+                                        @*<hr class="hr">*@
+                                        @projects.projectUploadButtons(p)
+
                             </div>
                         @*</div>*@
                     </div>

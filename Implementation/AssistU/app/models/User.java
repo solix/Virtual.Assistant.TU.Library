@@ -46,6 +46,9 @@ public class User extends Model {
     public List<Event> events;
 
     @OneToMany(mappedBy = "user")
+    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
+
+    @OneToMany(mappedBy = "user")
     public List<Role> roles= new ArrayList<Role>();
     @OneToMany(mappedBy = "user")
     public List<Comment> comments=new ArrayList<Comment>();

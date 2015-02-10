@@ -68,7 +68,7 @@ public class ProjectData extends Controller {
                 Event.defaultPlanningArticle(user, p);
                 p.planning=true;
                 p.save();}
-            return redirect(routes.Application.project());
+            return redirect(routes.ProjectData.project(p.id));
         }
     }
 
@@ -90,7 +90,7 @@ public class ProjectData extends Controller {
                     "The input did not have the allowed format, please review your information", user));
         }  else {
             Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
-            return redirect(routes.Application.project());
+            return redirect(routes.ProjectData.project(p.id));
         }
 
     }

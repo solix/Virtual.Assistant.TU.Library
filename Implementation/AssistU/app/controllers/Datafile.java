@@ -13,10 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.String;
 import org.apache.commons.io.FileUtils;
-
-
-
-
+import views.html.discussionFile;
+import com.feth.play.module.pa.PlayAuthenticate;
 
 public class Datafile extends Controller {
 
@@ -24,6 +22,7 @@ public class Datafile extends Controller {
      * POST uploaded document  to the server
      */
     public static Result uploadDocument(long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project project=Project.find.byId(pid);
         MultipartFormData body = request().body().asMultipartFormData();
         //play api to get the file
@@ -41,7 +40,7 @@ public class Datafile extends Controller {
                 System.out.println("Problem operating on filesystem");
             }
             String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id);
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, user.id);
 
 
             return redirect(controllers.routes.Application.project());
@@ -66,24 +65,24 @@ public class Datafile extends Controller {
         DocumentFile documentFile = DocumentFile.find.byId(id);
         Project project = Project.find.where().in("documentFiles",documentFile).findUnique();
         String path ="/Users/soheil/Desktop/libUpload/"+project.folder;
-
         return  ok(new File(path,documentFile.name));
+    }
 
-
+    public static Result documentDiscussion(Long docid){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        DocumentFile df = DocumentFile.find.byId(docid);
+        Project p =Project.find.byId(df.project.id);
+        return ok(discussionFile.render("Discuss " + df.name, user, p, df, false, ""));
     }
 
     public static Result downloadTemplate(){
-
-
         String temple="template.doc";
         String path ="/Users/soheil/Desktop/libtempl/";
-
         return  ok(new File(path,temple));
-
-
     }
 
     public static Result uploadNewTemplate(long pid) {
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project project=Project.find.byId(pid);
         MultipartFormData body = request().body().asMultipartFormData();
         //play api to get the file
@@ -101,7 +100,7 @@ public class Datafile extends Controller {
                 System.out.println("Problem operating on filesystem");
             }
             String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id);
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, user.id);
             doc.owntemplate=true;
             project.template="Own";
             project.update();

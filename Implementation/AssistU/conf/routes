@@ -3,84 +3,86 @@
 # ~~~~
 
 # Home page
-GET         /                                      controllers.Application.index()
+GET         /                                           controllers.Application.index()
 
 #task
-GET         /task                                  controllers.Application.task()
-POST        /task/new                              controllers.TaskData.addTask()
-GET         /task/get                              controllers.TaskData.getTasks()
-GET         /task/delete/:tid                      controllers.TaskData.deleteTask(tid: Long)
-GET         /task/done/:tid                        controllers.TaskData.doneTask(tid: Long)
-GET         /task/undo/:tid                        controllers.TaskData.undoTask(tid: Long)
+GET         /task                                       controllers.Application.task()
+POST        /task/new                                   controllers.TaskData.addTask()
+GET         /task/get                                   controllers.TaskData.getTasks()
+GET         /task/delete/:tid                           controllers.TaskData.deleteTask(tid: Long)
+GET         /task/done/:tid                             controllers.TaskData.doneTask(tid: Long)
+GET         /task/undo/:tid                             controllers.TaskData.undoTask(tid: Long)
 
 #login
-GET         /login                                 controllers.Authentication.login()
-POST        /logingin                              controllers.Authentication.doLogin()
-GET         /login/forgotpassword                  controllers.Signup.forgotPassword()
-POST        /login/doforgotpassword                controllers.Signup.doForgotPassword()
-POST        /login/doresetpassword                 controllers.Signup.doResetPassword()
+GET         /login                                      controllers.Authentication.login()
+POST        /logingin                                   controllers.Authentication.doLogin()
+GET         /login/forgotpassword                       controllers.Signup.forgotPassword()
+POST        /login/doforgotpassword                     controllers.Signup.doForgotPassword()
+POST        /login/doresetpassword                      controllers.Signup.doResetPassword()
 
 #signup
-GET         /signup                                controllers.Authentication.signup()
-POST        /signingup                             controllers.Signup.doSignup()
+GET         /signup                                     controllers.Authentication.signup()
+POST        /signingup                                  controllers.Signup.doSignup()
 
 #Local Login Account routes
-GET         /accounts/unverified                   controllers.Signup.unverified
-GET         /accounts/verify/:token                controllers.Signup.verify(token: String)
-GET         /accounts/password/reset/:token        controllers.Signup.resetPassword(token: String)
-GET         /accounts/exists                       controllers.Signup.exists
+GET         /accounts/unverified                        controllers.Signup.unverified
+GET         /accounts/verify/:token                     controllers.Signup.verify(token: String)
+GET         /accounts/password/reset/:token             controllers.Signup.resetPassword(token: String)
+GET         /accounts/exists                            controllers.Signup.exists
 
 #OAuth2
-GET         /logout                                controllers.Authentication.OAuthLogout()
-GET         /authenticate/:provider                controllers.Authentication.OAuth(provider: String)
-GET         /authenticate/:provider/denied         controllers.Authentication.OAuthDenied(provider: String)
+GET         /logout                                     controllers.Authentication.OAuthLogout()
+GET         /authenticate/:provider                     controllers.Authentication.OAuth(provider: String)
+GET         /authenticate/:provider/denied              controllers.Authentication.OAuthDenied(provider: String)
 
 #calendar
-GET         /calendar                              controllers.CalData.calendar()
-GET         /:id/events                            controllers.CalData.list(id: Long)
-GET         /events.json                           controllers.CalData.json(start: Long , end: Long )
-GET         /event/:id/edit                        controllers.CalData.edit(id:Long)
-POST        /event/:id/update                      controllers.CalData.update(id:Long)
-POST        /event                                 controllers.CalData.add()
-GET         /event/new                             controllers.CalData.blank()
-GET         /event/:id/delete                      controllers.CalData.delete(id:Long)
-POST        /:id/event-ajax                        controllers.CalData.addByAjax(id:Long)
-POST        /event-move                            controllers.CalData.move()
-POST        /event-resize                          controllers.CalData.resize()
+GET         /calendar                                   controllers.CalData.calendar()
+GET         /:id/events                                 controllers.CalData.list(id: Long)
+GET         /events.json                                controllers.CalData.json(start: Long , end: Long )
+GET         /event/:id/edit                             controllers.CalData.edit(id:Long)
+POST        /event/:id/update                           controllers.CalData.update(id:Long)
+POST        /event                                      controllers.CalData.add()
+GET         /event/new                                  controllers.CalData.blank()
+GET         /event/:id/delete                           controllers.CalData.delete(id:Long)
+POST        /:id/event-ajax                             controllers.CalData.addByAjax(id:Long)
+POST        /event-move                                 controllers.CalData.move()
+POST        /event-resize                               controllers.CalData.resize()
 
 
 
 #project
-GET         /project                               controllers.Application.project()
-GET         /project/new                           controllers.ProjectData.createProjectPage()
-POST        /project/create                        controllers.ProjectData.createProject()
-GET         /project/:pid                          controllers.ProjectData.project(pid: Long)
-GET         /project/:pid/edit                     controllers.ProjectData.editProjectPage(pid: Long)
-GET         /project/:pid/editing                  controllers.ProjectData.editProject(pid: Long)
-GET         /:uid/project/:pid/archive             controllers.ProjectData.archiveProject(uid: Long, pid: Long)
-GET         /project/:pid/addMember                controllers.ProjectData.addMemberToProjectAs(pid: Long)
-GET         /project/:pid/removeMember/:uid        controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
-POST        /project/upload                        controllers.Datafile.uploadDocument(pid : Long)
-POST        /project/uploadNewTemplate             controllers.Datafile.uploadNewTemplate(pid: Long)
-GET         /project/download/:fileid              controllers.Datafile.downloadDocument(fileid :Long)
-GET         /project/downloadTemplate              controllers.Datafile.downloadTemplate()
-GET         /project/downloadownTemplate/:fileid   controllers.Datafile.downloadOwnTemplate(fileid :Long)
+GET         /project                                    controllers.Application.project()
+GET         /project/new                                controllers.ProjectData.createProjectPage()
+POST        /project/create                             controllers.ProjectData.createProject()
+GET         /project/:pid                               controllers.ProjectData.project(pid: Long)
+GET         /project/:pid/edit                          controllers.ProjectData.editProjectPage(pid: Long)
+GET         /project/:pid/editing                       controllers.ProjectData.editProject(pid: Long)
+GET         /:uid/project/:pid/archive                  controllers.ProjectData.archiveProject(uid: Long, pid: Long)
+GET         /project/:pid/addMember                     controllers.ProjectData.addMemberToProjectAs(pid: Long)
+GET         /project/:pid/removeMember/:uid             controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
+POST        /project/upload                             controllers.Datafile.uploadDocument(pid : Long)
+POST        /project/uploadNewTemplate                  controllers.Datafile.uploadNewTemplate(pid: Long)
+GET         /project/discuss/:docId                     controllers.Datafile.documentDiscussion(docId: Long)
+GET         /project/download/:fileid                   controllers.Datafile.downloadDocument(fileid :Long)
+GET         /project/downloadTemplate                   controllers.Datafile.downloadTemplate()
+GET         /project/downloadownTemplate/:fileid        controllers.Datafile.downloadOwnTemplate(fileid :Long)
 
 
 
 #discussion
-GET         /discussions                           controllers.Application.discussion()
-GET         /project/:pid/discussion               controllers.DiscussionData.discussion(pid: Long)
-GET         /chatFeed/:project                     controllers.DiscussionData.chatFeed(project: String)
-POST        /chat                                  controllers.DiscussionData.postMessage()
-GET         /comments                              controllers.DiscussionData.getComments()
-GET         /subcomments                           controllers.DiscussionData.getSubComments()
-GET         /projectids                            controllers.ProjectData.getProjectIdsAsJson()
-GET         /projectid                             controllers.ProjectData.getLastAccessedProjectIdAsJson()
+GET         /discussions                                controllers.Application.discussion()
+GET         /project/:pid/discussion                    controllers.DiscussionData.discussion(pid: Long)
+GET         /chatFeed/:project                          controllers.DiscussionData.chatFeed(project: String)
+POST        /chat                                       controllers.DiscussionData.postMessage()
+GET         /postexternal                               controllers.DiscussionData.postExternalMessage()
+GET         /comments                                   controllers.DiscussionData.getComments()
+GET         /subcomments                                controllers.DiscussionData.getSubComments()
+GET         /projectids                                 controllers.ProjectData.getProjectIdsAsJson()
+GET         /projectid                                  controllers.ProjectData.getLastAccessedProjectIdAsJson()
 
 #Suggestions
-GET         /suggestions                           controllers.Application.suggestions()
-GET         /suggestions/:subject                  controllers.SuggestionData.suggestion(subject: String)
+GET         /suggestions                                controllers.Application.suggestions()
+GET         /suggestions/:subject                       controllers.SuggestionData.suggestion(subject: String)
 
 
 
@@ -91,5 +93,5 @@ GET         /suggestions/:subject                  controllers.SuggestionData.su
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                          controllers.Assets.at(path="/public", file)
-GET         /webjars/*file                         controllers.WebJarAssets.at(file)
+GET         /assets/*file                               controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                              controllers.WebJarAssets.at(file)

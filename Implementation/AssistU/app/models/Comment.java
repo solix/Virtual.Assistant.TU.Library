@@ -31,13 +31,19 @@ public class Comment extends Model {
 
     public boolean isChild =false;
 
-    public Comment(Long uid, String subject, String text, String date, Long pid, Boolean isChild){
+    public boolean hasAttachment=false;
+
+    public String attachment = "";
+
+    public Comment(Long uid, String subject, String text, String date, Long pid, Boolean isChild, Boolean hasAttachment, String attachment){
         this.subject = subject;
         this.content = text;
         this.date= date;
         this.user = User.find.byId(uid);
         this.project = Project.find.byId(pid);
         this.isChild = isChild;
+        this.hasAttachment = hasAttachment;
+        this.attachment = attachment;
     }
 
     /**
@@ -50,8 +56,8 @@ public class Comment extends Model {
     /**
      * creates new chatmessage
      */
-    public static Comment create(Long uid, String subject, String text, String date, Long pid, Boolean isChild){
-        Comment cm = new Comment(uid, subject, text, date, pid, isChild);
+    public static Comment create(Long uid, String subject, String text, String date, Long pid, Boolean isChild, Boolean hasAttachment, String attachment){
+        Comment cm = new Comment(uid, subject, text, date, pid, isChild, hasAttachment, attachment);
         Project.updateLastAccessed(pid);
         cm.save();
         return cm;

@@ -94,12 +94,4 @@ public class Application extends Controller {
         return m.matches();
     }
 
-    /*TODO: FIND GOOD PASSWORD CONVENTION*/
-    public static Boolean AllowedPasswordRegex(String input){
-        final String regex = "([a-zA-Z][a-zA-Z0-9]+)( {1}([a-zA-Z0-9]+))*";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(input);
-        return m.matches();
-    }
-
 }

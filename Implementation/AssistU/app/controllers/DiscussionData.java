@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
 import models.*;
 import play.Logger;
+import play.data.DynamicForm;
+import play.data.Form;
 import play.libs.EventSource;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -17,6 +19,7 @@ import java.util.*;
 
 import com.feth.play.module.pa.PlayAuthenticate;
 import views.html.discussion;
+import views.html.discussionFile;
 import views.html.project;
 
 public class DiscussionData extends Controller {
@@ -56,7 +59,9 @@ public class DiscussionData extends Controller {
               message.get("content").asText(),
               message.get("date").asText(),
               message.get("projectID").asLong(),
-              message.get("isChild").asBoolean());
+              message.get("isChild").asBoolean(),
+              false,
+              "");
       message.put("cid", comment.cid);
       message.put("username", comment.user.name);
       message.put("role", Role.find.where().eq("user", user).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
@@ -64,6 +69,43 @@ public class DiscussionData extends Controller {
       sendEvent(message);
     }
     return ok();
+  }
+
+  /**
+   * Controller action for POSTing external chat messages
+   */
+  public static Result postExternalMessage() {
+      DynamicForm message = Form.form().bindFromRequest();
+      ObjectNode result = new ObjectMapper().createObjectNode();
+      User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+      Project p = Project.find.byId(Long.parseLong(message.get("projectID")));
+      if(message.get("content").equals("") || message.get("subject").equals("")) {
+          return badRequest(discussionFile.render("An error has occured.", user, p,
+                  DocumentFile.find.byId(Long.parseLong(message.get("documentID"))), true,
+                  "Your message or subject was empty"));
+      } else {
+          result.put("subject", message.get("subject"));
+          result.put("content", message.get("content"));
+          result.put("date", (new Date()).toString());
+          result.put("projectID", "" + p.id);
+          result.put("isChild", false);
+          result.put("hasAttachment", true);
+          result.put("attachment", message.get("attachment"));
+          Comment comment = Comment.create(
+                user.id,
+                result.get("subject").asText(),
+                result.get("content").asText(),
+                result.get("date").asText(),
+                result.get("projectID").asLong(),
+                result.get("isChild").asBoolean(),
+                result.get("hasAttachment").asBoolean(),
+                result.get("attachment").asText());
+          result.put("cid", "" + comment.cid);
+          result.put("role", Role.find.where().eq("user", user).eq("project", p).findUnique().role);
+          result.put("username", user.name);
+          sendEvent(result);
+          return DiscussionData.discussion(p.id);
+      }
   }
 
   public static Result getComments() {
