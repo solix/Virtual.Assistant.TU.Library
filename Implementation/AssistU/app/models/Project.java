@@ -29,6 +29,7 @@ public class Project extends Model {
     public String description;
     @Required
     public String template;
+    public boolean planning;
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateCreated;
@@ -70,6 +71,7 @@ public class Project extends Model {
         project.active=true;
         project.dateCreated = new Date();
         project.lastAccessed = new Date();
+        project.planning=false;
         project.save();
         return project;
     }
@@ -98,6 +100,7 @@ public class Project extends Model {
         p.lastAccessed = new Date();
         p.update();
     }
+
 
     /**
      * This method invites another user to a project by its user id

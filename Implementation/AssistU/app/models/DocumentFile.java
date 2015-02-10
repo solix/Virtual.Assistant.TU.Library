@@ -32,6 +32,8 @@ public class DocumentFile extends Model{
     @Transient
     public File file;
 
+    public boolean owntemplate;
+
     public String filepath;
 
     @Version
@@ -62,6 +64,7 @@ public class DocumentFile extends Model{
     public static DocumentFile create(String name, File file  ,String filepath,long pid){
         Project project = Project.find.ref(pid);
         DocumentFile documentFile = new DocumentFile(name,file,filepath,project.id);
+        documentFile.owntemplate=false;
         documentFile.save();
 
         return documentFile;
