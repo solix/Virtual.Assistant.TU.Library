@@ -11,6 +11,8 @@ create table comment (
   user_id                   bigint,
   project_id                bigint,
   is_child                  boolean,
+  has_attachment            boolean,
+  attachment                varchar(255),
   constraint pk_comment primary key (cid))
 ;
 
@@ -20,6 +22,7 @@ create table document_file (
   owntemplate               boolean,
   filepath                  varchar(255),
   project_id                bigint,
+  user_id                   bigint,
   version                   bigint not null,
   constraint pk_document_file primary key (id))
 ;
@@ -124,18 +127,20 @@ alter table comment add constraint fk_comment_project_2 foreign key (project_id)
 create index ix_comment_project_2 on comment (project_id);
 alter table document_file add constraint fk_document_file_project_3 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_document_file_project_3 on document_file (project_id);
-alter table event add constraint fk_event_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_event_user_4 on event (user_id);
-alter table linked_account add constraint fk_linked_account_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_linked_account_user_5 on linked_account (user_id);
-alter table role add constraint fk_role_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_role_user_6 on role (user_id);
-alter table role add constraint fk_role_project_7 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_role_project_7 on role (project_id);
-alter table task add constraint fk_task_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_task_user_8 on task (user_id);
-alter table token_action add constraint fk_token_action_targetUser_9 foreign key (target_user_id) references user (id) on delete restrict on update restrict;
-create index ix_token_action_targetUser_9 on token_action (target_user_id);
+alter table document_file add constraint fk_document_file_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_document_file_user_4 on document_file (user_id);
+alter table event add constraint fk_event_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_event_user_5 on event (user_id);
+alter table linked_account add constraint fk_linked_account_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_linked_account_user_6 on linked_account (user_id);
+alter table role add constraint fk_role_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_role_user_7 on role (user_id);
+alter table role add constraint fk_role_project_8 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_role_project_8 on role (project_id);
+alter table task add constraint fk_task_user_9 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_task_user_9 on task (user_id);
+alter table token_action add constraint fk_token_action_targetUser_10 foreign key (target_user_id) references user (id) on delete restrict on update restrict;
+create index ix_token_action_targetUser_10 on token_action (target_user_id);
 
 
 

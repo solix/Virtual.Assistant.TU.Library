@@ -9,7 +9,7 @@
                         <i class="fa fa-comments fa-4x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">0</div>
+                        <div class="huge">@Comment.find.where().in("project", UserData.findActiveProjects()).findList().size()</div>
                         <div> Comments!</div>
                     </div>
                 </div>

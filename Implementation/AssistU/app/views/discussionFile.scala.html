@@ -3,7 +3,7 @@
     <head>
         @linkLoader.headlinks(title)
 
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/comment.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/message.css")">
 
     </head>
     <body>
@@ -12,22 +12,39 @@
             <div id="page-wrapper">
                 @template.headericon("fa fa-file-text-o fa-5x")
                 <div class="row" style="text-align: center">
-                    <h3>Create a new message @project.name</h3>
+                    <h3>Create a new message about <br> @document.name</h3>
                 </div>
                 @helper.form(action = routes.DiscussionData.postExternalMessage()) {
-                    <div class="row" style="margin-top: 30px">
+                    <div class="row" style="margin-top: 30px; margin-right: 40px">
                         <div class="col-xs-8 col-xs-offset-2">
-                            <ul class="timeline" style="padding: 0; margin: 0">
+                            <ul class="message" style="padding: 0; margin: 0">
                                 <li>
-                                    <div class="timeline-panel" style="margin-left: 40px">
-                                        <div class="timeline-heading">
-                                            <input type="text" name="subject" class="form-control" placeholder="Subject">
+                                    @defining(Role.find.where().eq("project",project).eq("user",currentUser).findUnique().role) { role =>
+                                        @if(role.equals(Role.OWNER)){
+                                            <div class="message-badge primary">
+                                                <i class="fa fa-mortar-board" style="margin-top: 15px"></i>
+                                            </div>
+                                        }
+                                        @if(role.equals(Role.REVIEWER)){
+                                            <div class="message-badge danger">
+                                                <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
+                                            </div>
+                                        }
+                                        @if(role.equals(Role.GUEST)){
+                                            <div class="message-badge info">
+                                                <i class="fa fa-suitcase" style="margin-left: 4px; margin-top: 15px"></i>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="message-panel" style="margin-left: 40px">
+                                        <div class="message-heading">
+                                            <input type="text" name="subject" class="form-control" placeholder="Your subject here...">
                                             <hr class="hr" style="margin: 15px 0 10px">
-                                            <textarea class="form-control" name="content" rows="3" placeholder="Content"></textarea>
+                                            <textarea class="form-control" name="content" rows="3" placeholder="Your message here..."></textarea>
                                             <hr class="hr" style="margin: 15px 0 10px">
                                             <input type="hidden" name="attachment" value="@document.id">
                                             <input type="hidden" name="projectID" value="@document.project.id">
-                                            <p style="margin: 0"><b>Attachment</b>: @document.name</p>
+                                            <p style="margin: 0; font-size: small"><b>Attachment</b>: @document.name</p>
                                         </div>
                                     </div>
                                 </li>
@@ -39,7 +56,7 @@
                             <a type="button" class="btn btn-default col-xs-12" href="@routes.ProjectData.project(project.id)">Cancel</a>
                         </div>
                         <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
-                            <button type="submit" class="btn btn-success col-xs-12">Send!</button>
+                            <button type="submit" class="btn btn-success col-xs-12">Post!</button>
                         </div>
                     </div>
                 }

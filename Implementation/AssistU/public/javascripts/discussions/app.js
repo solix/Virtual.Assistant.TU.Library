@@ -7,7 +7,7 @@ angular.module('sseChat', ['sseChat.controllers']).filter('hasSameSubject', func
     return function(subcomments, subject){
         var arrayToReturn = [];
         for (var i=0; i<subcomments.length; i++){
-            if (subcomments[i].subject === subject) {
+            if (subcomments[i].subject == subject) {
                 arrayToReturn.push(subcomments[i]);
             }
         }
