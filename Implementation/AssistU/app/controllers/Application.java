@@ -80,15 +80,15 @@ public class Application extends Controller {
             return Authentication.login();
     }
 
-    public static Boolean AllowedTitleRegex(String input){
+    public static Boolean allowedTitleRegex(String input){
         final String regex = "([a-zA-Z]+)( {1}([a-zA-Z0-9]+))*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
         return m.matches();
     }
 
-    public static Boolean AllowedNameRegex(String input){
-        final String regex = "([a-zA-Z]+)( {1}([A-Z][a-zA-Z]+))";
+    public static Boolean allowedNameRegex(String input){
+        final String regex = "([a-zA-Z]+)(-{1}([a-zA-Z]+))*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
         return m.matches();

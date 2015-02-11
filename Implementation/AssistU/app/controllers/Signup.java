@@ -24,8 +24,14 @@ public class Signup extends Controller {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		final Form<LocalUsernamePasswordAuthProvider.NativeSignup> filledForm = LocalUsernamePasswordAuthProvider.SIGNUP_FORM
 				.bindFromRequest();
-		if (filledForm.hasErrors() || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
+		if (filledForm.hasErrors()) {
 			return badRequest(signup.render(filledForm, true, "danger", "The form contained errors, please make sure everything is filled in correctly"));
+		} else if (!filledForm.get().password.equals(filledForm.get().repeatPassword)) {
+			return badRequest(signup.render(filledForm, true, "danger", "Your passwords were not the same"));
+		} else if (!Application.allowedNameRegex(filledForm.get().first_name) || !Application.allowedNameRegex(filledForm.get().last_name)){
+			return badRequest(signup.render(filledForm, true, "danger", "Your names were invalid. Only letters separated with '-'s are allowed"));
+		} else if (filledForm.get().first_name.length() + filledForm.get().last_name.length() > 70){
+			return badRequest(signup.render(filledForm, true, "danger", "The length of the combination of your names exceeded our limit"));
 		} else {
 			return com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.handleSignup(ctx());
 		}

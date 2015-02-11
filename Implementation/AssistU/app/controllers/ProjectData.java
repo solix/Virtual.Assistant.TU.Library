@@ -57,8 +57,8 @@ public class ProjectData extends Controller {
         if(filledProjectForm.hasErrors()) {
             return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
                     "The input did not fulfill the requirements, please review your information", user));
-        } else if (!(Application.AllowedTitleRegex(filledProjectForm.get().folder)
-                && Application.AllowedTitleRegex(filledProjectForm.get().name))) {
+        } else if (!(Application.allowedTitleRegex(filledProjectForm.get().folder)
+                && Application.allowedTitleRegex(filledProjectForm.get().name))) {
             return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
                     "The input did not have the allowed format, please review your information", user));
         } else {
@@ -86,8 +86,8 @@ public class ProjectData extends Controller {
             Logger.debug(filledProjectForm.errors().toString());
             return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "danger",
                     "The input did not fulfill the requirements, please review your information", user));
-        } else if (!(Application.AllowedTitleRegex(filledProjectForm.get().folder)
-                && Application.AllowedTitleRegex(filledProjectForm.get().name))) {
+        } else if (!(Application.allowedTitleRegex(filledProjectForm.get().folder)
+                && Application.allowedTitleRegex(filledProjectForm.get().name))) {
             return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
                     "The input did not have the allowed format, please review your information", user));
         }  else {

@@ -23,9 +23,12 @@ public class Project extends Model {
     @Id
     public Long id;
     @MinLength(3)
+    @MaxLength(140)
     public String name;
     @MinLength(3)
+    @MaxLength(20)
     public String folder;
+    @MaxLength(400)
     public String description;
     @Required
     public String template;
