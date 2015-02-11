@@ -42,6 +42,7 @@ public class Signup extends Controller {
 		}
 
 		public PasswordReset(final String token) {
+
 			this.token = token;
 		}
 
@@ -224,6 +225,7 @@ public class Signup extends Controller {
 				Authentication.OAuthLogout();
 //			return ok(index.render("Welcome " + user.name, user));
 		}
+
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "You have been verified, please log in below"));
 	}
 }
