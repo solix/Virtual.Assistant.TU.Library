@@ -41,7 +41,7 @@ public class Application extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             List<Task> tasks = Task.ordered(user) ;
-            return ok(task.render("My tasks", user, tasks,taskForm));
+            return ok(task_new.render("My tasks", user, tasks,taskForm));
         }else
             return Authentication.login();
     }
