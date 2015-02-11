@@ -10,11 +10,40 @@
                     @template.headericon("fa fa-line-chart fa-5x")
                     <div class="row">
                         <div class="col-xs-12" style="text-align: center; margin: 1% 0">
+                            <div class="btn-group pull-left" role="group" style="padding-left: 30px">
+                                <a style="width: 175px" type="button" class="btn btn-success" href="@routes.ProjectData.createProjectPage()">Create a new project</a>
+                            </div>
                             <div class="btn-group" role="group">
-                                <a style="width: 190px" type="button" class="btn btn-success" href="@routes.ProjectData.createProjectPage()">Create a new project</a>
-                                <button style="width: 190px" type="button" class="btn btn-default"
+                                <button style="width: 175px" type="button" class="btn btn-default"
                                 data-toggle="modal" data-target="#archivedProjectList"
                                 @if(UserData.findArchivedProjects.isEmpty){disabled}>Archived projects</button>
+                            </div>
+                            <div class="btn-group pull-right" role="group" style="padding-right: 30px">
+                                <button style="width: 175px" type="button" class="btn btn-info dropdown-toggle" id="invitations"
+                                data-toggle="dropdown" aria-expanded="true" @if(UserData.findPendingInvitations().isEmpty){disabled}>
+                                    Invitations: @UserData.findPendingInvitations().size()
+                                </button>
+                                <ul class="dropdown-menu pull-left" role="menu" aria-labelledby="invitations" style="margin-right: 30px; padding: 0">
+                                    @defining(UserData.findPendingInvitations()) { projects_pending =>
+                                        @for(pp <- projects_pending){
+                                            <li role="presentation" style="padding: 5px; margin: 0">
+                                                <div class="panel panel-info" style="margin: 0">
+                                                    <div class="panel-body" style="width: 400px;">
+                                                        <p style="margin: 0">You have been invited to join project @pp.name
+                                                            as a @Role.find.where().eq("user", currentUser).eq("project", pp).findUnique().role.
+                                                        </p>
+                                                        <div class="btn-group col-xs-6" role="group" style="margin: 0">
+                                                            <a type="button" href="@routes.ProjectData.hasDeclined(pp.id)" class="btn btn-danger" style="font-size: smaller">No thanks.</a>
+                                                        </div>
+                                                        <div class="btn-group col-xs-6" role="group" style="margin: 0">
+                                                            <a type="submit" href="@routes.ProjectData.hasAccepted(pp.id)" class="btn btn-success">Yeah sure!</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
                             </div>
                         </div>
                     </div>

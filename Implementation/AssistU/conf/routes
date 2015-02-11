@@ -6,7 +6,7 @@
 GET         /                                           controllers.Application.index()
 
 #task
-GET         /tasks                                       controllers.Application.task()
+GET         /tasks                                      controllers.Application.task()
 POST        /task/new                                   controllers.TaskData.addTask()
 GET         /task/get                                   controllers.TaskData.getTasks()
 GET         /task/delete/:tid                           controllers.TaskData.deleteTask(tid: Long)
@@ -15,7 +15,7 @@ GET         /task/undo/:tid                             controllers.TaskData.und
 
 #login
 GET         /login                                      controllers.Authentication.login()
-GET         /relogin                                    controllers.Authentication.relogin()
+GET         /login                                      controllers.Authentication.relogin()
 POST        /logingin                                   controllers.Authentication.doLogin()
 GET         /login/forgotpassword                       controllers.Signup.forgotPassword()
 POST        /login/doforgotpassword                     controllers.Signup.doForgotPassword()
@@ -58,8 +58,10 @@ POST        /project/create                             controllers.ProjectData.
 GET         /project/:pid                               controllers.ProjectData.project(pid: Long)
 GET         /project/:pid/edit                          controllers.ProjectData.editProjectPage(pid: Long)
 GET         /project/:pid/editing                       controllers.ProjectData.editProject(pid: Long)
-GET         /:uid/project/:pid/archive                  controllers.ProjectData.archiveProject(uid: Long, pid: Long)
-GET         /project/:pid/addMember                     controllers.ProjectData.addMemberToProjectAs(pid: Long)
+GET         /project/:pid/archive                       controllers.ProjectData.archiveProject(pid: Long)
+GET         /project/:pid/addMember                     controllers.ProjectData.inviteMemberToProjectAs(pid: Long)
+GET         /project/:pid/acceptinvitation              controllers.ProjectData.hasAccepted(pid: Long)
+GET         /project/:pid/declineinvitation             controllers.ProjectData.hasDeclined(pid: Long)
 GET         /project/:pid/removeMember/:uid             controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
 POST        /project/upload                             controllers.Datafile.uploadDocument(pid : Long)
 POST        /project/uploadNewTemplate                  controllers.Datafile.uploadNewTemplate(pid: Long)

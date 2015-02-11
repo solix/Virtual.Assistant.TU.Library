@@ -108,7 +108,7 @@ public class Project extends Model {
     /**
      * This method invites another user to a project by its user id
      */
-    public static void addOwner(Long pid, Long uid){
+    public static void inviteOwner(Long pid, Long uid){
         Project p = Project.find.ref(pid);
         User u = User.find.byId(uid);
         Role r = Role.createOwnerRole(pid, uid);
@@ -119,7 +119,7 @@ public class Project extends Model {
         u.update();
     }
 
-    public static void addGuest(Long pid, Long uid){
+    public static void inviteGuest(Long pid, Long uid){
         Project p = Project.find.ref(pid);
         User u = User.find.byId(uid);
         Role r = Role.createGuestRole(pid, uid);
@@ -130,7 +130,7 @@ public class Project extends Model {
         u.update();
     }
 
-    public static void addReviewer(Long pid, Long uid){
+    public static void inviteReviewer(Long pid, Long uid){
         Project p = Project.find.ref(pid);
         User u = User.find.byId(uid);
         Role r = Role.createReviewerRole(pid, uid);

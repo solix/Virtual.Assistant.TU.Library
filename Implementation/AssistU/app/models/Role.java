@@ -18,12 +18,16 @@ public class Role extends Model {
     @Constraints.Required
     public String role;
 
-    public Date dateCreated;
+    public Date dateInvited;
+
+    public Date dateJoined;
+
+    public Boolean accepted = false;
 
     @ManyToOne
-    User user;
+    public User user;
     @ManyToOne
-    Project project;
+    public Project project;
 
     final public static String OWNER = "Owner";
     final public static String GUEST = "Guest";
@@ -33,7 +37,7 @@ public class Role extends Model {
         this.role=role;
         this.user = User.find.byId(uid);
         this.project = Project.find.byId(pid);
-        this.dateCreated = new Date();
+        this.dateInvited = new Date();
     }
     
     public static Model.Finder<Long,Role> find = new Model.Finder(

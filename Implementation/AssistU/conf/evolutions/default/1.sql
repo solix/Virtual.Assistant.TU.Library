@@ -63,7 +63,9 @@ create table project (
 create table role (
   rid                       bigint not null,
   role                      varchar(255),
-  date_created              timestamp,
+  date_invited              timestamp,
+  date_joined               timestamp,
+  accepted                  boolean,
   user_id                   bigint,
   project_id                bigint,
   constraint pk_role primary key (rid))

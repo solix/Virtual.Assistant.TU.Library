@@ -64,7 +64,11 @@ public class ProjectData extends Controller {
         } else {
             Project projectData = filledProjectForm.get();
             Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
-            p.addOwner(p.id, user.id);
+            p.inviteOwner(p.id, user.id);
+            Role r = Role.find.where().eq("project",p).eq("user", user).findUnique();
+            r.accepted=true;
+            r.dateJoined=new Date();
+            r.update();
             if(!p.template.equals("None")){
                 Event.defaultPlanningArticle(user, p);
                 p.planning=true;
@@ -80,21 +84,22 @@ public class ProjectData extends Controller {
      */
     public static Result editProject(Long pid) {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Project p = Project.find.byId(pid);
-        Form<Project> filledProjectForm = projectForm.bindFromRequest();
-        if(filledProjectForm.hasErrors()) {
-            Logger.debug(filledProjectForm.errors().toString());
-            return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "danger",
-                    "The input did not fulfill the requirements, please review your information", user));
-        } else if (!(Application.allowedTitleRegex(filledProjectForm.get().folder)
-                && Application.allowedTitleRegex(filledProjectForm.get().name))) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
-                    "The input did not have the allowed format, please review your information", user));
-        }  else {
-            Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
-            return redirect(routes.ProjectData.project(p.id));
+        if(ProjectData.findAllOwners(pid).contains(user)) {
+            Project p = Project.find.byId(pid);
+            Form<Project> filledProjectForm = projectForm.bindFromRequest();
+            if (filledProjectForm.hasErrors()) {
+                Logger.debug(filledProjectForm.errors().toString());
+                return badRequest(projectEdit.render("Something went wrong", p, filledProjectForm, true, "danger",
+                        "The input did not fulfill the requirements, please review your information", user));
+            } else if (!(Application.allowedTitleRegex(filledProjectForm.get().folder)
+                    && Application.allowedTitleRegex(filledProjectForm.get().name))) {
+                return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
+                        "The input did not have the allowed format, please review your information", user));
+            } else {
+                Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
+            }
         }
-
+        return redirect(routes.ProjectData.project(pid));
     }
 
     /**
@@ -104,36 +109,78 @@ public class ProjectData extends Controller {
      * @param pid: The Project ID of the project that is up for archiving
      * @return
      */
-    public static Result archiveProject(Long uid, Long pid) {
-        Project.archive(pid);
+    public static Result archiveProject(Long pid) {
+        User u = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(ProjectData.findAllOwners(pid).contains(u) && ProjectData.findAllOwners(pid).size() == 1) {
+            Project.archive(pid);
+        }
         return redirect(routes.Application.project());
     }
 
+    /*TODO SOHEIL: When a member gets invited, send him a message
     /**
      * This function catches the Dynamicform from the template with the ID of the User that needs to
      * be added to the project of which the Project ID has been passed
      * @param pid: The project to which the user in the form has to be assigned
      * @return
      */
-    public static Result addMemberToProjectAs(Long pid){
+    public static Result inviteMemberToProjectAs(Long pid){
         DynamicForm emailform = Form.form().bindFromRequest();
-        User user = User.find.where().eq("email", emailform.get("email")).findUnique();
-        Project p=Project.find.byId(pid);
-        if(emailform.get("role").equals("Owner")) {
-            p.addOwner(p.id, user.id);
-            Event.defaultPlanningArticle(user, p);
-            p.planning=true;
-            p.update();
-        } else if(emailform.get("role").equals("Reviewer")) {
-            p.addReviewer(p.id, user.id);
-        }else{
-            p.addGuest(p.id, user.id);
+        User u = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        //See if the user requesting to invite someone is an Owner
+        if(ProjectData.findAllOwners(pid).contains(u)) {
+            User user = User.find.where().eq("email", emailform.get("email")).findUnique();
+            //See if the user that needs to be invited exists in the system
+            if(user != null) {
+                Project p = Project.find.byId(pid);
+                //There can not be a role relation between the invited user and the project,
+                // as it would be the user is already a member
+                if (Role.find.where().eq("project", p).eq("user", user).findUnique() == null) {
+                    //Pattern match the correct role for invitation
+                    if (emailform.get("role").equals("Owner")) {
+                        p.inviteOwner(p.id, user.id);
+                        Event.defaultPlanningArticle(user, p);
+                        p.planning = true;
+                        //            p.update();
+                        p.save();
+                    } else if (emailform.get("role").equals("Reviewer")) {
+                        p.inviteReviewer(p.id, user.id);
+                    } else {
+                        p.inviteGuest(p.id, user.id);
+                    }
+                }
+            }
+        }
+        return redirect(routes.Application.project());
+    }
+
+    /*TODO SOHEIL: This function can send a message to all owners that a new user has joined the project
+    TODO: (I think guest and reviewer should not be bothered with this, you can use findAllOwners function for recipients)
+     */
+    public static Result hasAccepted(Long pid){
+        Project p = Project.find.byId(pid);
+        User u = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Role r = Role.find.where().eq("user", u).eq("project", p).findUnique();
+        //See if there actually exists a (pending) role between the accepting user and project
+        if(r != null){
+            r.accepted=true;
+            r.dateJoined = new Date();
+            r.save();
+        }
+        return redirect(routes.ProjectData.project(p.id));
+    }
+
+    public static Result hasDeclined(Long pid){
+        Project p = Project.find.byId(pid);
+        User u = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Role r = Role.find.where().eq("user", u).eq("project", p).findUnique();
+        if(r != null) {
+            r.delete();
         }
         return redirect(routes.Application.project());
     }
 
     /**
-     * TODO: Only owners should be able to remove non-owners
      * This function removes a user from a project. This function doubles
      * as removing someone and leaving yourself. In the latter case your
      * own User ID is passed.
@@ -142,7 +189,10 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
-        Project.removeMemberFrom(pid, uid);
+        User u = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(ProjectData.findAllOwners(pid).contains(u)) {
+            Project.removeMemberFrom(pid, uid);
+        }
         return redirect(routes.Application.project());
     }
 
@@ -168,6 +218,26 @@ public class ProjectData extends Controller {
         }
 //        Logger.debug("LAST ACCESSED AS JSON: " + toJson(project));
         return ok(toJson(project));
+    }
+
+    public static List<User> findAllAffiliatedUsers(Long pid){
+        Project p = Project.find.byId(pid);
+        List<Role> roles = Role.find.where().eq("project", p).findList();
+        List<User> users = new ArrayList<User>();
+        for(Role role: roles){
+            users.add(role.user);
+        }
+        return users;
+    }
+
+    public static List<User> findAllOwners(Long pid){
+        Project p = Project.find.byId(pid);
+        List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.OWNER).findList();
+        List<User> users = new ArrayList<User>();
+        for(Role role: roles){
+            users.add(role.user);
+        }
+        return users;
     }
 
 }

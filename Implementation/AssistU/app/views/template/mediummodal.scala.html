@@ -1,7 +1,7 @@
 @(id: String)(theme: String)(title: String)(content: Html)
 
 <div class="modal fade" id="@id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-content" style="width: 500px; margin:10% auto">
+    <div class="modal-content" style="min-width: 400px; max-width: 600px; margin: 10% auto">
         <div class="panel panel-@theme">
             <div class="panel-heading" style="text-align: center">
                 <button type="button" class="close pull-right" data-toggle="collapse" data-target="#@id" aria-label="Close"><span aria-hidden="true">&times;</span></button>

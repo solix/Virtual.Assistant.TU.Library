@@ -24,6 +24,7 @@ import views.html.project;
 
 public class DiscussionData extends Controller {
 
+    /*TODO SOHEIL: Not sure we should notify on every message, or let them build up and send a summary at some point.*/
     public static Result discussion(Long pid) {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
@@ -38,7 +39,7 @@ public class DiscussionData extends Controller {
     private static Map<String, List<EventSource>> socketsPerProject = new HashMap<String, List<EventSource>>();
 
     /**
-    * Controller action for POSTing chat messages
+    * Controller action for POSTing chat messages created in discussion page
     */
     public static Result postMessage() {
         ObjectNode message = (ObjectNode)request().body().asJson();
@@ -72,7 +73,7 @@ public class DiscussionData extends Controller {
     }
 
     /**
-    * Controller action for POSTing external chat messages
+    * Controller action for POSTing external chat messages created in project template
     */
     public static Result postExternalMessage() {
         DynamicForm message = Form.form().bindFromRequest();
