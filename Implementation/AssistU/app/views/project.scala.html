@@ -60,7 +60,6 @@
                             <th>Folder Name</th>
                             <th>Project Name</th>
                             <th>Date Archived</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,8 +67,7 @@
                         <tr>
                             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.folder</td>
                             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.name</td>
-                            <td><span class="text-muted small">00-00-00</span></td>
-                            <td>N/A</td>
+                            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.dateArchived.toString.substring(0,10)</td>
                         </tr>
                     }
                     </tbody>

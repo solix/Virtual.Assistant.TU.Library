@@ -57,6 +57,7 @@ create table project (
   active                    boolean,
   date_created              timestamp,
   last_accessed             timestamp,
+  date_archived             timestamp,
   constraint pk_project primary key (id))
 ;
 

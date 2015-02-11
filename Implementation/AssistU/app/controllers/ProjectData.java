@@ -196,6 +196,12 @@ public class ProjectData extends Controller {
         return redirect(routes.Application.project());
     }
 
+    public static Result leaveProject(Long pid){
+        User u = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Project.removeMemberFrom(pid, u.id);
+        return redirect(routes.Application.project());
+    }
+
     public static Result getProjectIdsAsJson(){
         List<Project> projects = UserData.findActiveProjects();
         List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
@@ -205,6 +211,48 @@ public class ProjectData extends Controller {
             project.put("name", projects.get(i).name);
             project.put("projectID", "" + projects.get(i).id);
             result.add(project);
+        }
+        return ok(toJson(result));
+    }
+
+    public static Result getOwnerIdsAsJson(){
+        List<Project> projects = UserData.findActiveProjects();
+        List<Long> result = new ArrayList<Long>();
+        for(int i =0 ; i < projects.size(); i++){
+            List<User> projectowners = ProjectData.findAllOwners(projects.get(i).id);
+            for(int j = 0; j < projectowners.size(); j++){
+                if(!result.contains(projectowners.get(j).id)){
+                    result.add(projectowners.get(j).id);
+                }
+            }
+        }
+        return ok(toJson(result));
+    }
+
+    public static Result getReviewerIdsAsJson(){
+        List<Project> projects = UserData.findActiveProjects();
+        List<Long> result = new ArrayList<Long>();
+        for(int i =0 ; i < projects.size(); i++){
+            List<User> projectreviewers = ProjectData.findAllReviewers(projects.get(i).id);
+            for(int j = 0; j < projectreviewers.size(); j++){
+                if(!result.contains(projectreviewers.get(j).id)){
+                    result.add(projectreviewers.get(j).id);
+                }
+            }
+        }
+        return ok(toJson(result));
+    }
+
+    public static Result getGuestIdsAsJson(){
+        List<Project> projects = UserData.findActiveProjects();
+        List<Long> result = new ArrayList<Long>();
+        for(int i =0 ; i < projects.size(); i++){
+            List<User> projectguests = ProjectData.findAllReviewers(projects.get(i).id);
+            for(int j = 0; j < projectguests.size(); j++){
+                if(!result.contains(projectguests.get(j).id)){
+                    result.add(projectguests.get(j).id);
+                }
+            }
         }
         return ok(toJson(result));
     }
@@ -233,6 +281,16 @@ public class ProjectData extends Controller {
     public static List<User> findAllOwners(Long pid){
         Project p = Project.find.byId(pid);
         List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.OWNER).findList();
+        List<User> users = new ArrayList<User>();
+        for(Role role: roles){
+            users.add(role.user);
+        }
+        return users;
+    }
+
+    public static List<User> findAllReviewers(Long pid){
+        Project p = Project.find.byId(pid);
+        List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.REVIEWER).findList();
         List<User> users = new ArrayList<User>();
         for(Role role: roles){
             users.add(role.user);

@@ -112,7 +112,9 @@
                                             <div class="row pull-right" style="padding: 0 50px 0 0;margin: 0">
                                                 <button ng-click="reset();" class="btn btn-default btn-sm"
                                                 data-toggle="collapse" data-target="#comment@p.id" type="button" style="width: 80px">Cancel</button>
-                                                <button type="button" class="btn btn-warning btn-sm" style="width: 80px"
+                                                <button type="button" class="btn btn-warning btn-sm" style="width: 80px" ng-if="message.subject == '' || message.content == ''"
+                                                id="saySomething">Submit</button>
+                                                <button type="button" class="btn btn-warning btn-sm" style="width: 80px" ng-if="message.subject != '' && message.content != ''"
                                                 id="saySomething" data-toggle="collapse" data-target="#comment@p.id" ng-click="submitMsg()">Submit</button>
                                             </div>
                                         </div>
@@ -126,10 +128,22 @@
                                                         <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
                                                     </div>
                                                     <div class="timeline-badge info" ng-if="comment.role=='Guest'">
-                                                        <i class="fa fa-suitcase" style="margin-left: 4px; margin-top: 15px"></i>
+                                                        <i class="fa fa-suitcase" style="margin-top: 15px"></i>
                                                     </div>
-                                                    <div class="timeline-panel">
+                                                    <div class="timeline-panel">   @*ng-if="guestids.indexOf(comment.uid) != -1 || comment.uid == @currentUser.id"*@
                                                         <div class="timeline-heading">
+                                                            @if(ProjectData.findAllOwners(p.id).contains(currentUser)) {
+                                                                <a class="pull-right" href="#" ng-if="comment.role == 'Guest' || comment.uid == @currentUser.id"
+                                                                style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
+                                                                    <i class="fa fa-close"></i>
+                                                                </a>
+                                                            }
+                                                            @if(ProjectData.findAllReviewers(p.id).contains(currentUser)) {
+                                                                <a class="pull-right" href="#" ng-if="comment.uid == @currentUser.id"
+                                                                style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
+                                                                    <i class="fa fa-close"></i>
+                                                                </a>
+                                                            }
                                                             <a class="btn btn-info pull-right" data-toggle="collapse" href="#showSubCommentsOf{{comment.cid}}" aria-expanded="false" aria-controls="collapseExample">
                                                                 Show/Hide
                                                             </a>

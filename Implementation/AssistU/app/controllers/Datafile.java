@@ -69,6 +69,15 @@ public class Datafile extends Controller {
         return  ok(new File(path,documentFile.name));
     }
 
+    public static Result deleteDocument(Long fid){
+        DocumentFile documentFile = DocumentFile.find.byId(fid);
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(documentFile.user.equals(user)){
+            documentFile.delete();
+        }
+        return ProjectData.project(documentFile.project.id);
+    }
+
     public static Result documentDiscussion(Long docid){
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         DocumentFile df = DocumentFile.find.byId(docid);

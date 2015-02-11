@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <hr class="hr" style="margin-top: 0">
-                                    @projects.projectFileList(DocumentFile.find.where().eq("project", p).findList(), project)
+                                    @projects.projectFileList(currentUser, project)
                                     @projects.projectUploadButtons(p)
                             </div>
                     </div>
@@ -126,25 +126,21 @@
             @*Archive Project Confirmation Modal*@
             @template.smallmodal("archiveProject"+p.id.toString)("danger")("Request to archive "+p.name) {
                 <p>Are you sure you want to archive project @p.name, and all of its files?</p>
-                <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
-                    <div class="btn-group" role="group">
-                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <a type="button" class="btn btn-danger" href="@routes.ProjectData.archiveProject(p.id)">Archive!</a>
-                    </div>
+                <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                    <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
+                </div>
+                <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                    <a class="btn btn-danger col-xs-12" href="@routes.ProjectData.archiveProject(p.id)">Archive!</a>
                 </div>
             }
             @*Leave Project Confirmation Modal*@
             @template.smallmodal("leaveProject"+p.id.toString)("danger")("Leaving "+p.name) {
-                <p>Are you sure you want to leave project @p.name?</p>
-                <div class="btn-group pull-right" role="group" style="margin:2% 1% 1% 1%">
-                    <div class="btn-group" role="group">
-                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel.</a>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <a type="button" class="btn btn-danger" href="@routes.ProjectData.removeMemberFromProject(currentUser.id,p.id)">Leave!</a>
-                    </div>
+                <p style="text-align: center">Are you sure you want to leave project @p.name?</p>
+                <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                    <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
+                </div>
+                <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                    <a class="btn btn-danger col-xs-12" href="@routes.ProjectData.leaveProject(p.id)">Leave!</a>
                 </div>
             }
             @*Add Member Modal*@
@@ -156,9 +152,9 @@
                         <br>
                         <label>Add this person as a: </label>
                         <select class="form-control" name="role">
-                            <option>Guest</option>
                             <option>Owner</option>
                             <option>Reviewer</option>
+                            <option>Guest</option>
                         </select>
                     </div>
                     <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
@@ -171,7 +167,7 @@
             }
             @template.mediummodal("memberList"+p.id.toString)("info")("Members of "+p.name) {
                         <!-- Table -->
-                    <table class="table table-condensed">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -209,6 +205,7 @@
                     </table>
                 }
             }
+
         }
     </div>
 }

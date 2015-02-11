@@ -38,6 +38,17 @@ public class DiscussionData extends Controller {
     /** Keeps track of all connected browsers per room **/
     private static Map<String, List<EventSource>> socketsPerProject = new HashMap<String, List<EventSource>>();
 
+    private static String formatSubject(String subject, Long pid){
+        List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(pid))
+                                                .eq("subject", subject)
+                                                .eq("isChild", false).findList();
+        if(cml.size() == 0){
+            return subject;
+        }else{
+            return formatSubject(subject + " (copy)", pid);
+        }
+    }
+
     /**
     * Controller action for POSTing chat messages created in discussion page
     */
@@ -47,13 +58,9 @@ public class DiscussionData extends Controller {
         if(!message.get("content").asText().equals("")) {
             if (!message.get("isChild").asBoolean()) {
                 Logger.debug("It's a main comment");
-                List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(message.get("projectID").asLong()))
-                                                        .eq("subject", message.get("subject").asText())
-                                                        .eq("isChild", false).findList();
-                if (cml.size() > 0) {
-                    message.put("subject", message.get("subject").asText() + " (" + cml.size() + ")");
-                }
+                message.put("subject", formatSubject(message.get("subject").asText(), Long.parseLong(message.get("projectID").asText())));
             }
+            message.put("uid", user.id);
             Comment comment = Comment.create(
                     user.id,
                     message.get("subject").asText(),
@@ -86,10 +93,11 @@ public class DiscussionData extends Controller {
                     DocumentFile.find.byId(Long.parseLong(message.get("documentID"))), true,
                     "Your message or subject was empty"));
         } else {
-            result.put("subject", message.get("subject"));
+            result.put("uid", user.id);
+            result.put("subject", formatSubject(message.get("subject"), p.id));
             result.put("content", message.get("content"));
             result.put("date", (new Date()).toString());
-            result.put("projectID", "" + p.id);
+            result.put("projectID", p.id);
             result.put("isChild", false);
             result.put("hasAttachment", true);
             result.put("attachment", doc.name);
@@ -111,11 +119,33 @@ public class DiscussionData extends Controller {
         }
     }
 
+    public static Result deleteMessage() {
+        ObjectNode message = (ObjectNode)request().body().asJson();
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Comment comment = Comment.find.byId(Long.parseLong(message.get("cid").asText()));
+        Role role = Role.find.where().eq("project", comment.project).eq("user", user).findUnique();
+        Role comment_role = Role.find.where().eq("project", comment.project).eq("user", comment.user).findUnique();
+        List<Comment> comments = Comment.find.where().eq("subject", comment.subject).findList();
+        if(role != null && role.role.equals(Role.OWNER) && comment_role.equals(Role.GUEST)){
+            for(int i = 0; i < comments.size(); i++){
+                comments.get(i).delete();
+            }
+            comment.delete();
+        } else if(comment.user.equals(user)){
+            for(int i = 0; i < comments.size(); i++){
+                comments.get(i).delete();
+            }
+            comment.delete();
+        }
+        return ok();
+    }
+
     public static Result getComments() {
-        List<Project> ownerProjects = UserData.findActiveOwnerProjects();
-        List<Project> reviewerProjects = UserData.findActiveReviewerProjects();
-        List<Project> projects = new ArrayList<Project>(ownerProjects);
-        projects.addAll(reviewerProjects);
+//        List<Project> ownerProjects = UserData.findActiveOwnerProjects();
+//        List<Project> reviewerProjects = UserData.findActiveReviewerProjects();
+//        List<Project> guestProjects = UserData.findActiveGuestProjects();
+        List<Project> projects = UserData.findActiveProjects();
+//        projects.addAll(reviewerProjects);
 
         List<ObjectNode> comments = new ArrayList<ObjectNode>();
         ObjectNode comment;

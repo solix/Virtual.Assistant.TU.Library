@@ -38,6 +38,8 @@ public class Project extends Model {
     public Date dateCreated;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date lastAccessed;
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
+    public Date dateArchived;
     @OneToMany(mappedBy = "project")
     public List<Role> roles = new ArrayList<Role>();
     @OneToMany(mappedBy = "project")
@@ -101,6 +103,7 @@ public class Project extends Model {
         Project p = Project.find.byId(pid);
         p.active = false;
         p.lastAccessed = new Date();
+        p.dateArchived = new Date();
         p.update();
     }
 

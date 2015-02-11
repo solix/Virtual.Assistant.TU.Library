@@ -42,6 +42,13 @@ public class UserData  extends Controller {
         return projects;
     }
 
+    public static List<Project> findActiveGuestProjects(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        List<Role> roles = Role.find.where().eq("user", user).eq("role", Role.GUEST).eq("project.active", true).eq("accepted", true).findList();
+        List<Project> projects = Project.find.where().in("roles", roles).orderBy("dateCreated").findList();
+        return projects;
+    }
+
     public static List<Project> findArchivedProjects(){
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("user", user).eq("project.active", false).findList();
