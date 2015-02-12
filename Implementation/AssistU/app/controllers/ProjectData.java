@@ -54,27 +54,32 @@ public class ProjectData extends Controller {
     public static Result createProject() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
-        if(filledProjectForm.hasErrors()) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
-                    "The input did not fulfill the requirements, please review your information", user));
-        } else if (!(Application.allowedTitleRegex(filledProjectForm.get().folder)
-                && Application.allowedTitleRegex(filledProjectForm.get().name))) {
-            return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
-                    "The input did not have the allowed format, please review your information", user));
-        } else {
-            Project projectData = filledProjectForm.get();
-            Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
-            p.inviteOwner(p.id, user.id);
-            Role r = Role.find.where().eq("project",p).eq("user", user).findUnique();
-            r.accepted=true;
-            r.dateJoined=new Date();
-            r.update();
-            if(!p.template.equals("None")){
-                Event.defaultPlanningArticle(user, p);
-                p.planning=true;
-                p.save();}
-            return redirect(routes.ProjectData.project(p.id));
+        if (user != null) {
+            if (filledProjectForm.hasErrors()) {
+                return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
+                        "The input did not fulfill the requirements, please review your information", user));
+            } else if (!(Application.allowedTitleRegex(filledProjectForm.get().folder)
+                    && Application.allowedTitleRegex(filledProjectForm.get().name))) {
+                return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
+                        "The input did not have the allowed format, please review your information", user));
+            } else {
+                Project projectData = filledProjectForm.get();
+                Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
+                Project.inviteOwner(p.id, user.id);
+                Role r = Role.find.where().eq("project", p).eq("user", user).findUnique();
+                r.accepted = true;
+                r.dateJoined = new Date();
+                r.update();
+                if (!p.template.equals("None")) {
+                    Event.defaultPlanningArticle(user, p);
+                    p.planning = true;
+                    p.save();
+                }
+                return redirect(routes.ProjectData.project(p.id));
+            }
         }
+        //User did not have a session
+        return Authentication.login();
     }
 
     /**
@@ -138,15 +143,15 @@ public class ProjectData extends Controller {
                 if (Role.find.where().eq("project", p).eq("user", user).findUnique() == null) {
                     //Pattern match the correct role for invitation
                     if (emailform.get("role").equals("Owner")) {
-                        p.inviteOwner(p.id, user.id);
+                        Project.inviteOwner(p.id, user.id);
                         Event.defaultPlanningArticle(user, p);
                         p.planning = true;
                         //            p.update();
                         p.save();
                     } else if (emailform.get("role").equals("Reviewer")) {
-                        p.inviteReviewer(p.id, user.id);
+                        Project.inviteReviewer(p.id, user.id);
                     } else {
-                        p.inviteGuest(p.id, user.id);
+                        Project.inviteGuest(p.id, user.id);
                     }
                 }
             }
