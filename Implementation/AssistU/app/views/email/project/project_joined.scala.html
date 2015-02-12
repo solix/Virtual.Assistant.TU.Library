@@ -1,0 +1,14 @@
+@(url: String, token: String, name: String, email: String, name_project: String, name_member: String, name_role: String)
+Hello @name,
+<br />
+<br />
+<p>
+    I would like to inform you that @name_member has joined your project '@name_project' as @if(name_role.equals(Role.OWNER)){an} else {a} @name_role.
+</p>
+<p>
+    If you would like to go and see your project, please go to <a href="@url">this link</a>.
+</p>
+<p>
+    Have a nice day,<br />
+    <i>your Personal Assistant</i>
+</p>

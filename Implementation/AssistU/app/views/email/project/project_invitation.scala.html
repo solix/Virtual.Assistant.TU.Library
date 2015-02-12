@@ -1,0 +1,14 @@
+@(url: String, token: String, name: String, email: String, name_project: String, name_role: String)
+Hello @name,
+<br />
+<br />
+<p>
+    You have been invited to join project '@name_project' as @if(name_role.equals(Role.OWNER)){an} else {a} @name_role.
+</p>
+<p>
+    You can choose to either accept or decline this invitation by going to <a href="@url">this link</a>, and click on 'invitations'.
+</p>
+<p>
+    Have a nice day,<br />
+    <i>AssisTU</i>
+</p>
