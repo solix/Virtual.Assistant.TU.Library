@@ -7,8 +7,7 @@ import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
 import models.LinkedAccount;
 import models.TokenAction;
 import models.TokenAction.Type;
-import models.User;
-import controllers.routes;
+import models.Person;
 import play.Application;
 import play.Logger;
 import play.data.Form;
@@ -135,7 +134,7 @@ public class LocalUsernamePasswordAuthProvider
 
 	@Override
 	protected com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.SignupResult signupUser(final LocalUsernamePasswordAuthUser user) {
-		final User u = User.findByUsernamePasswordIdentity(user);
+		final Person u = Person.findByUsernamePasswordIdentity(user);
 		if (u != null) {
 			if (u.emailValidated) {
 				// This user exists, has its email validated and is active
@@ -148,7 +147,7 @@ public class LocalUsernamePasswordAuthProvider
 		}
 		// The user either does not exist or is inactive - create a new one
 		@SuppressWarnings("unused")
-		final User newUser = User.create(user);
+		final Person newPerson = Person.create(user);
 		// Usually the email should be verified before allowing login, however
 		// if you return
 		// return SignupResult.USER_CREATED;
@@ -159,7 +158,7 @@ public class LocalUsernamePasswordAuthProvider
 	@Override
 	protected com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.LoginResult loginUser(
 			final LocalLoginUsernamePasswordAuthUser authUser) {
-		final User u = User.findByUsernamePasswordIdentity(authUser);
+		final Person u = Person.findByUsernamePasswordIdentity(authUser);
 		if (u == null) {
 			return LoginResult.NOT_FOUND;
 		} else {
@@ -258,29 +257,29 @@ public class LocalUsernamePasswordAuthProvider
 	@Override
 	protected String generateVerificationRecord(
 			final LocalUsernamePasswordAuthUser user) {
-		return generateVerificationRecord(User.findByAuthUserIdentity(user));
+		return generateVerificationRecord(Person.findByAuthUserIdentity(user));
 	}
 
-	protected String generateVerificationRecord(final User user) {
+	protected String generateVerificationRecord(final Person person) {
 		final String token = generateToken();
 		// Do database actions, etc.
-		TokenAction.create(Type.EMAIL_VERIFICATION, token, user);
+		TokenAction.create(Type.EMAIL_VERIFICATION, token, person);
 		return token;
 	}
 
-	protected String generatePasswordResetRecord(final User u) {
+	protected String generatePasswordResetRecord(final Person u) {
 		final String token = generateToken();
 		TokenAction.create(Type.PASSWORD_RESET, token, u);
 		return token;
 	}
 
-	protected String getPasswordResetMailingSubject(final User user,
+	protected String getPasswordResetMailingSubject(final Person person,
 													final Context ctx) {
 		return Messages.get("playauthenticate.password.reset_email.subject");
 	}
 
 	protected Body getPasswordResetMailingBody(final String token,
-											   final User user, final Context ctx) {
+											   final Person person, final Context ctx) {
 
 		final boolean isSecure = getConfiguration().getBoolean(
 				SETTING_KEY_PASSWORD_RESET_LINK_SECURE);
@@ -292,19 +291,19 @@ public class LocalUsernamePasswordAuthProvider
 
 		final String html = getEmailTemplate(
 				"views.html.email.password_reset", langCode, url,
-				token, user.name, user.email);
+				token, person.name, person.email);
 		final String text = getEmailTemplate(
 				"views.txt.email.password_reset", langCode, url, token,
-				user.name, user.email);
+				person.name, person.email);
 
 		return new Body(text, html);
 	}
 
-	public void sendPasswordResetMailing(final User user, final Context ctx) {
-		final String token = generatePasswordResetRecord(user);
-		final String subject = getPasswordResetMailingSubject(user, ctx);
-		final Body body = getPasswordResetMailingBody(token, user, ctx);
-		sendMail(subject, body, getEmailName(user));
+	public void sendPasswordResetMailing(final Person person, final Context ctx) {
+		final String token = generatePasswordResetRecord(person);
+		final String subject = getPasswordResetMailingSubject(person, ctx);
+		final Body body = getPasswordResetMailingBody(token, person, ctx);
+		sendMail(subject, body, getEmailName(person));
 	}
 
 	public boolean isLoginAfterPasswordReset() {
@@ -312,7 +311,7 @@ public class LocalUsernamePasswordAuthProvider
 				SETTING_KEY_LINK_LOGIN_AFTER_PASSWORD_RESET);
 	}
 
-	protected String getVerifyEmailMailingSubjectAfterSignup(final User user,
+	protected String getVerifyEmailMailingSubjectAfterSignup(final Person person,
 															 final Context ctx) {
 		return Messages.get("playauthenticate.password.verify_email.subject");
 	}
@@ -361,7 +360,7 @@ public class LocalUsernamePasswordAuthProvider
 	}
 
 	protected Body getVerifyEmailMailingBodyAfterSignup(final String token,
-														final User user, final Context ctx) {
+														final Person person, final Context ctx) {
 
 		final boolean isSecure = getConfiguration().getBoolean(
 				SETTING_KEY_VERIFICATION_LINK_SECURE);
@@ -373,25 +372,25 @@ public class LocalUsernamePasswordAuthProvider
 
 		final String html = getEmailTemplate(
 				"views.html.email.verify_email", langCode, url, token,
-				user.name, user.email);
+				person.name, person.email);
 		final String text = getEmailTemplate(
 				"views.txt.email.verify_email", langCode, url, token,
-				user.name, user.email);
+				person.name, person.email);
 
 		return new Body(text, html);
 	}
 
-	public void sendVerifyEmailMailingAfterSignup(final User user,
+	public void sendVerifyEmailMailingAfterSignup(final Person person,
 												  final Context ctx) {
 
-		final String subject = getVerifyEmailMailingSubjectAfterSignup(user,
+		final String subject = getVerifyEmailMailingSubjectAfterSignup(person,
 				ctx);
-		final String token = generateVerificationRecord(user);
-		final Body body = getVerifyEmailMailingBodyAfterSignup(token, user, ctx);
-		sendMail(subject, body, getEmailName(user));
+		final String token = generateVerificationRecord(person);
+		final Body body = getVerifyEmailMailingBodyAfterSignup(token, person, ctx);
+		sendMail(subject, body, getEmailName(person));
 	}
 
-	private String getEmailName(final User user) {
-		return getEmailName(user.email, user.name);
+	private String getEmailName(final Person person) {
+		return getEmailName(person.email, person.name);
 	}
 }

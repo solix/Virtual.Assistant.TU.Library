@@ -1,13 +1,11 @@
 package models;
 
-import controllers.Application;
-import models.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 import play.test.WithApplication;
 import static play.test.Helpers.*;
 
-public class UserTest extends WithApplication {
+public class PersonTest extends WithApplication {
 
     @Before
     public void setUp(){
@@ -16,10 +14,10 @@ public class UserTest extends WithApplication {
 
     @Test
     public void createUserTest(){
-        User user = User.create("testuser", "testuser@test.nl", "test");
-        assertNotNull(user);
-        assertEquals("testuser" , user.name);
-        assertEquals("testuser@test.nl" , user.email);
+        Person person = Person.create("testuser", "testuser@test.nl", "test");
+        assertNotNull(person);
+        assertEquals("testuser" , person.name);
+        assertEquals("testuser@test.nl" , person.email);
     }
 //    @Test
 //    public void createUser() {

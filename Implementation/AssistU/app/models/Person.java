@@ -3,10 +3,8 @@ package models;
 import javax.persistence.*;
 
 import play.Logger;
-import play.data.validation.Constraints;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
-import play.data.validation.Constraints.*;
 
 import java.util.*;
 import java.util.List;
@@ -22,7 +20,7 @@ import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
 import providers.mendeley.MendeleyAuthUser;
 
 @Entity
-public class User extends Model {
+public class Person extends Model {
 
 
     @Id @GeneratedValue
@@ -60,8 +58,8 @@ public class User extends Model {
 //        this.active= true;
 //    }
 
-    public static Model.Finder<Long,User> find = new Model.Finder(
-            Long.class, User.class
+    public static Model.Finder<Long, Person> find = new Model.Finder(
+            Long.class, Person.class
     );
 
     /**
@@ -81,10 +79,10 @@ public class User extends Model {
 //        return user;
 //    }
 
-    public static User update(final AuthUser authUser) {
-        final User user = User.findByAuthUserIdentity(authUser);
-        Logger.debug("USER FOR UPDATING: " + user.name);
-        user.active = true;
+    public static Person update(final AuthUser authUser) {
+        final Person person = Person.findByAuthUserIdentity(authUser);
+        Logger.debug("USER FOR UPDATING: " + person.name);
+        person.active = true;
 //        user.linkedAccounts = Collections.singletonList(LinkedAccount
 //                .create(authUser));
 
@@ -128,17 +126,17 @@ public class User extends Model {
 
 //        }
 
-        user.save();
-        return user;
+        person.save();
+        return person;
     }
 
     public static boolean existsByAuthUserIdentity(
             final AuthUserIdentity identity) {
-        final ExpressionList<User> exp = getAuthUserFind(identity);
+        final ExpressionList<Person> exp = getAuthUserFind(identity);
         return exp.findRowCount() > 0;
     }
 
-    private static ExpressionList<User> getAuthUserFind(
+    private static ExpressionList<Person> getAuthUserFind(
             final AuthUserIdentity identity) {
         return find.where().eq("active", true)
                 .eq("linkedAccounts.providerUserId", identity.getId())
@@ -152,7 +150,7 @@ public class User extends Model {
 //        return getAuthUserFind(identity).findUnique();
 //    }
 
-    public static User findByAuthUserIdentity(final AuthUserIdentity identity) {
+    public static Person findByAuthUserIdentity(final AuthUserIdentity identity) {
         if (identity == null) {
             return null;
         }
@@ -163,26 +161,26 @@ public class User extends Model {
         }
     }
 
-    public static User findByUsernamePasswordIdentity(
+    public static Person findByUsernamePasswordIdentity(
             final UsernamePasswordAuthUser identity) {
         return getUsernamePasswordAuthUserFind(identity).findUnique();
     }
 
-    private static ExpressionList<User> getUsernamePasswordAuthUserFind(
+    private static ExpressionList<Person> getUsernamePasswordAuthUserFind(
             final UsernamePasswordAuthUser identity) {
         return getEmailUserFind(identity.getEmail()).eq(
                 "linkedAccounts.providerKey", identity.getProvider());
     }
 
-    public void merge(final User otherUser) {
-        for (final LinkedAccount acc : otherUser.linkedAccounts) {
+    public void merge(final Person otherPerson) {
+        for (final LinkedAccount acc : otherPerson.linkedAccounts) {
             this.linkedAccounts.add(LinkedAccount.create(acc));
         }
         // do all other merging stuff here - like resources, etc.
 
         // deactivate the merged user that got added to this one
-        otherUser.active = false;
-        Ebean.save(Arrays.asList(new User[] { otherUser, this }));
+        otherPerson.active = false;
+        Ebean.save(Arrays.asList(new Person[] {otherPerson, this }));
     }
 
     /**
@@ -190,10 +188,10 @@ public class User extends Model {
      * @param authUser
      * @return user
      */
-    public static User create(final AuthUser authUser) {
-        final User user = new User();
-        user.active = true;
-        user.linkedAccounts = Collections.singletonList(LinkedAccount
+    public static Person create(final AuthUser authUser) {
+        final Person person = new Person();
+        person.active = true;
+        person.linkedAccounts = Collections.singletonList(LinkedAccount
                 .create(authUser));
 
         if (authUser instanceof EmailIdentity) {
@@ -201,15 +199,15 @@ public class User extends Model {
 //            Remember, even when getting them from FB & Co., emails should be
 //            verified within the application as a security breach there might
 //            break your security as well!
-            user.email = identity.getEmail();
-            user.emailValidated = false;
+            person.email = identity.getEmail();
+            person.emailValidated = false;
         }
 
         if (authUser instanceof NameIdentity) {
             final NameIdentity identity = (NameIdentity) authUser;
             final String name = identity.getName();
             if (name != null) {
-                user.name = name;
+                person.name = name;
             }
         }
 
@@ -217,11 +215,11 @@ public class User extends Model {
             final FirstLastNameIdentity identity = (FirstLastNameIdentity) authUser;
             final String first_name = identity.getFirstName();
             if(first_name != null){
-                user.first_name = first_name;
+                person.first_name = first_name;
             }
             final String last_name = identity.getLastName();
             if(last_name != null){
-                user.last_name = last_name;
+                person.last_name = last_name;
             }
         }
 
@@ -233,16 +231,16 @@ public class User extends Model {
         }
 
         if(authUser instanceof MendeleyAuthUser){
-            user.mendeleyConnected=true;
+            person.mendeleyConnected=true;
         }
 
-        user.save();
-        return user;
+        person.save();
+        return person;
     }
 
     public static void merge(final AuthUser oldUser, final AuthUser newUser) {
-        User.findByAuthUserIdentity(oldUser).merge(
-                User.findByAuthUserIdentity(newUser));
+        Person.findByAuthUserIdentity(oldUser).merge(
+                Person.findByAuthUserIdentity(newUser));
     }
 
     public Set<String> getProviders() {
@@ -256,16 +254,16 @@ public class User extends Model {
 
     public static void addLinkedAccount(final AuthUser oldUser,
                                         final AuthUser newUser) {
-        final User u = User.findByAuthUserIdentity(oldUser);
+        final Person u = Person.findByAuthUserIdentity(oldUser);
         u.linkedAccounts.add(LinkedAccount.create(newUser));
         u.save();
     }
 
-    public static User findByEmail(final String email) {
+    public static Person findByEmail(final String email) {
         return getEmailUserFind(email).findUnique();
     }
 
-    private static ExpressionList<User> getEmailUserFind(final String email) {
+    private static ExpressionList<Person> getEmailUserFind(final String email) {
         return find.where().eq("active", true).eq("email", email);
     }
 
@@ -273,7 +271,7 @@ public class User extends Model {
         return LinkedAccount.findByProviderKey(this, providerKey);
     }
 
-    public static void verify(final User unverified) {
+    public static void verify(final Person unverified) {
         // You might want to wrap this into a transaction
         unverified.emailValidated = true;
         unverified.save();
@@ -294,7 +292,7 @@ public class User extends Model {
         if (a == null) {
             if (create) {
                 a = LinkedAccount.create(authUser);
-                a.user = this;
+                a.person = this;
             } else {
                 throw new RuntimeException(
                         "Account not enabled for password usage");

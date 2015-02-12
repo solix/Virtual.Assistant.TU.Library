@@ -4,7 +4,6 @@ import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.*;
-import javax.validation.Constraint;
 import java.util.*;
 
 /**
@@ -25,7 +24,7 @@ public class Role extends Model {
     public Boolean accepted = false;
 
     @ManyToOne
-    public User user;
+    public Person person;
     @ManyToOne
     public Project project;
 
@@ -35,7 +34,7 @@ public class Role extends Model {
 
     public Role(Long pid, Long uid, String role){
         this.role=role;
-        this.user = User.find.byId(uid);
+        this.person = Person.find.byId(uid);
         this.project = Project.find.byId(pid);
         this.dateInvited = new Date();
     }

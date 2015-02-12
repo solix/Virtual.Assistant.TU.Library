@@ -1,5 +1,5 @@
-@(title: String)(currentUser:User)(project: Project)
-    @defining(UserData.findActiveProjects()) { activeProjectList =>
+@(title: String)(currentUser:Person)(project: Project)
+    @defining(PersonData.findActiveProjects()) { activeProjectList =>
         <html lang="en">
             <head>
                 @linkLoader.headlinks(title)
@@ -36,7 +36,7 @@
                                                     </li>
                                                 }
                                             } else {
-                                                @if(p.id == UserData.getLastUsedProject.id) {
+                                                @if(p.id == PersonData.getLastUsedProject.id) {
                                                     <li role="presentation" class="active" style="width : 18% ; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
                                                         <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
                                                     </li>
@@ -59,7 +59,7 @@
                                                 <div class="tab-pane fade" id="discussion@p.id">
                                             }
                                         } else {
-                                            @if(p.equals(UserData.getLastUsedProject)){
+                                            @if(p.equals(PersonData.getLastUsedProject)){
                                                 <div class="tab-pane fade in active" id="discussion@p.id">
                                             } else {
                                                 <div class="tab-pane fade" id="discussion@p.id">

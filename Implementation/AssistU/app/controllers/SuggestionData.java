@@ -1,6 +1,6 @@
 package controllers;
 
-import models.User;
+import models.Person;
 import play.mvc.*;
 import views.html.*;
 import com.feth.play.module.pa.PlayAuthenticate;
@@ -11,20 +11,20 @@ import com.feth.play.module.pa.PlayAuthenticate;
 public class SuggestionData extends Controller{
 
     public static Result suggestion(String subject) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null){
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null){
             if(subject.equals("Orientation")){
-                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-eye", user));
+                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-eye", person));
             } else if(subject.equals("Exploration")){
-                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-arrows-alt", user));
+                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-arrows-alt", person));
             } else if(subject.equals("Processing")){
-                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-sitemap", user));
+                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-sitemap", person));
             } else if(subject.equals("Literature Search")){
-                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-book", user));
+                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-book", person));
             } else if(subject.equals("Publish")){
-                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-newspaper-o", user));
+                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-newspaper-o", person));
             } else if(subject.equals("Keeping Up-to-date")){
-                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-refresh", user));
+                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-refresh", person));
             } else {
                 return Application.suggestions();
             }

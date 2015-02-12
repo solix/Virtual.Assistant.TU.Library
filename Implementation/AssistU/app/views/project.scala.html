@@ -1,4 +1,4 @@
-@(title: String)(currentUser:User)(project: Project)
+@(title: String)(currentUser:Person)(project: Project)
     <html lang="en">
         <head>
             @linkLoader.headlinks(title)
@@ -16,15 +16,15 @@
                             <div class="btn-group" role="group">
                                 <button style="width: 175px" type="button" class="btn btn-default"
                                 data-toggle="modal" data-target="#archivedProjectList"
-                                @if(UserData.findArchivedProjects.isEmpty){disabled}>Archived projects</button>
+                                @if(PersonData.findArchivedProjects.isEmpty){disabled}>Archived projects</button>
                             </div>
                             <div class="btn-group pull-right" role="group" style="padding-right: 30px">
                                 <button style="width: 175px" type="button" class="btn btn-info dropdown-toggle" id="invitations"
-                                data-toggle="dropdown" aria-expanded="true" @if(UserData.findPendingInvitations().isEmpty){disabled}>
-                                    Invitations: @UserData.findPendingInvitations().size()
+                                data-toggle="dropdown" aria-expanded="true" @if(PersonData.findPendingInvitations().isEmpty){disabled}>
+                                    Invitations: @PersonData.findPendingInvitations().size()
                                 </button>
                                 <ul class="dropdown-menu pull-left" role="menu" aria-labelledby="invitations" style="margin-right: 30px; padding: 0">
-                                    @defining(UserData.findPendingInvitations()) { projects_pending =>
+                                    @defining(PersonData.findPendingInvitations()) { projects_pending =>
                                         @for(pp <- projects_pending){
                                             <li role="presentation" style="padding: 5px; margin: 0">
                                                 <div class="panel panel-info" style="margin: 0">
@@ -63,7 +63,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @UserData.findArchivedProjects.map{ p =>
+                    @PersonData.findArchivedProjects.map{ p =>
                         <tr>
                             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.folder</td>
                             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@p.name</td>

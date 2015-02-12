@@ -2,7 +2,7 @@ package controllers;
 
 import com.feth.play.module.pa.PlayAuthenticate;
 import models.Event;
-import models.User;
+import models.Person;
 import org.joda.time.DateTime;
 import play.Logger;
 import play.data.Form;
@@ -45,8 +45,8 @@ public class CalData extends Controller {
 
         Date startDate = new Date(start*1000);
         Date endDate = new Date(end*1000);
-        User user =User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        List<Event> resultList = Event.findInDateRange(startDate, endDate, user);
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        List<Event> resultList = Event.findInDateRange(startDate, endDate, person);
         ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -71,11 +71,11 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result calendar() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(calendar.render("My Calendar", user,eventForm,Event.find.where().in("user",user).order().asc("start").findList()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null)
+            return ok(calendar.render("My Calendar", person,eventForm,Event.find.where().in("user", person).order().asc("start").findList()));
         else
-        return ok(calendar.render("My Calendar", user, eventForm, Event.find.where().in("user", user).order().asc("start").findList()));
+        return ok(calendar.render("My Calendar", person, eventForm, Event.find.where().in("user", person).order().asc("start").findList()));
     }
 
 
@@ -85,9 +85,9 @@ public class CalData extends Controller {
      *
      */
     public static Result list(long uid) {
-        User user = User.find.byId(uid);
-        List<Event> events = Event.find.where().in("user",user).order().asc("start").findList();
-        return ok(list.render("List of events",user,events));
+        Person person = Person.find.byId(uid);
+        List<Event> events = Event.find.where().in("user", person).order().asc("start").findList();
+        return ok(list.render("List of events", person,events));
     }
 
 
@@ -96,9 +96,9 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result blank() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
-        return ok(formNew.render("new event form",user,eventForm));
+        return ok(formNew.render("new event form", person,eventForm));
     }
 
 
@@ -108,10 +108,10 @@ public class CalData extends Controller {
      */
     public static Result add() {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
         if (eventForm.hasErrors()) {
-            return badRequest(formNew.render("new event form",user,eventForm));
+            return badRequest(formNew.render("new event form", person,eventForm));
         }
 
         Event newEvent = eventForm.get();
@@ -121,11 +121,11 @@ public class CalData extends Controller {
             newEvent.end = new DateTime(newEvent.start).plusMinutes(30).toDate();
         }
         newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
-        user.events.add(newEvent);
+        person.events.add(newEvent);
         Logger.debug("add new event function in CalData is used :" + newEvent.title);
         newEvent.save();
 
-        return redirect(controllers.routes.CalData.list(user.id));
+        return redirect(controllers.routes.CalData.list(person.id));
     }
 
 
@@ -138,10 +138,10 @@ public class CalData extends Controller {
      */
     public static Result edit(Long id) {
         Event event = Event.find.byId(id);
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
         Form<Event> eventForm = Form.form(Event.class).fill(event);
-        return ok(formEdit.render("Edit events",user,id, eventForm, event));
+        return ok(formEdit.render("Edit events", person,id, eventForm, event));
     }
 
 
@@ -151,11 +151,11 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result update(Long id) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
         if (eventForm.hasErrors()) {
-            return badRequest(formEdit.render("update",user,id, eventForm, Event.find.byId(id)));
+            return badRequest(formEdit.render("update", person,id, eventForm, Event.find.byId(id)));
         }
         Event updatedEvent = eventForm.get();
         updatedEvent.allDay = updatedEvent.allDay != null;
@@ -165,7 +165,7 @@ public class CalData extends Controller {
         updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
         updatedEvent.update(id);
 
-        return redirect(controllers.routes.CalData.list(user.id));
+        return redirect(controllers.routes.CalData.list(person.id));
     }
 
 
@@ -175,10 +175,10 @@ public class CalData extends Controller {
      * @return Result
      */
     public static Result delete(Long id) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
         Event.find.ref(id).delete();
-        return redirect(controllers.routes.CalData.list(user.id));
+        return redirect(controllers.routes.CalData.list(person.id));
     }
 
 
@@ -188,9 +188,9 @@ public class CalData extends Controller {
      */
     public static Result addByAjax(long uid) {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
-        User user = User.find.byId(uid);
+        Person person = Person.find.byId(uid);
         Event newEvent = eventForm.get();
-        Event event = new Event(user,newEvent.title,newEvent.start,newEvent.end,newEvent.allDay);
+        Event event = new Event(person,newEvent.title,newEvent.start,newEvent.end,newEvent.allDay);
         event.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
         event.description=newEvent.description;
         event.save();

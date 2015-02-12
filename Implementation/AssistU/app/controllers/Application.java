@@ -1,7 +1,6 @@
 package controllers;
 
 import models.*;
-import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
@@ -23,9 +22,9 @@ public class Application extends Controller {
      * @return
      */
     public static Result index() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(index.render("Welcome, " + user.name, user));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null)
+            return ok(index.render("Welcome, " + person.name, person));
         else
             return Authentication.login();
     }
@@ -38,10 +37,10 @@ public class Application extends Controller {
     private static Form<Task> taskForm = Form.form(Task.class);
 
     public static Result task() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
-            List<Task> tasks = Task.ordered(user) ;
-            return ok(task_new.render("My tasks", user, tasks,taskForm));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null) {
+            List<Task> tasks = Task.ordered(person) ;
+            return ok(task_new.render("My tasks", person, tasks,taskForm));
         }else
             return Authentication.login();
     }
@@ -49,9 +48,9 @@ public class Application extends Controller {
 
 
     public static Result project() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(project.render("AssistU - Projects", user, null));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null)
+            return ok(project.render("AssistU - Projects", person, null));
         else
             return Authentication.login();
     }
@@ -61,9 +60,9 @@ public class Application extends Controller {
      * @return
      */
     public static Result suggestions() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(suggestions.render("Suggestions", user));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null)
+            return ok(suggestions.render("Suggestions", person));
         else
             return Authentication.login();
     }
@@ -73,9 +72,9 @@ public class Application extends Controller {
      * @return
      */
     public static Result discussion() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(discussion.render("AssisTU - Discussions", user, null));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null)
+            return ok(discussion.render("AssisTU - Discussions", person, null));
         else
             return Authentication.login();
     }

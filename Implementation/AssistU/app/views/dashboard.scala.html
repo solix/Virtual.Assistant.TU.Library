@@ -1,4 +1,4 @@
-@(parentpage: String, currentUser:User)
+@(parentpage: String, currentUser:Person)
 <!-- Navigation -->
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -251,8 +251,8 @@
                     <a @if(parentpage.equals("dashboard")){class="active"} href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
-                    @defining(UserData.findActiveProjects()) { projects =>
+                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects@if(PersonData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
+                    @defining(PersonData.findActiveProjects()) { projects =>
                         @if(projects.size() > 0) {
                             <ul class="nav nav-second-level">
                                 @for(p <- projects){
@@ -285,8 +285,8 @@
                     <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
                 </li>
                 <li>
-                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
-                    @defining(UserData.findActiveProjects()) { projects =>
+                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(PersonData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
+                    @defining(PersonData.findActiveProjects()) { projects =>
                         @if(projects.size() > 0) {
                             <ul class="nav nav-second-level">
                             @for(p <- projects){

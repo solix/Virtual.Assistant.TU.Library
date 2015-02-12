@@ -2,7 +2,6 @@ package controllers;
 
 
 import models.*;
-import controllers.*;
 
 
 import play.data.DynamicForm;
@@ -24,7 +23,7 @@ public class DocumentData extends Controller {
      * POST uploaded document  to the server
      */
     public static Result uploadDocument(long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project project=Project.find.byId(pid);
         MultipartFormData body = request().body().asMultipartFormData();
         //play api to get the file
@@ -42,7 +41,7 @@ public class DocumentData extends Controller {
                 System.out.println("Problem operating on filesystem");
             }
             String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, user.id);
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, person.id);
 
 
             return redirect(controllers.routes.Application.project());
@@ -72,19 +71,19 @@ public class DocumentData extends Controller {
 
     public static Result deleteDocument(Long fid){
         DocumentFile documentFile = DocumentFile.find.byId(fid);
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(documentFile.user.equals(user)){
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(documentFile.person.equals(person)){
             documentFile.delete();
         }
         return ProjectData.project(documentFile.project.id);
     }
 
     public static Result documentDiscussion(Long docid){
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         DocumentFile df = DocumentFile.find.byId(docid);
         Project p =Project.find.byId(df.project.id);
         DynamicForm message = new DynamicForm();
-        return ok(discussionFile.render("Discuss " + df.name, user, p, df, message, false, "", ""));
+        return ok(discussionFile.render("Discuss " + df.name, person, p, df, message, false, "", ""));
     }
 
     public static Result downloadTemplate(){
@@ -94,7 +93,7 @@ public class DocumentData extends Controller {
     }
 
     public static Result uploadNewTemplate(long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project project=Project.find.byId(pid);
         MultipartFormData body = request().body().asMultipartFormData();
         //play api to get the file
@@ -112,7 +111,7 @@ public class DocumentData extends Controller {
                 System.out.println("Problem operating on filesystem");
             }
             String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, user.id);
+            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, person.id);
             doc.owntemplate=true;
             project.template="Own";
             project.update();

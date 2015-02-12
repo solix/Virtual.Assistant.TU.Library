@@ -1,15 +1,11 @@
 package models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.*;
 
 import javax.persistence.*;
 
-import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
@@ -113,7 +109,7 @@ public class Project extends Model {
      */
     public static void inviteOwner(Long pid, Long uid){
         Project p = Project.find.ref(pid);
-        User u = User.find.byId(uid);
+        Person u = Person.find.byId(uid);
         Role r = Role.createOwnerRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
@@ -124,7 +120,7 @@ public class Project extends Model {
 
     public static void inviteGuest(Long pid, Long uid){
         Project p = Project.find.ref(pid);
-        User u = User.find.byId(uid);
+        Person u = Person.find.byId(uid);
         Role r = Role.createGuestRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
@@ -135,7 +131,7 @@ public class Project extends Model {
 
     public static void inviteReviewer(Long pid, Long uid){
         Project p = Project.find.ref(pid);
-        User u = User.find.byId(uid);
+        Person u = Person.find.byId(uid);
         Role r = Role.createReviewerRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
@@ -149,7 +145,7 @@ public class Project extends Model {
      */
     public static void removeMemberFrom(Long pid, Long uid){
         Project p = Project.find.byId(pid);
-        User u = User.find.byId(uid);
+        Person u = Person.find.byId(uid);
         Role r = Role.find.where().eq("project", p).eq("user", u).findUnique();
         p.roles.remove(r);
         u.roles.remove(r);
