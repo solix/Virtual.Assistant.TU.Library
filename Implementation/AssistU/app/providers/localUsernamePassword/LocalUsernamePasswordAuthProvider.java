@@ -4,6 +4,7 @@ import com.feth.play.module.mail.Mailer.Mail.Body;
 import com.feth.play.module.pa.PlayAuthenticate;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import controllers.Emailer;
 import models.LinkedAccount;
 import models.TokenAction;
 import models.TokenAction.Type;
@@ -218,14 +219,14 @@ public class LocalUsernamePasswordAuthProvider
 	@Override
 	protected String getVerifyEmailMailingSubject(
 			final LocalUsernamePasswordAuthUser user, final Context ctx) {
-		return Messages.get("playauthenticate.password.verify_signup.subject");
+		return Messages.get("[Verify your email] assisTU Web application");
 	}
 
 	@Override
 	protected String onLoginUserNotFound(final Context context) {
 		context.flash()
 				.put(controllers.Authentication.FLASH_ERROR_KEY,
-						Messages.get("playauthenticate.password.login.unknown_user_or_pw"));
+						Messages.get("[unknown] assisTU Web application"));
 		return super.onLoginUserNotFound(context);
 	}
 
@@ -276,7 +277,7 @@ public class LocalUsernamePasswordAuthProvider
 
 	protected String getPasswordResetMailingSubject(final User user,
 													final Context ctx) {
-		return Messages.get("playauthenticate.password.reset_email.subject");
+		return Messages.get("[Reset your Password] assisTU Web application");
 	}
 
 	protected Body getPasswordResetMailingBody(final String token,
@@ -304,7 +305,9 @@ public class LocalUsernamePasswordAuthProvider
 		final String token = generatePasswordResetRecord(user);
 		final String subject = getPasswordResetMailingSubject(user, ctx);
 		final Body body = getPasswordResetMailingBody(token, user, ctx);
-		sendMail(subject, body, getEmailName(user));
+
+		Emailer.sendVerifyEmail(subject,getEmailName(user),body);
+
 	}
 
 	public boolean isLoginAfterPasswordReset() {
@@ -314,7 +317,7 @@ public class LocalUsernamePasswordAuthProvider
 
 	protected String getVerifyEmailMailingSubjectAfterSignup(final User user,
 															 final Context ctx) {
-		return Messages.get("playauthenticate.password.verify_email.subject");
+		return Messages.get("[Verify your email] assisTU Web application");
 	}
 
 	protected String getEmailTemplate(final String template,
@@ -388,7 +391,7 @@ public class LocalUsernamePasswordAuthProvider
 				ctx);
 		final String token = generateVerificationRecord(user);
 		final Body body = getVerifyEmailMailingBodyAfterSignup(token, user, ctx);
-		sendMail(subject, body, getEmailName(user));
+		Emailer.sendVerifyEmail(subject,getEmailName(user),body);
 	}
 
 	private String getEmailName(final User user) {

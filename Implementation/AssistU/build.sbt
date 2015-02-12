@@ -16,19 +16,17 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.1.1-2",
   "postgresql" % "postgresql" % "9.1-901.jdbc4",
   "commons-io" % "commons-io" % "2.4",
+  "org.apache.commons" % "commons-email" % "1.3.3",
   "com.google.guava" % "guava" % "14.0",
   filters,
   "be.objectify"  %% "deadbolt-java"     % "2.3.0-RC1",
-//<<<<<<< HEAD
-//  "com.feth"      %% "play-authenticate" % "0.6.5-SNAPSHOT"
-//=======
+  "com.typesafe.play" %% "play-mailer" % "2.4.0",
   "com.feth"      %% "play-authenticate" % "0.6.5-SNAPSHOT",
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "org.webjars" % "bootstrap" % "3.2.0",
   "org.webjars" %% "webjars-play" % "2.3.0",
   "org.webjars" % "jquery-ui" % "1.11.0-1"
-//>>>>>>> task
-)
+  )
 
 resolvers ++= Seq(
   "Apache" at "http://repo1.maven.org/maven2/",

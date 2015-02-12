@@ -14,7 +14,6 @@ import com.feth.play.module.pa.PlayAuthenticate;
 import com.feth.play.module.pa.user.AuthUser;
 
 /**
- * Created by spyruo on 12-12-14.
  */
 public class Authentication extends Controller {
 

@@ -1,4 +1,6 @@
+1500:play.api.libs.mailer.CommonsMailerPlugin
 10005:service.UserService
 10020:providers.localUsernamePassword.LocalUsernamePasswordAuthProvider
 10030:com.feth.play.module.pa.providers.oauth2.google.GoogleAuthProvider
 10040:providers.mendeley.MendeleyAuthProvider
+

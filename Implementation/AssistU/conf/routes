@@ -95,7 +95,8 @@ GET         /suggestions/:subject                       controllers.SuggestionDa
 
 
 
-
+#Email
+GET        /send/email              controllers.Emailer.sendWelcomeMessage()
 
 
 
