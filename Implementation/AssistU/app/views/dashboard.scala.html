@@ -298,7 +298,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
+                    <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalendarData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
                 </li>
                 <li>
                     <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>

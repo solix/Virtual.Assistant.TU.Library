@@ -17,6 +17,12 @@ import java.util.regex.Pattern;
 
 public class Application extends Controller {
 
+
+    public static Result reroute(){
+        Logger.debug("Redirecting to " + session("callback"));
+        return redirect(session("callback"));
+    }
+
     /**
      * index view
      *
@@ -26,8 +32,10 @@ public class Application extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(index.render("Welcome, " + user.name, user));
-        else
+        else {
+            session().put("callback", routes.Application.index().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /**
@@ -42,18 +50,22 @@ public class Application extends Controller {
         if(user != null) {
             List<Task> tasks = Task.ordered(user) ;
             return ok(task_new.render("My tasks", user, tasks,taskForm));
-        }else
+        }else {
+            session().put("callback", routes.Application.task().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
 
 
     public static Result project() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
+        if(user != null) {
             return ok(project.render("AssistU - Projects", user, null));
-        else
+        }else{
+            session().put("callback", routes.Application.project().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /**
@@ -64,8 +76,10 @@ public class Application extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(suggestions.render("Suggestions", user));
-        else
+        else {
+            session().put("callback", routes.Application.suggestions().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /**
@@ -76,8 +90,10 @@ public class Application extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(discussion.render("AssisTU - Discussions", user, null));
-        else
+        else{
+            session().put("callback", routes.Application.discussion().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     public static Boolean allowedTitleRegex(String input){

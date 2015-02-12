@@ -23,14 +23,14 @@
     <div id="page-wrapper">
         @template.headericon("fa fa-calendar fa-5x")
 
-  <a  class="btn btn-default btn=sm" href="@routes.CalData.list(currentUser.id)">
+  <a  class="btn btn-default btn=sm" href="@routes.CalendarData.list(currentUser.id)">
     <span class="fa fa-bars"></span> View as List
   </a>
 
     <hr class="hr" style="margin-top: 10px">
 
         <div style="display: none;">
-          <form action="@routes.CalData.addByAjax(currentUser.id)" method="POST" id="eventFormNew">
+          <form action="@routes.CalendarData.addByAjax(currentUser.id)" method="POST" id="eventFormNew">
             <input type="text" name="title" id="newTitle"/>
             <input type="text" name="description" id="newDescription"/>
             <input type="text" name="start" id="newStart"/>
@@ -40,14 +40,14 @@
 
           <br/>
 
-          <form action="@routes.CalData.move()" method="POST" id="eventFormMove">
+          <form action="@routes.CalendarData.move()" method="POST" id="eventFormMove">
             <input type="text" name="id" id="moveId"/>
             <input type="text" name="dayDelta" id="moveDayDelta"/>
             <input type="text" name="minuteDelta" id="moveMinuteDelta"/>
             <input type="text" name="allDay" id="moveAllDay"/>
           </form>
 
-          <form action="@routes.CalData.resize()" method="POST" id="eventFormResize">
+          <form action="@routes.CalendarData.resize()" method="POST" id="eventFormResize">
             <input type="text" name="id" id="resizeId"/>
             <input type="text" name="dayDelta" id="resizeDayDelta"/>
             <input type="text" name="minuteDelta" id="resizeMinuteDelta"/>
