@@ -204,7 +204,7 @@ public class Signup extends Controller {
 
 	public static Result exists() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-		return ok(testpage.render("existing user?"));
+		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "There is already a user signed up with this email"));
 	}
 
 	/**
@@ -216,9 +216,7 @@ public class Signup extends Controller {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
 		final TokenAction ta = tokenIsValid(token, Type.EMAIL_VERIFICATION);
 		if (ta == null) {
-//			return badRequest("Bad token or something");
-//			return ok(home.render("Invalid Link", null, true, "danger", "The verification link you just followed is no longer valid."));
-			return TODO;
+			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "The link you followed is not valid"));
 		}
 		final String email = ta.targetUser.email;
 		User.verify(ta.targetUser);

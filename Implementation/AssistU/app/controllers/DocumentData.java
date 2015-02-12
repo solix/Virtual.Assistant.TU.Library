@@ -5,6 +5,7 @@ import models.*;
 import controllers.*;
 
 
+import play.data.DynamicForm;
 import play.mvc.*;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
@@ -16,7 +17,7 @@ import org.apache.commons.io.FileUtils;
 import views.html.discussionFile;
 import com.feth.play.module.pa.PlayAuthenticate;
 
-public class Datafile extends Controller {
+public class DocumentData extends Controller {
 
     /*TODO SOHEIL: Having a new document uploaded to your project should also be notified
     /**
@@ -82,7 +83,8 @@ public class Datafile extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         DocumentFile df = DocumentFile.find.byId(docid);
         Project p =Project.find.byId(df.project.id);
-        return ok(discussionFile.render("Discuss " + df.name, user, p, df, false, ""));
+        DynamicForm message = new DynamicForm();
+        return ok(discussionFile.render("Discuss " + df.name, user, p, df, message, false, "", ""));
     }
 
     public static Result downloadTemplate(){

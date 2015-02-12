@@ -19,9 +19,9 @@
                             <td>@f.user.name</td>
                             <td style="text-align : center">@f.id</td>
                             <td style="text-align : center">
-                                <a href="@routes.Datafile.downloadDocument(f.id)" ><i class="fa fa-download fa-fw"></i></a>
+                                <a href="@routes.DocumentData.downloadDocument(f.id)" ><i class="fa fa-download fa-fw"></i></a>
                                 |
-                                <a href="@routes.Datafile.documentDiscussion(f.id)"><i class="fa fa-comment fa-fw"></i></a>
+                                <a href="@routes.DocumentData.documentDiscussion(f.id)"><i class="fa fa-comment fa-fw"></i></a>
                                 @if(f.user.equals(currentUser)){
                                     |
                                     <a style="color: red" href="#" data-toggle="modal" data-target="#deleteFile@f.id"><i class="fa fa-close fa-fw"></i></a>
@@ -42,7 +42,7 @@
                     <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
                 </div>
                 <div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">
-                    <a type="submit" class="btn btn-danger col-xs-12" href="@routes.Datafile.deleteDocument(f.id)">
+                    <a type="submit" class="btn btn-danger col-xs-12" href="@routes.DocumentData.deleteDocument(f.id)">
                         Delete!</a>
                 </div>
             }

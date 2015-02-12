@@ -30,13 +30,13 @@
                                                 <i>download @p.template from here</i>
                                                 @if(p.template.equals("Own")) {
                                                     <a href="@{
-                                                        routes.Datafile.downloadOwnTemplate(p.id)
+                                                        routes.DocumentData.downloadOwnTemplate(p.id)
                                                     }" title="Download the @p.template template">
                                                         <i class="fa fa-cloud-download fa-fw"></i>
                                                     </a>
                                                 } else {
                                                     <a href="@{
-                                                        routes.Datafile.downloadTemplate()
+                                                        routes.DocumentData.downloadTemplate()
                                                     }" title="Download the @p.template template">
                                                         <i class="fa fa-cloud-download fa-fw"></i>
                                                     </a>

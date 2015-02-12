@@ -137,8 +137,7 @@
                                                                 style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
                                                                     <i class="fa fa-close"></i>
                                                                 </a>
-                                                            }
-                                                            @if(ProjectData.findAllReviewers(p.id).contains(currentUser)) {
+                                                            } else {
                                                                 <a class="pull-right" href="#" ng-if="comment.uid == @currentUser.id"
                                                                 style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
                                                                     <i class="fa fa-close"></i>

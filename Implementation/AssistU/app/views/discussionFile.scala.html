@@ -1,4 +1,4 @@
-@(title: String)(currentUser:User)(project: Project)(document: DocumentFile)(info: Boolean, error: String)
+@(title: String)(currentUser:User)(project: Project)(document: DocumentFile)(message_form: Form[_])(info: Boolean, theme: String, message: String)
 <html lang="en">
     <head>
         @linkLoader.headlinks(title)
@@ -13,6 +13,11 @@
                 @template.headericon("fa fa-file-text-o fa-5x")
                 <div class="row" style="text-align: center">
                     <h3>Create a new message about <br> @document.name</h3>
+                </div>
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                @if(info) {
+                    @template.alert(theme, message)
+                }
                 </div>
                 @helper.form(action = routes.DiscussionData.postExternalMessage()) {
                     <div class="row" style="margin-top: 30px; margin-right: 40px">
@@ -38,9 +43,9 @@
                                     }
                                     <div class="message-panel" style="margin-left: 40px">
                                         <div class="message-heading">
-                                            <input type="text" name="subject" class="form-control" placeholder="Your subject here...">
+                                            <input type="text" name="subject" class="form-control" value="@message_form("subject").value" placeholder="Your subject here...">
                                             <hr class="hr" style="margin: 15px 0 10px">
-                                            <textarea class="form-control" name="content" rows="3" placeholder="Your message here..."></textarea>
+                                            <textarea class="form-control" name="content" rows="5" placeholder="Your message here...">@message_form("content").value</textarea>
                                             <hr class="hr" style="margin: 15px 0 10px">
                                             <input type="hidden" name="attachment" value="@document.id">
                                             <input type="hidden" name="projectID" value="@document.project.id">

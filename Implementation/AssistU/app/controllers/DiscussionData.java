@@ -84,13 +84,15 @@ public class DiscussionData extends Controller {
     */
     public static Result postExternalMessage() {
         DynamicForm message = Form.form().bindFromRequest();
+        Logger.debug("ext message: " + message.toString());
         ObjectNode result = new ObjectMapper().createObjectNode();
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(Long.parseLong(message.get("projectID")));
         DocumentFile doc = DocumentFile.find.byId(Long.parseLong(message.get("attachment")));
         if(message.get("content").equals("") || message.get("subject").equals("")) {
+            Logger.debug("ext message sendback: " + message.toString());
             return badRequest(discussionFile.render("An error has occured.", user, p,
-                    DocumentFile.find.byId(Long.parseLong(message.get("documentID"))), true,
+                    DocumentFile.find.byId(Long.parseLong(message.get("attachment"))), message, true, "danger",
                     "Your message or subject was empty"));
         } else {
             result.put("uid", user.id);

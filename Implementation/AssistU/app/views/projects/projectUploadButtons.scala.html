@@ -6,7 +6,7 @@
 </div>
 @template.smallmodal("pcUpload"+project.id.toString)("success")("Upload Files") {
         <h4>Upload your document here!</h4>
-        @helper.form(action = routes.Datafile.uploadDocument(project.id), 'enctype -> "multipart/form-data") {
+        @helper.form(action = routes.DocumentData.uploadDocument(project.id), 'enctype -> "multipart/form-data") {
             <div class="form-inline">
                 <div class="form-group">
                     <input type="file" name="document" id="js-upload-files" multiple>
