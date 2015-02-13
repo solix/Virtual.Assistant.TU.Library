@@ -168,7 +168,7 @@ public class ProjectData extends Controller {
                             Event.defaultPlanningArticle(user, p);
                             p.planning = true;
                             //            p.update();
-                            p.save();
+//                            p.save();
                         } else if (emailform.get("role").equals("Reviewer")) {
                             Project.inviteReviewer(p.id, user_invited.id);
                         } else {
