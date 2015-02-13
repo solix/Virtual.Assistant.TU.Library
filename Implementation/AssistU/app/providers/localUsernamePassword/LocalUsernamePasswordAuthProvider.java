@@ -134,7 +134,6 @@ public class LocalUsernamePasswordAuthProvider
 		return LOGIN_FORM;
 	}
 
-	@Override
 	protected com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.SignupResult signupUser(final LocalUsernamePasswordAuthUser user) {
 		final User u = User.findByUsernamePasswordIdentity(user);
 		if (u != null) {
@@ -157,7 +156,6 @@ public class LocalUsernamePasswordAuthProvider
 		return SignupResult.USER_CREATED_UNVERIFIED;
 	}
 
-	@Override
 	protected com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.LoginResult loginUser(
 			final LocalLoginUsernamePasswordAuthUser authUser) {
 		final User u = User.findByUsernamePasswordIdentity(authUser);
@@ -187,23 +185,19 @@ public class LocalUsernamePasswordAuthProvider
 		}
 	}
 
-	@Override
 	protected Call userExists(final UsernamePasswordAuthUser authUser) {
 		return routes.Signup.exists();
 	}
 
-	@Override
 	protected Call userUnverified(final UsernamePasswordAuthUser authUser) {
 		return routes.Signup.unverified();
 	}
 
-	@Override
 	protected LocalUsernamePasswordAuthUser buildSignupAuthUser(
 			final NativeSignup signup, final Context ctx) {
 		return new LocalUsernamePasswordAuthUser(signup);
 	}
 
-	@Override
 	protected LocalLoginUsernamePasswordAuthUser buildLoginAuthUser(
 			final NativeLogin login, final Context ctx) {
 		return new LocalLoginUsernamePasswordAuthUser(login.getPassword(),
@@ -211,18 +205,15 @@ public class LocalUsernamePasswordAuthProvider
 	}
 
 
-	@Override
 	protected LocalLoginUsernamePasswordAuthUser transformAuthUser(final LocalUsernamePasswordAuthUser authUser, final Context context) {
 		return new LocalLoginUsernamePasswordAuthUser(authUser.getEmail());
 	}
 
-	@Override
 	protected String getVerifyEmailMailingSubject(
 			final LocalUsernamePasswordAuthUser user, final Context ctx) {
 		return Messages.get("[Verify your email] assisTU Web application");
 	}
 
-	@Override
 	protected String onLoginUserNotFound(final Context context) {
 		context.flash()
 				.put(controllers.Authentication.FLASH_ERROR_KEY,
@@ -230,7 +221,6 @@ public class LocalUsernamePasswordAuthProvider
 		return super.onLoginUserNotFound(context);
 	}
 
-	@Override
 	protected Body getVerifyEmailMailingBody(final String token,
 											 final LocalUsernamePasswordAuthUser user, final Context ctx) {
 
@@ -256,7 +246,6 @@ public class LocalUsernamePasswordAuthProvider
 		return UUID.randomUUID().toString();
 	}
 
-	@Override
 	protected String generateVerificationRecord(
 			final LocalUsernamePasswordAuthUser user) {
 		return generateVerificationRecord(User.findByAuthUserIdentity(user));
@@ -306,7 +295,7 @@ public class LocalUsernamePasswordAuthProvider
 		final String subject = getPasswordResetMailingSubject(user, ctx);
 		final Body body = getPasswordResetMailingBody(token, user, ctx);
 
-		Emailer.sendVerifyEmail(subject,getEmailName(user),body);
+		//Emailer.sendVerifyEmail(subject,getEmailName(user),body);
 
 	}
 
@@ -391,7 +380,7 @@ public class LocalUsernamePasswordAuthProvider
 				ctx);
 		final String token = generateVerificationRecord(user);
 		final Body body = getVerifyEmailMailingBodyAfterSignup(token, user, ctx);
-		Emailer.sendVerifyEmail(subject,getEmailName(user),body);
+		//Emailer.sendVerifyEmail(subject,getEmailName(user),body);
 	}
 
 	private String getEmailName(final User user) {
