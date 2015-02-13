@@ -295,7 +295,7 @@ public class LocalUsernamePasswordAuthProvider
 		final String subject = getPasswordResetMailingSubject(user, ctx);
 		final Body body = getPasswordResetMailingBody(token, user, ctx);
 
-		//Emailer.sendVerifyEmail(subject,getEmailName(user),body);
+
 
 	}
 
@@ -380,7 +380,6 @@ public class LocalUsernamePasswordAuthProvider
 				ctx);
 		final String token = generateVerificationRecord(user);
 		final Body body = getVerifyEmailMailingBodyAfterSignup(token, user, ctx);
-		//Emailer.sendVerifyEmail(subject,getEmailName(user),body);
 	}
 
 	private String getEmailName(final User user) {
