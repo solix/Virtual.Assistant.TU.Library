@@ -38,17 +38,17 @@ public class Person extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public List<LinkedAccount> linkedAccounts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     public List<Task> tasks= new ArrayList<Task>();
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     public List<Event> events;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     public List<Role> roles= new ArrayList<Role>();
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     public List<Comment> comments=new ArrayList<Comment>();
 
 //    public User(String name, String email, String password) {
