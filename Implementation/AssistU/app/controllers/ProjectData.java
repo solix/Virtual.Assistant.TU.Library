@@ -204,7 +204,8 @@ public class ProjectData extends Controller {
                 r.save();
                 List<User> owners=findAllOwners(p.id);
                 owners.stream().forEach((u) -> {
-                    Emailer.sendNotifyEmail("[Assistu]"+ user.name + "has joined the project" , u ,views.html.email.project_joined(u,user,p) );
+                    if(!u.equals(user))
+                    Emailer.sendNotifyEmail("[Assistu]"+ user.name + "has joined the project" , u ,views.html.email.project_joined.render(u,user,p) );
                 });
             }
             return redirect(routes.ProjectData.project(p.id));

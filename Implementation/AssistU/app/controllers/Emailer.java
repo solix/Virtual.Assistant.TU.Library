@@ -28,7 +28,7 @@ public class Emailer extends Controller {
 
         final Email email = new Email();
         email.setSubject(subject);
-        email.setFrom("we.assistu@gmail");
+        email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
         MailerPlugin.send(email);
@@ -45,7 +45,7 @@ public class Emailer extends Controller {
 
         final Email email = new Email();
         email.setSubject(subject);
-        email.setFrom("we.assistu@gmail");
+        email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
         MailerPlugin.send(email);
