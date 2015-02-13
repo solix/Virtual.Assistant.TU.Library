@@ -63,8 +63,8 @@ public class ProjectData extends Controller {
         } else {
             Project projectData = filledProjectForm.get();
             Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
-            p.inviteOwner(p.id, person.id);
-            Role r = Role.find.where().eq("project",p).eq("user", person).findUnique();
+            Project.inviteOwner(p.id, person.id);
+            Role r = Role.find.where().eq("project",p).eq("person", person).findUnique();
             r.accepted=true;
             r.dateJoined=new Date();
             r.update();
@@ -134,7 +134,7 @@ public class ProjectData extends Controller {
                 Project p = Project.find.byId(pid);
                 //There can not be a role relation between the invited user and the project,
                 // as it would be the user is already a member
-                if (Role.find.where().eq("project", p).eq("user", person).findUnique() == null) {
+                if (Role.find.where().eq("project", p).eq("person", person).findUnique() == null) {
                     //Pattern match the correct role for invitation
                     if (emailform.get("role").equals("Owner")) {
                         p.inviteOwner(p.id, person.id);
@@ -159,7 +159,7 @@ public class ProjectData extends Controller {
     public static Result hasAccepted(Long pid){
         Project p = Project.find.byId(pid);
         Person u = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Role r = Role.find.where().eq("user", u).eq("project", p).findUnique();
+        Role r = Role.find.where().eq("person", u).eq("project", p).findUnique();
         //See if there actually exists a (pending) role between the accepting user and project
         if(r != null){
             r.accepted=true;
@@ -172,7 +172,7 @@ public class ProjectData extends Controller {
     public static Result hasDeclined(Long pid){
         Project p = Project.find.byId(pid);
         Person u = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Role r = Role.find.where().eq("user", u).eq("project", p).findUnique();
+        Role r = Role.find.where().eq("person", u).eq("project", p).findUnique();
         if(r != null) {
             r.delete();
         }

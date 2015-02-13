@@ -256,7 +256,7 @@
                         @if(projects.size() > 0) {
                             <ul class="nav nav-second-level">
                                 @for(p <- projects){
-                                    @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
+                                    @defining(Role.find.where().eq("person", currentUser).eq("project", p).findUnique().role) { role =>
                                         @if(role.equals(Role.OWNER)) {
                                             <li>
                                                 <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-mortar-board"></i> @p.folder</a>
@@ -290,7 +290,7 @@
                         @if(projects.size() > 0) {
                             <ul class="nav nav-second-level">
                             @for(p <- projects){
-                                @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
+                                @defining(Role.find.where().eq("person", currentUser).eq("project", p).findUnique().role) { role =>
                                     @if(role.equals(Role.OWNER)) {
                                         <li>
                                             <a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-mortar-board"></i> @p.folder</a>

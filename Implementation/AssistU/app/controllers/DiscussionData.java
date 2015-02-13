@@ -70,7 +70,7 @@ public class DiscussionData extends Controller {
                     "");
             message.put("cid", comment.cid);
             message.put("username", comment.person.name);
-            message.put("role", Role.find.where().eq("user", person).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
+            message.put("role", Role.find.where().eq("person", person).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
             Logger.debug("New Comment: " + Json.stringify(message));
             sendEvent(message);
         }
@@ -111,7 +111,7 @@ public class DiscussionData extends Controller {
                     result.get("hasAttachment").asBoolean(),
                     result.get("attachment").asText());
             result.put("cid", "" + comment.cid);
-            result.put("role", Role.find.where().eq("user", person).eq("project", p).findUnique().role);
+            result.put("role", Role.find.where().eq("person", person).eq("project", p).findUnique().role);
             result.put("username", person.name);
             Logger.debug("New Comment: " + Json.stringify(result));
             sendEvent(result);
@@ -123,8 +123,8 @@ public class DiscussionData extends Controller {
         ObjectNode message = (ObjectNode)request().body().asJson();
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Comment comment = Comment.find.byId(Long.parseLong(message.get("cid").asText()));
-        Role role = Role.find.where().eq("project", comment.project).eq("user", person).findUnique();
-        Role comment_role = Role.find.where().eq("project", comment.project).eq("user", comment.person).findUnique();
+        Role role = Role.find.where().eq("project", comment.project).eq("person", person).findUnique();
+        Role comment_role = Role.find.where().eq("project", comment.project).eq("person", comment.person).findUnique();
         List<Comment> comments = Comment.find.where().eq("subject", comment.subject).findList();
         if(role != null && role.role.equals(Role.OWNER) && comment_role.equals(Role.GUEST)){
             for(int i = 0; i < comments.size(); i++){
@@ -158,7 +158,7 @@ public class DiscussionData extends Controller {
                 Person person = Person.find.byId(cm.person.id);
                 comment.put("uid", "" + person.id);
                 comment.put("username", person.name);
-                comment.put("role", Role.find.where().eq("user", cm.person).eq("project", p).findUnique().role);
+                comment.put("role", Role.find.where().eq("person", cm.person).eq("project", p).findUnique().role);
                 comment.put("subject", cm.subject);
                 comment.put("content", cm.content);
                 comment.put("date", cm.date);
@@ -191,7 +191,7 @@ public class DiscussionData extends Controller {
                 Person person = Person.find.byId(cm.person.id);
                 comment.put("uid", "" + person.id);
                 comment.put("username", person.name);
-                comment.put("role", Role.find.where().eq("user", cm.person).eq("project", p).findUnique().role);
+                comment.put("role", Role.find.where().eq("person", cm.person).eq("project", p).findUnique().role);
                 comment.put("subject", cm.subject);
                 comment.put("content", cm.content);
                 comment.put("date", cm.date);

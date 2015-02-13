@@ -29,7 +29,7 @@ public class LinkedAccount extends Model {
             Long.class, LinkedAccount.class);
 
     public static LinkedAccount findByProviderKey(final Person person, String key) {
-        return find.where().eq("user", person).eq("providerKey", key)
+        return find.where().eq("person", person).eq("providerKey", key)
                 .findUnique();
     }
 

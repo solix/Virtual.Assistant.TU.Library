@@ -57,7 +57,7 @@ public class Task extends Model {
      * @return
      */
     public static List<Task> alltask(Person person){
-        return Task.find.where().in("user", person).findList();
+        return Task.find.where().in("person", person).findList();
     }
 
     /**
@@ -65,7 +65,7 @@ public class Task extends Model {
      * @return
      */
     public static List<Task> ordered(Person person){
-        List<Task> tasks= Task.find.where().in("user", person).orderBy("dueDate asc").findList();
+        List<Task> tasks= Task.find.where().in("person", person).orderBy("dueDate asc").findList();
         return tasks;
     }
 }

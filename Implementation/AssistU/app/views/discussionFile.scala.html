@@ -24,7 +24,7 @@
                         <div class="col-xs-8 col-xs-offset-2">
                             <ul class="message" style="padding: 0; margin: 0">
                                 <li>
-                                    @defining(Role.find.where().eq("project",project).eq("user",currentUser).findUnique().role) { role =>
+                                    @defining(Role.find.where().eq("project",project).eq("person",currentUser).findUnique().role) { role =>
                                         @if(role.equals(Role.OWNER)){
                                             <div class="message-badge primary">
                                                 <i class="fa fa-mortar-board" style="margin-top: 15px"></i>

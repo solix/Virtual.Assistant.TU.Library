@@ -30,7 +30,7 @@
                                                 <div class="panel panel-info" style="margin: 0">
                                                     <div class="panel-body" style="width: 400px;">
                                                         <p style="margin: 0">You have been invited to join project @pp.name
-                                                            as a @Role.find.where().eq("user", currentUser).eq("project", pp).findUnique().role.
+                                                            as a @Role.find.where().eq("person", currentUser).eq("project", pp).findUnique().role.
                                                         </p>
                                                         <div class="btn-group col-xs-6" role="group" style="margin: 0">
                                                             <a type="button" href="@routes.ProjectData.hasDeclined(pp.id)" class="btn btn-danger" style="font-size: smaller">No thanks.</a>

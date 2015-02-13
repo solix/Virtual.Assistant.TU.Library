@@ -53,7 +53,7 @@
                         <i class="fa fa-wrench fa-4x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">@Task.find.where().eq("user", Person.find.ref(uid)).findList().size()</div>
+                        <div class="huge">@Task.find.where().eq("person", Person.find.ref(uid)).findList().size()</div>
                         <div> Tasks!</div>
                     </div>
                 </div>

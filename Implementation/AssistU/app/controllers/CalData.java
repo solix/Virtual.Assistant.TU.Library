@@ -73,9 +73,9 @@ public class CalData extends Controller {
     public static Result calendar() {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
-            return ok(calendar.render("My Calendar", person,eventForm,Event.find.where().in("user", person).order().asc("start").findList()));
+            return ok(calendar.render("My Calendar", person,eventForm,Event.find.where().in("person", person).order().asc("start").findList()));
         else
-        return ok(calendar.render("My Calendar", person, eventForm, Event.find.where().in("user", person).order().asc("start").findList()));
+        return ok(calendar.render("My Calendar", person, eventForm, Event.find.where().in("person", person).order().asc("start").findList()));
     }
 
 
@@ -86,7 +86,7 @@ public class CalData extends Controller {
      */
     public static Result list(long uid) {
         Person person = Person.find.byId(uid);
-        List<Event> events = Event.find.where().in("user", person).order().asc("start").findList();
+        List<Event> events = Event.find.where().in("person", person).order().asc("start").findList();
         return ok(list.render("List of events", person,events));
     }
 

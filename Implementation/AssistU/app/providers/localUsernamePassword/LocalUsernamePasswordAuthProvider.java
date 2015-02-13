@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static play.data.Form.form;
+import controllers.routes;
 
 public class LocalUsernamePasswordAuthProvider
 		extends
