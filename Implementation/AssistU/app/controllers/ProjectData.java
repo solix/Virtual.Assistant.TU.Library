@@ -67,7 +67,9 @@ public class ProjectData extends Controller {
             if(!p.template.equals("None")){
                 Event.defaultPlanningArticle(user, p);
                 p.planning=true;
-                p.save();}
+                p.save();
+            }
+            Emailer.sendNotifyEmail("[assistU] New project "+p.name+ "Created",user,views.html.email.projectCreated.render(user,p));
             return redirect(routes.Application.project());
         }
     }
@@ -127,6 +129,7 @@ public class ProjectData extends Controller {
         }else{
             p.addGuest(p.id, user.id);
         }
+
         return redirect(routes.Application.project());
     }
 
