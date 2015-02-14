@@ -229,7 +229,11 @@ public class User extends Model {
         //This is for extra provider-specific information
 
         if(authUser instanceof GoogleAuthUser){
-
+            final GoogleAuthUser identity = (GoogleAuthUser) authUser;
+            final Boolean is_verified = identity.isEmailVerified();
+            if(is_verified != null){
+                user.emailValidated = is_verified;
+            }
         }
 
         if(authUser instanceof MendeleyAuthUser){
