@@ -96,7 +96,10 @@ GET         /suggestions/:subject                       controllers.SuggestionDa
 
 
 #Email
-GET        /send/email              controllers.Emailer.sendWelcomeMessage()
+GET         /send/email                                 controllers.Emailer.sendWelcomeMessage()
+
+#User
+GET         /delete_account                             controllers.UserData.deleteAccount()
 
 
 

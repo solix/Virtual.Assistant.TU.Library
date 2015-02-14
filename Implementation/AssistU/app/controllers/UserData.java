@@ -66,4 +66,20 @@ public class UserData  extends Controller {
         return p;
     }
 
+    public static Result deleteAccount(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            List<LinkedAccount> linked_accounts = user.linkedAccounts;
+            for (LinkedAccount l_a : linked_accounts) {
+                l_a.delete();
+            }
+            List<Role> roles = Role.find.where().eq("user", user).findList();
+            for(Role r : roles){
+                r.delete();
+            }
+            User.deleteAccount(user.id);
+        }
+        return Authentication.login();
+    }
+
 }
