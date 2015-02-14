@@ -32,12 +32,15 @@ public class Project extends Model {
     public String description;
     @Required
     public String template;
-    public boolean planning;
+    public Boolean planning;
     public Boolean active=false;
+    @Version
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateCreated;
+    @Version
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date lastAccessed;
+    @Version
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateArchived;
     @OneToMany(mappedBy = "project")
