@@ -1,0 +1,114 @@
+\chapter{Design}
+
+\section{Introduction} % (fold)
+\label{sec:introduction}
+
+Today the web has become the central point of all applications. With presence of Internet, users can use many applications without needing to install the program on their machine. Technologies such as JavaScript, HTML, CSS are evolving rapidly and has been created an opportunity for the users of world wide web to have a more pleasant experience. Therefore fast and robust application plays an important role in attracting users and convincing them to migrate from installing the programs on their machine and instead use their browsers. In order to build robust web applications,  one must implement new state of the art software engineering designs.
+
+\subsection{Purpose} % (fold)
+\label{sub:purpose}
+
+This chapter describes architecture design of `Virtual Assistance' application. It is intended to describe the design of the system fully enough to allow future contributors of the project to clearly understand of how the software is expected to be build. Design chapter will provide overview and description of the system and relations between the components and user interaction. 
+
+\subsection{Scope} % (fold)
+\label{sub:scope}
+The scope of `AssistU' software design is formulated for base level system which work for a proof of concept, for the use of writing a scientific articles that provides planning, organizing tasks, discussing and suggestions.
+
+
+
+\section{Use Cases} % (fold)
+\label{sec:system_overview}
+\subsection{Actors} % (fold)
+\label{sub:actors}
+\subsubsection{Student/Researcher User} 
+The Student/Researcher is a main user of the application. Without this user, the rest of the actors cannot come in to exist. This user can make use of all the features extensively. For example Student/Researcher can create a project, upload templates and document, invite others, make a planning, discuss a topic with other collaborators, create a to-do-list of what has to be done for the project and get information on how to write a scientific article.
+
+\subsubsection{Reviewer User} 
+This actor is able to use all the features as well but most of the attention is given to review student's work. Reviewer come into existence when He/She gets invited by a Student/Researcher into the project. Actions that can be performed by reviewer is to download the document, comment and upload back and discuss a topic on certain  section of the project. He ofcourse can make use of planning and todo feature to create his own events and tasks.
+
+\subsubsection{Guest User} 
+Guests are those who are interested to join certain projects. They are meant to do certain actions such as view and download a document and join a discussion to give their comments. Moreover the rest of the features are also open for this actor to make use of if intended.
+
+\subsubsection{Administrative User} 
+Administrator of the application represents the operator of the system, extract logs, reply to email requests by client about account and retrieval and security.
+
+\subsection{List of Use Cases} % (fold)
+\label{sub:list_of_use_cases}
+% TODO: Main use cases of each projects are here
+\subsubsection{Student/Researcher User} 
+\begin{itemize}
+	\item Create/Leave Project
+	\item Invite new members
+	\item Search for an Article
+	\item Upload/Download files
+	\item Delete uploaded files
+	\item Create project planning
+	\item Create to-do list
+	\item Create/edit/comment discussion
+	\item Make use of suggestions
+
+\end{itemize}
+\subsubsection{Reviewer User} 
+	\item Join/Leave a project
+	\item Download/upload Document
+	\item Create/comment on discussions
+
+\subsubsection{Guest User} 
+	\item Join/Leave a project
+	\item Download Document
+	\item create/comment on discussions
+\subsubsection{Administrative User} 
+	\item Add/Remove/Edit user
+	\item Download logging info
+
+\subsection{Use Case Diagrams} % (fold)
+\label{sub:subsection_name}
+
+% subsection subsection_name (end)
+% subsection list_of_use_cases (end)
+
+% subsection actors (end)
+
+\section{System Architecture} % (fold)
+\label{sec:system_architecture}
+\subsection{Architectural Design} % (fold)
+\label{sub:arichtectural_design}
+% Develop a modular program structure and explain the relationships between the modules to achieve  the  complete  functionality of the  system. This is a  high level overview  of how responsibilities of the system were partitioned and then assigned to subsystems. Identify each 
+% high level subsystem and  the  roles or responsibilities assigned to it. Describe  how  these subsystems col aborate with each other in order to achieve the desired functionality. Don’t go 
+% into too much detail about the individual subsystems. The main purpose is to gain a general understanding  of how  and why the system was decomposed, and  how the  individual parts work together. Provide a diagram showing the major subsystems and data repositories and their interconnections. Describe the diagram if required
+% \subsection{Decomposition Description} % (fold)
+\label{sub:decom}
+% Provide a decomposition of the subsystems in the architectural design. Supplement with text 
+% as needed. You may choose to give a functional description or an object­oriented description. For a  functional description, put top­level data  flow  diagram (DFD)  and  structural 
+% decomposition  diagrams. For an OO description, put subsystem model, object diagrams, generalization hierarchy diagram(s) (if any), aggregation hierarchy diagram(s) (if any),
+% interface specifications, and sequence diagrams here.
+
+\subsection{Design Rationale} % (fold)
+\label{sub:design_rationale}
+% Discuss the rationale for selecting the architecture described in 3.1 including critical issues and  trade/offs that were  considered. You  may discuss other  architectures that were  considered, provided that you explain why you didn’t choose them.
+% % section system_architecture (end)
+
+\section{Data Design} % (fold)
+\label{sec:section_name}
+% Explain how the information domain of your system is transformed into data structures. Describe how the major data or system entities are stored, processed and organized. List any databases or data storage items.
+% \section{Component Design} % (fold)
+\label{sec:component_design}
+% In this section, we take a closer look at what each component does in a more systematic way. If ou gave a functional description in section 3.2, provide a summary of your algorithm for each function listed in .2 in procedural description language (PDL) or pseudocode. If you gave an 
+% OO description, summarize each object member function for al the objects listed in 3.2 in PDL or pseudocode. Describe any local data when necessary.
+% section component_design (end)
+
+\section{Human Interface Design} % (fold)
+\label{sec:human_interface_design}
+% Describe the functionality of the system from the user’s perspective. Explain  how the user wil be  able  to use  your system to complete  al the  expected  features and  the  feedback information that wil be displayed for the user.
+\subsection{Overview of User Interface} % (fold)
+\label{sub:overview_of_user_interface}
+
+% Display screenshots showing the interface from the user’s perspective. These can be  handdrawn or you can use an automated drawing tool. Just make them as accurate as possible. (Graph paper works wel .)
+\subsection{Screen Images} % (fold)
+\label{sub:screen_images}
+
+\subsection{Screen Objects and Actions} % (fold)
+\label{sub:screen_objects_and_actions}
+% A discussion of screen objects and actions associated with those objects.
+% subsection screen_objects_and_actions (end)
+% subsection screen_images (end)
