@@ -3,7 +3,9 @@ package com.feth.play.module.pa.providers.password;
 import java.util.Arrays;
 import java.util.List;
 
+import models.User;
 import play.Application;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Call;
 import play.mvc.Http;
@@ -185,10 +187,15 @@ public abstract class UsernamePasswordAuthProvider<R, UL extends UsernamePasswor
 	protected abstract R generateVerificationRecord(final US user);
 
 	protected void sendVerifyEmailMailing(final Context ctx, final US user) {
-		final String subject = getVerifyEmailMailingSubject(user, ctx);
-		final R record = generateVerificationRecord(user);
-		final Body body = getVerifyEmailMailingBody(record, user, ctx);
-		sendMail(subject, body, getEmailName(user));
+		Logger.debug("This is where you send verification email");
+		providers.localUsernamePassword.LocalUsernamePasswordAuthProvider
+				.sendVerifyEmailMailingAfterSignup(User.find.where().eq("email", user.getEmail()).findUnique(), ctx);
+//		controllers.Emailer.sendWelcomeMessage();
+//		final String subject = getVerifyEmailMailingSubject(user, ctx);
+//		final R record = generateVerificationRecord(user);
+//		final Body body = getVerifyEmailMailingBody(record, user, ctx);
+
+//		sendMail(subject, body, getEmailName(user));
 	}
 
 	/**

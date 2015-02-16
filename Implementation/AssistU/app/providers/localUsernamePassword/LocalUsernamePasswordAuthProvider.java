@@ -251,7 +251,7 @@ public class LocalUsernamePasswordAuthProvider
 		return generateVerificationRecord(User.findByAuthUserIdentity(user));
 	}
 
-	protected String generateVerificationRecord(final User user) {
+	protected static String generateVerificationRecord(final User user) {
 		final String token = generateToken();
 		// Do database actions, etc.
 		TokenAction.create(Type.EMAIL_VERIFICATION, token, user);
@@ -304,12 +304,12 @@ public class LocalUsernamePasswordAuthProvider
 				SETTING_KEY_LINK_LOGIN_AFTER_PASSWORD_RESET);
 	}
 
-	protected String getVerifyEmailMailingSubjectAfterSignup(final User user,
+	protected static String getVerifyEmailMailingSubjectAfterSignup(final User user,
 															 final Context ctx) {
 		return Messages.get("[Verify your email] assisTU Web application");
 	}
 
-	protected String getEmailTemplate(final String template,
+	protected static String getEmailTemplate(final String template,
 									  final String langCode, final String url, final String token,
 									  final String name, final String email) {
 		Class<?> cls = null;
@@ -352,11 +352,11 @@ public class LocalUsernamePasswordAuthProvider
 		return ret;
 	}
 
-	protected Body getVerifyEmailMailingBodyAfterSignup(final String token,
+	protected static Body getVerifyEmailMailingBodyAfterSignup(final String token,
 														final User user, final Context ctx) {
 
-		final boolean isSecure = getConfiguration().getBoolean(
-				SETTING_KEY_VERIFICATION_LINK_SECURE);
+		final boolean isSecure = false;//getConfiguration().getBoolean(
+				//SETTING_KEY_VERIFICATION_LINK_SECURE);
 		final String url = routes.Signup.verify(token).absoluteURL(
 				ctx.request(), isSecure);
 
@@ -373,13 +373,14 @@ public class LocalUsernamePasswordAuthProvider
 		return new Body(text, html);
 	}
 
-	public void sendVerifyEmailMailingAfterSignup(final User user,
+	public static void sendVerifyEmailMailingAfterSignup(final User user,
 												  final Context ctx) {
 
 		final String subject = getVerifyEmailMailingSubjectAfterSignup(user,
 				ctx);
 		final String token = generateVerificationRecord(user);
 		final Body body = getVerifyEmailMailingBodyAfterSignup(token, user, ctx);
+		controllers.Emailer.sendVerifyEmail(subject, user, body);
 	}
 
 	private String getEmailName(final User user) {
