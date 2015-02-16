@@ -27,17 +27,48 @@
                                     @defining(UserData.findPendingInvitations()) { projects_pending =>
                                         @for(pp <- projects_pending){
                                             <li role="presentation" style="padding: 5px; margin: 0">
-                                                <div class="panel panel-info" style="margin: 0">
-                                                    <div class="panel-body" style="width: 400px;">
-                                                        <p style="margin: 0">You have been invited to join project @pp.name
-                                                            as a @Role.find.where().eq("user", currentUser).eq("project", pp).findUnique().role.
-                                                        </p>
-                                                        <div class="btn-group col-xs-6" role="group" style="margin: 0">
-                                                            <a type="button" href="@routes.ProjectData.hasDeclined(pp.id)" class="btn btn-danger" style="font-size: smaller">No thanks.</a>
-                                                        </div>
-                                                        <div class="btn-group col-xs-6" role="group" style="margin: 0">
-                                                            <a type="submit" href="@routes.ProjectData.hasAccepted(pp.id)" class="btn btn-success">Yeah sure!</a>
-                                                        </div>
+                                                <div class="panel panel-primary" style="margin: 0">
+                                                    <div class="panel-body" style="width: 365px; background-color: #5bc0de; padding: 5px">
+                                                        @defining(Role.find.where().eq("user", currentUser).eq("project", pp).findUnique().role) { role =>
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    @if(role.equals(Role.OWNER)) {
+                                                                        <label style="opacity : 0.8 ; color : white ; margin : 40% 0 0 18px">
+                                                                            <i class="fa fa-mortar-board fa-3x"></i>
+                                                                        </label>
+                                                                    }
+                                                                    @if(role.equals(Role.REVIEWER)) {
+                                                                        <label style="opacity : 0.8 ; color : white ; margin : 40% 0 0 22px">
+                                                                            <i class="fa fa-edit fa-3x"></i>
+                                                                        </label>
+                                                                    }
+                                                                    @if(role.equals(Role.GUEST)) {
+                                                                        <label style="opacity : 0.8 ; color : white ; margin : 40% 0 0 22px">
+                                                                            <i class="fa fa-suitcase fa-3x"></i>
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                                <div class="col-xs-9">
+                                                                    <p class="pull-right" style="margin : 0 ; color : white">
+                                                                        You have been invited to join project '@pp.name'
+                                                                    as @if(role.equals(Role.OWNER)) {an} else {a} <u>@role</u>
+                                                                        .
+                                                                    </p>
+                                                                    <div class="row" style="padding-top : 20px ; text-align : right ;">
+                                                                        <div class="btn-group" role="group" style="padding : 20px 2px 5px;">
+                                                                            <a type="button" href="@routes.ProjectData.hasDeclined(pp.id)" class="btn btn-danger pull-right"
+                                                                            style="font-size : smaller ; width : 120px">
+                                                                                No thanks.</a>
+                                                                        </div>
+                                                                        <div class="btn-group" role="group" style="padding : 20px 20px 5px 2px;">
+                                                                            <a type="submit" href="@routes.ProjectData.hasAccepted(pp.id)" class="btn btn-success pull-right"
+                                                                            style="font-size : smaller ; width : 120px">
+                                                                                Yeah sure!</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
                                                     </div>
                                                 </div>
                                             </li>

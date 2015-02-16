@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class CalData extends Controller {
+public class CalendarData extends Controller {
 
     final static Form<Event> eventForm = Form.form(Event.class);
 
@@ -58,7 +58,7 @@ public class CalData extends Controller {
             eventRemapped.put("start", df.format(event.start));
             eventRemapped.put("end", df.format(event.end));
             eventRemapped.put("allDay", event.allDay);
-            eventRemapped.put("url", controllers.routes.CalData.edit(event.id).toString());
+            eventRemapped.put("url", controllers.routes.CalendarData.edit(event.id).toString());
 
             allEvents.add(eventRemapped);
         }
@@ -74,11 +74,14 @@ public class CalData extends Controller {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(calendar.render("My Calendar", user,eventForm,Event.find.where().in("user",user).order().asc("start").findList()));
-        else
-        return ok(calendar.render("My Calendar", user, eventForm, Event.find.where().in("user", user).order().asc("start").findList()));
+        else {
+            //User did not have a session
+            session().put("callback", routes.CalendarData.calendar().absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
-
+    //TODO: Passing uids are not good practise as it allows for tampering
     /**
      * List of events in table view
      * @return Result
@@ -97,8 +100,13 @@ public class CalData extends Controller {
      */
     public static Result blank() {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        return ok(formNew.render("new event form",user,eventForm));
+        if(user != null) {
+            return ok(formNew.render("new event form", user, eventForm));
+        } else {
+            //User did not have a session
+            session().put("callback", routes.CalendarData.blank().absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
 
@@ -122,10 +130,10 @@ public class CalData extends Controller {
         }
         newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
         user.events.add(newEvent);
-        Logger.debug("add new event function in CalData is used :" + newEvent.title);
+        Logger.debug("add new event function in CalendarData is used :" + newEvent.title);
         newEvent.save();
 
-        return redirect(controllers.routes.CalData.list(user.id));
+        return redirect(controllers.routes.CalendarData.list(user.id));
     }
 
 
@@ -139,9 +147,14 @@ public class CalData extends Controller {
     public static Result edit(Long id) {
         Event event = Event.find.byId(id);
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        Form<Event> eventForm = Form.form(Event.class).fill(event);
-        return ok(formEdit.render("Edit events",user,id, eventForm, event));
+        if(user != null) {
+            Form<Event> eventForm = Form.form(Event.class).fill(event);
+            return ok(formEdit.render("Edit events", user, id, eventForm, event));
+        } else {
+            //User did not have a session
+            session().put("callback", routes.CalendarData.edit(id).absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
 
@@ -152,20 +165,25 @@ public class CalData extends Controller {
      */
     public static Result update(Long id) {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+            if (eventForm.hasErrors()) {
+                return badRequest(formEdit.render("update", user, id, eventForm, Event.find.byId(id)));
+            }
+            Event updatedEvent = eventForm.get();
+            updatedEvent.allDay = updatedEvent.allDay != null;
+            if (updatedEvent.end == null) {
+                updatedEvent.end = new DateTime(updatedEvent.start).plusMinutes(30).toDate();
+            }
+            updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
+            updatedEvent.update(id);
 
-        Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
-        if (eventForm.hasErrors()) {
-            return badRequest(formEdit.render("update",user,id, eventForm, Event.find.byId(id)));
+            return redirect(controllers.routes.CalendarData.list(user.id));
+        } else {
+            //User did not have a session
+            session().put("callback", routes.CalendarData.update(id).absoluteURL(request()));
+            return Authentication.login();
         }
-        Event updatedEvent = eventForm.get();
-        updatedEvent.allDay = updatedEvent.allDay != null;
-        if (updatedEvent.end == null) {
-            updatedEvent.end = new DateTime(updatedEvent.start).plusMinutes(30).toDate();
-        }
-        updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
-        updatedEvent.update(id);
-
-        return redirect(controllers.routes.CalData.list(user.id));
     }
 
 
@@ -176,9 +194,14 @@ public class CalData extends Controller {
      */
     public static Result delete(Long id) {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        Event.find.ref(id).delete();
-        return redirect(controllers.routes.CalData.list(user.id));
+        if(user != null) {
+            Event.find.ref(id).delete();
+            return redirect(controllers.routes.CalendarData.list(user.id));
+        } else {
+            //User did not have a session
+            session().put("callback", routes.CalendarData.delete(id).absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
 
@@ -201,7 +224,7 @@ public class CalData extends Controller {
 
         Map<String, String> result = new HashMap<String, String>();
         result.put("id", event.id.toString());
-        result.put("url", controllers.routes.CalData.edit(event.id).toString());
+        result.put("url", controllers.routes.CalendarData.edit(event.id).toString());
         Logger.debug("add By ajax is used: " + result);
         return ok(play.libs.Json.toJson(result));
     }

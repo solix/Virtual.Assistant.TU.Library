@@ -21,14 +21,15 @@ public class Emailer extends Controller {
     /**
      * sends email to verify users
      * @param subject
-     * @param userEmail
+     * @param user
      * @param body
      */
-    public static void sendVerifyEmail(String subject,String userEmail,Mailer.Mail.Body body){
+    public static void sendVerifyEmail(String subject,User user,Mailer.Mail.Body body){
 
         final Email email = new Email();
         email.setSubject(subject);
-        email.addTo(userEmail);
+        email.setFrom("we.assitu@gmail");
+        email.addTo(user.email);
         email.setBodyHtml(body.toString());
         MailerPlugin.send(email);
 
@@ -37,14 +38,15 @@ public class Emailer extends Controller {
     /**
      * this is done to generally notify users of any important activities
      * @param subject
-     * @param userEmail
+     * @param user
      * @param body
      */
-    public static void sendNotifyEmail(String subject,String userEmail,Html body){
+    public static void sendNotifyEmail(String subject,User user,Html body){
 
         final Email email = new Email();
         email.setSubject(subject);
-        email.addTo(userEmail);
+        email.setFrom("we.assitu@gmail");
+        email.addTo(user.email);
         email.setBodyHtml(body.toString());
         MailerPlugin.send(email);
 

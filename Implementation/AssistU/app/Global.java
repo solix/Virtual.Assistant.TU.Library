@@ -3,7 +3,7 @@ import play.libs.*;
 import models.*;
 import java.util.*;
 import com.avaje.ebean.*;
-import play.mvc.Call;
+import play.mvc.*;
 
 import play.Application;
 import play.GlobalSettings;
@@ -46,15 +46,18 @@ public class Global extends GlobalSettings {
                 @Override
                 public Call login() {
                     // Your login page
-                    return routes.Authentication.relogin();
+//                    return routes.Authentication.relogin();
+                    return routes.Application.reroute();
                 }
 
                 @Override
                 public Call afterAuth() {
                     // The user will be redirected to this page after authentication
                     // if no original URL was saved
-                    return routes.Application.index();
+//                    return routes.Application.index();
+                    return routes.Application.reroute();
                 }
+
 
                 @Override
                 public Call afterLogout() {
