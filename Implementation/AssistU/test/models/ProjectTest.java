@@ -17,34 +17,34 @@ import static play.test.Helpers.start;
  */
 public class ProjectTest extends WithApplication {
 
-    @Before
-    public void setUp(){
-        start(fakeApplication(inMemoryDatabase()));
-    }
-
-    @Test
-    public void createProjectTest(){
-//        User user = User.create("testuser", "testuser@test.nl", "test");
-//        Project.create("testfolder", "testname", user.id, "testdescription");
-//        Project testproject = Project.find.where().eq("folder" , "testfolder").findUnique();
-//        assertNotNull(testproject);
-//        assertEquals("testfolder" , testproject.folder);
-//        assertEquals("testname" , testproject.name);
-//        assertEquals(true, testproject.users.contains(User.find.byId(user.id)));
-    }
-
-    @Test
-    public void editProjectTest(){
-//        User user = User.create("testuser", "testuser@test.nl", "test");
-//        Project.create("testfolder", "testname", user.id, "testdescription");
-//        Project testproject = Project.find.where().eq("folder" , "testfolder").findUnique();
-//        Project.edit(testproject.id, "edittestfolder", "edittestname");
-//        testproject = Project.find.byId(testproject.id);
-//        assertNotNull(testproject);
-//        assertEquals("edittestfolder" , testproject.folder);
-//        assertEquals("edittestname" , testproject.name);
-//        assertEquals(true , testproject.users.contains(User.find.byId(user.id)));
-    }
+//    @Before
+//    public void setUp(){
+//        start(fakeApplication(inMemoryDatabase()));
+//    }
+//
+//    @Test
+//    public void createProjectTest(){
+////        User user = User.create("testuser", "testuser@test.nl", "test");
+////        Project.create("testfolder", "testname", user.id, "testdescription");
+////        Project testproject = Project.find.where().eq("folder" , "testfolder").findUnique();
+////        assertNotNull(testproject);
+////        assertEquals("testfolder" , testproject.folder);
+////        assertEquals("testname" , testproject.name);
+////        assertEquals(true, testproject.users.contains(User.find.byId(user.id)));
+//    }
+//
+//    @Test
+//    public void editProjectTest(){
+////        User user = User.create("testuser", "testuser@test.nl", "test");
+////        Project.create("testfolder", "testname", user.id, "testdescription");
+////        Project testproject = Project.find.where().eq("folder" , "testfolder").findUnique();
+////        Project.edit(testproject.id, "edittestfolder", "edittestname");
+////        testproject = Project.find.byId(testproject.id);
+////        assertNotNull(testproject);
+////        assertEquals("edittestfolder" , testproject.folder);
+////        assertEquals("edittestname" , testproject.name);
+////        assertEquals(true , testproject.users.contains(User.find.byId(user.id)));
+//    }
 
 //    @Test
 //    public void archiveProjectTest() {
