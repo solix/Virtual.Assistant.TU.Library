@@ -22,7 +22,7 @@ public class ProjectData extends Controller {
         session().put("callback", routes.ProjectData.project(pid).absoluteURL(request()));
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-            Project.updateLastAccessed(pid);
+//            Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
             return ok(project.render("AssistU - Projects", user, p));
         } else {

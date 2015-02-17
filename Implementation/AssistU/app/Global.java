@@ -45,6 +45,7 @@ public class Global extends GlobalSettings {
 
                 @Override
                 public Call login() {
+                    Logger.debug("loading login");
                     // Your login page
 //                    return routes.Authentication.relogin();
                     return routes.Application.reroute();

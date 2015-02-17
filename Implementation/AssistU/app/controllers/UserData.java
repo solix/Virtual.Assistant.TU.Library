@@ -59,7 +59,7 @@ public class UserData  extends Controller {
     public static Project getLastUsedProject(){
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("user", user).eq("project.active", true).eq("accepted", true).findList();
-        List<Project> projects = Project.find.where().in("roles", roles).orderBy("lastAccessed").findList();
+        List<Project> projects = Project.find.where().in("roles", roles).orderBy("dateCreated").findList();
         Project p = null;
         if(projects.size() > 0)
             p = projects.get(projects.size() -1);

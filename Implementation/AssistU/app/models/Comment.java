@@ -58,7 +58,7 @@ public class Comment extends Model {
      */
     public static Comment create(Long uid, String subject, String text, String date, Long pid, Boolean isChild, Boolean hasAttachment, String attachment){
         Comment cm = new Comment(uid, subject, text, date, pid, isChild, hasAttachment, attachment);
-        Project.updateLastAccessed(pid);
+//        Project.updateLastAccessed(pid);
         cm.save();
         return cm;
     }
