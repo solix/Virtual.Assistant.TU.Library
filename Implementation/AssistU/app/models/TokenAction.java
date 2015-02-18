@@ -61,7 +61,7 @@ public class TokenAction extends Model {
 
 	public static void deleteByUser(final Person u, final Type type) {
 		QueryIterator<TokenAction> iterator = find.where()
-				.eq("targetUser.id", u.id).eq("type", type).findIterate();
+				.eq("targetPerson.id", u.id).eq("type", type).findIterate();
 		Ebean.delete(iterator);
 		iterator.close();
 	}

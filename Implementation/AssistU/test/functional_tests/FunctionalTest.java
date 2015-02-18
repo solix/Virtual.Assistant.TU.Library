@@ -38,13 +38,13 @@ public class FunctionalTest extends WithApplication {
                 signupform.put("password", "lalala");
                 signupform.put("repeatPassword", "lalala");
                 Result submission = routeAndCall(fakeRequest(POST, "/signingup").withFormUrlEncodedBody(signupform));
-                User user = User.find.where().eq("email", "arnaud@hambenne.com").findUnique();
+                Person user = Person.find.where().eq("email", "arnaud@hambenne.com").findUnique();
                 assertEquals("arnaud@hambenne.com", user.email);
                 assertEquals(false, user.emailValidated);
-                String token = TokenAction.find.where().eq("targetUser", User.find.where().eq("email", "arnaud@hambenne.com").findUnique()).findUnique().token;
+                String token = TokenAction.find.where().eq("targetPerson", Person.find.where().eq("email", "arnaud@hambenne.com").findUnique()).findUnique().token;
                 Result verifiedpage = routeAndCall(fakeRequest(GET, "/accounts/verify/" + token));
                 assertTrue(status(verifiedpage) == OK);
-                user = User.find.where().eq("email", "arnaud@hambenne.com").findUnique();
+                user = Person.find.where().eq("email", "arnaud@hambenne.com").findUnique();
                 assertEquals(true, user.emailValidated);
                 Map<String, String> loginform = new HashMap<String, String>();
                 loginform.put("email", "arnaud@hambenne.com");
