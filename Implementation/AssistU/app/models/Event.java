@@ -59,7 +59,7 @@ public class Event extends Model {
     public static List<Event> findInDateRange(Date start, Date end, Person person) {
 
 
-        return find.where().in("user", person).or(
+        return find.where().in("person", person).or(
                 Expr.and(
                         Expr.lt("start", start),
                         Expr.gt("end", end)

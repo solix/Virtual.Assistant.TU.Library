@@ -146,7 +146,7 @@ public class Project extends Model {
     public static void removeMemberFrom(Long pid, Long uid){
         Project p = Project.find.byId(pid);
         Person u = Person.find.byId(uid);
-        Role r = Role.find.where().eq("project", p).eq("user", u).findUnique();
+        Role r = Role.find.where().eq("project", p).eq("person", u).findUnique();
         p.roles.remove(r);
         u.roles.remove(r);
 //        p.lastAccessed = new Date();
