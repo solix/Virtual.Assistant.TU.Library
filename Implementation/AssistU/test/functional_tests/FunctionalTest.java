@@ -90,9 +90,9 @@ public class FunctionalTest extends WithApplication {
                 assertTrue(status(taskpage) == OK);
 
                 //PROJECTS
-                Result projectpagenosession = route(fakeRequest("GET", "/project"));
+                Result projectpagenosession = route(fakeRequest("GET", "/projects"));
                 assertTrue(status(projectpagenosession) == OK);
-                Result projectpage = route(fakeRequest("GET", "/project").withCookies(playSession1));
+                Result projectpage = route(fakeRequest("GET", "/projects").withCookies(playSession1));
                 assertTrue(status(projectpage) == OK);
 
                 //CREATE A PROJECT
@@ -131,6 +131,8 @@ public class FunctionalTest extends WithApplication {
                 Result editprojectpage = route(fakeRequest("GET", "/project/" + project.id + "/edit").withCookies(playSession1));
                 assertTrue(status(editprojectpage) == OK);
                 newprojectform.put("name", "");
+                Result editprojectsubmitnosession = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/editing").withFormUrlEncodedBody(newprojectform));
+                assertTrue(status(editprojectsubmitnosession) == OK);
                 Result editprojectsubmitfail1 = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/editing").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
                 assertTrue(status(editprojectsubmitfail1) == BAD_REQUEST);
                 newprojectform.put("name", "xx");
@@ -142,7 +144,42 @@ public class FunctionalTest extends WithApplication {
                 project = Project.find.where().eq("folder", "BEP").findUnique();
                 assertTrue(project.name.equals("Bachelor Project"));
 
-                //INVITE 
+                //INVITE SOMEONE AS GUEST
+                Map<String, String> invitememberform = new HashMap<String, String>();
+                invitememberform.put("email", "soheil@jahanshahi.com");
+                invitememberform.put("role", "Guest");
+                Result addmembersuccess = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/addmember").withFormUrlEncodedBody(invitememberform).withCookies(playSession1));
+                assertTrue(status(addmembersuccess) == 303);
+
+                //HE DECLINES
+                Result declineinvivation = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/declineinvitation").withFormUrlEncodedBody(invitememberform).withCookies(playSession2));
+                assertTrue(status(declineinvivation) == 303);
+
+                //INVITE SOMEONE AS REVIEWER
+                invitememberform.put("role", "Reviewer");
+                addmembersuccess = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/addmember").withFormUrlEncodedBody(invitememberform).withCookies(playSession1));
+                assertTrue(status(addmembersuccess) == 303);
+
+                //HE ACCEPTS
+                Result acceptinvivation = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/acceptinvitation").withFormUrlEncodedBody(invitememberform).withCookies(playSession2));
+                assertTrue(status(acceptinvivation) == 303);
+
+                //REMOVE HIM
+                Result removemember = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/removemember/" + user2.id).withFormUrlEncodedBody(invitememberform).withCookies(playSession2));
+                assertTrue(status(removemember) == 303);
+
+                //INVITE SOMEONE AS OWNER
+                invitememberform.put("role", "Owner");
+                addmembersuccess = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/addmember").withFormUrlEncodedBody(invitememberform).withCookies(playSession1));
+                assertTrue(status(addmembersuccess) == 303);
+
+                //HE ACCEPTS
+                acceptinvivation = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/acceptinvitation").withFormUrlEncodedBody(invitememberform).withCookies(playSession2));
+                assertTrue(status(acceptinvivation) == 303);
+
+                //HE LEAVES
+                Result leaveproject = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/leave").withFormUrlEncodedBody(invitememberform).withCookies(playSession2));
+                assertTrue(status(leaveproject) == 303);
 
                 //CALENDAR
                 Result calendarpage = route(fakeRequest("GET", "/calendar").withCookies(playSession1));

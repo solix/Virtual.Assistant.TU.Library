@@ -243,8 +243,9 @@ public class ProjectData extends Controller {
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person other = Person.find.byId(uid);
         if(user != null) {
-            if (ProjectData.findAllOwners(pid).contains(user)) {
+            if (ProjectData.findAllOwners(pid).contains(user) && !ProjectData.findAllOwners(pid).contains(other)) {
                 Project.removeMemberFrom(pid, uid);
             }
             return redirect(routes.Application.project());

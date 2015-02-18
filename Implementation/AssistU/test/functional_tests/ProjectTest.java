@@ -1,4 +1,4 @@
-package models;
+package functional_tests;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -12,6 +12,14 @@ import static play.test.Helpers.start;
  */
 public class ProjectTest extends WithApplication {
 
+    @Test
+    public void test() {
+        running(fakeApplication(new play.GlobalSettings()), new Runnable() {
+            public void run() {
+                assertTrue(true);
+            }
+        }
+        );}
 //    @Before
 //    public void setUp(){
 //        start(fakeApplication(inMemoryDatabase()));

@@ -44,6 +44,35 @@ public class Application extends Controller {
         }
     }
 
+
+
+
+
+    public static Result project() {
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            return ok(project.render("AssistU - Projects", user, null));
+        }else{
+            session().put("callback", routes.Application.project().absoluteURL(request()));
+            return Authentication.login();
+        }
+    }
+
+    /**
+     * chat page
+     * @return
+     */
+    public static Result discussion() {
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if (user != null)
+            return ok(discussion.render("AssisTU - Discussions", user, null));
+        else {
+            session().put("callback", routes.Application.discussion().absoluteURL(request()));
+            return Authentication.login();
+        }
+    }
+
     /**
      *Task view
      *
@@ -63,18 +92,6 @@ public class Application extends Controller {
         }
     }
 
-
-
-    public static Result project() {
-        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
-            return ok(project.render("AssistU - Projects", user, null));
-        }else{
-            session().put("callback", routes.Application.project().absoluteURL(request()));
-            return Authentication.login();
-        }
-    }
-
     /**
      * suggestion page
      * @return
@@ -86,21 +103,6 @@ public class Application extends Controller {
             return ok(suggestions.render("Suggestions", user));
         else {
             session().put("callback", routes.Application.suggestions().absoluteURL(request()));
-            return Authentication.login();
-        }
-    }
-
-    /**
-     * chat page
-     * @return
-     */
-    public static Result discussion() {
-
-        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null)
-            return ok(discussion.render("AssisTU - Discussions", user, null));
-        else{
-            session().put("callback", routes.Application.discussion().absoluteURL(request()));
             return Authentication.login();
         }
     }
