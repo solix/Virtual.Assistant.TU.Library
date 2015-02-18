@@ -31,6 +31,8 @@ public class FunctionalTest extends WithApplication {
             public void run() {
                 Result initialpage = route(fakeRequest("GET", "/signup"));
                 assertTrue(status(initialpage) == OK);
+
+                //SIGNUP USER 1
                 Map<String, String> signupform = new HashMap<String, String>();
                 signupform.put("first_name", "Arnaud");
                 signupform.put("last_name", "Hambenne");
@@ -49,31 +51,54 @@ public class FunctionalTest extends WithApplication {
                 Map<String, String> loginform = new HashMap<String, String>();
                 loginform.put("email", "arnaud@hambenne.com");
                 loginform.put("password", "lalala");
-                Result dologin = routeAndCall(fakeRequest(POST, "/logingin").withFormUrlEncodedBody(loginform));
+                Result dologin1 = routeAndCall(fakeRequest(POST, "/logingin").withFormUrlEncodedBody(loginform));
 
                 // RECOVER COOKIE FROM LOGIN RESULT
-                final Http.Cookie playSession = play.test.Helpers.cookie("PLAY_SESSION", dologin);
+                final Http.Cookie playSession1 = play.test.Helpers.cookie("PLAY_SESSION", dologin1);
+
+                //SIGNUP USER 2
+                signupform.put("first_name", "Soheil");
+                signupform.put("last_name", "Jahanshahi");
+                signupform.put("email", "soheil@jahanshahi.com");
+                signupform.put("password", "lalala");
+                signupform.put("repeatPassword", "lalala");
+                routeAndCall(fakeRequest(POST, "/signingup").withFormUrlEncodedBody(signupform));
+                Person user2 = Person.find.where().eq("email", "soheil@jahanshahi.com").findUnique();
+                assertEquals("soheil@jahanshahi.com", user2.email);
+                assertEquals(false, user2.emailValidated);
+                token = TokenAction.find.where().eq("targetPerson", Person.find.where().eq("email", "soheil@jahanshahi.com").findUnique()).findUnique().token;
+                verifiedpage = routeAndCall(fakeRequest(GET, "/accounts/verify/" + token));
+                assertTrue(status(verifiedpage) == OK);
+                user2 = Person.find.where().eq("email", "soheil@jahanshahi.com").findUnique();
+                assertEquals(true, user2.emailValidated);
+                loginform = new HashMap<String, String>();
+                loginform.put("email", "soheil@jahanshahi.com");
+                loginform.put("password", "lalala");
+                Result dologin2 = routeAndCall(fakeRequest(POST, "/logingin").withFormUrlEncodedBody(loginform));
+
+                // RECOVER COOKIE FROM LOGIN RESULT
+                final Http.Cookie playSession2 = play.test.Helpers.cookie("PLAY_SESSION", dologin2);
 
                 Result indexpagenosession = route(fakeRequest("GET", "/"));
                 assertTrue(status(indexpagenosession) == OK);
-                Result indexpage = route(fakeRequest("GET", "/").withCookies(playSession));
+                Result indexpage = route(fakeRequest("GET", "/").withCookies(playSession1));
                 assertTrue(status(indexpage) == OK);
 
 
 
-                Result taskpage = route(fakeRequest("GET", "/tasks").withCookies(playSession));
+                Result taskpage = route(fakeRequest("GET", "/tasks").withCookies(playSession1));
                 assertTrue(status(taskpage) == OK);
 
                 //PROJECTS
                 Result projectpagenosession = route(fakeRequest("GET", "/project"));
                 assertTrue(status(projectpagenosession) == OK);
-                Result projectpage = route(fakeRequest("GET", "/project").withCookies(playSession));
+                Result projectpage = route(fakeRequest("GET", "/project").withCookies(playSession1));
                 assertTrue(status(projectpage) == OK);
 
                 //CREATE A PROJECT
                 Result createprojectpagenosession = route(fakeRequest("GET", "/project/new"));
                 assertTrue(status(createprojectpagenosession) == OK);
-                Result createprojectpage = route(fakeRequest("GET", "/project/new").withCookies(playSession));
+                Result createprojectpage = route(fakeRequest("GET", "/project/new").withCookies(playSession1));
                 assertTrue(status(createprojectpage) == OK);
                 Map<String, String> newprojectform = new HashMap<String, String>();
                 newprojectform.put("folder", "BEP");
@@ -82,36 +107,49 @@ public class FunctionalTest extends WithApplication {
                 newprojectform.put("template", "TU Delft - Dissertation");
                 Result createprojectnosession = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform));
                 assertTrue(status(createprojectnosession) == OK);
-                Result createprojectfail1 = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+                Result createprojectfail1 = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
                 assertTrue(status(createprojectfail1) == BAD_REQUEST);
                 newprojectform.put("name", "xx");
-                Result createprojectfail2 = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+                Result createprojectfail2 = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
                 assertTrue(status(createprojectfail2) == BAD_REQUEST);
                 newprojectform.put("name", "Bachelor Eind Project");
-                Result createprojectsuccess = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
-//                assertTrue(status(createprojectsuccess) == OK);
+                Result createprojectsuccess = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
+                assertTrue(status(createprojectsuccess) == 303);
 
                 Project project = Project.find.where().eq("folder", "BEP").findUnique();
                 assertTrue(project.name.equals("Bachelor Eind Project"));
 
                 //LOAD NEW PROJECT
-                Result specificprojectpage = route(fakeRequest("GET", "/project/" + project.id).withCookies(playSession));
+                Result specificprojectpagenosession = route(fakeRequest("GET", "/project/" + project.id));
+                assertTrue(status(specificprojectpagenosession) == OK);
+                Result specificprojectpage = route(fakeRequest("GET", "/project/" + project.id).withCookies(playSession1));
                 assertTrue(status(specificprojectpage) == OK);
 
                 //EDIT PROJECT
-                Result editprojectpage = route(fakeRequest("GET", "/project/" + project.id + "/edit").withCookies(playSession));
+                Result editprojectpagenosession = route(fakeRequest("GET", "/project/" + project.id + "/edit"));
+                assertTrue(status(editprojectpagenosession) == OK);
+                Result editprojectpage = route(fakeRequest("GET", "/project/" + project.id + "/edit").withCookies(playSession1));
                 assertTrue(status(editprojectpage) == OK);
+                newprojectform.put("name", "");
+                Result editprojectsubmitfail1 = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/editing").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
+                assertTrue(status(editprojectsubmitfail1) == BAD_REQUEST);
+                newprojectform.put("name", "xx");
+                Result editprojectsubmitfail2 = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/editing").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
+                assertTrue(status(editprojectsubmitfail2) == BAD_REQUEST);
                 newprojectform.put("name", "Bachelor Project");
-                Result editprojectsubmit = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/editing").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+                Result editprojectsubmitsuccess = routeAndCall(fakeRequest(GET, "/project/" + project.id + "/editing").withFormUrlEncodedBody(newprojectform).withCookies(playSession1));
+                assertTrue(status(editprojectsubmitsuccess) == 303);
                 project = Project.find.where().eq("folder", "BEP").findUnique();
                 assertTrue(project.name.equals("Bachelor Project"));
 
+                //INVITE 
+
                 //CALENDAR
-                Result calendarpage = route(fakeRequest("GET", "/calendar").withCookies(playSession));
+                Result calendarpage = route(fakeRequest("GET", "/calendar").withCookies(playSession1));
                 assertTrue(status(calendarpage) == OK);
 
                 //DISCUSSIONS
-                Result discussionpage = route(fakeRequest("GET", "/discussions").withCookies(playSession));
+                Result discussionpage = route(fakeRequest("GET", "/discussions").withCookies(playSession1));
                 assertTrue(status(discussionpage) == OK);
             }
         });
