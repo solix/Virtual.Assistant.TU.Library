@@ -32,12 +32,12 @@ public class Project extends Model {
     public String description;
     @Required
     public String template;
-    public boolean planning;
+    public Boolean planning;
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateCreated;
-    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
-    public Date lastAccessed;
+//    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
+//    public Date lastAccessed;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateArchived;
     @OneToMany(mappedBy = "project")
@@ -75,7 +75,7 @@ public class Project extends Model {
         Project project = new Project(folder, name, description, template);
         project.active=true;
         project.dateCreated = new Date();
-        project.lastAccessed = new Date();
+//        project.lastAccessed = new Date();
         project.planning=false;
         project.save();
         return project;
@@ -91,7 +91,7 @@ public class Project extends Model {
         p.folder = folder;
         p.name = name;
         p.description = description;
-        p.lastAccessed = new Date();
+//        p.lastAccessed = new Date();
         p.update();
     }
 
@@ -102,7 +102,7 @@ public class Project extends Model {
     public static void archive(Long pid){
         Project p = Project.find.byId(pid);
         p.active = false;
-        p.lastAccessed = new Date();
+//        p.lastAccessed = new Date();
         p.dateArchived = new Date();
         p.update();
     }
@@ -117,7 +117,7 @@ public class Project extends Model {
         Role r = Role.createOwnerRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
-        p.lastAccessed = new Date();
+//        p.lastAccessed = new Date();
         p.update();
         u.update();
     }
@@ -128,7 +128,7 @@ public class Project extends Model {
         Role r = Role.createGuestRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
-        p.lastAccessed = new Date();
+//        p.lastAccessed = new Date();
         p.update();
         u.update();
     }
@@ -139,7 +139,7 @@ public class Project extends Model {
         Role r = Role.createReviewerRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
-        p.lastAccessed = new Date();
+//        p.lastAccessed = new Date();
         p.update();
         u.update();
     }
@@ -153,15 +153,15 @@ public class Project extends Model {
         Role r = Role.find.where().eq("project", p).eq("user", u).findUnique();
         p.roles.remove(r);
         u.roles.remove(r);
-        p.lastAccessed = new Date();
+//        p.lastAccessed = new Date();
         p.update();
         u.update();
         r.delete();
     }
 
-    public static void updateLastAccessed(Long pid){
-        Project p = Project.find.byId(pid);
-        p.lastAccessed = new Date();
-        p.update();
-    }
+//    public static void updateLastAccessed(Long pid){
+//        Project p = Project.find.byId(pid);
+//        p.lastAccessed = new Date();
+//        p.update();
+//    }
 }

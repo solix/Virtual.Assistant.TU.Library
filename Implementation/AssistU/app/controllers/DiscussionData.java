@@ -28,7 +28,7 @@ public class DiscussionData extends Controller {
     public static Result discussion(Long pid) {
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-            Project.updateLastAccessed(pid);
+//            Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
             return ok(discussion.render("AssistU - Projects", user, p));
         }else {

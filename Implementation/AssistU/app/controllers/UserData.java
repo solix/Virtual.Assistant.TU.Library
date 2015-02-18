@@ -59,11 +59,49 @@ public class UserData  extends Controller {
     public static Project getLastUsedProject(){
         User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("user", user).eq("project.active", true).eq("accepted", true).findList();
-        List<Project> projects = Project.find.where().in("roles", roles).orderBy("lastAccessed").findList();
+        List<Project> projects = Project.find.where().in("roles", roles).orderBy("dateCreated").findList();
         Project p = null;
         if(projects.size() > 0)
             p = projects.get(projects.size() -1);
         return p;
+    }
+
+    public static Result deleteAccount(){
+        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            //Delete LinkedAccounts
+            List<LinkedAccount> linked_accounts = user.linkedAccounts;
+            for (LinkedAccount l_a : linked_accounts) {
+                l_a.delete();
+            }
+            //Delete Roles
+            List<Role> roles = Role.find.where().eq("user", user).findList();
+            for(Role r : roles){
+                r.delete();
+            }
+            //Delete Tasks
+            List<Task> tasks = Task.find.where().eq("user", user).findList();
+            for(Task t : tasks){
+                t.delete();
+            }
+            //Delete Events
+            List<Event> events = Event.find.where().eq("user", user).findList();
+            for(Event e : events){
+                e.delete();
+            }
+            //Delete Comments
+            List<Comment> comments = Comment.find.where().eq("user", user).findList();
+            for(Comment c : comments){
+                c.delete();
+            }
+            //Delete Documents
+            List<DocumentFile> documents = DocumentFile.find.where().eq("user", user).findList();
+            for(DocumentFile d : documents){
+                d.delete();
+            }
+            User.deleteAccount(user.id);
+        }
+        return Authentication.login();
     }
 
 }

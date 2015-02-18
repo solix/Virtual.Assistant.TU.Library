@@ -20,7 +20,11 @@ public class Application extends Controller {
 
     public static Result reroute(){
         Logger.debug("Redirecting to " + session("callback"));
-        return redirect(session("callback"));
+        String route = session("callback");
+        if (route != null) {
+            return redirect(route);
+        }
+        return Authentication.login();
     }
 
     /**
