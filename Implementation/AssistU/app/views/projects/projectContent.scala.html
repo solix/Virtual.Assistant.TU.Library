@@ -1,5 +1,5 @@
-@(currentUser: User, project: Project)
-@defining(UserData.findActiveProjects) { activeProjectList =>
+@(currentUser: Person, project: Project)
+@defining(PersonData.findActiveProjects) { activeProjectList =>
     <div class="tab-content">
         @for(p <- activeProjectList){
             @if(project != null){
@@ -9,13 +9,13 @@
                     <div class="tab-pane fade" id="project@p.id">
                  }
             } else {
-                @if(p.equals(UserData.getLastUsedProject)){
+                @if(p.equals(PersonData.getLastUsedProject)){
                     <div class="tab-pane fade in active" id="project@p.id">
                 } else {
                     <div class="tab-pane fade" id="project@p.id">
                 }
             }
-            @defining(Role.find.where().eq("project", p).eq("user", currentUser).findUnique()){ role =>
+            @defining(Role.find.where().eq("project", p).eq("person", currentUser).findUnique()){ role =>
             <div class="container-fluid" style="margin-top: 10px">
                 <div class="row">
                     <div class="panel panel-info">
@@ -181,7 +181,7 @@
                         </thead>
                         <tbody>
                             @ProjectData.findAllAffiliatedUsers(p.id).map { user =>
-                                @defining(Role.find.where().eq("project",p).eq("user",user).findUnique()){ userrole =>
+                                @defining(Role.find.where().eq("project",p).eq("person",user).findUnique()){ userrole =>
                                     <tr style="font-size: smaller">
                                         <td>@user.name<br>@user.email</td>
                                         <td style="text-align: center">@userrole.role</td>

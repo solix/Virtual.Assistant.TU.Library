@@ -2,7 +2,6 @@ package controllers;
 
 
 import models.*;
-import controllers.*;
 
 
 import play.data.DynamicForm;
@@ -24,7 +23,7 @@ public class DocumentData extends Controller {
      * POST uploaded document  to the server
      */
     public static Result uploadDocument(Long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             Project project = Project.find.byId(pid);
             MultipartFormData body = request().body().asMultipartFormData();
@@ -78,9 +77,9 @@ public class DocumentData extends Controller {
 
     public static Result deleteDocument(Long fid){
         DocumentFile documentFile = DocumentFile.find.byId(fid);
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-            if (documentFile.user.equals(user)) {
+            if (documentFile.person.equals(user)) {
                 documentFile.delete();
             }
             return ProjectData.project(documentFile.project.id);
@@ -92,7 +91,7 @@ public class DocumentData extends Controller {
     }
 
     public static Result documentDiscussion(Long docid){
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             DocumentFile df = DocumentFile.find.byId(docid);
             Project p = Project.find.byId(df.project.id);
@@ -112,7 +111,7 @@ public class DocumentData extends Controller {
     }
 
     public static Result uploadNewTemplate(Long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             Project project = Project.find.byId(pid);
             MultipartFormData body = request().body().asMultipartFormData();

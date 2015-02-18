@@ -3,9 +3,8 @@ package controllers;
 import com.feth.play.module.pa.PlayAuthenticate;
 import models.TokenAction;
 import models.TokenAction.Type;
-import models.User;
+import models.Person;
 import play.Logger;
-import play.data.DynamicForm;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -13,8 +12,6 @@ import play.mvc.Result;
 import providers.localUsernamePassword.LocalUsernamePasswordAuthProvider.NativeIdentity;
 import providers.localUsernamePassword.*;
 import views.html.*;
-
-import java.util.HashMap;
 
 import static play.data.Form.form;
 
@@ -95,16 +92,16 @@ public class Signup extends Controller {
 //							"playauthenticate.reset_password.message.instructions_sent",
 //							email));
 
-			final User user = User.findByEmail(email);
-			if (user != null) {
+			final Person person = Person.findByEmail(email);
+			if (person != null) {
 				// yep, we have a user with this email that is active - we do
 				// not know if the user owning that account has requested this
 				// reset, though.
 				final LocalUsernamePasswordAuthProvider provider = LocalUsernamePasswordAuthProvider
 						.getProvider();
 				// User exists
-				if (user.emailValidated) {
-					provider.sendPasswordResetMailing(user, ctx());
+				if (person.emailValidated) {
+					provider.sendPasswordResetMailing(person, ctx());
 					// In case you actually want to let (the unknown person)
 					// know whether a user was found/an email was sent, use,
 					// change the flash message
@@ -118,7 +115,7 @@ public class Signup extends Controller {
 							Messages.get("playauthenticate.reset_password.message.email_not_verified"));
 
 					// You might want to re-send the verification email here...
-					provider.sendVerifyEmailMailingAfterSignup(user, ctx());
+					provider.sendVerifyEmailMailingAfterSignup(person, ctx());
 				}
 			}
 
@@ -170,7 +167,7 @@ public class Signup extends Controller {
 			if (ta == null) {
 				return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "danger", "Your link was no longer valid, please try again"));
 			}
-			final User u = ta.targetUser;
+			final Person u = ta.targetPerson;
 			try {
 				// Pass true for the second parameter if you want to
 				// automatically create a password and the exception never to
@@ -219,13 +216,13 @@ public class Signup extends Controller {
 		if (ta == null) {
 			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "The link you followed is not valid"));
 		}
-		final String email = ta.targetUser.email;
-		User.verify(ta.targetUser);
+		final String email = ta.targetPerson.email;
+		Person.verify(ta.targetPerson);
 		flash(Authentication.FLASH_MESSAGE_KEY,
 				Messages.get("playauthenticate.verify_email.success", email));
 		if (Authentication.getLocalUser(session()) != null) {
-			User user = Authentication.getLocalUser(session());
-			if(user != null)
+			Person person = Authentication.getLocalUser(session());
+			if(person != null)
 				Authentication.OAuthLogout();
 //			return ok(index.render("Welcome " + user.name, user));
 		}

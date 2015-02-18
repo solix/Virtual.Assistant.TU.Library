@@ -18,8 +18,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import controllers.routes;
-
 
 public class CalendarData extends Controller {
 
@@ -73,9 +71,10 @@ public class CalendarData extends Controller {
      * @return Result
      */
     public static Result calendar() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null)
-            return ok(calendar.render("My Calendar", person,eventForm,Event.find.where().in("person",person).order().asc("start").findList()));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null)
+            return ok(calendar.render("My Calendar", user,eventForm,Event.find.where().in("person",user).order().asc("start").findList()));
         else {
             //User did not have a session
             session().put("callback", routes.CalendarData.calendar().absoluteURL(request()));
@@ -101,9 +100,10 @@ public class CalendarData extends Controller {
      * @return Result
      */
     public static Result blank() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
-            return ok(formNew.render("new event form", person, eventForm));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            return ok(formNew.render("new event form", user, eventForm));
         } else {
             //User did not have a session
             session().put("callback", routes.CalendarData.blank().absoluteURL(request()));
@@ -118,29 +118,25 @@ public class CalendarData extends Controller {
      */
     public static Result add() {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
-            if (eventForm.hasErrors()) {
-                return badRequest(formNew.render("new event form", person, eventForm));
-            }
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
 
-            Event newEvent = eventForm.get();
-
-            newEvent.allDay = newEvent.allDay != null;
-            if (newEvent.end == null) {
-                newEvent.end = new DateTime(newEvent.start).plusMinutes(30).toDate();
-            }
-            newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
-            person.events.add(newEvent);
-            Logger.debug("add new event function in CalendarData is used :" + newEvent.title);
-            newEvent.save();
-
-            return redirect(controllers.routes.CalendarData.list(person.id));
-        } else {
-            //User did not have a session
-            session().put("callback", routes.CalendarData.list(person.id).absoluteURL(request()));
-            return Authentication.login();
+        if (eventForm.hasErrors()) {
+            return badRequest(formNew.render("new event form", user,eventForm));
         }
+
+        Event newEvent = eventForm.get();
+
+        newEvent.allDay = newEvent.allDay != null;
+        if (newEvent.end == null) {
+            newEvent.end = new DateTime(newEvent.start).plusMinutes(30).toDate();
+        }
+        newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+
+        user.events.add(newEvent);
+        Logger.debug("add new event function in CalendarData is used :" + newEvent.title);
+        newEvent.save();
+
+        return redirect(controllers.routes.CalendarData.list(user.id));
     }
 
 
@@ -153,10 +149,11 @@ public class CalendarData extends Controller {
      */
     public static Result edit(Long id) {
         Event event = Event.find.byId(id);
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
             Form<Event> eventForm = Form.form(Event.class).fill(event);
-            return ok(formEdit.render("Edit events", person, id, eventForm, event));
+            return ok(formEdit.render("Edit events", user, id, eventForm, event));
         } else {
             //User did not have a session
             session().put("callback", routes.CalendarData.edit(id).absoluteURL(request()));
@@ -171,11 +168,12 @@ public class CalendarData extends Controller {
      * @return Result
      */
     public static Result update(Long id) {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
             Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
             if (eventForm.hasErrors()) {
-                return badRequest(formEdit.render("update", person, id, eventForm, Event.find.byId(id)));
+                return badRequest(formEdit.render("update", user, id, eventForm, Event.find.byId(id)));
             }
             Event updatedEvent = eventForm.get();
             updatedEvent.allDay = updatedEvent.allDay != null;
@@ -185,7 +183,7 @@ public class CalendarData extends Controller {
             updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
             updatedEvent.update(id);
 
-            return redirect(controllers.routes.CalendarData.list(person.id));
+            return redirect(controllers.routes.CalendarData.list(user.id));
         } else {
             //User did not have a session
             session().put("callback", routes.CalendarData.update(id).absoluteURL(request()));
@@ -200,10 +198,11 @@ public class CalendarData extends Controller {
      * @return Result
      */
     public static Result delete(Long id) {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
             Event.find.ref(id).delete();
-            return redirect(controllers.routes.CalendarData.list(person.id));
+            return redirect(controllers.routes.CalendarData.list(user.id));
         } else {
             //User did not have a session
             session().put("callback", routes.CalendarData.delete(id).absoluteURL(request()));

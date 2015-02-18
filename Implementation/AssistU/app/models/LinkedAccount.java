@@ -20,7 +20,7 @@ public class LinkedAccount extends Model {
     public Long id;
 
     @ManyToOne
-    public User user;
+    public Person person;
 
     public String providerUserId;
     public String providerKey;
@@ -28,8 +28,8 @@ public class LinkedAccount extends Model {
     public static final Finder<Long, LinkedAccount> find = new Finder<Long, LinkedAccount>(
             Long.class, LinkedAccount.class);
 
-    public static LinkedAccount findByProviderKey(final User user, String key) {
-        return find.where().eq("user", user).eq("providerKey", key)
+    public static LinkedAccount findByProviderKey(final Person person, String key) {
+        return find.where().eq("person", person).eq("providerKey", key)
                 .findUnique();
     }
 

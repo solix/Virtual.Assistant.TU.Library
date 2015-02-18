@@ -100,7 +100,7 @@ GET         /suggestions/:subject                       controllers.SuggestionDa
 GET         /send/email                                 controllers.Emailer.sendWelcomeMessage()
 
 #User
-GET         /delete_account                             controllers.UserData.deleteAccount()
+GET         /delete_account                             controllers.PersonData.deleteAccount()
 
 
 

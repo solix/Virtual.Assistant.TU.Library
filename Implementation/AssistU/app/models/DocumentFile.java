@@ -43,7 +43,7 @@ public class DocumentFile extends Model{
     public Project project;
 
     @ManyToOne
-    public User user;
+    public Person person;
 
     /**
      * Constructor
@@ -54,7 +54,7 @@ public class DocumentFile extends Model{
         this.filepath=filepath;
         this.file=file;
         this.project=Project.find.ref(pid);
-        this.user = User.find.byId(uid);
+        this.person = Person.find.byId(uid);
     }
 
     /**

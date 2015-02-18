@@ -5,9 +5,6 @@ import javax.persistence.*;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * ChatMessage model class
  *
@@ -25,7 +22,7 @@ public class Comment extends Model {
 
     public String date;
     @ManyToOne
-    public User user;
+    public Person person;
     @ManyToOne
     public Project project;
 
@@ -39,7 +36,7 @@ public class Comment extends Model {
         this.subject = subject;
         this.content = text;
         this.date= date;
-        this.user = User.find.byId(uid);
+        this.person = Person.find.byId(uid);
         this.project = Project.find.byId(pid);
         this.isChild = isChild;
         this.hasAttachment = hasAttachment;

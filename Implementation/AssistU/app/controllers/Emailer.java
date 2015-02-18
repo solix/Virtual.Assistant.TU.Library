@@ -2,7 +2,7 @@ package controllers;
 
 import com.feth.play.module.mail.Mailer;
 import com.feth.play.module.pa.PlayAuthenticate;
-import models.User;
+import models.Person;
 import org.apache.commons.mail.EmailAttachment;
 import play.Logger;
 import play.Play;
@@ -24,14 +24,14 @@ public class Emailer extends Controller {
      * @param user
      * @param body
      */
-    public static void sendVerifyEmail(String subject,User user,Mailer.Mail.Body body){
+    public static void sendVerifyEmail(String subject, Person user,Mailer.Mail.Body body){
 
         final Email email = new Email();
         email.setSubject(subject);
         email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
-        MailerPlugin.send(email);
+//        MailerPlugin.send(email);
 
     }
 
@@ -41,14 +41,14 @@ public class Emailer extends Controller {
      * @param user
      * @param body
      */
-    public static void sendNotifyEmail(String subject,User user,Html body){
+    public static void sendNotifyEmail(String subject,Person user,Html body){
 
         final Email email = new Email();
         email.setSubject(subject);
         email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
-        MailerPlugin.send(email);
+//        MailerPlugin.send(email);
 
     }
 
@@ -59,17 +59,20 @@ public class Emailer extends Controller {
      * @return
      */
     public static Result sendWelcomeMessage() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-
-        final Email email = new Email();
-        email.setSubject("Welcome to AssisTU");
-        email.setFrom("we.assistu@gmail");
-        email.addTo(user.email);
-        email.setBodyText("Good day"+ user.name);
-        email.setBodyHtml(views.html.email.testemail.render(user).toString());
-        MailerPlugin.send(email);
-        Logger.info("an email has been sent to "+ user.email);
-        return ok("Email " + " sent!");
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            final Email email = new Email();
+            email.setSubject("Welcome to AssisTU");
+            email.setFrom("we.assistu@gmail");
+            email.addTo(user.email);
+            email.setBodyText("Good day" + user.name);
+            email.setBodyHtml(views.html.email.testemail.render(user).toString());
+//            MailerPlugin.send(email);
+            Logger.info("an email has been sent to " + user.email);
+            return ok("Email " + " sent!");
+        } else {
+            return badRequest("EMAIL NOT SENT - NO SESSION");
+        }
     }
 
 }

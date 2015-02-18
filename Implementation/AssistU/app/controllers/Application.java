@@ -14,12 +14,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controllers.routes;
+
 
 public class Application extends Controller {
 
 
     public static Result reroute(){
-        Logger.debug("Redirecting to " + session("callback"));
         String route = session("callback");
         if (route != null) {
             return redirect(route);
@@ -33,7 +34,8 @@ public class Application extends Controller {
      * @return
      */
     public static Result index() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(index.render("Welcome, " + user.name, user));
         else {
@@ -50,7 +52,8 @@ public class Application extends Controller {
     private static Form<Task> taskForm = Form.form(Task.class);
 
     public static Result task() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             List<Task> tasks = Task.ordered(user) ;
             return ok(task_new.render("My tasks", user, tasks,taskForm));
@@ -63,7 +66,7 @@ public class Application extends Controller {
 
 
     public static Result project() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             return ok(project.render("AssistU - Projects", user, null));
         }else{
@@ -77,7 +80,8 @@ public class Application extends Controller {
      * @return
      */
     public static Result suggestions() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(suggestions.render("Suggestions", user));
         else {
@@ -91,7 +95,8 @@ public class Application extends Controller {
      * @return
      */
     public static Result discussion() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(discussion.render("AssisTU - Discussions", user, null));
         else{

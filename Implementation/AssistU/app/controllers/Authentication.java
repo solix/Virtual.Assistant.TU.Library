@@ -1,6 +1,6 @@
 package controllers;
 
-import models.User;
+import models.Person;
 import play.data.*;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -63,15 +63,15 @@ public class Authentication extends Controller {
      * @return
      */
     public static Result login() {
-        User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
-        if(user != null)
+        Person person = Person.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        if(person != null)
             OAuthLogout();
         return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, "", ""));
     }
 
     public static Result relogin() {
-        User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
-        if(user != null)
+        Person person = Person.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        if(person != null)
             OAuthLogout();
         return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Your credentials did not match any user"));
     }
@@ -82,8 +82,8 @@ public class Authentication extends Controller {
      * @return
      */
     public static Result signup() {
-        User user = User.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
-        if(user != null)
+        Person person = Person.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        if(person != null)
             OAuthLogout();
         return ok(signup.render(LocalUsernamePasswordAuthProvider.SIGNUP_FORM, false, "", ""));
     }
@@ -106,10 +106,10 @@ public class Authentication extends Controller {
 //        }
 //    }
 
-    public static User getLocalUser(final Http.Session session) {
+    public static Person getLocalUser(final Http.Session session) {
         final AuthUser currentAuthUser = PlayAuthenticate.getUser(session);
-        final User localUser = User.findByAuthUserIdentity(currentAuthUser);
-        return localUser;
+        final Person localPerson = Person.findByAuthUserIdentity(currentAuthUser);
+        return localPerson;
     }
 
     /**

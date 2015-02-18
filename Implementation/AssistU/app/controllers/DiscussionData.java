@@ -1,6 +1,5 @@
 package controllers;
 
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
@@ -20,16 +19,21 @@ import java.util.*;
 import com.feth.play.module.pa.PlayAuthenticate;
 import views.html.discussion;
 import views.html.discussionFile;
-import views.html.project;
+
+import controllers.routes;
 
 public class DiscussionData extends Controller {
 
-    /*TODO SOHEIL: Not sure we should notify on every message, or let them build up and send a summary at some point.*/
+    /*
+    *
+    *
+    * */
     public static Result discussion(Long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
 //            Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
+
             return ok(discussion.render("AssistU - Projects", user, p));
         }else {
             //User did not have a session
@@ -53,31 +57,34 @@ public class DiscussionData extends Controller {
     }
 
     /**
+     * TODO SOHEIL: Not sure we should notify on every message, or let them build up and send a summary at some point.
     * Controller action for POSTing chat messages created in discussion page
     */
     public static Result postMessage() {
         ObjectNode message = (ObjectNode)request().body().asJson();
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(!message.get("content").asText().equals("")) {
-            if (!message.get("isChild").asBoolean()) {
-                Logger.debug("It's a main comment");
-                message.put("subject", formatSubject(message.get("subject").asText(), Long.parseLong(message.get("projectID").asText())));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(person != null) {
+            if (!message.get("content").asText().equals("")) {
+                if (!message.get("isChild").asBoolean()) {
+                    Logger.debug("It's a main comment");
+                    message.put("subject", formatSubject(message.get("subject").asText(), Long.parseLong(message.get("projectID").asText())));
+                }
+                message.put("uid", person.id);
+                Comment comment = Comment.create(
+                        person.id,
+                        message.get("subject").asText(),
+                        message.get("content").asText(),
+                        message.get("date").asText(),
+                        message.get("projectID").asLong(),
+                        message.get("isChild").asBoolean(),
+                        false,
+                        "");
+                message.put("cid", comment.cid);
+                message.put("username", comment.person.name);
+                message.put("role", Role.find.where().eq("person", person).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
+                Logger.debug("New Comment: " + Json.stringify(message));
+                sendEvent(message);
             }
-            message.put("uid", user.id);
-            Comment comment = Comment.create(
-                    user.id,
-                    message.get("subject").asText(),
-                    message.get("content").asText(),
-                    message.get("date").asText(),
-                    message.get("projectID").asLong(),
-                    message.get("isChild").asBoolean(),
-                    false,
-                    "");
-            message.put("cid", comment.cid);
-            message.put("username", comment.user.name);
-            message.put("role", Role.find.where().eq("user", user).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
-            Logger.debug("New Comment: " + Json.stringify(message));
-            sendEvent(message);
         }
         return ok();
     }
@@ -89,55 +96,57 @@ public class DiscussionData extends Controller {
         DynamicForm message = Form.form().bindFromRequest();
         Logger.debug("ext message: " + message.toString());
         ObjectNode result = new ObjectMapper().createObjectNode();
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(Long.parseLong(message.get("projectID")));
-        DocumentFile doc = DocumentFile.find.byId(Long.parseLong(message.get("attachment")));
-        if(message.get("content").equals("") || message.get("subject").equals("")) {
-            Logger.debug("ext message sendback: " + message.toString());
-            return badRequest(discussionFile.render("An error has occured.", user, p,
-                    DocumentFile.find.byId(Long.parseLong(message.get("attachment"))), message, true, "danger",
-                    "Your message or subject was empty"));
-        } else {
-            result.put("uid", user.id);
-            result.put("subject", formatSubject(message.get("subject"), p.id));
-            result.put("content", message.get("content"));
-            result.put("date", (new Date()).toString());
-            result.put("projectID", p.id);
-            result.put("isChild", false);
-            result.put("hasAttachment", true);
-            result.put("attachment", doc.name);
-            Comment comment = Comment.create(
-                    user.id,
-                    result.get("subject").asText(),
-                    result.get("content").asText(),
-                    result.get("date").asText(),
-                    result.get("projectID").asLong(),
-                    result.get("isChild").asBoolean(),
-                    result.get("hasAttachment").asBoolean(),
-                    result.get("attachment").asText());
-            result.put("cid", "" + comment.cid);
-            result.put("role", Role.find.where().eq("user", user).eq("project", p).findUnique().role);
-            result.put("username", user.name);
-            Logger.debug("New Comment: " + Json.stringify(result));
-            sendEvent(result);
-            return DiscussionData.discussion(p.id);
+        if(person != null){
+            DocumentFile doc = DocumentFile.find.byId(Long.parseLong(message.get("attachment")));
+            if(message.get("content").equals("") || message.get("subject").equals("")) {
+                Logger.debug("ext message sendback: " + message.toString());
+                return badRequest(discussionFile.render("An error has occured.", person, p,
+                        DocumentFile.find.byId(Long.parseLong(message.get("attachment"))), message, true, "danger",
+                        "Your message or subject was empty"));
+            } else {
+                result.put("uid", person.id);
+                result.put("subject", formatSubject(message.get("subject"), p.id));
+                result.put("content", message.get("content"));
+                result.put("date", (new Date()).toString());
+                result.put("projectID", p.id);
+                result.put("isChild", false);
+                result.put("hasAttachment", true);
+                result.put("attachment", doc.name);
+                Comment comment = Comment.create(
+                        person.id,
+                        result.get("subject").asText(),
+                        result.get("content").asText(),
+                        result.get("date").asText(),
+                        result.get("projectID").asLong(),
+                        result.get("isChild").asBoolean(),
+                        result.get("hasAttachment").asBoolean(),
+                        result.get("attachment").asText());
+                result.put("cid", "" + comment.cid);
+                result.put("role", Role.find.where().eq("person", person).eq("project", p).findUnique().role);
+                result.put("username", person.name);
+                Logger.debug("New Comment: " + Json.stringify(result));
+                sendEvent(result);
+            }
         }
+        return DiscussionData.discussion(p.id);
     }
 
     public static Result deleteMessage() {
         ObjectNode message = (ObjectNode)request().body().asJson();
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             Comment comment = Comment.find.byId(Long.parseLong(message.get("cid").asText()));
-            Role role = Role.find.where().eq("project", comment.project).eq("user", user).findUnique();
-            Role comment_role = Role.find.where().eq("project", comment.project).eq("user", comment.user).findUnique();
+            Role role = Role.find.where().eq("project", comment.project).eq("person", user).findUnique();
+            Role comment_role = Role.find.where().eq("project", comment.project).eq("person", comment.person).findUnique();
             List<Comment> comments = Comment.find.where().eq("subject", comment.subject).findList();
-            if (role != null && role.role.equals(Role.OWNER) && comment_role.equals(Role.GUEST)) {
+            if (role != null && role.role.equals(Role.OWNER) && comment_role.role.equals(Role.GUEST)) {
                 for (int i = 0; i < comments.size(); i++) {
                     comments.get(i).delete();
                 }
                 comment.delete();
-            } else if (comment.user.equals(user)) {
+            } else if (comment.person.equals(user)) {
                 for (int i = 0; i < comments.size(); i++) {
                     comments.get(i).delete();
                 }
@@ -148,8 +157,7 @@ public class DiscussionData extends Controller {
     }
 
     public static Result getComments() {
-        List<Project> projects = UserData.findActiveProjects();
-
+        List<Project> projects = PersonData.findActiveProjects();
         List<ObjectNode> comments = new ArrayList<ObjectNode>();
         ObjectNode comment;
         for(int i = 0; i < projects.size(); i++) {
@@ -158,10 +166,10 @@ public class DiscussionData extends Controller {
             for(int j = 0; j < cml.size(); j++) {
                 Comment cm = cml.get(j);
                 comment = new ObjectMapper().createObjectNode();
-                User user = User.find.byId(cm.user.id);
-                comment.put("uid", "" + user.id);
-                comment.put("username", user.name);
-                comment.put("role", Role.find.where().eq("user", cm.user).eq("project", p).findUnique().role);
+                Person person = Person.find.byId(cm.person.id);
+                comment.put("uid", "" + person.id);
+                comment.put("username", person.name);
+                comment.put("role", Role.find.where().eq("person", cm.person).eq("project", p).findUnique().role);
                 comment.put("subject", cm.subject);
                 comment.put("content", cm.content);
                 comment.put("date", cm.date);
@@ -177,8 +185,8 @@ public class DiscussionData extends Controller {
     }
 
     public static Result getSubComments() {
-        List<Project> ownerProjects = UserData.findActiveOwnerProjects();
-        List<Project> reviewerProjects = UserData.findActiveReviewerProjects();
+        List<Project> ownerProjects = PersonData.findActiveOwnerProjects();
+        List<Project> reviewerProjects = PersonData.findActiveReviewerProjects();
         List<Project> projects = new ArrayList<Project>(ownerProjects);
         projects.addAll(reviewerProjects);
 
@@ -190,10 +198,10 @@ public class DiscussionData extends Controller {
             for (int j = 0; j < cml.size(); j++) {
                 Comment cm = cml.get(j);
                 comment = new ObjectMapper().createObjectNode();
-                User user = User.find.byId(cm.user.id);
-                comment.put("uid", "" + user.id);
-                comment.put("username", user.name);
-                comment.put("role", Role.find.where().eq("user", cm.user).eq("project", p).findUnique().role);
+                Person person = Person.find.byId(cm.person.id);
+                comment.put("uid", "" + person.id);
+                comment.put("username", person.name);
+                comment.put("role", Role.find.where().eq("person", cm.person).eq("project", p).findUnique().role);
                 comment.put("subject", cm.subject);
                 comment.put("content", cm.content);
                 comment.put("date", cm.date);

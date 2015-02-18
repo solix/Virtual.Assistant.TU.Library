@@ -1,8 +1,8 @@
-@(currentUser: User, project: Project)
+@(currentUser: Person, project: Project)
 <div class="container-fluid" style="text-align: center; margin: 1% 0">
     <div role="tabpanel">
         <ul class="nav nav-tabs">
-            @for(p <- UserData.findActiveProjects) {
+            @for(p <- PersonData.findActiveProjects) {
                 @if(project != null){
                     @if(p.id == project.id) {
                         <li role="presentation" class="active" style="width: 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
@@ -14,7 +14,7 @@
                         </li>
                     }
                 } else {
-                    @if(p.id == UserData.getLastUsedProject.id) {
+                    @if(p.id == PersonData.getLastUsedProject.id) {
                         <li role="presentation" class="active" style="width : 18% ; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
                             <a href="#project@p.id" data-toggle="tab">@p.folder</a>
                         </li>

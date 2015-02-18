@@ -1,6 +1,6 @@
 package controllers;
 
-import models.User;
+import models.Person;
 import play.mvc.*;
 import views.html.*;
 import com.feth.play.module.pa.PlayAuthenticate;
@@ -11,7 +11,7 @@ import com.feth.play.module.pa.PlayAuthenticate;
 public class SuggestionData extends Controller{
 
     public static Result suggestion(String subject) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null){
 //            if(subject.equals("Orientation")){
 //                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-eye", user));
@@ -26,6 +26,7 @@ public class SuggestionData extends Controller{
 //            } else if(subject.equals("Keeping Up-to-date")){
 //                return ok(suggestions_tagcloud.render("Suggestions", subject, "fa-refresh", user));
 //            } else {
+
                 return Application.suggestions();
 //            }
 

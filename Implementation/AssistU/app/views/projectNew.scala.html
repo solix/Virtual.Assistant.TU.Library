@@ -1,4 +1,4 @@
-@(title: String, projectForm: Form[Project])(info: Boolean, theme: String, message: String)(currentUser:User)
+@(title: String, projectForm: Form[Project])(info: Boolean, theme: String, message: String)(currentUser:Person)
 @defining(Project.find.where().in("users", currentUser)) { projectListQuery =>
     <html lang="en">
         <head>

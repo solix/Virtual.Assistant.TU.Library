@@ -2,9 +2,7 @@ package controllers;
 
 import com.feth.play.module.pa.PlayAuthenticate;
 import models.*;
-import play.db.ebean.Model;
 import play.mvc.*;
-import views.html.*;
 import play.data.Form;
 
 import java.util.List;
@@ -24,7 +22,7 @@ private static final Form<Task> tForm = Form.form(Task.class);
      * @return
      */
     public static Result addTask(){
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             Form<Task> taskForm = tForm.bindFromRequest();
             if (taskForm.hasErrors()) {

@@ -1,4 +1,4 @@
-@(parentpage: String, currentUser:User)
+@(parentpage: String, currentUser:Person)
 <!-- Navigation -->
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -233,7 +233,7 @@
             <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
         </div>
         <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
-            <a class="btn btn-danger col-xs-12" href="@routes.UserData.deleteAccount()">Delete me!</a>
+            <a class="btn btn-danger col-xs-12" href="@routes.PersonData.deleteAccount()">Delete me!</a>
         </div>
     }
     <!-- /.navbar-top-links -->
@@ -277,12 +277,12 @@
                     <a @if(parentpage.equals("dashboard")){class="active"} href="@routes.Application.index()"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
-                    @defining(UserData.findActiveProjects()) { projects =>
+                    <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects@if(PersonData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
+                    @defining(PersonData.findActiveProjects()) { projects =>
                         @if(projects.size() > 0) {
                             <ul class="nav nav-second-level">
                                 @for(p <- projects){
-                                    @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
+                                    @defining(Role.find.where().eq("person", currentUser).eq("project", p).findUnique().role) { role =>
                                         @if(role.equals(Role.OWNER)) {
                                             <li>
                                                 <a href="@routes.ProjectData.project(p.id)"><i class="fa fa-mortar-board"></i> @p.folder</a>
@@ -311,12 +311,12 @@
                     <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalendarData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
                 </li>
                 <li>
-                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(UserData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
-                    @defining(UserData.findActiveProjects()) { projects =>
+                    <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(PersonData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>
+                    @defining(PersonData.findActiveProjects()) { projects =>
                         @if(projects.size() > 0) {
                             <ul class="nav nav-second-level">
                             @for(p <- projects){
-                                @defining(Role.find.where().eq("user", currentUser).eq("project", p).findUnique().role) { role =>
+                                @defining(Role.find.where().eq("person", currentUser).eq("project", p).findUnique().role) { role =>
                                     @if(role.equals(Role.OWNER)) {
                                         <li>
                                             <a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-mortar-board"></i> @p.folder</a>

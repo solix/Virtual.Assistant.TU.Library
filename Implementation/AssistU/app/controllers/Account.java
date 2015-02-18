@@ -5,7 +5,7 @@ import be.objectify.deadbolt.java.actions.Restrict;
 import be.objectify.deadbolt.java.actions.SubjectPresent;
 import com.feth.play.module.pa.PlayAuthenticate;
 import com.feth.play.module.pa.user.AuthUser;
-import models.User;
+import models.Person;
 import play.data.Form;
 import play.data.format.Formats.NonEmpty;
 import play.data.validation.Constraints.MinLength;
@@ -84,21 +84,21 @@ public class Account extends Controller {
 	@Restrict(@Group(Authentication.USER_ROLE))
 	public static Result verifyEmail() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-		final User user = Authentication.getLocalUser(session());
-		if (user.emailValidated) {
+		final Person person = Authentication.getLocalUser(session());
+		if (person.emailValidated) {
 			// E-Mail has been validated already
 			flash(Authentication.FLASH_MESSAGE_KEY,
 					Messages.get("playauthenticate.verify_email.error.already_validated"));
-		} else if (user.email != null && !user.email.trim().isEmpty()) {
+		} else if (person.email != null && !person.email.trim().isEmpty()) {
 			flash(Authentication.FLASH_MESSAGE_KEY, Messages.get(
 					"playauthenticate.verify_email.message.instructions_sent",
-					user.email));
+					person.email));
 			LocalUsernamePasswordAuthProvider.getProvider()
-					.sendVerifyEmailMailingAfterSignup(user, ctx());
+					.sendVerifyEmailMailingAfterSignup(person, ctx());
 		} else {
 			flash(Authentication.FLASH_MESSAGE_KEY, Messages.get(
 					"playauthenticate.verify_email.error.set_email_first",
-					user.email));
+					person.email));
 		}
 //		return redirect(routes.Application.profile());
 	return TODO;
@@ -107,7 +107,7 @@ public class Account extends Controller {
 	@Restrict(@Group(Authentication.USER_ROLE))
 	public static Result changePassword() {
 		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
-		final User u = Authentication.getLocalUser(session());
+		final Person u = Authentication.getLocalUser(session());
 
 		if (!u.emailValidated) {
 //			return ok(unverified.render());
@@ -128,9 +128,9 @@ public class Account extends Controller {
 //			return badRequest(password_change.render(filledForm));
 		return TODO;
 		} else {
-			final User user = Authentication.getLocalUser(session());
+			final Person person = Authentication.getLocalUser(session());
 			final String newPassword = filledForm.get().password;
-			user.changePassword(new LocalUsernamePasswordAuthUser(newPassword),
+			person.changePassword(new LocalUsernamePasswordAuthUser(newPassword),
 					true);
 			flash(Authentication.FLASH_MESSAGE_KEY,
 					Messages.get("playauthenticate.change_password.success"));

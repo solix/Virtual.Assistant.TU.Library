@@ -6,8 +6,7 @@ import com.feth.play.module.pa.user.AuthUserIdentity;
 import com.feth.play.module.pa.user.EmailIdentity;
 import com.feth.play.module.pa.user.NameIdentity;
 import com.feth.play.module.pa.service.UserServicePlugin;
-import models.User;
-import play.*;
+import models.Person;
 
 /**
  * Created by arnaud on 15-12-14.
@@ -33,9 +32,9 @@ public class UserService extends UserServicePlugin {
      */
     @Override
     public Object save(final AuthUser authUser) {
-        final boolean isLinked = User.existsByAuthUserIdentity(authUser);
+        final boolean isLinked = Person.existsByAuthUserIdentity(authUser);
         if(!isLinked){
-            return User.create(authUser);
+            return Person.create(authUser);
         }else{
             return null;
         }
@@ -43,7 +42,7 @@ public class UserService extends UserServicePlugin {
 
     @Override
     public AuthUser update(final AuthUser knownUser) {
-        User.update(knownUser);
+        Person.update(knownUser);
         // User logged in again, bump last login date
 //        User.setLastLoginDate(knownUser);
         return knownUser;
@@ -55,13 +54,13 @@ public class UserService extends UserServicePlugin {
      * @return
      */
     @Override
-    public User getLocalIdentity(final AuthUserIdentity identity) {
+    public Person getLocalIdentity(final AuthUserIdentity identity) {
         // For production: Caching might be a good idea here, and dont forget to sync the cache when users get deactivated/deleted [sic]
 
-        final User user = User.findByAuthUserIdentity(identity);
+        final Person person = Person.findByAuthUserIdentity(identity);
 
-        if(user != null) {
-            return user;
+        if(person != null) {
+            return person;
         } else {
             return null;
         }
@@ -76,7 +75,7 @@ public class UserService extends UserServicePlugin {
      */
     @Override
     public AuthUser merge(final AuthUser newUser, final AuthUser oldUser) {
-       if(!oldUser.equals(newUser)) User.merge(oldUser,newUser);
+       if(!oldUser.equals(newUser)) Person.merge(oldUser, newUser);
 
         return oldUser;
     }

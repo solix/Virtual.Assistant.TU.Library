@@ -1,6 +1,5 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import models.*;
 import play.Logger;
 import play.data.*;
@@ -20,7 +19,7 @@ public class ProjectData extends Controller {
 
     public static Result project(Long pid) {
         session().put("callback", routes.ProjectData.project(pid).absoluteURL(request()));
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
 //            Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
@@ -34,7 +33,8 @@ public class ProjectData extends Controller {
     static Form<Project> projectForm = Form.form(Project.class);
 
     public static Result createProjectPage() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(projectNew.render("Create a new Project", projectForm, false, "", "", user));
         else {
@@ -44,8 +44,9 @@ public class ProjectData extends Controller {
     }
 
     public static Result editProjectPage(Long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(pid);
+
         if(user != null)
             return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", "", user));
         else {
@@ -59,9 +60,8 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result createProject() {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Form<Project> filledProjectForm = projectForm.bindFromRequest();
-
         if (user != null) {
             if (filledProjectForm.hasErrors()) {
                 return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
@@ -74,7 +74,7 @@ public class ProjectData extends Controller {
                 Project projectData = filledProjectForm.get();
                 Project p = Project.create(projectData.folder, projectData.name, projectData.description, projectData.template);
                 Project.inviteOwner(p.id, user.id);
-                Role r = Role.find.where().eq("project", p).eq("user", user).findUnique();
+                Role r = Role.find.where().eq("project", p).eq("person", user).findUnique();
                 r.accepted = true;
                 r.dateJoined = new Date();
                 r.update();
@@ -100,7 +100,7 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result editProject(Long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if (user != null) {
             if (ProjectData.findAllOwners(pid).contains(user)) {
                 Project p = Project.find.byId(pid);
@@ -133,7 +133,7 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result archiveProject(Long pid) {
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             if (ProjectData.findAllOwners(pid).contains(user) && ProjectData.findAllOwners(pid).size() == 1) {
                 Project.archive(pid);
@@ -155,24 +155,24 @@ public class ProjectData extends Controller {
      */
     public static Result inviteMemberToProjectAs(Long pid) {
         DynamicForm emailform = Form.form().bindFromRequest();
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if (user != null){
             //See if the user requesting to invite someone is an Owner
             if (ProjectData.findAllOwners(pid).contains(user)) {
-                User user_invited = User.find.where().eq("email", emailform.get("email")).findUnique();
+                Person user_invited = Person.find.where().eq("email", emailform.get("email")).findUnique();
                 //See if the user that needs to be invited exists in the system
                 if (user_invited != null) {
                     Project p = Project.find.byId(pid);
                     //There can not be a role relation between the invited user and the project,
                     // as it would be the user is already a member
-                    if (Role.find.where().eq("project", p).eq("user", user_invited).findUnique() == null) {
+                    if (Role.find.where().eq("project", p).eq("person", user_invited).findUnique() == null) {
                         //Pattern match the correct role for invitation
                         if (emailform.get("role").equals("Owner")) {
                             Project.inviteOwner(p.id, user_invited.id);
                             Event.defaultPlanningArticle(user, p);
                             p.planning = true;
                             //            p.update();
-//                            p.save();
+                            p.save();
                         } else if (emailform.get("role").equals("Reviewer")) {
                             Project.inviteReviewer(p.id, user_invited.id);
                         } else {
@@ -194,15 +194,15 @@ public class ProjectData extends Controller {
      */
     public static Result hasAccepted(Long pid){
         Project p = Project.find.byId(pid);
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if( user != null) {
-            Role r = Role.find.where().eq("user", user).eq("project", p).findUnique();
+            Role r = Role.find.where().eq("person", user).eq("project", p).findUnique();
             //See if there actually exists a (pending) role between the accepting user and project
             if (r != null) {
                 r.accepted = true;
                 r.dateJoined = new Date();
                 r.save();
-                List<User> owners=findAllOwners(p.id);
+                List<Person> owners=findAllOwners(p.id);
                 owners.stream().forEach((u) -> {
                     if(!u.equals(user))
                     Emailer.sendNotifyEmail("[Assistu]"+ user.name + "has joined the project" , u ,views.html.email.project_joined.render(u,user,p) );
@@ -218,9 +218,9 @@ public class ProjectData extends Controller {
 
     public static Result hasDeclined(Long pid){
         Project p = Project.find.byId(pid);
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-            Role r = Role.find.where().eq("user", user).eq("project", p).findUnique();
+            Role r = Role.find.where().eq("person", user).eq("project", p).findUnique();
             if (r != null) {
                 r.delete();
             }
@@ -242,7 +242,7 @@ public class ProjectData extends Controller {
      * @return
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             if (ProjectData.findAllOwners(pid).contains(user)) {
                 Project.removeMemberFrom(pid, uid);
@@ -256,7 +256,7 @@ public class ProjectData extends Controller {
     }
 
     public static Result leaveProject(Long pid){
-        User user = User.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             Project.removeMemberFrom(pid, user.id);
             return redirect(routes.Application.project());
@@ -268,7 +268,7 @@ public class ProjectData extends Controller {
     }
 
     public static Result getProjectIdsAsJson(){
-        List<Project> projects = UserData.findActiveProjects();
+        List<Project> projects = PersonData.findActiveProjects();
         List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
         TreeMap<String, String> project;
         for(int i =0; i < projects.size(); i++){
@@ -281,10 +281,10 @@ public class ProjectData extends Controller {
     }
 
     public static Result getOwnerIdsAsJson(){
-        List<Project> projects = UserData.findActiveProjects();
+        List<Project> projects = PersonData.findActiveProjects();
         List<Long> result = new ArrayList<Long>();
         for(int i =0 ; i < projects.size(); i++){
-            List<User> projectowners = ProjectData.findAllOwners(projects.get(i).id);
+            List<Person> projectowners = ProjectData.findAllOwners(projects.get(i).id);
             for(int j = 0; j < projectowners.size(); j++){
                 if(!result.contains(projectowners.get(j).id)){
                     result.add(projectowners.get(j).id);
@@ -295,11 +295,11 @@ public class ProjectData extends Controller {
     }
 
     public static Result getReviewerIdsAsJson(){
-        List<Project> projects = UserData.findActiveProjects();
+        List<Project> projects = PersonData.findActiveProjects();
         List<Long> result = new ArrayList<Long>();
 
         for(int i =0 ; i < projects.size(); i++){
-            List<User> projectreviewers = ProjectData.findAllReviewers(projects.get(i).id);
+            List<Person> projectreviewers = ProjectData.findAllReviewers(projects.get(i).id);
             for(int j = 0; j < projectreviewers.size(); j++){
                 if(!result.contains(projectreviewers.get(j).id)){
                     result.add(projectreviewers.get(j).id);
@@ -310,10 +310,10 @@ public class ProjectData extends Controller {
     }
 
     public static Result getGuestIdsAsJson(){
-        List<Project> projects = UserData.findActiveProjects();
+        List<Project> projects = PersonData.findActiveProjects();
         List<Long> result = new ArrayList<Long>();
         for(int i =0 ; i < projects.size(); i++){
-            List<User> projectguests = ProjectData.findAllReviewers(projects.get(i).id);
+            List<Person> projectguests = ProjectData.findAllReviewers(projects.get(i).id);
             for(int j = 0; j < projectguests.size(); j++){
                 if(!result.contains(projectguests.get(j).id)){
                     result.add(projectguests.get(j).id);
@@ -324,7 +324,7 @@ public class ProjectData extends Controller {
     }
 
     public static Result getLastAccessedProjectIdAsJson(){
-        Project p = UserData.getLastUsedProject();
+        Project p = PersonData.getLastUsedProject();
         HashMap<String, String> project = new HashMap<String, String>();
         if(p != null) {
             project.put("name", p.name);
@@ -339,14 +339,14 @@ public class ProjectData extends Controller {
      * @param pid
      * @return
      */
-    public static List<User> findAllAffiliatedUsers(Long pid){
+    public static List<Person> findAllAffiliatedUsers(Long pid){
         Project p = Project.find.byId(pid);
         List<Role> roles = Role.find.where().eq("project", p).findList();
-        List<User> users = new ArrayList<User>();
+        List<Person> persons = new ArrayList<Person>();
         for(Role role: roles){
-            users.add(role.user);
+            persons.add(role.person);
         }
-        return users;
+        return persons;
     }
 
     /**
@@ -354,14 +354,14 @@ public class ProjectData extends Controller {
      * @param pid
      * @return
      */
-    public static List<User> findAllOwners(Long pid){
+    public static List<Person> findAllOwners(Long pid){
         Project p = Project.find.byId(pid);
         List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.OWNER).findList();
-        List<User> users = new ArrayList<User>();
+        List<Person> persons = new ArrayList<Person>();
         for(Role role: roles){
-            users.add(role.user);
+            persons.add(role.person);
         }
-        return users;
+        return persons;
     }
 
     /**
@@ -369,14 +369,14 @@ public class ProjectData extends Controller {
      * @param pid
      * @return
      */
-    public static List<User> findAllReviewers(Long pid){
+    public static List<Person> findAllReviewers(Long pid){
         Project p = Project.find.byId(pid);
         List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.REVIEWER).findList();
-        List<User> users = new ArrayList<User>();
+        List<Person> persons = new ArrayList<Person>();
         for(Role role: roles){
-            users.add(role.user);
+            persons.add(role.person);
         }
-        return users;
+        return persons;
     }
 
 }

@@ -9,7 +9,7 @@
                         <i class="fa fa-comments fa-4x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">@Comment.find.where().in("project", UserData.findActiveProjects()).findList().size()</div>
+                        <div class="huge">@Comment.find.where().in("project", PersonData.findActiveProjects()).findList().size()</div>
                         <div> Comments!</div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <i class="fa fa fa-line-chart fa-4x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">@UserData.findActiveProjects.size()</div>
+                        <div class="huge">@PersonData.findActiveProjects.size()</div>
                         <div> Projects</div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         <i class="fa fa-wrench fa-4x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">@Task.find.where().eq("user", User.find.ref(uid)).findList().size()</div>
+                        <div class="huge">@Task.find.where().eq("person", Person.find.ref(uid)).findList().size()</div>
                         <div> Tasks!</div>
                     </div>
                 </div>
