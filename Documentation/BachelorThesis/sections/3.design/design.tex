@@ -37,10 +37,10 @@ Administrator of the application represents the operator of the system, extract 
 % TODO: Main use cases of each projects are here
 \subsubsection{Student/Researcher User} 
 \begin{itemize}
-	\item Create/Leave Project
+	\item Create/Leave/Archive Project
 	\item Invite new members
 	\item Search for an Article
-	\item Upload/Download files
+	\item Upload/Download/Delete Document
 	\item Delete uploaded files
 	\item Create project planning
 	\item Create to-do list
@@ -49,66 +49,85 @@ Administrator of the application represents the operator of the system, extract 
 
 \end{itemize}
 \subsubsection{Reviewer User} 
+\begin{itemize}
+	 
+
 	\item Join/Leave a project
-	\item Download/upload Document
+	\item Download/upload/Delete Document
 	\item Create/comment on discussions
+\end{itemize}
 
 \subsubsection{Guest User} 
+\begin{itemize}
+	
 	\item Join/Leave a project
 	\item Download Document
 	\item create/comment on discussions
+\end{itemize}	
 \subsubsection{Administrative User} 
-	\item Add/Remove/Edit user
-	\item Download logging info
-
+\begin{itemize}
+	\item Add/Remove/Edit user	\item Download logging info
+\end{itemize}
 \subsection{Use Case Diagrams} % (fold)
-\label{sub:subsection_name}
+\subsubsection{Student/Researcher User} 
+
+\begin{center}
+\centering
+\includegraphics[scale=0.3]{./img/dsgn_img/USECASE1.png}	
+\end{center}
 
 % subsection subsection_name (end)
+
+\subsubsection{Reviewer User} 
+\begin{center}
+\includegraphics[scale=0.3]{./img/dsgn_img/USECASE2.png}
+	
+\end{center}
+
+\subsubsection{Administrator User} 
+\begin{center}
+\includegraphics[scale=0.3]{./img/dsgn_img/USECASE3.png}
+	
+\end{center}
 % subsection list_of_use_cases (end)
 
 % subsection actors (end)
 
 \section{System Architecture} % (fold)
 \label{sec:system_architecture}
+ In this section, MVC design of the system is shown and will be discussed. MVC is chosen to be very suitable for web architecture since it promises low coupling and high cohesion between components of the systems and gives room for easier extension or modification of a specific component without bothering the rest.
 \subsection{Architectural Design} % (fold)
 \label{sub:arichtectural_design}
 % Develop a modular program structure and explain the relationships between the modules to achieve  the  complete  functionality of the  system. This is a  high level overview  of how responsibilities of the system were partitioned and then assigned to subsystems. Identify each 
 % high level subsystem and  the  roles or responsibilities assigned to it. Describe  how  these subsystems col aborate with each other in order to achieve the desired functionality. Don’t go 
 % into too much detail about the individual subsystems. The main purpose is to gain a general understanding  of how  and why the system was decomposed, and  how the  individual parts work together. Provide a diagram showing the major subsystems and data repositories and their interconnections. Describe the diagram if required
-% \subsection{Decomposition Description} % (fold)
-\label{sub:decom}
-% Provide a decomposition of the subsystems in the architectural design. Supplement with text 
-% as needed. You may choose to give a functional description or an object­oriented description. For a  functional description, put top­level data  flow  diagram (DFD)  and  structural 
-% decomposition  diagrams. For an OO description, put subsystem model, object diagrams, generalization hierarchy diagram(s) (if any), aggregation hierarchy diagram(s) (if any),
-% interface specifications, and sequence diagrams here.
 
-\subsection{Design Rationale} % (fold)
+In the app folder of this application, there are three packages defined. namely models, view and controller. 
+\begin{center}
+\includegraphics[scale=0.3]{./img/dsgn_img/MVCdiag.png}
+	
+\end{center}
+
+Image above is showing that these the system architecture divides into three separate layers. The model which is representation of information, THe view that makes these information available for the user to interact and Controller which responds to user actions and processes them. In the next section we will explain more in-dept about each layer and it's sub-components.
+
+\subsection{Model} % (fold)
 \label{sub:design_rationale}
-% Discuss the rationale for selecting the architecture described in 3.1 including critical issues and  trade/offs that were  considered. You  may discuss other  architectures that were  considered, provided that you explain why you didn’t choose them.
-% % section system_architecture (end)
 
-\section{Data Design} % (fold)
-\label{sec:section_name}
-% Explain how the information domain of your system is transformed into data structures. Describe how the major data or system entities are stored, processed and organized. List any databases or data storage items.
-% \section{Component Design} % (fold)
-\label{sec:component_design}
-% In this section, we take a closer look at what each component does in a more systematic way. If ou gave a functional description in section 3.2, provide a summary of your algorithm for each function listed in .2 in procedural description language (PDL) or pseudocode. If you gave an 
-% OO description, summarize each object member function for al the objects listed in 3.2 in PDL or pseudocode. Describe any local data when necessary.
-% section component_design (end)
+\subsubsection{RElational Model Diagram}
+\begin{center}
+\includegraphics[scale=0.3]{./img/dsgn_img/RMA.png}
+	
+\end{center}
 
-\section{Human Interface Design} % (fold)
-\label{sec:human_interface_design}
-% Describe the functionality of the system from the user’s perspective. Explain  how the user wil be  able  to use  your system to complete  al the  expected  features and  the  feedback information that wil be displayed for the user.
-\subsection{Overview of User Interface} % (fold)
-\label{sub:overview_of_user_interface}
+\subsubsection{Model description}
 
-% Display screenshots showing the interface from the user’s perspective. These can be  handdrawn or you can use an automated drawing tool. Just make them as accurate as possible. (Graph paper works wel .)
-\subsection{Screen Images} % (fold)
-\label{sub:screen_images}
+\subsection{View} % (fold)
 
-\subsection{Screen Objects and Actions} % (fold)
-\label{sub:screen_objects_and_actions}
-% A discussion of screen objects and actions associated with those objects.
-% subsection screen_objects_and_actions (end)
-% subsection screen_images (end)
+\subsubsection{Screen Images} % (fold)
+
+\subsubsection{Screen Objects and Actions} % (fold)
+
+
+
+\subsection{Controller} % (fold)
+
