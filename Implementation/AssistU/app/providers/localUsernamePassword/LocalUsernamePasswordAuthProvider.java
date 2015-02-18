@@ -4,6 +4,7 @@ import com.feth.play.module.mail.Mailer.Mail.Body;
 import com.feth.play.module.pa.PlayAuthenticate;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import controllers.Emailer;
 import models.LinkedAccount;
 import models.TokenAction;
 import models.TokenAction.Type;
@@ -18,6 +19,7 @@ import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Call;
 import play.mvc.Http.Context;
+import controllers.routes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +28,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static play.data.Form.form;
-import controllers.routes;
 
 public class LocalUsernamePasswordAuthProvider
 		extends
@@ -133,7 +134,6 @@ public class LocalUsernamePasswordAuthProvider
 		return LOGIN_FORM;
 	}
 
-	@Override
 	protected com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.SignupResult signupUser(final LocalUsernamePasswordAuthUser user) {
 		final Person u = Person.findByUsernamePasswordIdentity(user);
 		if (u != null) {
@@ -156,7 +156,6 @@ public class LocalUsernamePasswordAuthProvider
 		return SignupResult.USER_CREATED_UNVERIFIED;
 	}
 
-	@Override
 	protected com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.LoginResult loginUser(
 			final LocalLoginUsernamePasswordAuthUser authUser) {
 		final Person u = Person.findByUsernamePasswordIdentity(authUser);
@@ -186,23 +185,19 @@ public class LocalUsernamePasswordAuthProvider
 		}
 	}
 
-	@Override
 	protected Call userExists(final UsernamePasswordAuthUser authUser) {
 		return routes.Signup.exists();
 	}
 
-	@Override
 	protected Call userUnverified(final UsernamePasswordAuthUser authUser) {
 		return routes.Signup.unverified();
 	}
 
-	@Override
 	protected LocalUsernamePasswordAuthUser buildSignupAuthUser(
 			final NativeSignup signup, final Context ctx) {
 		return new LocalUsernamePasswordAuthUser(signup);
 	}
 
-	@Override
 	protected LocalLoginUsernamePasswordAuthUser buildLoginAuthUser(
 			final NativeLogin login, final Context ctx) {
 		return new LocalLoginUsernamePasswordAuthUser(login.getPassword(),
@@ -210,26 +205,22 @@ public class LocalUsernamePasswordAuthProvider
 	}
 
 
-	@Override
 	protected LocalLoginUsernamePasswordAuthUser transformAuthUser(final LocalUsernamePasswordAuthUser authUser, final Context context) {
 		return new LocalLoginUsernamePasswordAuthUser(authUser.getEmail());
 	}
 
-	@Override
 	protected String getVerifyEmailMailingSubject(
 			final LocalUsernamePasswordAuthUser user, final Context ctx) {
-		return Messages.get("playauthenticate.password.verify_signup.subject");
+		return Messages.get("[Verify your email] assisTU Web application");
 	}
 
-	@Override
 	protected String onLoginUserNotFound(final Context context) {
 		context.flash()
 				.put(controllers.Authentication.FLASH_ERROR_KEY,
-						Messages.get("playauthenticate.password.login.unknown_user_or_pw"));
+						Messages.get("[unknown] assisTU Web application"));
 		return super.onLoginUserNotFound(context);
 	}
 
-	@Override
 	protected Body getVerifyEmailMailingBody(final String token,
 											 final LocalUsernamePasswordAuthUser user, final Context ctx) {
 
@@ -255,7 +246,6 @@ public class LocalUsernamePasswordAuthProvider
 		return UUID.randomUUID().toString();
 	}
 
-	@Override
 	protected String generateVerificationRecord(
 			final LocalUsernamePasswordAuthUser user) {
 		return generateVerificationRecord(Person.findByAuthUserIdentity(user));
@@ -276,7 +266,7 @@ public class LocalUsernamePasswordAuthProvider
 
 	protected String getPasswordResetMailingSubject(final Person person,
 													final Context ctx) {
-		return Messages.get("playauthenticate.password.reset_email.subject");
+		return Messages.get("[Reset your Password] assisTU Web application");
 	}
 
 	protected Body getPasswordResetMailingBody(final String token,
@@ -304,7 +294,8 @@ public class LocalUsernamePasswordAuthProvider
 		final String token = generatePasswordResetRecord(person);
 		final String subject = getPasswordResetMailingSubject(person, ctx);
 		final Body body = getPasswordResetMailingBody(token, person, ctx);
-		sendMail(subject, body, getEmailName(person));
+		//sendMail(subject, body, getEmailName(person));
+
 	}
 
 	public boolean isLoginAfterPasswordReset() {
@@ -314,7 +305,7 @@ public class LocalUsernamePasswordAuthProvider
 
 	protected String getVerifyEmailMailingSubjectAfterSignup(final Person person,
 															 final Context ctx) {
-		return Messages.get("playauthenticate.password.verify_email.subject");
+		return Messages.get("[Verify your email] assisTU Web application");
 	}
 
 	protected String getEmailTemplate(final String template,
@@ -389,6 +380,7 @@ public class LocalUsernamePasswordAuthProvider
 		final String token = generateVerificationRecord(person);
 		final Body body = getVerifyEmailMailingBodyAfterSignup(token, person, ctx);
 		sendMail(subject, body, getEmailName(person));
+
 	}
 
 	private String getEmailName(final Person person) {

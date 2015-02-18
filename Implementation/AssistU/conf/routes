@@ -4,6 +4,7 @@
 
 # Home page
 GET         /                                           controllers.Application.index()
+GET         /redirect                                   controllers.Application.reroute()
 
 #task
 GET         /tasks                                      controllers.Application.task()
@@ -37,17 +38,17 @@ GET         /authenticate/:provider                     controllers.Authenticati
 GET         /authenticate/:provider/denied              controllers.Authentication.OAuthDenied(provider: String)
 
 #calendar
-GET         /calendar                                   controllers.CalData.calendar()
-GET         /:id/events                                 controllers.CalData.list(id: Long)
-GET         /events.json                                controllers.CalData.json(start: Long , end: Long )
-GET         /event/:id/edit                             controllers.CalData.edit(id:Long)
-POST        /event/:id/update                           controllers.CalData.update(id:Long)
-POST        /event                                      controllers.CalData.add()
-GET         /event/new                                  controllers.CalData.blank()
-GET         /event/:id/delete                           controllers.CalData.delete(id:Long)
-POST        /:id/event-ajax                             controllers.CalData.addByAjax(id:Long)
-POST        /event-move                                 controllers.CalData.move()
-POST        /event-resize                               controllers.CalData.resize()
+GET         /calendar                                   controllers.CalendarData.calendar()
+GET         /:id/events                                 controllers.CalendarData.list(id: Long)
+GET         /events.json                                controllers.CalendarData.json(start: Long , end: Long )
+GET         /event/:id/edit                             controllers.CalendarData.edit(id:Long)
+POST        /event/:id/update                           controllers.CalendarData.update(id:Long)
+POST        /event                                      controllers.CalendarData.add()
+GET         /event/new                                  controllers.CalendarData.blank()
+GET         /event/:id/delete                           controllers.CalendarData.delete(id:Long)
+POST        /:id/event-ajax                             controllers.CalendarData.addByAjax(id:Long)
+POST        /event-move                                 controllers.CalendarData.move()
+POST        /event-resize                               controllers.CalendarData.resize()
 
 
 
@@ -95,7 +96,8 @@ GET         /suggestions/:subject                       controllers.SuggestionDa
 
 
 
-
+#Email
+GET         /send/email                                 controllers.Emailer.sendWelcomeMessage()
 
 
 

@@ -57,7 +57,7 @@ public class Task extends Model {
      * @return
      */
     public static List<Task> alltask(Person person){
-        return Task.find.where().in("person", person).findList();
+        return Task.find.where().in("user", person).findList();
     }
 
     /**

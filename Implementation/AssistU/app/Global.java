@@ -3,40 +3,29 @@ import play.libs.*;
 import models.*;
 import java.util.*;
 import com.avaje.ebean.*;
-import play.mvc.Call;
+import play.mvc.*;
 
 import play.Application;
 import play.GlobalSettings;
+import controllers.routes;
 
 import com.feth.play.module.pa.PlayAuthenticate;
 import com.feth.play.module.pa.PlayAuthenticate.Resolver;
 import com.feth.play.module.pa.exceptions.AccessDeniedException;
 import com.feth.play.module.pa.exceptions.AuthException;
 
-import controllers.routes;
-
 /**
  * this class  injects default data into the webapp  to load a YAML file at application load time
  */
 public class Global extends GlobalSettings {
     public void onStart(Application app) {
-//        InitialData.insertUsers(app);
         providerResolver.setUp(app);
     }
 
     /**
      * loads the data from yaml file and add rows in User table
      */
-//    static class InitialData {
-//        public static void insertUsers(Application app) {
-//            if (Ebean.find(Person.class).findRowCount() == 0) {
-//                Map<String, List<Object>> all =
-//                        (Map<String, List<Object>>) Yaml.
-//                                load("initial-data.yml");
-//                Ebean.save(all.get("users"));
-//            }
-//        }
-//    }
+
 
     static class providerResolver {
         public static void setUp(Application app) {
@@ -46,15 +35,18 @@ public class Global extends GlobalSettings {
                 @Override
                 public Call login() {
                     // Your login page
-                    return routes.Authentication.relogin();
+//                    return routes.Authentication.relogin();
+                    return routes.Application.reroute();
                 }
 
                 @Override
                 public Call afterAuth() {
                     // The user will be redirected to this page after authentication
                     // if no original URL was saved
-                    return routes.Application.index();
+//                    return routes.Application.index();
+                    return routes.Application.reroute();
                 }
+
 
                 @Override
                 public Call afterLogout() {

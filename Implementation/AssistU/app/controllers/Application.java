@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
@@ -16,17 +17,26 @@ import java.util.regex.Pattern;
 
 public class Application extends Controller {
 
+
+    public static Result reroute(){
+        Logger.debug("Redirecting to " + session("callback"));
+        return redirect(session("callback"));
+    }
+
     /**
      * index view
      *
      * @return
      */
     public static Result index() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null)
-            return ok(index.render("Welcome, " + person.name, person));
-        else
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null)
+            return ok(index.render("Welcome, " + user.name, user));
+        else {
+            session().put("callback", routes.Application.index().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /**
@@ -37,22 +47,28 @@ public class Application extends Controller {
     private static Form<Task> taskForm = Form.form(Task.class);
 
     public static Result task() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
-            List<Task> tasks = Task.ordered(person) ;
-            return ok(task_new.render("My tasks", person, tasks,taskForm));
-        }else
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            List<Task> tasks = Task.ordered(user) ;
+            return ok(task_new.render("My tasks", user, tasks,taskForm));
+        }else {
+            session().put("callback", routes.Application.task().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
 
 
     public static Result project() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null)
-            return ok(project.render("AssistU - Projects", person, null));
-        else
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            return ok(project.render("AssistU - Projects", user, null));
+        }else{
+            session().put("callback", routes.Application.project().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /**
@@ -60,11 +76,14 @@ public class Application extends Controller {
      * @return
      */
     public static Result suggestions() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null)
-            return ok(suggestions.render("Suggestions", person));
-        else
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null)
+            return ok(suggestions.render("Suggestions", user));
+        else {
+            session().put("callback", routes.Application.suggestions().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /**
@@ -72,11 +91,14 @@ public class Application extends Controller {
      * @return
      */
     public static Result discussion() {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null)
-            return ok(discussion.render("AssisTU - Discussions", person, null));
-        else
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null)
+            return ok(discussion.render("AssisTU - Discussions", user, null));
+        else{
+            session().put("callback", routes.Application.discussion().absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     public static Boolean allowedTitleRegex(String input){

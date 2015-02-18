@@ -23,7 +23,7 @@
         <div id="page-wrapper">
             @template.headericon("fa fa-calendar fa-5x")
 
-                    <a  class="btn btn-default btn=sm" href="@routes.CalData.calendar()">
+                    <a  class="btn btn-default btn=sm" href="@routes.CalendarData.calendar()">
                         <span class="fa fa-calendar"></span> Back to Calendar
                     </a>
 
@@ -39,14 +39,14 @@
                                     <th  >Event</th>
                                     <th >From</th>
                                     <th >To</th>
-                                    @*<th ><a href="@routes.CalData.blank()" title="Add new event"><i class="fa fa-plus"></i></a></th>*@
+                                    @*<th ><a href="@routes.CalendarData.blank()" title="Add new event"><i class="fa fa-plus"></i></a></th>*@
                                     @*<th></th>*@
                                 </tr>
                             </thead>
                             <tbody>
                             @for(event <- events){
                                 <tr>
-                                    <td><a href="@routes.CalData.edit(event.id)">@event.title</a></td>
+                                    <td><a href="@routes.CalendarData.edit(event.id)">@event.title</a></td>
                                     @if(event.allDay && event.endsSameDay){
                                         <td colspan="2">@if(event.start == null){ - } else {@event.start.format("dd.MM.yyyy") (All day)}</td>
                                     } else {
@@ -58,10 +58,10 @@
                                         }
                                     }
                                     <td>
-                                        <a href="@routes.CalData.delete(event.id)"><i class="fa fa-trash"></i></a>
+                                        <a href="@routes.CalendarData.delete(event.id)"><i class="fa fa-trash"></i></a>
                                     </td>
                                     <td>
-                                        <a href="@routes.CalData.edit(event.id)"><i class="fa fa-pencil"></i></a>
+                                        <a href="@routes.CalendarData.edit(event.id)"><i class="fa fa-pencil"></i></a>
                                     </td>
                                 </tr>
                             }

@@ -230,19 +230,35 @@
     <!-- Side Bar -->
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
+            <script>
+            (function() {
+            var cx = '015131041368954121162:l0lfe2cxh70';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+            })();
+//            jQuery(".gsc-input").attr("placeholder", "Rechercher");
+            </script>
             <ul class="nav nav-tabs nav-stacked" id="side-menu">
                 <li class="sidebar-search">
-                    
-                        <div id="imaginary_container"> 
-                            <div class="input-group stylish-input-group">
-                                <input type="text" class="form-control"  placeholder="Search" >
-                                <span class="input-group-addon">
-                                    <button type="submit">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>  
-                                </span>
-                            </div>
-                        </div>
+                    <gcse:searchbox-only></gcse:searchbox-only>
+
+                    @*<div id="imaginary_container"> *@
+                            @*<div class="input-group stylish-input-group">*@
+                                @*<div class="gcse-searchbox-only">*@
+                                @*<input type="text" class="gcse-form-control"  placeholder="Find an article quickly" >*@
+                                @*<span class="gcse-input-group-addon">*@
+                                    @*<button type="gcse-submit">*@
+                                        @*<span class="glyphicon glyphicon-search"></span>*@
+                                    @*</button>  *@
+                                @*</span>*@
+                                @*</div>*@
+                            @*</div>*@
+                        @*</div>*@
                     
                </li>
                 
@@ -282,7 +298,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
+                    <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalendarData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
                 </li>
                 <li>
                     <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions@if(PersonData.findActiveProjects().size()>0){<span class="fa arrow"></span>}</a>

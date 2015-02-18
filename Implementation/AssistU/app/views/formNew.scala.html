@@ -4,7 +4,7 @@
 
 @layouts.mainLayout("Create new event",currentUser ){
 <div class="container">
-    @helper.form(action = routes.CalData.add, 'id->"eventFormNew") {
+    @helper.form(action = routes.CalendarData.add, 'id->"eventFormNew") {
 
         @inputText(eventForm("title"), args =
             '_label -> "Title",
@@ -45,7 +45,7 @@
     <div class="row">
         <div class="span8 offset2">
         <input type="submit" value="Create an event" class="btn primary"> or
-        <a href="@routes.CalData.list(currentUser.id)" class="btn">Cancel</a>
+        <a href="@routes.CalendarData.list(currentUser.id)" class="btn">Cancel</a>
         </div>
     </div>
 

@@ -1,38 +1,38 @@
 # users
 
-#users:
-#
-#- !!models.User
-#    name:       alex
-#    email:      alex@gmail.com
-#    password:   secret
-#
-#
-#- !!models.User
-#    name:       james
-#    email:      james@gmail.com
-#    password:   apple
-#
-#- !!models.User
-#    name:       jenny
-#    email:      jenny@gmail.com
-#    password:   orange
-#
-#- !!models.User
-#    name:       tom
-#    email:      tom@gmail.com
-#    password:   golden
-#
-#- !!models.User
-#    name:       arnaud
-#    email:      ah@gmail.com
-#    password:   secret
-#
-#
-#- !!models.User
-#    name:       solix
-#    email:      soli@gmail.com
-#    password:   apple
+users:
+
+- !!models.User
+    name:       alex
+    email:      alex@gmail.com
+    password:   secret
+
+
+- !!models.User
+    name:       james
+    email:      james@gmail.com
+    password:   apple
+
+- !!models.User
+    name:       jenny
+    email:      jenny@gmail.com
+    password:   orange
+
+- !!models.User
+    name:       tom
+    email:      tom@gmail.com
+    password:   golden
+
+- !!models.User
+    name:       arnaud
+    email:      ah@gmail.com
+    password:   secret
+
+
+- !!models.User
+    name:       solix
+    email:      soli@gmail.com
+    password:   apple
 
 
 

@@ -22,15 +22,22 @@ import views.html.discussionFile;
 
 public class DiscussionData extends Controller {
 
-    /*TODO SOHEIL: Not sure we should notify on every message, or let them build up and send a summary at some point.*/
+    /*
+    *
+    *
+    * */
     public static Result discussion(Long pid) {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(person != null) {
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
             Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
-            return ok(discussion.render("AssistU - Projects", person, p));
-        }else
+
+            return ok(discussion.render("AssistU - Projects", user, p));
+        }else {
+            //User did not have a session
+            session().put("callback", routes.DiscussionData.discussion(pid).absoluteURL(request()));
             return Authentication.login();
+        }
     }
 
     /** Keeps track of all connected browsers per room **/
@@ -48,6 +55,7 @@ public class DiscussionData extends Controller {
     }
 
     /**
+     * TODO SOHEIL: Not sure we should notify on every message, or let them build up and send a summary at some point.
     * Controller action for POSTing chat messages created in discussion page
     */
     public static Result postMessage() {
@@ -121,31 +129,31 @@ public class DiscussionData extends Controller {
 
     public static Result deleteMessage() {
         ObjectNode message = (ObjectNode)request().body().asJson();
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Comment comment = Comment.find.byId(Long.parseLong(message.get("cid").asText()));
-        Role role = Role.find.where().eq("project", comment.project).eq("person", person).findUnique();
-        Role comment_role = Role.find.where().eq("project", comment.project).eq("person", comment.person).findUnique();
-        List<Comment> comments = Comment.find.where().eq("subject", comment.subject).findList();
-        if(role != null && role.role.equals(Role.OWNER) && comment_role.equals(Role.GUEST)){
-            for(int i = 0; i < comments.size(); i++){
-                comments.get(i).delete();
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            Comment comment = Comment.find.byId(Long.parseLong(message.get("cid").asText()));
+            Role role = Role.find.where().eq("project", comment.project).eq("person", user).findUnique();
+            Role comment_role = Role.find.where().eq("project", comment.project).eq("person", comment.person).findUnique();
+            List<Comment> comments = Comment.find.where().eq("subject", comment.subject).findList();
+            if (role != null && role.role.equals(Role.OWNER) && comment_role.equals(Role.GUEST)) {
+                for (int i = 0; i < comments.size(); i++) {
+                    comments.get(i).delete();
+                }
+                comment.delete();
+            } else if (comment.person.equals(user)) {
+                for (int i = 0; i < comments.size(); i++) {
+                    comments.get(i).delete();
+                }
+                comment.delete();
             }
-            comment.delete();
-        } else if(comment.person.equals(person)){
-            for(int i = 0; i < comments.size(); i++){
-                comments.get(i).delete();
-            }
-            comment.delete();
         }
         return ok();
     }
 
     public static Result getComments() {
-//        List<Project> ownerProjects = UserData.findActiveOwnerProjects();
-//        List<Project> reviewerProjects = UserData.findActiveReviewerProjects();
-//        List<Project> guestProjects = UserData.findActiveGuestProjects();
+
         List<Project> projects = PersonData.findActiveProjects();
-//        projects.addAll(reviewerProjects);
 
         List<ObjectNode> comments = new ArrayList<ObjectNode>();
         ObjectNode comment;
@@ -170,7 +178,6 @@ public class DiscussionData extends Controller {
                 comments.add(comment);
             }
         }
-//      Logger.debug("Old Comments: " + Json.stringify(toJson(comments)));
         return ok(toJson(comments));
     }
 
@@ -203,7 +210,6 @@ public class DiscussionData extends Controller {
                 comments.add(comment);
             }
         }
-//      Logger.debug("Old SubComments: " + Json.stringify(toJson(comments)));
         return ok(toJson(comments));
     }
 

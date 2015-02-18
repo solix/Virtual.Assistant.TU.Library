@@ -22,17 +22,25 @@ private static final Form<Task> tForm = Form.form(Task.class);
      * @return
      */
     public static Result addTask(){
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Form<Task> taskForm = tForm.bindFromRequest();
-        if(taskForm.hasErrors()) {
-            flash("error", "Please correct the form below.");
-            return badRequest(views.html.task_new.render("My tasks", person, Task.alltask(person),taskForm)
-            ); }
-        Task taskdata= taskForm.get();
-        Task task=Task.createTask(taskdata, person);
-        task.save();
-        flash("success", String.format("Successfully added task %s", task));
-        return redirect(controllers.routes.Application.task());
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            Form<Task> taskForm = tForm.bindFromRequest();
+            if (taskForm.hasErrors()) {
+                flash("error", "Please correct the form below.");
+                return badRequest(views.html.task_new.render("My tasks", user, Task.alltask(user), taskForm)
+                );
+            }
+            Task taskdata = taskForm.get();
+            Task task = Task.createTask(taskdata, user);
+            task.save();
+            flash("success", String.format("Successfully added task %s", task));
+            return redirect(controllers.routes.Application.task());
+        } else {
+            //User did not have a session
+            session().put("callback", routes.TaskData.addTask().absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
     public static Result getTasks(){

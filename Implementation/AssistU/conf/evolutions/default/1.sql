@@ -124,52 +124,48 @@ create sequence task_seq;
 
 create sequence token_action_seq;
 
-alter table comment add constraint fk_comment_person_1 foreign key (person_id) references person (id) on delete restrict on update restrict;
+alter table comment add constraint fk_comment_person_1 foreign key (person_id) references person (id);
 create index ix_comment_person_1 on comment (person_id);
-alter table comment add constraint fk_comment_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
+alter table comment add constraint fk_comment_project_2 foreign key (project_id) references project (id);
 create index ix_comment_project_2 on comment (project_id);
-alter table document_file add constraint fk_document_file_project_3 foreign key (project_id) references project (id) on delete restrict on update restrict;
+alter table document_file add constraint fk_document_file_project_3 foreign key (project_id) references project (id);
 create index ix_document_file_project_3 on document_file (project_id);
-alter table document_file add constraint fk_document_file_person_4 foreign key (person_id) references person (id) on delete restrict on update restrict;
+alter table document_file add constraint fk_document_file_person_4 foreign key (person_id) references person (id);
 create index ix_document_file_person_4 on document_file (person_id);
-alter table event add constraint fk_event_person_5 foreign key (person_id) references person (id) on delete restrict on update restrict;
+alter table event add constraint fk_event_person_5 foreign key (person_id) references person (id);
 create index ix_event_person_5 on event (person_id);
-alter table linked_account add constraint fk_linked_account_person_6 foreign key (person_id) references person (id) on delete restrict on update restrict;
+alter table linked_account add constraint fk_linked_account_person_6 foreign key (person_id) references person (id);
 create index ix_linked_account_person_6 on linked_account (person_id);
-alter table role add constraint fk_role_person_7 foreign key (person_id) references person (id) on delete restrict on update restrict;
+alter table role add constraint fk_role_person_7 foreign key (person_id) references person (id);
 create index ix_role_person_7 on role (person_id);
-alter table role add constraint fk_role_project_8 foreign key (project_id) references project (id) on delete restrict on update restrict;
+alter table role add constraint fk_role_project_8 foreign key (project_id) references project (id);
 create index ix_role_project_8 on role (project_id);
-alter table task add constraint fk_task_person_9 foreign key (person_id) references person (id) on delete restrict on update restrict;
+alter table task add constraint fk_task_person_9 foreign key (person_id) references person (id);
 create index ix_task_person_9 on task (person_id);
-alter table token_action add constraint fk_token_action_targetPerson_10 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
+alter table token_action add constraint fk_token_action_targetPerson_10 foreign key (target_person_id) references person (id);
 create index ix_token_action_targetPerson_10 on token_action (target_person_id);
 
 
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+drop table if exists comment cascade;
 
-drop table if exists comment;
+drop table if exists document_file cascade;
 
-drop table if exists document_file;
+drop table if exists event cascade;
 
-drop table if exists event;
+drop table if exists linked_account cascade;
 
-drop table if exists linked_account;
+drop table if exists person cascade;
 
-drop table if exists person;
+drop table if exists project cascade;
 
-drop table if exists project;
+drop table if exists role cascade;
 
-drop table if exists role;
+drop table if exists task cascade;
 
-drop table if exists task;
-
-drop table if exists token_action;
-
-SET REFERENTIAL_INTEGRITY TRUE;
+drop table if exists token_action cascade;
 
 drop sequence if exists comment_seq;
 

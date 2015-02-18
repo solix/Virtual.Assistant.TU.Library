@@ -13,8 +13,9 @@ import providers.localUsernamePassword.*;
 import com.feth.play.module.pa.PlayAuthenticate;
 import com.feth.play.module.pa.user.AuthUser;
 
+import play.Logger;
+
 /**
- * Created by spyruo on 12-12-14.
  */
 public class Authentication extends Controller {
 

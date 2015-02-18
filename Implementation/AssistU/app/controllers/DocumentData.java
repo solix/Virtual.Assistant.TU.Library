@@ -22,34 +22,41 @@ public class DocumentData extends Controller {
     /**
      * POST uploaded document  to the server
      */
-    public static Result uploadDocument(long pid) {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Project project=Project.find.byId(pid);
-        MultipartFormData body = request().body().asMultipartFormData();
-        //play api to get the file
-        FilePart document = body.getFile("document");
-        if (document != null) {
-            String fileName = document.getFilename();
-            String contentType = document.getContentType();
-            File file = document.getFile();
-            try {
-                //this creates folder and  will be changed in future to the name of the project
-                //String pname=project.folder;
 
-                FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libUpload/"+project.folder, fileName));
-            } catch (IOException ioe) {
-                System.out.println("Problem operating on filesystem");
+    public static Result uploadDocument(Long pid) {
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            Project project = Project.find.byId(pid);
+            MultipartFormData body = request().body().asMultipartFormData();
+            //play api to get the file
+            FilePart document = body.getFile("document");
+            if (document != null) {
+                String fileName = document.getFilename();
+                String contentType = document.getContentType();
+                File file = document.getFile();
+                try {
+                    //this creates folder and  will be changed in future to the name of the project
+                    //String pname=project.folder;
+
+                    FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libUpload/" + project.folder, fileName));
+                } catch (IOException ioe) {
+                    System.out.println("Problem operating on filesystem");
+                }
+                String filepath = document.getFile().toString();
+                DocumentFile doc = DocumentFile.create(fileName, file, file.getPath(), project.id, user.id);
+
+
+                return redirect(controllers.routes.Application.project());
+            } else {
+
+                return badRequest(
+                        "PLease provide a correct file"
+                );
             }
-            String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, person.id);
-
-
-            return redirect(controllers.routes.Application.project());
-        } else {
-
-            return badRequest(
-                    "PLease provide a correct file"
-            );
+        }else{
+            //User did not have a session
+            session().put("callback", routes.DocumentData.uploadDocument(pid).absoluteURL(request()));
+            return Authentication.login();
         }
     }
 
@@ -71,19 +78,33 @@ public class DocumentData extends Controller {
 
     public static Result deleteDocument(Long fid){
         DocumentFile documentFile = DocumentFile.find.byId(fid);
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(documentFile.person.equals(person)){
-            documentFile.delete();
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            if (documentFile.person.equals(user)) {
+                documentFile.delete();
+            }
+            return ProjectData.project(documentFile.project.id);
+        } else {
+            //User did not have a session
+            session().put("callback", routes.DocumentData.deleteDocument(fid).absoluteURL(request()));
+            return Authentication.login();
         }
-        return ProjectData.project(documentFile.project.id);
     }
 
     public static Result documentDiscussion(Long docid){
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        DocumentFile df = DocumentFile.find.byId(docid);
-        Project p =Project.find.byId(df.project.id);
-        DynamicForm message = new DynamicForm();
-        return ok(discussionFile.render("Discuss " + df.name, person, p, df, message, false, "", ""));
+
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            DocumentFile df = DocumentFile.find.byId(docid);
+            Project p = Project.find.byId(df.project.id);
+            DynamicForm message = new DynamicForm();
+            return ok(discussionFile.render("Discuss " + df.name, user, p, df, message, false, "", ""));
+        } else {
+            //User did not have a session
+            session().put("callback", routes.DocumentData.documentDiscussion(docid).absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
     public static Result downloadTemplate(){
@@ -92,38 +113,45 @@ public class DocumentData extends Controller {
         return  ok(new File(path,temple));
     }
 
-    public static Result uploadNewTemplate(long pid) {
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Project project=Project.find.byId(pid);
-        MultipartFormData body = request().body().asMultipartFormData();
-        //play api to get the file
-        FilePart document = body.getFile("document");
-        if (document != null) {
-            String fileName = document.getFilename();
-            String contentType = document.getContentType();
-            File file = document.getFile();
-            try {
-                //this creates folder and  will be changed in future to the name of the project
-                //String pname=project.folder;
 
-                FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libtempl/Owntemplates/"+project.folder, fileName));
-            } catch (IOException ioe) {
-                System.out.println("Problem operating on filesystem");
+    public static Result uploadNewTemplate(Long pid) {
+        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        if(user != null) {
+            Project project = Project.find.byId(pid);
+            MultipartFormData body = request().body().asMultipartFormData();
+            //play api to get the file
+            FilePart document = body.getFile("document");
+            if (document != null) {
+                String fileName = document.getFilename();
+                String contentType = document.getContentType();
+                File file = document.getFile();
+                try {
+                    //this creates folder and  will be changed in future to the name of the project
+                    //String pname=project.folder;
+
+                    FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libtempl/Owntemplates/" + project.folder, fileName));
+                } catch (IOException ioe) {
+                    System.out.println("Problem operating on filesystem");
+                }
+                String filepath = document.getFile().toString();
+                DocumentFile doc = DocumentFile.create(fileName, file, file.getPath(), project.id, user.id);
+                doc.owntemplate = true;
+                project.template = "Own";
+                project.update();
+                doc.update();
+
+
+                return redirect(controllers.routes.Application.project());
+            } else {
+
+                return badRequest(
+                        "PLease provide a correct file"
+                );
             }
-            String filepath = document.getFile().toString();
-            DocumentFile doc = DocumentFile.create(fileName ,file,file.getPath(),project.id, person.id);
-            doc.owntemplate=true;
-            project.template="Own";
-            project.update();
-            doc.update();
-
-
-            return redirect(controllers.routes.Application.project());
         } else {
-
-            return badRequest(
-                    "PLease provide a correct file"
-            );
+            //User did not have a session
+            session().put("callback", routes.DocumentData.uploadNewTemplate(pid).absoluteURL(request()));
+            return Authentication.login();
         }
     }
 
