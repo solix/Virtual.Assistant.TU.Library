@@ -54,20 +54,43 @@ public class FunctionalTest extends WithApplication {
                 // RECOVER COOKIE FROM LOGIN RESULT
                 final Http.Cookie playSession = play.test.Helpers.cookie("PLAY_SESSION", dologin);
 
+                Result indexpagenosession = route(fakeRequest("GET", "/"));
+                assertTrue(status(indexpagenosession) == OK);
                 Result indexpage = route(fakeRequest("GET", "/").withCookies(playSession));
                 assertTrue(status(indexpage) == OK);
 
-                //CREATE A PROJECT
+
+
+                Result taskpage = route(fakeRequest("GET", "/tasks").withCookies(playSession));
+                assertTrue(status(taskpage) == OK);
+
+                //PROJECTS
+                Result projectpagenosession = route(fakeRequest("GET", "/project"));
+                assertTrue(status(projectpagenosession) == OK);
                 Result projectpage = route(fakeRequest("GET", "/project").withCookies(playSession));
                 assertTrue(status(projectpage) == OK);
+
+                //CREATE A PROJECT
+                Result createprojectpagenosession = route(fakeRequest("GET", "/project/new"));
+                assertTrue(status(createprojectpagenosession) == OK);
                 Result createprojectpage = route(fakeRequest("GET", "/project/new").withCookies(playSession));
                 assertTrue(status(createprojectpage) == OK);
                 Map<String, String> newprojectform = new HashMap<String, String>();
                 newprojectform.put("folder", "BEP");
-                newprojectform.put("name", "Bachelor Eind Project");
+                newprojectform.put("name", "");
                 newprojectform.put("description", "Test Project");
-                newprojectform.put("template", "None");
-                Result newprojectsubmit = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+                newprojectform.put("template", "TU Delft - Dissertation");
+                Result createprojectnosession = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform));
+                assertTrue(status(createprojectnosession) == OK);
+                Result createprojectfail1 = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+                assertTrue(status(createprojectfail1) == BAD_REQUEST);
+                newprojectform.put("name", "xx");
+                Result createprojectfail2 = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+                assertTrue(status(createprojectfail2) == BAD_REQUEST);
+                newprojectform.put("name", "Bachelor Eind Project");
+                Result createprojectsuccess = routeAndCall(fakeRequest(POST, "/project/create").withFormUrlEncodedBody(newprojectform).withCookies(playSession));
+//                assertTrue(status(createprojectsuccess) == OK);
+
                 Project project = Project.find.where().eq("folder", "BEP").findUnique();
                 assertTrue(project.name.equals("Bachelor Eind Project"));
 
@@ -83,6 +106,13 @@ public class FunctionalTest extends WithApplication {
                 project = Project.find.where().eq("folder", "BEP").findUnique();
                 assertTrue(project.name.equals("Bachelor Project"));
 
+                //CALENDAR
+                Result calendarpage = route(fakeRequest("GET", "/calendar").withCookies(playSession));
+                assertTrue(status(calendarpage) == OK);
+
+                //DISCUSSIONS
+                Result discussionpage = route(fakeRequest("GET", "/discussions").withCookies(playSession));
+                assertTrue(status(discussionpage) == OK);
             }
         });
     }
