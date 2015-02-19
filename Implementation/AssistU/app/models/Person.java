@@ -81,7 +81,7 @@ public class Person extends Model {
 
     public static Person update(final AuthUser authUser) {
         final Person person = Person.findByAuthUserIdentity(authUser);
-        Logger.debug("USER FOR UPDATING: " + person.name);
+//        Logger.debug("USER FOR UPDATING: " + person.name);
         person.active = true;
 //        user.linkedAccounts = Collections.singletonList(LinkedAccount
 //                .create(authUser));
