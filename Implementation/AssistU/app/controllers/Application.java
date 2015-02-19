@@ -25,7 +25,7 @@ public class Application extends Controller {
         if (route != null) {
             return redirect(route);
         }
-        return Authentication.login();
+        return Application.index();
     }
 
     /**
