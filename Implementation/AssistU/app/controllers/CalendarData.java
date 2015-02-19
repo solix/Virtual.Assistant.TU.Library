@@ -57,8 +57,8 @@ public class CalendarData extends Controller {
             eventRemapped.put("id", event.id);
             eventRemapped.put("title", event.title);
             eventRemapped.put("description", event.description);
-            eventRemapped.put("start", df.format(event.start));
-            eventRemapped.put("end", df.format(event.end));
+            eventRemapped.put("start", df.format(event.start_date));
+            eventRemapped.put("end", df.format(event.end_date));
             eventRemapped.put("allDay", event.allDay);
             eventRemapped.put("url", controllers.routes.CalendarData.edit(event.id).toString());
 
@@ -75,7 +75,7 @@ public class CalendarData extends Controller {
     public static Result calendar() {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
-            return ok(calendar.render("My Calendar", person,eventForm,Event.find.where().in("person",person).order().asc("start").findList()));
+            return ok(calendar.render("My Calendar", person,eventForm,Event.find.where().in("person",person).order().asc("start_date").findList()));
         else {
             //User did not have a session
             session().put("callback", routes.CalendarData.calendar().absoluteURL(request()));
@@ -91,7 +91,7 @@ public class CalendarData extends Controller {
      */
     public static Result list(long uid) {
         Person person = Person.find.byId(uid);
-        List<Event> events = Event.find.where().in("person", person).order().asc("start").findList();
+        List<Event> events = Event.find.where().in("person", person).order().asc("start_date").findList();
         return ok(list.render("List of events", person,events));
     }
 
@@ -127,10 +127,10 @@ public class CalendarData extends Controller {
             Event newEvent = eventForm.get();
 
             newEvent.allDay = newEvent.allDay != null;
-            if (newEvent.end == null) {
-                newEvent.end = new DateTime(newEvent.start).plusMinutes(30).toDate();
+            if (newEvent.end_date == null) {
+                newEvent.end_date= new DateTime(newEvent.start_date).plusMinutes(30).toDate();
             }
-            newEvent.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+            newEvent.endsSameDay = endsSameDay(newEvent.start_date, newEvent.end_date);
             person.events.add(newEvent);
             Logger.debug("add new event function in CalendarData is used :" + newEvent.title);
             newEvent.save();
@@ -179,10 +179,10 @@ public class CalendarData extends Controller {
             }
             Event updatedEvent = eventForm.get();
             updatedEvent.allDay = updatedEvent.allDay != null;
-            if (updatedEvent.end == null) {
-                updatedEvent.end = new DateTime(updatedEvent.start).plusMinutes(30).toDate();
+            if (updatedEvent.end_date == null) {
+                updatedEvent.end_date = new DateTime(updatedEvent.start_date).plusMinutes(30).toDate();
             }
-            updatedEvent.endsSameDay = endsSameDay(updatedEvent.start, updatedEvent.end);
+            updatedEvent.endsSameDay = endsSameDay(updatedEvent.start_date, updatedEvent.end_date);
             updatedEvent.update(id);
 
             return redirect(controllers.routes.CalendarData.list(person.id));
@@ -220,8 +220,8 @@ public class CalendarData extends Controller {
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
         Person person = Person.find.byId(uid);
         Event newEvent = eventForm.get();
-        Event event = new Event(person,newEvent.title,newEvent.start,newEvent.end,newEvent.allDay);
-        event.endsSameDay = endsSameDay(newEvent.start, newEvent.end);
+        Event event = new Event(person,newEvent.title,newEvent.start_date,newEvent.end_date,newEvent.allDay);
+        event.endsSameDay = endsSameDay(newEvent.start_date, newEvent.end_date);
         event.description=newEvent.description;
         event.save();
 
@@ -248,10 +248,10 @@ public class CalendarData extends Controller {
         int minuteDelta = Integer.parseInt(Form.form().bindFromRequest().get("minuteDelta"));
 
         Event event = Event.find.byId(id);
-        event.start = new DateTime(event.start).plusDays(dayDelta).plusMinutes(minuteDelta).toDate();
-        event.end = new DateTime(event.end).plusDays(dayDelta).plusMinutes(minuteDelta).toDate();
+        event.start_date = new DateTime(event.start_date).plusDays(dayDelta).plusMinutes(minuteDelta).toDate();
+        event.end_date = new DateTime(event.end_date).plusDays(dayDelta).plusMinutes(minuteDelta).toDate();
         event.allDay = Boolean.valueOf(Form.form().bindFromRequest().get("allDay"));
-        event.endsSameDay = endsSameDay(event.start, event.end);
+        event.endsSameDay = endsSameDay(event.start_date, event.end_date);
         event.update();
 
 
@@ -269,8 +269,8 @@ public class CalendarData extends Controller {
         int minuteDelta = Integer.parseInt(Form.form().bindFromRequest().get("minuteDelta"));
 
         Event event = Event.find.byId(id);
-        event.end = new DateTime(event.end).plusDays(dayDelta).plusMinutes(minuteDelta).toDate();
-        event.endsSameDay = endsSameDay(event.start, event.end);
+        event.end_date = new DateTime(event.end_date).plusDays(dayDelta).plusMinutes(minuteDelta).toDate();
+        event.endsSameDay = endsSameDay(event.start_date, event.end_date);
         event.update();
 
 

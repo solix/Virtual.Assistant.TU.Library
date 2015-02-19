@@ -48,13 +48,13 @@
                                 <tr>
                                     <td><a href="@routes.CalendarData.edit(event.id)">@event.title</a></td>
                                     @if(event.allDay && event.endsSameDay){
-                                        <td colspan="2">@if(event.start == null){ - } else {@event.start.format("dd.MM.yyyy") (All day)}</td>
+                                        <td colspan="2">@if(event.start_date == null){ - } else {@event.start_date.format("dd.MM.yyyy") (All day)}</td>
                                     } else {
                                         @if(event.allDay){
-                                            <td colspan="2">@if(event.start == null){ - } else {@event.start.format("dd.MM.yyyy")} - @if(event.end == null){ - } else {@event.end.format("dd.MM.yyyy")} (All days)</td>
+                                            <td colspan="2">@if(event.start_date == null){ - } else {@event.start_date.format("dd.MM.yyyy")} - @if(event.end_date == null){ - } else {@event.end_date.format("dd.MM.yyyy")} (All days)</td>
                                         } else {
-                                            <td>@if(event.start == null){ - } else {@event.start.format("dd.MM.yyyy H:mm")}</td>
-                                            <td>@if(event.end == null){ - } else {@event.end.format("dd.MM.yyyy H:mm")}</td>
+                                            <td>@if(event.start_date == null){ - } else {@event.start_date.format("dd.MM.yyyy H:mm")}</td>
+                                            <td>@if(event.end_date == null){ - } else {@event.end_date.format("dd.MM.yyyy H:mm")}</td>
                                         }
                                     }
                                     <td>
