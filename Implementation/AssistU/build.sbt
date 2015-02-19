@@ -9,6 +9,8 @@ scalaVersion := "2.11.1"
 
 jacoco.settings
 
+parallelExecution in jacoco.Config := false
+
 libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,

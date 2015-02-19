@@ -48,7 +48,7 @@ public class Emailer extends Controller {
         email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
-//        MailerPlugin.send(email);
+        MailerPlugin.send(email);
 
     }
 
@@ -67,7 +67,7 @@ public class Emailer extends Controller {
             email.addTo(user.email);
             email.setBodyText("Good day" + user.name);
             email.setBodyHtml(views.html.email.testemail.render(user).toString());
-//            MailerPlugin.send(email);
+            MailerPlugin.send(email);
             Logger.info("an email has been sent to " + user.email);
             return ok("Email " + " sent!");
         } else {

@@ -53,18 +53,18 @@ POST        /event-resize                               controllers.CalendarData
 
 
 #project
-GET         /project                                    controllers.Application.project()
+GET         /projects                                   controllers.Application.project()
 GET         /project/new                                controllers.ProjectData.createProjectPage()
 POST        /project/create                             controllers.ProjectData.createProject()
 GET         /project/:pid                               controllers.ProjectData.project(pid: Long)
 GET         /project/:pid/edit                          controllers.ProjectData.editProjectPage(pid: Long)
 GET         /project/:pid/editing                       controllers.ProjectData.editProject(pid: Long)
 GET         /project/:pid/archive                       controllers.ProjectData.archiveProject(pid: Long)
-GET         /project/:pid/addMember                     controllers.ProjectData.inviteMemberToProjectAs(pid: Long)
+GET         /project/:pid/addmember                     controllers.ProjectData.inviteMemberToProjectAs(pid: Long)
 GET         /project/:pid/acceptinvitation              controllers.ProjectData.hasAccepted(pid: Long)
 GET         /project/:pid/declineinvitation             controllers.ProjectData.hasDeclined(pid: Long)
 GET         /project/:pid/leave                         controllers.ProjectData.leaveProject(pid: Long)
-GET         /project/:pid/removeMember/:uid             controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
+GET         /project/:pid/removemember/:uid             controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
 POST        /project/upload                             controllers.DocumentData.uploadDocument(pid : Long)
 POST        /project/uploadNewTemplate                  controllers.DocumentData.uploadNewTemplate(pid: Long)
 GET         /project/discuss/:docId                     controllers.DocumentData.documentDiscussion(docId: Long)
@@ -77,7 +77,7 @@ GET         /project/downloadownTemplate/:fileid        controllers.DocumentData
 
 #discussion
 GET         /discussions                                controllers.Application.discussion()
-GET         /project/:pid/discussion                    controllers.DiscussionData.discussion(pid: Long)
+GET         /discussion/:pid                            controllers.DiscussionData.discussion(pid: Long)
 GET         /chatFeed/:project                          controllers.DiscussionData.chatFeed(project: String)
 POST        /chat                                       controllers.DiscussionData.postMessage()
 POST        /deletemessage                              controllers.DiscussionData.deleteMessage()
