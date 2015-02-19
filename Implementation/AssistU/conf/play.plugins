@@ -1,4 +1,5 @@
 1500:play.api.libs.mailer.CommonsMailerPlugin
+1504:plugins.S3Plugin
 10005:service.UserService
 10020:providers.localUsernamePassword.LocalUsernamePasswordAuthProvider
 10030:com.feth.play.module.pa.providers.oauth2.google.GoogleAuthProvider

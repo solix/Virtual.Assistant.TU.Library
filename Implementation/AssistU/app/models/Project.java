@@ -38,8 +38,10 @@ public class Project extends Model {
     public Date dateArchived;
     @OneToMany(mappedBy = "project")
     public List<Role> roles = new ArrayList<Role>();
+//    @OneToMany(mappedBy = "project")
+//    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
     @OneToMany(mappedBy = "project")
-    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
+    public List<S3File> documentFiles = new ArrayList<S3File>();
     @OneToMany(mappedBy = "project")
     public List<Comment> comments = new ArrayList<Comment>();
 

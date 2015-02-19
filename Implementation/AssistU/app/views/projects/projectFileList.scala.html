@@ -1,10 +1,10 @@
 @(currentUser: Person, p: Project)
-    @defining(DocumentFile.find.where().eq("project", p).findList()) { file_list =>
+    @defining(S3File.find.where().eq("project", p).findList()) { uploads =>
         <!-- Table -->
-        @if(file_list.size > 0) {
+        @if(uploads.size > 0) {
             <table class="table table-hover">
                 <thead>
-                    <tr>
+                    <tr>    
                         <th style="width : 60 %">File</th>
                         <th style="width : 20 %">Uploaded by</th>
                         <th style="text-align : center ; width : 15 %">Version</th>
@@ -12,39 +12,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                @file_list.map { f =>
-                    @if(f.owntemplate.equals(false)) {
+                @uploads.map { upload =>
+@*//       @if(upload.owntemplate.equals(false)) {*@
                         <tr>
-                            <td>@f.name</td>
-                            <td>@f.person.name</td>
-                            <td style="text-align : center">@f.id</td>
+                            <td>@upload.name</td>
+                            <td>@upload.person.name</td>
+                            <td style="text-align : center">@upload.id.toString</td>
                             <td style="text-align : center">
-                                <a href="@routes.DocumentData.downloadDocument(f.id)" ><i class="fa fa-download fa-fw"></i></a>
+                                <a href="@upload.getUrl" ><i class="fa fa-download fa-fw"></i></a>
                                 |
-                                <a href="@routes.DocumentData.documentDiscussion(f.id)"><i class="fa fa-comment fa-fw"></i></a>
-                                @if(f.person.equals(currentUser)){
-                                    |
-                                    <a style="color: red" href="#" data-toggle="modal" data-target="#deleteFile@f.id"><i class="fa fa-close fa-fw"></i></a>
-                                }
+//                                @*<a href="@routes.DocumentData.documentDiscussion(upload.id)"><i class="fa fa-comment fa-fw"></i></a>*@
+@*//                               @if(upload.person.equals(currentUser)){*@
+                                    @*|*@
+                                    @*<a style="color: red" href="#" data-toggle="modal" data-target="#deleteFile@upload.id.version()"><i class="fa fa-close fa-fw"></i></a>*@
+                              @*}*@
                             </td>
                         </tr>
-                    }
+@*//                    }*@
                 }
 
                 </tbody>
             </table>
         }
-        @file_list.map { f =>
+        @uploads.map { f =>
             @*Delete Document Confirmation Modal*@
-            @template.smallmodal("deleteFile" + f.id.toString)("danger")("Deleting " + f.name) {
-                <p style="text-align : center">Are you sure you want to delete @f.name?</p>
-                <div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">
-                    <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
-                </div>
-                <div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">
-                    <a type="submit" class="btn btn-danger col-xs-12" href="@routes.DocumentData.deleteDocument(f.id)">
-                        Delete!</a>
-                </div>
-            }
+@*//            @template.smallmodal("deleteFile" + f.id.toString)("danger")("Deleting " + f.name) {*@
+                @*<p style="text-align : center">Are you sure you want to delete @f.name?</p>*@
+                @*<div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">*@
+                    @*<a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>*@
+                @*</div>*@
+                @*<div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">*@
+                    @*<a type="submit" class="btn btn-danger col-xs-12" href="@routes.DocumentData.deleteDocument(f.id)">*@
+                        @*Delete!</a>*@
+                @*</div>*@
+            @*}*@
         }
     }
