@@ -24,8 +24,8 @@ public abstract class UserServicePlugin extends Plugin implements UserService {
         if (PlayAuthenticate.hasUserService()) {
             final String oldServiceClass = PlayAuthenticate.getUserService().getClass().getName();
 
-            Logger.warn("A user service was already registered - replacing the old one (" + oldServiceClass + ") with the new one (" + getClass().getName() + "), " +
-                    "however this might hint to a configuration problem if this is a production environment.");
+//            Logger.warn("A user service was already registered - replacing the old one (" + oldServiceClass + ") with the new one (" + getClass().getName() + "), " +
+//                    "however this might hint to a configuration problem if this is a production environment.");
         }
         PlayAuthenticate.setUserService(this);
     }

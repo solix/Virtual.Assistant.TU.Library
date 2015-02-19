@@ -2,10 +2,7 @@ package functional_tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.Person;
-import models.Project;
-import models.Task;
-import models.TokenAction;
+import models.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -14,6 +11,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.test.WithApplication;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,15 +75,59 @@ public class DiscussionTest extends WithApplication {
                         Result postdiscussion = routeAndCall(fakeRequest(POST, "/chat").withJsonBody(discussiondata).withCookies(playSession));
                         assertTrue(status(postdiscussion) == OK);
 
+                        //CREATE SUBDISCUSSION
+                        ObjectNode subdiscussiondata = new ObjectMapper().createObjectNode();
+                        subdiscussiondata.put("subject", "testsubject");
+                        subdiscussiondata.put("content", "testsubcontent");
+                        subdiscussiondata.put("date", "" + (new Date()).toGMTString());
+                        subdiscussiondata.put("projectID", "" + project.id);
+                        subdiscussiondata.put("isChild", "" + true);
+                        Result postsubdiscussion = routeAndCall(fakeRequest(POST, "/chat").withJsonBody(subdiscussiondata).withCookies(playSession));
+                        assertTrue(status(postsubdiscussion) == OK);
+
                         //CREATE DISCUSSION FROM FILE
+                        Person user = Person.find.where().eq("email", "arnaud@hambenne.com").findUnique();
+                        File file = new File("public/images/favicon.png");
+                        DocumentFile docFile = DocumentFile.create("testdocument", file, "public/images/favicon.png", project.id, user.id);
+                        assertTrue(docFile != null);
+
                         Map<String,String> extdiscussiondata = new HashMap<String, String>();
                         extdiscussiondata.put("subject", "testsubject");
-                        extdiscussiondata.put("content", "testcontent");
-                        extdiscussiondata.put("attachment", "testattachment");
+                        extdiscussiondata.put("content", "");
+                        extdiscussiondata.put("attachment", "" + docFile.id);
                         extdiscussiondata.put("projectID", "" + project.id);
                         extdiscussiondata.put("isChild", "" + false);
-//                        Result postextdiscussion = routeAndCall(fakeRequest(GET, "/postexternal").withFormUrlEncodedBody(extdiscussiondata).withCookies(playSession));
-//                        assertTrue(status(postextdiscussion) == OK);
+
+                        //LOAD FILE DISCUSSION PAGE
+                        Result loadfilediscussionnosession = routeAndCall(fakeRequest(GET, "/project/discuss/" + docFile.id));
+                        assertTrue(status(loadfilediscussionnosession) == OK);
+                        Result loadfilediscussion = routeAndCall(fakeRequest(GET, "/project/discuss/" + docFile.id).withCookies(playSession));
+                        assertTrue(status(loadfilediscussion) == OK);
+
+                        //POST NEW FILE DISCUSSION
+                        Result postextdiscussionfail = routeAndCall(fakeRequest(GET, "/postexternal").withFormUrlEncodedBody(extdiscussiondata).withCookies(playSession));
+                        assertTrue(status(postextdiscussionfail) == BAD_REQUEST);
+                        extdiscussiondata.put("content", "testcontent");
+                        Result postextdiscussion = routeAndCall(fakeRequest(GET, "/postexternal").withFormUrlEncodedBody(extdiscussiondata).withCookies(playSession));
+                        assertTrue(status(postextdiscussion) == OK);
+
+                        //GET ALL COMMENTS AS JSON
+                        Result commentsAsJson = routeAndCall(fakeRequest(GET, "/comments").withCookies(playSession));
+                        assertTrue(status(commentsAsJson) == OK);
+                        assertTrue(contentAsString(commentsAsJson).contains("testcontent"));
+
+                        //GET ALL SUBCOMMENTS AS JSON
+                        Result subcommentsAsJson = routeAndCall(fakeRequest(GET, "/subcomments").withCookies(playSession));
+                        assertTrue(status(subcommentsAsJson) == OK);
+                        assertTrue(contentAsString(subcommentsAsJson).contains("testsubcontent"));
+
+                        //DELETE DISCUSSION
+                        Comment comment = Comment.find.where().eq("subject", "testsubject").eq("isChild", false).findUnique();
+                        ObjectNode deletediscussiondata = new ObjectMapper().createObjectNode();
+                        subdiscussiondata.put("cid", "" + comment.cid);
+                        routeAndCall(fakeRequest(POST, "/deletemessage" + docFile.id).withJsonBody(deletediscussiondata));
+                        assertTrue(Comment.find.byId(comment.cid) != null);
+                        routeAndCall(fakeRequest(POST, "/deletemessage" + docFile.id).withJsonBody(deletediscussiondata).withCookies(playSession));
                     }
                 }
         );

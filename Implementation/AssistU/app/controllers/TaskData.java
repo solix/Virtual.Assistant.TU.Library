@@ -27,7 +27,7 @@ private static final Form<Task> tForm = Form.form(Task.class);
             Form<Task> taskForm = tForm.bindFromRequest();
             if (taskForm.hasErrors()) {
                 flash("error", "Please correct the form below.");
-                return badRequest(views.html.task_new.render("My tasks", user, Task.alltask(user), taskForm)
+                return badRequest(views.html.task.render("My tasks", user, Task.alltask(user), taskForm)
                 );
             }
             Task taskdata = taskForm.get();

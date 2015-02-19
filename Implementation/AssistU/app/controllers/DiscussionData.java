@@ -66,7 +66,7 @@ public class DiscussionData extends Controller {
         if(person != null) {
             if (!message.get("content").asText().equals("")) {
                 if (!message.get("isChild").asBoolean()) {
-                    Logger.debug("It's a main comment");
+//                    Logger.debug("It's a main comment");
                     message.put("subject", formatSubject(message.get("subject").asText(), Long.parseLong(message.get("projectID").asText())));
                 }
                 message.put("uid", person.id);
@@ -82,7 +82,7 @@ public class DiscussionData extends Controller {
                 message.put("cid", comment.cid);
                 message.put("username", comment.person.name);
                 message.put("role", Role.find.where().eq("person", person).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
-                Logger.debug("New Comment: " + Json.stringify(message));
+//                Logger.debug("New Comment: " + Json.stringify(message));
                 sendEvent(message);
             }
         }
@@ -94,14 +94,14 @@ public class DiscussionData extends Controller {
     */
     public static Result postExternalMessage() {
         DynamicForm message = Form.form().bindFromRequest();
-        Logger.debug("ext message: " + message.toString());
+//        Logger.debug("ext message: " + message.toString());
         ObjectNode result = new ObjectMapper().createObjectNode();
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(Long.parseLong(message.get("projectID")));
         if(person != null){
             DocumentFile doc = DocumentFile.find.byId(Long.parseLong(message.get("attachment")));
             if(message.get("content").equals("") || message.get("subject").equals("")) {
-                Logger.debug("ext message sendback: " + message.toString());
+//                Logger.debug("ext message sendback: " + message.toString());
                 return badRequest(discussionFile.render("An error has occured.", person, p,
                         DocumentFile.find.byId(Long.parseLong(message.get("attachment"))), message, true, "danger",
                         "Your message or subject was empty"));
@@ -126,7 +126,7 @@ public class DiscussionData extends Controller {
                 result.put("cid", "" + comment.cid);
                 result.put("role", Role.find.where().eq("person", person).eq("project", p).findUnique().role);
                 result.put("username", person.name);
-                Logger.debug("New Comment: " + Json.stringify(result));
+//                Logger.debug("New Comment: " + Json.stringify(result));
                 sendEvent(result);
             }
         }

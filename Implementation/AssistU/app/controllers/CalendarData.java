@@ -138,7 +138,7 @@ public class CalendarData extends Controller {
             return redirect(controllers.routes.CalendarData.list(person.id));
         } else {
             //User did not have a session
-            session().put("callback", routes.CalendarData.list(person.id).absoluteURL(request()));
+            session().put("callback", routes.CalendarData.calendar().absoluteURL(request()));
             return Authentication.login();
         }
     }

@@ -188,7 +188,7 @@ public abstract class UsernamePasswordAuthProvider<R, UL extends UsernamePasswor
 
 	protected void sendVerifyEmailMailing(final Context ctx, final US user) {
 //<<<<<<< HEAD
-		Logger.debug("This is where you send verification email");
+//		Logger.debug("This is where you send verification email");
 		providers.localUsernamePassword.LocalUsernamePasswordAuthProvider
 				.sendVerifyEmailMailingAfterSignup(Person.find.where().eq("email", user.getEmail()).findUnique(), ctx);
 //		controllers.Emailer.sendWelcomeMessage();
