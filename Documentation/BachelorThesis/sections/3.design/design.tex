@@ -84,6 +84,12 @@ Administrator of the application represents the operator of the system, extract 
 	
 \end{center}
 
+\subsubsection{Guest User} 
+\begin{center}
+\includegraphics[scale=0.3]{./img/dsgn_img/USECASE4.png}
+	
+\end{center}
+
 \subsubsection{Administrator User} 
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/USECASE3.png}
@@ -95,39 +101,118 @@ Administrator of the application represents the operator of the system, extract 
 
 \section{System Architecture} % (fold)
 \label{sec:system_architecture}
- In this section, MVC design of the system is shown and will be discussed. MVC is chosen to be very suitable for web architecture since it promises low coupling and high cohesion between components of the systems and gives room for easier extension or modification of a specific component without bothering the rest.
+For the purpose of modularity , Model view controller design(MVC) is adopted for the application. In this section, MVC design of the system is shown in the form of diagram and it's sub-component will be discussed. MVC is chosen to be very suitable for web architecture since it promises low coupling and high cohesion between components of the systems and gives room for easier extension or modification of a specific component.
 \subsection{Architectural Design} % (fold)
 \label{sub:arichtectural_design}
-% Develop a modular program structure and explain the relationships between the modules to achieve  the  complete  functionality of the  system. This is a  high level overview  of how responsibilities of the system were partitioned and then assigned to subsystems. Identify each 
-% high level subsystem and  the  roles or responsibilities assigned to it. Describe  how  these subsystems col aborate with each other in order to achieve the desired functionality. Don’t go 
-% into too much detail about the individual subsystems. The main purpose is to gain a general understanding  of how  and why the system was decomposed, and  how the  individual parts work together. Provide a diagram showing the major subsystems and data repositories and their interconnections. Describe the diagram if required
+%
 
-In the app folder of this application, there are three packages defined. namely models, view and controller. 
+In the app folder of this application, there are three packages defined. namely Model, View and Controller. 
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/MVCdiag.png}
 	
 \end{center}
 
-Image above is showing that these the system architecture divides into three separate layers. The model which is representation of information, THe view that makes these information available for the user to interact and Controller which responds to user actions and processes them. In the next section we will explain more in-dept about each layer and it's sub-components.
+Image above is showing that the system architecture divides into three separate layers. The model which represents the information, The view that makes these information available for the user and Controller that responds to user actions and processes them. \\
+In the next section we will explain more in-dept about each layer and explain what are their sub-components. 
 
 \subsection{Model} % (fold)
 \label{sub:design_rationale}
+The model is meant to keep track of changes in the states of the application such as when user adds new project or make a new event in the calendar then the related model will notifies it's associated view and controller in the application about the changes. There are also bunch of operational method that lies inside the model package and these operations(static methods) are meant to find information on the database and to update certain information upon user or controller actions.
 
-\subsubsection{RElational Model Diagram}
+\subsubsection{Relational Model Diagram}
+
+In order to give a general overview of system model layer, a graphical representation of Entity Relationship(ER) diagram is designed to show the relationship of entities to each other.
+
+
+
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/RMA.png}
 	
 \end{center}
 
 \subsubsection{Model description}
+\paragraph{User}
+User model holds all attributes of a user in the application. Users are identified in the program by their email address which is unique. Almost all the models are dependent on user model because non of the model can exist without existence of a user in the application. User attributes consist of unique email, name, password etc.
+
+\paragraph{Project}
+
+Project model is another important model since many other models are related to it. User will need to create a project in order to start his/her project. Informations that are mainly processed in this model are name of the project, project creation date, list of members
+
+\paragraph{Role}
+
+Role model is designed in order to distinguish between users involving in the project. User can only take one role in the project. 
+
+\paragraph{Task} % (fold)
+As it appears from its name, Task holds to-do information of a specific user. Single task has name , and due date and a boolean variable to know if user has completed the task.
+
+\paragraph{Calendar} % (fold)
+
+Calendar creates an event for a user. It is meant for the user to have complete planning for the project. An event consist of name, description, start date and end date. 
+
+
+\paragraph{Discussion} % (fold)
+ Members of the project needs to discuss their project , This model will hold such a information. It has a subject and description with time stamp to keep track of time-line of the discussions. 
+
+
+\paragraph{Document Files} % (fold)
+
+Document files holds information on the version and name of the specific file that is uploaded in the project. any file that is uploaded will have a unique version and this is how files with the same name are identified among project.
+
 
 \subsection{View} % (fold)
+View is the gate for the user to interact with the application. Design of the View layer is simple and minimalistic. Image snapshot of view's sub-components are shown next.
+\subsubsection{Login}
 
-\subsubsection{Screen Images} % (fold)
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/login.png}
+	
+\end{center}
 
-\subsubsection{Screen Objects and Actions} % (fold)
+\subsubsection{Dashboard}
+
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/dashboard.png}
+	
+\end{center}
+
+\subsubsection{Project}
+
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/project.png}
+	
+\end{center}
+\subsubsection{Discussion}
+
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/discussion.png}
+	
+\end{center}
+
+\subsubsection{Calendar}
+
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/calendar.png}
+	
+\end{center}
+
+\subsubsection{Task}
+
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/task.png}
+	
+\end{center}
+
+\subsubsection{Suggestions}
+
+\begin{center}
+\includegraphics[height=200px, width=350px]{./img/dsgn_img/suggestions.png}
+	
+\end{center}
 
 
 
-\subsection{Controller} % (fold)
 
+
+\subsection{Controller}
+
+Controllers are the brain of the application, It will handle the request that is requested by the user from view and responds to it accordingly. At time controller might need to update the model if there is any change in the state of the information.
