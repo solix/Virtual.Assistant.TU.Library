@@ -8,7 +8,6 @@ import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.EventSource;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -16,11 +15,9 @@ import static play.libs.Json.toJson;
 
 import java.util.*;
 
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import views.html.discussion;
 import views.html.discussionFile;
-
-import controllers.routes;
 
 public class DiscussionData extends Controller {
 

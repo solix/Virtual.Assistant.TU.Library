@@ -1,19 +1,11 @@
 package controllers;
 
-import be.objectify.deadbolt.java.actions.Group;
-import be.objectify.deadbolt.java.actions.Restrict;
-import be.objectify.deadbolt.java.actions.SubjectPresent;
-import com.feth.play.module.pa.PlayAuthenticate;
-import com.feth.play.module.pa.user.AuthUser;
-import models.Person;
 import play.data.Form;
 import play.data.format.Formats.NonEmpty;
 import play.data.validation.Constraints.MinLength;
 import play.data.validation.Constraints.Required;
 import play.i18n.Messages;
 import play.mvc.Controller;
-import play.mvc.Result;
-import providers.localUsernamePassword.*;
 
 import static play.data.Form.form;
 
@@ -76,14 +68,14 @@ public class Account extends Controller {
 
 //	@SubjectPresent
 //	public static Result link() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 ////		return ok(link.render());
 //		return TODO;
 //	}
 
 //	@Restrict(@Group(Authentication.USER_ROLE))
 //	public static Result verifyEmail() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		final Person person = Authentication.getLocalUser(session());
 //		if (person.emailValidated) {
 //			// E-Mail has been validated already
@@ -106,7 +98,7 @@ public class Account extends Controller {
 
 //	@Restrict(@Group(Authentication.USER_ROLE))
 //	public static Result changePassword() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		final Person u = Authentication.getLocalUser(session());
 //
 //		if (!u.emailValidated) {
@@ -120,7 +112,7 @@ public class Account extends Controller {
 
 //	@Restrict(@Group(Authentication.USER_ROLE))
 //	public static Result doChangePassword() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		final Form<PasswordChange> filledForm = PASSWORD_CHANGE_FORM
 //				.bindFromRequest();
 //		if (filledForm.hasErrors()) {
@@ -141,7 +133,7 @@ public class Account extends Controller {
 
 //	@SubjectPresent
 //	public static Result askLink() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		final AuthUser u = PlayAuthenticate.getLinkUser(session());
 //		if (u == null) {
 //			// account to link could not be found, silently redirect to signup
@@ -154,7 +146,7 @@ public class Account extends Controller {
 
 //	@SubjectPresent
 //	public static Result doLink() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		final AuthUser u = PlayAuthenticate.getLinkUser(session());
 //		if (u == null) {
 //			// account to link could not be found, silently redirect to signup
@@ -180,7 +172,7 @@ public class Account extends Controller {
 
 //	@SubjectPresent
 //	public static Result askMerge() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		// this is the currently logged in user
 //		final AuthUser aUser = PlayAuthenticate.getUser(session());
 //
@@ -200,7 +192,7 @@ public class Account extends Controller {
 
 //	@SubjectPresent
 //	public static Result doMerge() {
-//		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+//		Authenticate.noCache(response());
 //		// this is the currently logged in user
 //		final AuthUser aUser = PlayAuthenticate.getUser(session());
 //

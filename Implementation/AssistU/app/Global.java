@@ -1,18 +1,16 @@
 import play.*;
-import play.libs.*;
-import models.*;
-import java.util.*;
-import com.avaje.ebean.*;
 import play.mvc.*;
 
 import play.Application;
 import play.GlobalSettings;
+
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate.Resolver;
+import plugins.com.feth.play.module.pa.exceptions.AccessDeniedException;
+import plugins.com.feth.play.module.pa.exceptions.AuthException;
+
 import controllers.routes;
 
-import com.feth.play.module.pa.PlayAuthenticate;
-import com.feth.play.module.pa.PlayAuthenticate.Resolver;
-import com.feth.play.module.pa.exceptions.AccessDeniedException;
-import com.feth.play.module.pa.exceptions.AuthException;
 
 /**
  * this class  injects default data into the webapp  to load a YAML file at application load time

@@ -6,14 +6,12 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import views.html.*;
-import com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
-import com.feth.play.module.pa.controllers.Authenticate;
-import providers.localUsernamePassword.*;
+import plugins.com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
+import plugins.com.feth.play.module.pa.controllers.Authenticate;
+import plugins.providers.localUsernamePassword.*;
 
-import com.feth.play.module.pa.PlayAuthenticate;
-import com.feth.play.module.pa.user.AuthUser;
-
-import play.Logger;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.user.AuthUser;
 
 /**
  */
@@ -24,7 +22,7 @@ public class Authentication extends Controller {
     public static final String USER_ROLE = "user";
 
     public static Result doLogin() {
-        com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+        Authenticate.noCache(response());
         final Form<LocalUsernamePasswordAuthProvider.NativeLogin> filledForm = LocalUsernamePasswordAuthProvider.LOGIN_FORM
                 .bindFromRequest();
         if (filledForm.hasErrors()) {
@@ -63,14 +61,14 @@ public class Authentication extends Controller {
      * @return
      */
     public static Result login() {
-        Person person = Person.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
             OAuthLogout();
         return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, "", ""));
     }
 
     public static Result relogin() {
-        Person person = Person.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
             OAuthLogout();
         return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Your credentials did not match any user"));
@@ -82,7 +80,7 @@ public class Authentication extends Controller {
      * @return
      */
     public static Result signup() {
-        Person person = Person.findByAuthUserIdentity(com.feth.play.module.pa.PlayAuthenticate.getUser(session()));
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
             OAuthLogout();
         return ok(signup.render(LocalUsernamePasswordAuthProvider.SIGNUP_FORM, false, "", ""));
@@ -114,8 +112,8 @@ public class Authentication extends Controller {
 
     /**
      * OAuth Authentication
-     * @param provider: Name of the service, such as google, facebook, twitter, etc.
-     * @return call to the plugin that passes the name of the service to user
+     * @param provider: Name of the plugins.service, such as google, facebook, twitter, etc.
+     * @return call to the plugin that passes the name of the plugins.service to user
      */
     public static Result OAuth(String provider){
         return Authenticate.authenticate(provider);

@@ -1,6 +1,6 @@
 package controllers;
 
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import models.Event;
 import models.Person;
 import org.joda.time.DateTime;
@@ -17,8 +17,6 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import controllers.routes;
 
 
 public class CalendarData extends Controller {

@@ -4,7 +4,7 @@ import models.*;
 import play.mvc.*;
 
 import java.util.List;
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 
 /**
  * Created by arnaud on 16-12-14.

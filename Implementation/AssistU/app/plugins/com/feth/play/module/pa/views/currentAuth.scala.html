@@ -1,0 +1,9 @@
+@()(body: plugins.com.feth.play.module.pa.user.AuthUser => play.twirl.api.Html)
+@import plugins.com.feth.play.module.pa.PlayAuthenticate
+@import plugins.com.feth.play.module.pa.PlayAuthenticate
+@import plugins.com.feth.play.module.pa.user.AuthUser
+
+
+@defining(PlayAuthenticate.getUser(session())) { auth =>
+	@body(auth)
+}

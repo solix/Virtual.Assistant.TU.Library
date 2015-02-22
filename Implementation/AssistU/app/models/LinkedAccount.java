@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 
 import play.db.ebean.Model;
 
-import com.feth.play.module.pa.user.AuthUser;
+import plugins.com.feth.play.module.pa.user.AuthUser;
 
 @Entity
 public class LinkedAccount extends Model {

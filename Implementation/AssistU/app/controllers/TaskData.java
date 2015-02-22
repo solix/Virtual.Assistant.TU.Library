@@ -1,6 +1,6 @@
 package controllers;
 
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import models.*;
 import play.mvc.*;
 import play.data.Form;

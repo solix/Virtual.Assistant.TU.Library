@@ -1,18 +1,14 @@
 package controllers;
 
-import com.feth.play.module.mail.Mailer;
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.mail.Mailer;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import models.Person;
-import org.apache.commons.mail.EmailAttachment;
 import play.Logger;
-import play.Play;
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerPlugin;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.twirl.api.Html;
-
-import java.io.File;
 
 /**
  * attention: in case you are using intellij idea you might see lots of errors , don't pay attention it works fine
@@ -31,7 +27,7 @@ public class Emailer extends Controller {
         email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
-//        MailerPlugin.send(email);
+        MailerPlugin.send(email);
 
     }
 
