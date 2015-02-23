@@ -19,6 +19,10 @@ import static play.data.Form.form;
 
 public class Signup extends Controller {
 
+	/**
+	 * This function catches the form from the signup page and handles it
+	 * @return Result
+	 */
 	public static Result doSignup() {
 		Authenticate.noCache(response());
 		final Form<LocalUsernamePasswordAuthProvider.NativeSignup> filledForm = LocalUsernamePasswordAuthProvider.SIGNUP_FORM
@@ -36,6 +40,10 @@ public class Signup extends Controller {
 		}
 	}
 
+	/**
+	 * This function shows the login page with the alert that the user needs to verify himself
+	 * @return Result
+	 */
 	public static Result unverified() {
 		Authenticate.noCache(response());
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "info", "Please verify your email before continuing"));
@@ -66,12 +74,20 @@ public class Signup extends Controller {
 
 	private static final Form<NativeIdentity> FORGOT_PASSWORD_FORM = form(NativeIdentity.class);
 
+	/**
+	 * Render the forgotpassword page
+	 * @return Result
+	 */
 	public static Result forgotPassword() {
 		Authenticate.noCache(response());
 		Form<NativeIdentity> form = FORGOT_PASSWORD_FORM;
 		return ok(forgotPassword.render(form, false, "", ""));
 	}
 
+	/**
+	 * Catches the forgotpassword form and handles it
+	 * @return Result
+	 */
 	public static Result doForgotPassword() {
 		Authenticate.noCache(response());
 		final Form<NativeIdentity> filledForm = FORGOT_PASSWORD_FORM
@@ -85,15 +101,6 @@ public class Signup extends Controller {
 			// address and whether password signup is enabled for him/her. Also
 			// only send if the email address of the user has been verified.
 			final String email = filledForm.get().email;
-
-			// We don't want to expose whether a given email address is signed
-			// up, so just say an email has been sent, even though it might not
-			// be true - that's protecting our user privacy.
-//			flash(Authentication.FLASH_MESSAGE_KEY,
-//					Messages.get(
-//							"playauthenticate.reset_password.message.instructions_sent",
-//							email));
-
 			final Person person = Person.findByEmail(email);
 			if (person != null) {
 				// yep, we have a user with this email that is active - we do
@@ -127,7 +134,6 @@ public class Signup extends Controller {
 
 	/**
 	 * Returns a token object if valid, null if not
-	 * 
 	 * @param token
 	 * @param type
 	 * @return
@@ -143,6 +149,11 @@ public class Signup extends Controller {
 		return ret;
 	}
 
+	/**
+	 * Renders the resetpassword page
+	 * @param token: The token needed
+	 * @return Result
+	 */
 	public static Result resetPassword(final String token) {
 		Authenticate.noCache(response());
 		final TokenAction ta = tokenIsValid(token, Type.PASSWORD_RESET);
@@ -152,14 +163,16 @@ public class Signup extends Controller {
 		Form<PasswordReset> new_form = PASSWORD_RESET_FORM;
 		new_form.fill(new PasswordReset(token));
 		new_form.data().put("token", token);
-		Logger.debug("RESET PASSWORD FORM FIRST: " + new_form);
 		return ok(resetPassword.render(new_form, false, "", ""));
 	}
 
+	/**
+	 * Handles the form caught from the resetpasswordpage
+	 * @return Result
+	 */
 	public static Result doResetPassword() {
 		Authenticate.noCache(response());
 		final Form<PasswordReset> filledForm = PASSWORD_RESET_FORM.bindFromRequest();
-		Logger.debug("RESET PASSWORD FORM AFTER: " + filledForm);
 		if (filledForm.hasErrors()  || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
 			return badRequest(resetPassword.render(filledForm, true, "danger", "You did not provide a valid password"));
 		} else {
@@ -176,32 +189,35 @@ public class Signup extends Controller {
 				// happen
 				u.resetPassword(new LocalUsernamePasswordAuthUser(newPassword), false);
 			} catch (final RuntimeException re) {
-//				flash(Authentication.FLASH_MESSAGE_KEY,
-//						Messages.get("playauthenticate.reset_password.message.no_password_account"));
+
 			}
 			final boolean dologin = LocalUsernamePasswordAuthProvider.getProvider()
 					.isLoginAfterPasswordReset();
 			if (dologin) {
 				// automatically log in
-//				flash(Authentication.FLASH_MESSAGE_KEY,
-//						Messages.get("playauthenticate.reset_password.message.success.auto_login"));
-
 				return PlayAuthenticate.loginAndRedirect(ctx(),
 						new LocalLoginUsernamePasswordAuthUser(u.email));
 			} else {
 				// send the user to the signup page
-//				flash(Authentication.FLASH_MESSAGE_KEY,
-//						Messages.get("playauthenticate.reset_password.message.success.manual_login"));
 			}
 			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "success", "Your password has been successfully reset"));
 		}
 	}
 
+	/**
+	 * This function shows the login page with the alert that OAuth has been denied
+	 * @param getProviderKey: The string of the type of OAuth
+	 * @return Result
+	 */
 	public static Result oAuthDenied(final String getProviderKey) {
 		Authenticate.noCache(response());
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Could not log you in with " + getProviderKey));
 	}
 
+	/**
+	 * This function renders the login page with the alert that the email address is already assigned to an existing user
+	 * @return Result
+	 */
 	public static Result exists() {
 		Authenticate.noCache(response());
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "There is already a user signed up with this email"));
@@ -209,8 +225,8 @@ public class Signup extends Controller {
 
 	/**
 	 * This function checks for the validity of a verification link
-	 * @param token
-	 * @return
+	 * @param token: The token needed
+	 * @return Result
 	 */
 	public static Result verify(final String token) {
 		Authenticate.noCache(response());
@@ -226,7 +242,6 @@ public class Signup extends Controller {
 			Person person = Authentication.getLocalUser(session());
 			if(person != null)
 				Authentication.OAuthLogout();
-//			return ok(index.render("Welcome " + user.name, user));
 		}
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "success", "You have been verified, please log in below"));
 
