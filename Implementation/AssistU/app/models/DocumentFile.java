@@ -64,6 +64,16 @@ public class DocumentFile extends Model{
             Long.class, DocumentFile.class
     );
 
+    /**
+     * Creates a new document file
+     * @param name
+     * @param file
+     * @param filepath
+     * @param pid
+     * @param uid
+     * @return
+     */
+
     public static DocumentFile create(String name, File file, String filepath, Long pid, Long uid){
         DocumentFile documentFile = new DocumentFile(name, file, filepath, pid, uid);
         documentFile.owntemplate=false;

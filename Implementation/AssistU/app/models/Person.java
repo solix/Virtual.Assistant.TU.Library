@@ -52,91 +52,43 @@ public class Person extends Model {
     @OneToMany(mappedBy = "person")
     public List<Comment> comments=new ArrayList<Comment>();
 
-//    public User(String name, String email, String password) {
-//        this.name=name;
-//        this.email = email;
-//        this.password = password;
-//        this.active= true;
-//    }
 
+    /**
+     * sending queries to DB using finder class
+     */
     public static Model.Finder<Long, Person> find = new Model.Finder(
             Long.class, Person.class
     );
 
+
     /**
-     * autheticates  user
-     * @param email
-     * @param password
+     * updates person credentials
+     * @param authUser
      * @return
      */
-//    public static User authenticate(String email, String password){
-//        return find.where().eq("email", email).eq("password", password).findUnique();
-//    }
-
-
-//    public static User create(String name, String email, String password ) {
-//        User user = new User(name, email, password);
-//        user.save();
-//        return user;
-//    }
-
     public static Person update(final AuthUser authUser) {
         final Person person = Person.findByAuthUserIdentity(authUser);
-//        Logger.debug("USER FOR UPDATING: " + person.name);
         person.active = true;
-//        user.linkedAccounts = Collections.singletonList(LinkedAccount
-//                .create(authUser));
-
-//        if (authUser instanceof EmailIdentity) {
-//            final EmailIdentity identity = (EmailIdentity) authUser;
-//            Remember, even when getting them from FB & Co., emails should be
-//            verified within the application as a security breach there might
-//            break your security as well!
-//            user.email = identity.getEmail();
-//            user.emailValidated = false;
-//        }
-
-//        if (authUser instanceof NameIdentity) {
-//            final NameIdentity identity = (NameIdentity) authUser;
-//            final String name = identity.getName();
-//            if (name != null) {
-//                user.name = name;
-//            }
-//        }
-
-//        if (authUser instanceof FirstLastNameIdentity) {
-//            final FirstLastNameIdentity identity = (FirstLastNameIdentity) authUser;
-//            final String first_name = identity.getFirstName();
-//            if(first_name != null){
-//                user.first_name = first_name;
-//            }
-//            final String last_name = identity.getLastName();
-//            if(last_name != null){
-//                user.last_name = last_name;
-//            }
-//        }
-
-
-        //This is for extra provider-specific information
-
-//        if(authUser instanceof GoogleAuthUser){
-
-//        }
-
-//        if(authUser instanceof MendeleyAuthUser){
-
-//        }
-
         person.save();
         return person;
     }
 
+    /**
+     *checks if user exists
+     * @param identity
+     * @return true/false
+     */
     public static boolean existsByAuthUserIdentity(
             final AuthUserIdentity identity) {
         final ExpressionList<Person> exp = getAuthUserFind(identity);
         return exp.findRowCount() > 0;
     }
 
+    /**
+     * query to find list of active users
+     * @param identity
+     * @return list f active users
+     */
     private static ExpressionList<Person> getAuthUserFind(
             final AuthUserIdentity identity) {
         return find.where().eq("active", true)
@@ -144,13 +96,12 @@ public class Person extends Model {
                 .eq("linkedAccounts.providerKey", identity.getProvider());
     }
 
-//    public static User findByAuthUserIdentity(final AuthUserIdentity identity) {
-//        if (identity == null) {
-//            return null;
-//        }
-//        return getAuthUserFind(identity).findUnique();
-//    }
 
+    /**
+     * finds a user by his/her Identity
+     * @param identity
+     * @return
+     */
     public static Person findByAuthUserIdentity(final AuthUserIdentity identity) {
         if (identity == null) {
             return null;
@@ -162,11 +113,21 @@ public class Person extends Model {
         }
     }
 
+    /**
+     * finds user by username password identity
+     * @param identity
+     * @return
+     */
     public static Person findByUsernamePasswordIdentity(
             final UsernamePasswordAuthUser identity) {
         return getUsernamePasswordAuthUserFind(identity).findUnique();
     }
 
+    /**
+     * getter method fin user using email
+     * @param identity
+     * @return
+     */
     private static ExpressionList<Person> getUsernamePasswordAuthUserFind(
             final UsernamePasswordAuthUser identity) {
         return getEmailUserFind(identity.getEmail()).eq(
@@ -177,9 +138,6 @@ public class Person extends Model {
         for (final LinkedAccount acc : otherPerson.linkedAccounts) {
             this.linkedAccounts.add(LinkedAccount.create(acc));
         }
-        // do all other merging stuff here - like resources, etc.
-
-        // deactivate the merged user that got added to this one
         otherPerson.active = false;
         Ebean.save(Arrays.asList(new Person[] {otherPerson, this }));
     }
@@ -245,6 +203,11 @@ public class Person extends Model {
         return person;
     }
 
+    /**
+     * merges two account if there are same users
+     * @param oldUser
+     * @param newUser
+     */
     public static void merge(final AuthUser oldUser, final AuthUser newUser) {
         Person.findByAuthUserIdentity(oldUser).merge(
                 Person.findByAuthUserIdentity(newUser));
@@ -259,6 +222,11 @@ public class Person extends Model {
         return providerKeys;
     }
 
+    /**
+     *
+     * @param oldUser
+     * @param newUser
+     */
     public static void addLinkedAccount(final AuthUser oldUser,
                                         final AuthUser newUser) {
         final Person u = Person.findByAuthUserIdentity(oldUser);
@@ -266,26 +234,45 @@ public class Person extends Model {
         u.save();
     }
 
+    /**
+     * find a person by email
+     * @param email
+     * @return
+     */
     public static Person findByEmail(final String email) {
         return getEmailUserFind(email).findUnique();
     }
 
+    /**
+     * find users hat are active thorigh their emails
+     * @param email
+     * @return
+     */
     private static ExpressionList<Person> getEmailUserFind(final String email) {
         return find.where().eq("active", true).eq("email", email);
     }
+
 
     public LinkedAccount getAccountByProvider(final String providerKey) {
         return LinkedAccount.findByProviderKey(this, providerKey);
     }
 
+    /**
+     * verifies the user and saves it to DB
+     * @param unverified
+     */
     public static void verify(final Person unverified) {
-        Logger.debug("A USER HAS BEEN VERIFIED: " + unverified.email);
-        // You might want to wrap this into a transaction
+
         unverified.emailValidated = true;
         unverified.save();
         TokenAction.deleteByUser(unverified, TokenAction.Type.EMAIL_VERIFICATION);
     }
 
+    /**
+     * resets password for the user by creating new token
+     * @param authUser
+     * @param create
+     */
     public void resetPassword(final UsernamePasswordAuthUser authUser,
                               final boolean create) {
         // You might want to wrap this into a transaction
@@ -293,6 +280,11 @@ public class Person extends Model {
         TokenAction.deleteByUser(this, TokenAction.Type.PASSWORD_RESET);
     }
 
+    /**
+     * change the current password to new password
+     * @param authUser
+     * @param create
+     */
     public void changePassword(final UsernamePasswordAuthUser authUser,
                                final boolean create) {
         LinkedAccount a = this.getAccountByProvider(authUser.getProvider());
@@ -310,6 +302,10 @@ public class Person extends Model {
         a.save();
     }
 
+    /**
+     * delete account from db
+     * @param uid
+     */
     public static void deleteAccount(Long uid){
         Person.find.byId(uid).delete();
     }
