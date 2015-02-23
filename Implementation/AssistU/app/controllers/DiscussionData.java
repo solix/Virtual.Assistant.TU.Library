@@ -21,16 +21,15 @@ import views.html.discussionFile;
 
 public class DiscussionData extends Controller {
 
-    /*
-    *
-    *
-    * */
+    /**
+     * This function loads the discussion page view of a specific project
+     * @param pid: the project ID
+     * @return Result
+     */
     public static Result discussion(Long pid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-//            Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
-
             return ok(discussion.render("AssistU - Projects", user, p));
         }else {
             //User did not have a session
@@ -42,6 +41,15 @@ public class DiscussionData extends Controller {
     /** Keeps track of all connected browsers per room **/
     private static Map<String, List<EventSource>> socketsPerProject = new HashMap<String, List<EventSource>>();
 
+    /**
+     * This function recursively formats the subject of a discussion in the sense that it
+     * adds 'copy' to the string each time it can find a message within the same project with the
+     * same subject. Subject is how sub-comments get mapped to the right parent, so you
+     * can't have the same subject for two different messages.
+     * @param subject: The subject string
+     * @param pid: The project it belongs to
+     * @return String
+     */
     private static String formatSubject(String subject, Long pid){
         List<Comment> cml = Comment.find.where().eq("project", Project.find.byId(pid))
                                                 .eq("subject", subject)
@@ -54,7 +62,6 @@ public class DiscussionData extends Controller {
     }
 
     /**
-     * TODO SOHEIL: Not sure we should notify on every message, or let them build up and send a summary at some point.
     * Controller action for POSTing chat messages created in discussion page
     */
     public static Result postMessage() {
@@ -63,7 +70,6 @@ public class DiscussionData extends Controller {
         if(person != null) {
             if (!message.get("content").asText().equals("")) {
                 if (!message.get("isChild").asBoolean()) {
-//                    Logger.debug("It's a main comment");
                     message.put("subject", formatSubject(message.get("subject").asText(), Long.parseLong(message.get("projectID").asText())));
                 }
                 message.put("uid", person.id);
@@ -79,7 +85,6 @@ public class DiscussionData extends Controller {
                 message.put("cid", comment.cid);
                 message.put("username", comment.person.name);
                 message.put("role", Role.find.where().eq("person", person).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
-//                Logger.debug("New Comment: " + Json.stringify(message));
                 sendEvent(message);
             }
         }
@@ -91,14 +96,12 @@ public class DiscussionData extends Controller {
     */
     public static Result postExternalMessage() {
         DynamicForm message = Form.form().bindFromRequest();
-//        Logger.debug("ext message: " + message.toString());
         ObjectNode result = new ObjectMapper().createObjectNode();
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(Long.parseLong(message.get("projectID")));
         if(person != null){
             DocumentFile doc = DocumentFile.find.byId(Long.parseLong(message.get("attachment")));
             if(message.get("content").equals("") || message.get("subject").equals("")) {
-//                Logger.debug("ext message sendback: " + message.toString());
                 return badRequest(discussionFile.render("An error has occured.", person, p,
                         DocumentFile.find.byId(Long.parseLong(message.get("attachment"))), message, true, "danger",
                         "Your message or subject was empty"));
@@ -123,13 +126,16 @@ public class DiscussionData extends Controller {
                 result.put("cid", "" + comment.cid);
                 result.put("role", Role.find.where().eq("person", person).eq("project", p).findUnique().role);
                 result.put("username", person.name);
-//                Logger.debug("New Comment: " + Json.stringify(result));
                 sendEvent(result);
             }
         }
         return DiscussionData.discussion(p.id);
     }
 
+    /**
+     * Deleting a message
+     * @return Result
+     */
     public static Result deleteMessage() {
         ObjectNode message = (ObjectNode)request().body().asJson();
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -153,6 +159,11 @@ public class DiscussionData extends Controller {
         return ok();
     }
 
+    /**
+     * Loading old comments as JSON nodes for when the user renders a discussion that already has
+     * comments in it.
+     * @return JSON
+     */
     public static Result getComments() {
         List<Project> projects = PersonData.findActiveProjects();
         List<ObjectNode> comments = new ArrayList<ObjectNode>();
@@ -181,6 +192,11 @@ public class DiscussionData extends Controller {
         return ok(toJson(comments));
     }
 
+    /**
+     * Loading old sub-comments as JSON nodes for when the user renders a discussion that already has
+     * sub-comments in it.
+     * @return JSON
+     */
     public static Result getSubComments() {
         List<Project> ownerProjects = PersonData.findActiveOwnerProjects();
         List<Project> reviewerProjects = PersonData.findActiveReviewerProjects();

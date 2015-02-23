@@ -81,7 +81,6 @@ public class CalendarData extends Controller {
         }
     }
 
-    //TODO: Passing uids are not good practise as it allows for tampering
     /**
      * List of events in table view
      * @return Result
@@ -141,9 +140,6 @@ public class CalendarData extends Controller {
         }
     }
 
-
-
-
     /**
      * Dislays form for editing existing event
      * @param id Long
@@ -161,7 +157,6 @@ public class CalendarData extends Controller {
             return Authentication.login();
         }
     }
-
 
     /**
      * Save updated event in DB
@@ -190,7 +185,6 @@ public class CalendarData extends Controller {
             return Authentication.login();
         }
     }
-
 
     /**
      * Deletes event
@@ -233,7 +227,6 @@ public class CalendarData extends Controller {
         Logger.debug("add By ajax is used: " + result);
         return ok(play.libs.Json.toJson(result));
     }
-
 
     /**
      * Saves in DB date changed by event drag
