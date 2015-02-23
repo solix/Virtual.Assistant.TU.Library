@@ -4,7 +4,7 @@
         @if(uploads.size > 0) {
             <table class="table table-hover">
                 <thead>
-                    <tr>    
+                    <tr>
                         <th style="width : 60 %">File</th>
                         <th style="width : 20 %">Uploaded by</th>
                         <th style="text-align : center ; width : 15 %">Version</th>
@@ -13,7 +13,7 @@
                 </thead>
                 <tbody>
                 @uploads.map { upload =>
-@*//       @if(upload.owntemplate.equals(false)) {*@
+       @if(upload.owntemplate.equals(false)) {
                         <tr>
                             <td>@upload.name</td>
                             <td>@upload.person.name</td>
@@ -28,7 +28,7 @@
                               @*}*@
                             </td>
                         </tr>
-@*//                    }*@
+                    }
                 }
 
                 </tbody>
