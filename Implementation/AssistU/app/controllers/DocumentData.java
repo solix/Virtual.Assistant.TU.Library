@@ -18,7 +18,6 @@ import plugins.com.feth.play.module.pa.PlayAuthenticate;
 
 public class DocumentData extends Controller {
 
-    /*TODO SOHEIL: Having a new document uploaded to your project should also be notified
     /**
      * POST uploaded document  to the server
      */
@@ -64,7 +63,6 @@ public class DocumentData extends Controller {
     /**
      * Download the document file
      */
-
     public static Result downloadDocument(Long id){
 
         //this creates folder and  will be changed in future to the name of the project
@@ -75,6 +73,11 @@ public class DocumentData extends Controller {
         return  ok(new File(path,documentFile.name));
     }
 
+    /**
+     * This function deletes a document
+     * @param fid: document ID
+     * @return Result
+     */
     public static Result deleteDocument(Long fid){
         DocumentFile documentFile = DocumentFile.find.byId(fid);
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -90,6 +93,11 @@ public class DocumentData extends Controller {
         }
     }
 
+    /**
+     * This function render the page where a user can start a discussion with a file attached.
+     * @param docid: The ID of the document
+     * @return Result
+     */
     public static Result documentDiscussion(Long docid){
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
