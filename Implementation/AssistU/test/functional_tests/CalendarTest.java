@@ -24,6 +24,9 @@ import static play.test.Helpers.start;
  */
 public class CalendarTest extends WithApplication {
 
+    /**
+     * This test tests the calendar functionality
+     */
     @Test
     public void calendar_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {

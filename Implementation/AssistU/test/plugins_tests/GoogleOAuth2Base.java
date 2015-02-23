@@ -1,4 +1,4 @@
-package test;
+package plugins_tests;
 
 import plugins.com.feth.play.module.pa.providers.oauth2.google.GoogleAuthProvider;
 

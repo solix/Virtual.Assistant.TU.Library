@@ -21,6 +21,9 @@ import static play.test.Helpers.start;
  */
 public class ProjectTest extends WithApplication {
 
+    /**
+     * This test tests the creation, editing and archiving of a project
+     */
     @Test
     public void create_edit_archive_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {
@@ -120,6 +123,9 @@ public class ProjectTest extends WithApplication {
         });
     }
 
+    /**
+     * This test tests the deletion of a member
+     */
     @Test
     public void invite_delete_member_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {

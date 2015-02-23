@@ -25,6 +25,9 @@ import controllers.routes;
  */
 public class SignupLoginTest extends WithApplication {
 
+    /**
+     * This test tests the signup and login functionality
+     */
     @Test
     public void signup_login_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {
