@@ -17,11 +17,15 @@ import static play.libs.Json.toJson;
  */
 public class ProjectData extends Controller {
 
+    /**
+     * This function render the page for a specific project
+     * @param pid: project ID
+     * @return Result
+     */
     public static Result project(Long pid) {
         session().put("callback", routes.ProjectData.project(pid).absoluteURL(request()));
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-//            Project.updateLastAccessed(pid);
             Project p = Project.find.byId(pid);
             return ok(project.render("AssistU - Projects", user, p));
         } else {
@@ -32,8 +36,11 @@ public class ProjectData extends Controller {
 
     static Form<Project> projectForm = Form.form(Project.class);
 
+    /**
+     * Renders the page for the creation of a new project
+     * @return Result
+     */
     public static Result createProjectPage() {
-
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null)
             return ok(projectNew.render("Create a new Project", projectForm, false, "", "", user));
@@ -43,10 +50,14 @@ public class ProjectData extends Controller {
         }
     }
 
+    /**
+     * Renders the page for editing a project
+     * @param pid: project ID for the project to be edited
+     * @return Result
+     */
     public static Result editProjectPage(Long pid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(pid);
-
         if(user != null)
             return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", "", user));
         else {
@@ -57,7 +68,7 @@ public class ProjectData extends Controller {
 
     /**
      * This function creates a new Project initiated by a user that automatically becomes its owner.
-     * @return
+     * @return Result
      */
     public static Result createProject() {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -97,7 +108,7 @@ public class ProjectData extends Controller {
     /**
      * This function edits a project with values catched from a form.
      * @param pid: The Project ID of the Project that needs it details edited
-     * @return
+     * @return Result
      */
     public static Result editProject(Long pid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -130,7 +141,7 @@ public class ProjectData extends Controller {
      * owner of the project at hand (future implementation)
      * @param uid: The User ID of the person requesting for archiving
      * @param pid: The Project ID of the project that is up for archiving
-     * @return
+     * @return Result
      */
     public static Result archiveProject(Long pid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -146,12 +157,11 @@ public class ProjectData extends Controller {
         }
     }
 
-    /*TODO SOHEIL: When a member gets invited, send him a message
     /**
      * This function catches the Dynamicform from the template with the ID of the User that needs to
      * be added to the project of which the Project ID has been passed
      * @param pid: The project to which the user in the form has to be assigned
-     * @return
+     * @return Result
      */
     public static Result inviteMemberToProjectAs(Long pid) {
         DynamicForm emailform = Form.form().bindFromRequest();
@@ -171,7 +181,6 @@ public class ProjectData extends Controller {
                             Project.inviteOwner(p.id, user_invited.id);
                             Event.defaultPlanningArticle(user, p);
                             p.planning = true;
-                            //            p.update();
                             p.save();
                         } else if (emailform.get("role").equals("Reviewer")) {
                             Project.inviteReviewer(p.id, user_invited.id);
@@ -189,8 +198,10 @@ public class ProjectData extends Controller {
         }
     }
 
-    /*TODO SOHEIL: This function can send a message to all owners that a new user has joined the project
-    TODO: (I think guest and reviewer should not be bothered with this, you can use findAllOwners function for recipients)
+    /**
+     * This function confirms the invitation to a project from the user currently logged in.
+     * @param pid: project ID to be joined
+     * @return Result
      */
     public static Result hasAccepted(Long pid){
         Project p = Project.find.byId(pid);
@@ -216,6 +227,11 @@ public class ProjectData extends Controller {
         }
     }
 
+    /**
+     * This function declines the invitation to a project from the user currently logged in.
+     * @param pid: project ID to be declined
+     * @return Result
+     */
     public static Result hasDeclined(Long pid){
         Project p = Project.find.byId(pid);
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -239,7 +255,7 @@ public class ProjectData extends Controller {
      * own User ID is passed.
      * @param uid: The ID of the User that is being removed
      * @param pid: The ID of the Project in which the User had to be removed from
-     * @return
+     * @return Result
      */
     public static Result removeMemberFromProject(Long uid, Long pid){
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -251,11 +267,16 @@ public class ProjectData extends Controller {
             return redirect(routes.Application.project());
         } else {
             //User did not have a session
-            session().put("callback", routes.ProjectData.removeMemberFromProject(uid,pid).absoluteURL(request()));
+            session().put("callback", routes.ProjectData.removeMemberFromProject(uid, pid).absoluteURL(request()));
             return Authentication.login();
         }
     }
 
+    /**
+     * This function removes the user logged in from a project
+     * @param pid: project ID of project the user wants to leave
+     * @return Result
+     */
     public static Result leaveProject(Long pid){
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
@@ -268,6 +289,10 @@ public class ProjectData extends Controller {
         }
     }
 
+    /**
+     * Returns the project name and ID pairs as JSON
+     * @return Result
+     */
     public static Result getProjectIdsAsJson(){
         List<Project> projects = PersonData.findActiveProjects();
         List<TreeMap<String, String>> result = new ArrayList<TreeMap<String, String>>();
@@ -281,6 +306,10 @@ public class ProjectData extends Controller {
         return ok(toJson(result));
     }
 
+    /**
+     * Returns the owner projects IDs as JSON
+     * @return Result
+     */
     public static Result getOwnerIdsAsJson(){
         List<Project> projects = PersonData.findActiveProjects();
         List<Long> result = new ArrayList<Long>();
@@ -295,6 +324,10 @@ public class ProjectData extends Controller {
         return ok(toJson(result));
     }
 
+    /**
+     * Returns the reviewer projects IDs as JSON
+     * @return Result
+     */
     public static Result getReviewerIdsAsJson(){
         List<Project> projects = PersonData.findActiveProjects();
         List<Long> result = new ArrayList<Long>();
@@ -310,6 +343,10 @@ public class ProjectData extends Controller {
         return ok(toJson(result));
     }
 
+    /**
+     * Returns the guest project IDs as JSON
+     * @return Result
+     */
     public static Result getGuestIdsAsJson(){
         List<Project> projects = PersonData.findActiveProjects();
         List<Long> result = new ArrayList<Long>();
@@ -324,6 +361,10 @@ public class ProjectData extends Controller {
         return ok(toJson(result));
     }
 
+    /**
+     * Return the name and ID of the last created project
+     * @return Result
+     */
     public static Result getLastAccessedProjectIdAsJson(){
         Project p = PersonData.getLastUsedProject();
         HashMap<String, String> project = new HashMap<String, String>();
@@ -331,14 +372,13 @@ public class ProjectData extends Controller {
             project.put("name", p.name);
             project.put("projectID", "" + p.id);
         }
-//        Logger.debug("LAST ACCESSED AS JSON: " + toJson(project));
         return ok(toJson(project));
     }
 
     /**
-     * TODO : comment please
-     * @param pid
-     * @return
+     * Finds all the users in a project
+     * @param pid: the ID of the project
+     * @return List<Person>
      */
     public static List<Person> findAllAffiliatedUsers(Long pid){
         Project p = Project.find.byId(pid);
@@ -351,9 +391,9 @@ public class ProjectData extends Controller {
     }
 
     /**
-     * TODO : comment please
-     * @param pid
-     * @return
+     * This function returns all the owners of a project
+     * @param pid: project ID
+     * @return List<Person>
      */
     public static List<Person> findAllOwners(Long pid){
         Project p = Project.find.byId(pid);
@@ -366,9 +406,9 @@ public class ProjectData extends Controller {
     }
 
     /**
-     * TODO : comment please
-     * @param pid
-     * @return
+     * This function returns all the reviewers of a project
+     * @param pid: project ID
+     * @return List<Person>
      */
     public static List<Person> findAllReviewers(Long pid){
         Project p = Project.find.byId(pid);

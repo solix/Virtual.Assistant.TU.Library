@@ -1,4 +1,4 @@
-package test;
+package plugins_tests;
 
 import static org.fest.assertions.Assertions.assertThat;
 

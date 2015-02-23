@@ -11,6 +11,10 @@ import plugins.com.feth.play.module.pa.PlayAuthenticate;
  */
 public class PersonData extends Controller {
 
+    /**
+     * This function returns the list of the active projects from the user that is signed in.
+     * @return List<Project>
+     */
     public static List<Project> findActiveProjects(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("project.active", true).eq("accepted", true).findList();
@@ -18,6 +22,10 @@ public class PersonData extends Controller {
         return projects;
     }
 
+    /**
+     * This function returns the list of the projects to which the user that is signed in has pending invitations.
+     * @return List<Project>
+     */
     public static List<Project> findPendingInvitations(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("project.active", true).eq("accepted", false).findList();
@@ -25,6 +33,10 @@ public class PersonData extends Controller {
         return projects;
     }
 
+    /**
+     * This function returns the list of the active projects from the user that is signed in where he is an owner in.
+     * @return List<Project>
+     */
     public static List<Project> findActiveOwnerProjects(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("role", Role.OWNER).eq("project.active", true).eq("accepted", true).findList();
@@ -32,6 +44,10 @@ public class PersonData extends Controller {
         return projects;
     }
 
+    /**
+     * This function returns the list of the active projects from the user that is signed in where he is a reviewer in.
+     * @return List<Project>
+     */
     public static List<Project> findActiveReviewerProjects(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("role", Role.REVIEWER).eq("project.active", true).eq("accepted", true).findList();
@@ -39,6 +55,10 @@ public class PersonData extends Controller {
         return projects;
     }
 
+    /**
+     * This function returns the list of the active projects from the user that is signed in where he is a guest in.
+     * @return List<Project>
+     */
     public static List<Project> findActiveGuestProjects(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("role", Role.GUEST).eq("project.active", true).eq("accepted", true).findList();
@@ -46,6 +66,10 @@ public class PersonData extends Controller {
         return projects;
     }
 
+    /**
+     * This function returns the list of the archived projects from the user that is signed in.
+     * @return List<Project>
+     */
     public static List<Project> findArchivedProjects(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("project.active", false).findList();
@@ -53,6 +77,10 @@ public class PersonData extends Controller {
         return projects;
     }
 
+    /**
+     * This function returns the last used projects from the user that is signed in.
+     * @return Project
+     */
     public static Project getLastUsedProject(){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         List<Role> roles = Role.find.where().eq("person", person).eq("project.active", true).eq("accepted", true).findList();
@@ -63,6 +91,10 @@ public class PersonData extends Controller {
         return p;
     }
 
+    /**
+     * This function deletes the user and all his relationships to other objects within the application
+     * @return Result
+     */
     public static Result deleteAccount(){
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {

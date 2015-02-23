@@ -22,6 +22,9 @@ import static play.test.Helpers.start;
  */
 public class TaskTest extends WithApplication {
 
+    /**
+     * This test tests the task functionality
+     */
     @Test
     public void task_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {

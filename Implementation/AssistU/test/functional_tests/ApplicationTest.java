@@ -21,6 +21,9 @@ import static play.test.Helpers.start;
  */
 public class ApplicationTest extends WithApplication {
 
+    /**
+     * This test tests the rerouting function
+     */
     @Test
     public void reroute_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {
@@ -65,6 +68,9 @@ public class ApplicationTest extends WithApplication {
         );
     }
 
+    /**
+     * This test tests whether a user's session gets handled correctly
+     */
     @Test
     public void session_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {

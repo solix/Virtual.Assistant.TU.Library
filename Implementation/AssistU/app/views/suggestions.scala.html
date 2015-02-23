@@ -4,18 +4,8 @@
     <head>
         @linkLoader.headlinks(title)
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/suggestion.css")">
-
-            <!-- Timeline CSS -->
-        @*<link href="@routes.Assets.at("css/plugins/timeline.css")" rel="stylesheet">*@
-
         <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-
-        @*<!--Wheel Menu JS-->*@
-    @*<script src="@routes.Assets.at("javascripts/jquery.suggestionwheelmenuprimary.js")" ></script>*@
-
-        @*<!--Wheel Menu CSS-->*@
-    @*<link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/suggestionwheelmenuprimary.css")">*@
 
     </head>
 
@@ -24,8 +14,6 @@
             @dashboard("suggestion", currentUser)
             <div id="page-wrapper">
                 @template.headericon("fa fa-lightbulb-o fa-5x")
-
-
             <div class="container-fluid">
                 <div class="page-header">
                     <h1 id="timeline">Step by Step Guide :</h1>
@@ -97,68 +85,10 @@
                             </div>
                         </div>
                     </li>
-
-
                 </ul>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                @*<div class="panel panel-info">*@
-                    @*<div class="panel-body" style="height: 600px">*@
-                        @*<a href="#wheel" class="wheel-button"><p style="margin-top: 30px">Menu</p></a>*@
-                        @*<ul id="wheel">*@
-                            @*<li class="item" style="background: #B6212D;border-radius: 50px;">*@
-                                @*<a href="@routes.SuggestionData.suggestion("Literature Search")">*@
-                                    @*<i class="fa fa-book fa-2x"><br><p style="font-size: 8pt">Literature Search</p></i>*@
-                                @*</a>*@
-                            @*</li>*@
-                            @*<li class="item" style="background: #7F171F;border-radius: 50px;">*@
-                                @*<a href="@routes.SuggestionData.suggestion("Processing")">*@
-                                    @*<i class="fa fa-sitemap fa-2x"><br><p style="font-size: 8pt">Processing</p></i>*@
-                                @*</a>*@
-                            @*</li>*@
-                            @*<li class="item" style="background: #B67721;border-radius: 50px;">*@
-                                @*<a href="@routes.SuggestionData.suggestion("Keeping Up-to-date")">*@
-                                    @*<i class="fa fa-refresh fa-2x"><br><p style="font-size: 8pt">Up-to-date</p></i>*@
-                                @*</a>*@
-                            @*</li>*@
-                            @*<li class="item" style="background: #7F5417;border-radius: 50px;">*@
-                                @*<a href="@routes.SuggestionData.suggestion("Publish")">*@
-                                    @*<i class="fa fa-newspaper-o fa-2x"><br><p style="font-size: 8pt">Publish</p></i>*@
-                                @*</a>*@
-                            @*</li>*@
-                            @*<li class="item" style="background: #21B6A8;border-radius: 50px;">*@
-                                @*<a href="@routes.SuggestionData.suggestion("Orientation")">*@
-                                    @*<i class="fa fa-eye fa-2x"><br><p style="font-size: 8pt">Orientation</p></i>*@
-                                @*</a>*@
-                            @*</li>*@
-                            @*<li class="item" style="background: #177F75;border-radius: 50px;">*@
-                                @*<a href="@routes.SuggestionData.suggestion("Exploration")">*@
-                                    @*<i class="fa fa-arrows-alt fa-2x"><br><p style="font-size: 8pt">Exploration</p></i>*@
-                                @*</a>*@
-                            @*</li>*@
-                        @*</ul>*@
-                    @*</div>*@
-                @*</div>*@
             </div>
         </div>
-            @*<script type="text/javascript">*@
-            @*$(".wheel-button").wheelmenu({*@
-            @*animation: "fly",*@
-            @*animationSpeed: "slow"*@
-            @*});*@
-            @*</script>*@
             <!-- jQuery -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" ></script>
             <!--bootstrap-->

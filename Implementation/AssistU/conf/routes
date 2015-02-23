@@ -91,7 +91,6 @@ GET         /guestids                                   controllers.ProjectData.
 
 #Suggestions
 GET         /suggestions                                controllers.Application.suggestions()
-GET         /suggestions/:subject                       controllers.SuggestionData.suggestion(subject: String)
 
 
 
