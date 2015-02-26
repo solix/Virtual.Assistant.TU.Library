@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
   filters,
   "be.objectify"  %% "deadbolt-java"     % "2.3.0-RC1",
   "com.typesafe.play" %% "play-mailer" % "2.4.0",
-//  "com.feth"      %% "play-authenticate" % "0.6.5-SNAPSHOT",
+//  "plugins.feth"      %% "play-authenticate" % "0.6.5-SNAPSHOT",
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.1",
   "org.webjars" % "bootstrap" % "3.2.0",

@@ -1,8 +1,8 @@
 package test;
 
-import com.feth.play.module.pa.PlayAuthenticate;
-import com.feth.play.module.pa.providers.oauth2.OAuth2AuthProvider;
-import com.feth.play.module.pa.user.AuthUser;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.providers.oauth2.OAuth2AuthProvider;
+import plugins.com.feth.play.module.pa.user.AuthUser;
 import org.junit.Before;
 import play.Application;
 import play.Configuration;
@@ -43,7 +43,7 @@ public abstract class OAuth2Test extends WithBrowser {
         return Helpers.fakeApplication(
                 additionalConfiguration,
                 additionalPlugins,
-                Collections.singletonList(service.UserService.class.getName())
+                Collections.singletonList(plugins.service.UserService.class.getName())
         );
     }
 
@@ -68,7 +68,7 @@ public abstract class OAuth2Test extends WithBrowser {
         return PlayAuthenticate.getConfiguration().getConfig(getProviderKey());
     }
 
-    public static class MyTestUserServicePlugin extends service.UserService {
+    public static class MyTestUserServicePlugin extends plugins.service.UserService {
 
         private static AuthUser lastAuthUser;
 

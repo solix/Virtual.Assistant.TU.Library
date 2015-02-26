@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.lang.String;
 import org.apache.commons.io.FileUtils;
 import views.html.discussionFile;
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 
 public class DocumentData extends Controller {
 

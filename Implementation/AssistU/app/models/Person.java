@@ -9,15 +9,15 @@ import com.avaje.ebean.*;
 import java.util.*;
 import java.util.List;
 import com.avaje.ebean.ExpressionList;
-import com.feth.play.module.pa.user.AuthUser;
-import com.feth.play.module.pa.user.AuthUserIdentity;
-import com.feth.play.module.pa.user.EmailIdentity;
-import com.feth.play.module.pa.user.NameIdentity;
-import com.feth.play.module.pa.user.FirstLastNameIdentity;
-import com.feth.play.module.pa.providers.oauth2.OAuth2AuthUser;
-import com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
-import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
-import providers.mendeley.MendeleyAuthUser;
+import plugins.com.feth.play.module.pa.user.AuthUser;
+import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
+import plugins.com.feth.play.module.pa.user.EmailIdentity;
+import plugins.com.feth.play.module.pa.user.NameIdentity;
+import plugins.com.feth.play.module.pa.user.FirstLastNameIdentity;
+import plugins.com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
+import plugins.com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import plugins.providers.localUsernamePassword.LocalUsernamePasswordAuthUser;
+import plugins.providers.mendeley.MendeleyAuthUser;
 
 @Entity
 public class Person extends Model {
@@ -33,6 +33,7 @@ public class Person extends Model {
     public boolean emailValidated;
     public boolean active=false;
     public boolean mendeleyConnected=false;
+    public boolean native_account=false;
 
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -194,6 +195,10 @@ public class Person extends Model {
         person.linkedAccounts = Collections.singletonList(LinkedAccount
                 .create(authUser));
 
+        if (authUser instanceof LocalUsernamePasswordAuthUser) {
+            person.native_account=true;
+        }
+
         if (authUser instanceof EmailIdentity) {
             final EmailIdentity identity = (EmailIdentity) authUser;
 //            Remember, even when getting them from FB & Co., emails should be
@@ -274,6 +279,7 @@ public class Person extends Model {
     }
 
     public static void verify(final Person unverified) {
+        Logger.debug("A USER HAS BEEN VERIFIED: " + unverified.email);
         // You might want to wrap this into a transaction
         unverified.emailValidated = true;
         unverified.save();

@@ -5,7 +5,7 @@ import play.Logger;
 import play.data.*;
 import play.mvc.*;
 import views.html.*;
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 
 import java.lang.String;
 import java.util.*;

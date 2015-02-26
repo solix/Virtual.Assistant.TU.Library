@@ -1,6 +1,8 @@
 package controllers;
 
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.controllers.Authenticate;
+import plugins.com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import models.TokenAction;
 import models.TokenAction.Type;
 import models.Person;
@@ -9,8 +11,8 @@ import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import providers.localUsernamePassword.LocalUsernamePasswordAuthProvider.NativeIdentity;
-import providers.localUsernamePassword.*;
+import plugins.providers.localUsernamePassword.LocalUsernamePasswordAuthProvider.NativeIdentity;
+import plugins.providers.localUsernamePassword.*;
 import views.html.*;
 
 import static play.data.Form.form;
@@ -18,7 +20,7 @@ import static play.data.Form.form;
 public class Signup extends Controller {
 
 	public static Result doSignup() {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		final Form<LocalUsernamePasswordAuthProvider.NativeSignup> filledForm = LocalUsernamePasswordAuthProvider.SIGNUP_FORM
 				.bindFromRequest();
 		if (filledForm.hasErrors()) {
@@ -30,12 +32,12 @@ public class Signup extends Controller {
 		} else if (filledForm.get().first_name.length() + filledForm.get().last_name.length() > 70){
 			return badRequest(signup.render(filledForm, true, "danger", "The length of the combination of your names exceeded our limit"));
 		} else {
-			return com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider.handleSignup(ctx());
+			return UsernamePasswordAuthProvider.handleSignup(ctx());
 		}
 	}
 
 	public static Result unverified() {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "info", "Please verify your email before continuing"));
 	}
 
@@ -65,13 +67,13 @@ public class Signup extends Controller {
 	private static final Form<NativeIdentity> FORGOT_PASSWORD_FORM = form(NativeIdentity.class);
 
 	public static Result forgotPassword() {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		Form<NativeIdentity> form = FORGOT_PASSWORD_FORM;
 		return ok(forgotPassword.render(form, false, "", ""));
 	}
 
 	public static Result doForgotPassword() {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		final Form<NativeIdentity> filledForm = FORGOT_PASSWORD_FORM
 				.bindFromRequest();
 		if (filledForm.hasErrors()) {
@@ -142,7 +144,7 @@ public class Signup extends Controller {
 	}
 
 	public static Result resetPassword(final String token) {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		final TokenAction ta = tokenIsValid(token, Type.PASSWORD_RESET);
 		if (ta == null) {
 			return badRequest(forgotPassword.render(FORGOT_PASSWORD_FORM, true, "danger", "Your link was no longer valid, please try again"));
@@ -155,7 +157,7 @@ public class Signup extends Controller {
 	}
 
 	public static Result doResetPassword() {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		final Form<PasswordReset> filledForm = PASSWORD_RESET_FORM.bindFromRequest();
 		Logger.debug("RESET PASSWORD FORM AFTER: " + filledForm);
 		if (filledForm.hasErrors()  || !filledForm.get().password.equals(filledForm.get().repeatPassword)) {
@@ -196,12 +198,12 @@ public class Signup extends Controller {
 	}
 
 	public static Result oAuthDenied(final String getProviderKey) {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Could not log you in with " + getProviderKey));
 	}
 
 	public static Result exists() {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "There is already a user signed up with this email"));
 	}
 
@@ -211,7 +213,7 @@ public class Signup extends Controller {
 	 * @return
 	 */
 	public static Result verify(final String token) {
-		com.feth.play.module.pa.controllers.Authenticate.noCache(response());
+		Authenticate.noCache(response());
 		final TokenAction ta = tokenIsValid(token, Type.EMAIL_VERIFICATION);
 		if (ta == null) {
 			return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "The link you followed is not valid"));

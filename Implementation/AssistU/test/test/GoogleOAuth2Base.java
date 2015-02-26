@@ -1,11 +1,9 @@
 package test;
 
-import com.feth.play.module.pa.providers.oauth2.google.GoogleAuthProvider;
+import plugins.com.feth.play.module.pa.providers.oauth2.google.GoogleAuthProvider;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static com.feth.play.module.pa.providers.oauth2.OAuth2AuthProvider.SettingKeys.*;
 
 public abstract class GoogleOAuth2Base extends OAuth2Test {
 

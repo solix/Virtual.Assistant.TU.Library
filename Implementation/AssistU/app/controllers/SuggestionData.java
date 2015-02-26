@@ -2,8 +2,7 @@ package controllers;
 
 import models.Person;
 import play.mvc.*;
-import views.html.*;
-import com.feth.play.module.pa.PlayAuthenticate;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 
 /**
  * Created by arnaud on 8-1-15.

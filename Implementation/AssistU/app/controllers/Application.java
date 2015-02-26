@@ -1,20 +1,14 @@
 package controllers;
 
 import models.*;
-import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
-import com.feth.play.module.pa.PlayAuthenticate;
-import com.feth.play.module.pa.user.AuthUser;
-import com.feth.play.module.pa.user.AuthUserIdentity;
-import com.feth.play.module.pa.user.EmailIdentity;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import controllers.routes;
 
 
 public class Application extends Controller {
@@ -85,7 +79,7 @@ public class Application extends Controller {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             List<Task> tasks = Task.ordered(user) ;
-            return ok(task_new.render("My tasks", user, tasks,taskForm));
+            return ok(task.render("My tasks", user, tasks,taskForm));
         }else {
             session().put("callback", routes.Application.task().absoluteURL(request()));
             return Authentication.login();

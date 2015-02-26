@@ -57,6 +57,7 @@ create table person (
   email_validated           boolean,
   active                    boolean,
   mendeley_connected        boolean,
+  native_account            boolean,
   constraint pk_person primary key (id))
 ;
 

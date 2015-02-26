@@ -1,7 +1,5 @@
 package test;
 
-import com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
-
 import static org.fest.assertions.Assertions.assertThat;
 
 public class GoogleOAuth2Test extends GoogleOAuth2Base {
