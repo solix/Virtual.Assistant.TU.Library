@@ -31,7 +31,7 @@ public class Emailer extends Controller {
         email.setFrom("we.assitu@gmail");
         email.addTo(user.email);
         email.setBodyHtml(body.toString());
-//        MailerPlugin.send(email);
+        MailerPlugin.send(email);
 
     }
 
