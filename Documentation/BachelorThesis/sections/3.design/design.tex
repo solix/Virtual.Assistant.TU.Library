@@ -113,31 +113,35 @@ The administrator of the application represents the operator of the system. He c
 
 \section{System Architecture} % (fold)
 \label{sec:system_architecture}
-For the purpose of modularity , Model view controller design(MVC) is adopted for the application. In this section, MVC design of the system is shown in 
-the form of diagram and it's sub-component will be discussed. MVC is chosen to be very suitable for web architecture since it promises low coupling and 
-high cohesion between components of the systems and gives room for easier extension or modification of a specific component.
+For the purpose of modularity, the Model-View-Controller (MVC) design was adopted for the architecture of the application. In this section, the MVC
+design of the system is illustrated in the form of a diagram, whereas its sub-components will also be discussed. MVC has been proven to be very
+suitable for web architecture since it promises low coupling and high cohesion between components of the systems, and provides room for easier
+extension or modification of a specific component.
 \subsection{Architectural Design} % (fold)
 \label{sub:arichtectural_design}
 %
 
-In the app folder of this application, there are three packages defined. namely Model, View and Controller. 
+In the app folder of this application, three packages defined, corresponding to the MVC design. 
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/MVCdiag.png}
 	
 \end{center}
 
-Image above is showing that the system architecture divides into three separate layers. The model which represents the information, The view that makes these information available for the user and Controller that responds to user actions and processes them. \\
-In the next section we will explain more in-dept about each layer and explain what are their sub-components. 
+The image above is showing that the system architecture divides into three separate layers. Firstly the model, which represents the information, 
+secondly the view, that makes these information available for the user, and finally the controller that responds to user actions and processes them. \\
+In the next section we will explain more in-dept about each layer and explain the sub-components and their functions. 
 
 \subsection{Model} % (fold)
 \label{sub:design_rationale}
-The model is meant to keep track of changes in the states of the application such as when user adds new project or make a new event in the calendar then the related model will notifies it's associated view and controller in the application about the changes. There are also bunch of operational method that lies inside the model package and these operations(static methods) are meant to find information on the database and to update certain information upon user or controller actions.
+The model part of the design is meant to keep track of changes in the states of the application, such as (for example) when the user creates a new
+project, or creates a new event in the calendar. When the user performs one of these actions, the model will propagate these changes through the 
+associated views and controllers within the application. The models also contain some operational methods that can be used (as static methods) to find 
+information in the database, and to update certain information upon a user or controller's actions.
 
 \subsubsection{Relational Model Diagram}
 
-In order to give a general overview of system model layer, a graphical representation of Entity Relationship(ER) diagram is designed to show the relationship of entities to each other.
-
-
+In order to give a general overview of the system's model layer, a graphical representation of the Entity Relationship (ER) diagram is illustrated to
+show the relationship that the entities have with each other.
 
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/RMA.png}
@@ -146,11 +150,14 @@ In order to give a general overview of system model layer, a graphical represent
 
 \subsubsection{Model description}
 \paragraph{User}
-User model holds all attributes of a user in the application. Users are identified in the program by their email address which is unique. Almost all the models are dependent on user model because non of the model can exist without existence of a user in the application. User attributes consist of unique email, name, password etc.
+The User model holds all the attributes a user needs within the application. Users are identified in the program by their (verified) email address 
+which is unique. Almost all the models have a direct relation with the User model, as the user is a central component within the application. User 
+attributes consist of an email, a name, etc.
 
 \paragraph{Project}
 
-Project model is another important model since many other models are related to it. User will need to create a project in order to start his/her project. Informations that are mainly processed in this model are name of the project, project creation date, list of members
+The Project model is most likely the second most important model in this application, as many other models are also directly related to it. In fact, 
+the entire application revolves around the user's interactions within a project. Informations that are mainly processed in this model are name of the project, project creation date, list of members
 
 \paragraph{Role}
 
