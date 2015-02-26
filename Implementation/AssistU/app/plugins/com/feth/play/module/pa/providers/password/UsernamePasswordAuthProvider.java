@@ -183,22 +183,10 @@ public abstract class UsernamePasswordAuthProvider<R, UL extends UsernamePasswor
 	protected abstract R generateVerificationRecord(final US user);
 
 	protected void sendVerifyEmailMailing(final Context ctx, final US user) {
-//<<<<<<< HEAD
-//		Logger.debug("This is where you send verification email");
+
 		plugins.providers.localUsernamePassword.LocalUsernamePasswordAuthProvider
 				.sendVerifyEmailMailingAfterSignup(Person.find.where().eq("email", user.getEmail()).eq("native_account", true).findUnique(), ctx);
-//		controllers.Emailer.sendWelcomeMessage();
-//		final String subject = getVerifyEmailMailingSubject(user, ctx);
-//		final R record = generateVerificationRecord(user);
-//		final Body body = getVerifyEmailMailingBody(record, user, ctx);
 
-//		sendMail(subject, body, getEmailName(user));
-//=======
-//		final String subject = getVerifyEmailMailingSubject(user, ctx);
-//		final R record = generateVerificationRecord(user);
-//		final Body body = getVerifyEmailMailingBody(record, user, ctx);
-//		sendMail(subject, body, getEmailName(user));
-//>>>>>>> production_mode
 	}
 
 	/**

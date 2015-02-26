@@ -20,7 +20,7 @@ public class Emailer extends Controller {
      * @param user
      * @param body
      */
-    public static void sendVerifyEmail(String subject, Person user,Mailer.Mail.Body body){
+    public static void sendVerifyEmail(String subject, Person user,Html body){
 
         final Email email = new Email();
         email.setSubject(subject);

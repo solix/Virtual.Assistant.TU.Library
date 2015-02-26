@@ -18,7 +18,7 @@ import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Call;
 import play.mvc.Http.Context;
-
+import views.html.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -377,8 +377,10 @@ public class LocalUsernamePasswordAuthProvider
 		final String subject = getVerifyEmailMailingSubjectAfterSignup(person, ctx);
 
 		final String token = generateVerificationRecord(person);
+		final String url = routes.Signup.verify(token).absoluteURL(
+				ctx.request(), false);
 		final Body body = getVerifyEmailMailingBodyAfterSignup(token, person, ctx);
-		controllers.Emailer.sendVerifyEmail(subject, person, body);
+		controllers.Emailer.sendVerifyEmail(subject, person, views.html.email.verify_email_en.render(url,token,person.name,person.email));
 	}
 
 	private String getEmailName(final Person person) {
