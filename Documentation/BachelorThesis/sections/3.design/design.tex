@@ -157,31 +157,36 @@ attributes consist of an email, a name, etc.
 \paragraph{Project}
 
 The Project model is most likely the second most important model in this application, as many other models are also directly related to it. In fact, 
-the entire application revolves around the user's interactions within a project. Informations that are mainly processed in this model are name of the project, project creation date, list of members
+the entire application revolves around the user's interactions within a project. The main attributes that the Project model contains are the name of 
+the project, the project creation date, the list of members and a few others.
 
 \paragraph{Role}
 
-Role model is designed in order to distinguish between users involving in the project. User can only take one role in the project. 
+The Role model is designed in order to distinguish what type of relation a user has to a project. The Role model holds the type of role a user has 
+within a given project, the join date, and a boolean that indicates whether a User has either been invited, or has already confirmed the invitation. A
+User can only take one role in the project at a time. 
 
 \paragraph{Task} % (fold)
-As it appears from its name, Task holds to-do information of a specific user. Single task has name , and due date and a boolean variable to know if user has completed the task.
+The Task model holds information about a task of a specific user. It keeps track of the name (can also be considered description), due date and a 
+boolean variable that indicates whether a User has completed the task.
 
 \paragraph{Calendar} % (fold)
 
-Calendar creates an event for a user. It is meant for the user to have complete planning for the project. An event consist of name, description, start date and end date. 
-
+The Calendar model holds information about an event for a user. An event is a basic part that builds up a planning for a project. It consist of a name,
+a description, and a start and end date. 
 
 \paragraph{Discussion} % (fold)
- Members of the project needs to discuss their project , This model will hold such a information. It has a subject and description with time stamp to keep track of time-line of the discussions. 
-
+Members of a project should be able to discuss issues about their project. The Discussion model is designed to keep track of relevant data concerning a 
+discussion. It contains a subject and description, with a time stamp to keep track of when a message has been posted. 
 
 \paragraph{Document Files} % (fold)
-
-Document files holds information on the version and name of the specific file that is uploaded in the project. any file that is uploaded will have a unique version and this is how files with the same name are identified among project.
-
+The Document file model holds information about the version and name of a specific file that is uploaded into a project. Any file that is uploaded is 
+assigned a unique version number, meant to identify files with the same name in the same project. It also contains the data of the user that uploaded
+the file, and a link to where the uploaded file is stored.
 
 \subsection{View} % (fold)
-View is the gate for the user to interact with the application. Design of the View layer is simple and minimalistic. Image snapshot of view's sub-components are shown next.
+The View part of the MVC architecture is the gate for the user to interact with the application. The design of the View layer is designed to be simple
+and minimalistic. An image snapshot of the view's sub-components are shown next.
 \subsubsection{Login}
 
 \begin{center}
@@ -230,10 +235,6 @@ View is the gate for the user to interact with the application. Design of the Vi
 	
 \end{center}
 
-
-
-
-
 \subsection{Controller}
-
-Controllers are the brain of the application, It will handle the request that is requested by the user from view and responds to it accordingly. At time controller might need to update the model if there is any change in the state of the information.
+The Controllers are the brain of the application. They handle all the requests committed by users from the view part, and responds to it accordingly.
+The Controller are also responsible to update the models if there is any change in the state of the information.
