@@ -1,5 +1,6 @@
 package plugins.service;
 
+import play.Logger;
 import plugins.com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
@@ -49,6 +50,7 @@ public class UserService extends UserServicePlugin {
 
     @Override
     public AuthUser update(final AuthUser knownUser) {
+        Logger.debug(knownUser.getProvider());
         Person.update(knownUser);
         // User logged in again, bump last login date
 //        User.setLastLoginDate(knownUser);

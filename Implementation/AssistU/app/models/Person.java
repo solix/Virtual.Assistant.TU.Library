@@ -74,54 +74,16 @@ public class Person extends Model {
 //    }
 
     public static Person update(final AuthUser authUser) {
+//        Person person = Person.findByEmail();
         final Person person = Person.findByAuthUserIdentity(authUser);
 //        Logger.debug("USER FOR UPDATING: " + person.name);
-        person.active = true;
-//        user.linkedAccounts = Collections.singletonList(LinkedAccount
-//                .create(authUser));
+        if(authUser instanceof MendeleyAuthUser){
 
-//        if (authUser instanceof EmailIdentity) {
-//            final EmailIdentity identity = (EmailIdentity) authUser;
-//            Remember, even when getting them from FB & Co., emails should be
-//            verified within the application as a security breach there might
-//            break your security as well!
-//            user.email = identity.getEmail();
-//            user.emailValidated = false;
-//        }
+        }
 
-//        if (authUser instanceof NameIdentity) {
-//            final NameIdentity identity = (NameIdentity) authUser;
-//            final String name = identity.getName();
-//            if (name != null) {
-//                user.name = name;
-//            }
-//        }
-
-//        if (authUser instanceof FirstLastNameIdentity) {
-//            final FirstLastNameIdentity identity = (FirstLastNameIdentity) authUser;
-//            final String first_name = identity.getFirstName();
-//            if(first_name != null){
-//                user.first_name = first_name;
-//            }
-//            final String last_name = identity.getLastName();
-//            if(last_name != null){
-//                user.last_name = last_name;
-//            }
-//        }
-
-
-        //This is for extra provider-specific information
-
-//        if(authUser instanceof GoogleAuthUser){
-
-//        }
-
-//        if(authUser instanceof MendeleyAuthUser){
-
-//        }
-
-        person.save();
-        return person;
+//        person.save();
+//        return person;
+        return null;
     }
 
     public static boolean existsByAuthUserIdentity(
