@@ -1,3 +1,4 @@
+import models.Person;
 import play.*;
 import play.mvc.*;
 
@@ -6,10 +7,11 @@ import play.GlobalSettings;
 
 import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import plugins.com.feth.play.module.pa.PlayAuthenticate.Resolver;
-import plugins.com.feth.play.module.pa.exceptions.AccessDeniedException;
-import plugins.com.feth.play.module.pa.exceptions.AuthException;
+import plugins.com.feth.play.module.pa.exceptions.*;
 
 import controllers.routes;
+import plugins.providers.localUsernamePassword.LocalUsernamePasswordAuthProvider;
+import views.html.login;
 
 
 /**
@@ -61,11 +63,13 @@ public class Global extends GlobalSettings {
 
                 @Override
                 public Call onException(final AuthException e) {
-                    Logger.debug("you're in an exception, LOL");
+                    Logger.debug("EXCEPTION: " + e.toString());
                     if (e instanceof AccessDeniedException) {
                         return routes.Authentication.OAuthDenied(((AccessDeniedException) e).getProviderKey());
                     }
-
+                    if(e instanceof AuthException && e.getMessage().equals("playauthenticate.core.exception.signupuser_failed")){
+                        return routes.Authentication.loginWithMessage("You already have a default account","danger");
+                    }
                     // more custom problem handling here...
 
                     return super.onException(e);

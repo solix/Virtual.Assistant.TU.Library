@@ -30,7 +30,7 @@ public class Person extends Model {
     public String first_name;
     public String last_name;
     public String password;
-    public boolean emailValidated;
+    public boolean emailValidated=false;
     public boolean active=false;
     public boolean mendeleyConnected=false;
     public boolean native_account=false;
@@ -51,13 +51,6 @@ public class Person extends Model {
     public List<Role> roles= new ArrayList<Role>();
     @OneToMany(mappedBy = "person")
     public List<Comment> comments=new ArrayList<Comment>();
-
-//    public User(String name, String email, String password) {
-//        this.name=name;
-//        this.email = email;
-//        this.password = password;
-//        this.active= true;
-//    }
 
     public static Model.Finder<Long, Person> find = new Model.Finder(
             Long.class, Person.class
@@ -190,6 +183,13 @@ public class Person extends Model {
      * @return user
      */
     public static Person create(final AuthUser authUser) {
+        //This application should only support email-type of authentication
+        String email = ((EmailIdentity)authUser).getEmail();
+        Person old = Person.find.where().eq("email", email).findUnique();
+        if(old != null){
+            TokenAction.find.where().eq("targetPerson", old).findUnique().delete();
+            Person.deleteAccount(old.id);
+        }
         final Person person = new Person();
         person.active = true;
         person.linkedAccounts = Collections.singletonList(LinkedAccount
@@ -227,7 +227,6 @@ public class Person extends Model {
                 person.last_name = last_name;
             }
         }
-
 
         //This is for extra provider-specific information
 

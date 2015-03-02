@@ -1,5 +1,6 @@
 package plugins.service;
 
+import plugins.com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
 import plugins.com.feth.play.module.pa.service.UserServicePlugin;
@@ -31,7 +32,16 @@ public class UserService extends UserServicePlugin {
     public Object save(final AuthUser authUser) {
         final boolean isLinked = Person.existsByAuthUserIdentity(authUser);
         if(!isLinked){
-            return Person.create(authUser);
+            if(authUser instanceof GoogleAuthUser){
+                GoogleAuthUser gUser = (GoogleAuthUser)authUser;
+                if(Person.find.where().eq("email", gUser.getEmail()).eq("emailValidated", true).findUnique() != null){
+                    return null;
+                } else {
+                    return Person.create(authUser);
+                }
+            } else {
+                return Person.create(authUser);
+            }
         }else{
             return null;
         }

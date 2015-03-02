@@ -67,11 +67,11 @@ public class Authentication extends Controller {
         return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, "", ""));
     }
 
-    public static Result relogin() {
+    public static Result loginWithMessage(String message, String theme) {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
             OAuthLogout();
-        return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "Your credentials did not match any user"));
+        return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, theme, message));
     }
 
     /**

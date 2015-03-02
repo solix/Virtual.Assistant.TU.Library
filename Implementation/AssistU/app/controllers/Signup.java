@@ -29,8 +29,11 @@ public class Signup extends Controller {
 			return badRequest(signup.render(filledForm, true, "danger", "Your passwords were not the same"));
 		} else if (!Application.allowedNameRegex(filledForm.get().first_name) || !Application.allowedNameRegex(filledForm.get().last_name)){
 			return badRequest(signup.render(filledForm, true, "danger", "Your names were invalid. Only letters separated with '-'s are allowed"));
-		} else if (filledForm.get().first_name.length() + filledForm.get().last_name.length() > 70){
+		} else if (filledForm.get().first_name.length() + filledForm.get().last_name.length() > 70) {
 			return badRequest(signup.render(filledForm, true, "danger", "The length of the combination of your names exceeded our limit"));
+		} else if (Person.find.where().eq("emailValidated", true).eq("email", filledForm.get().email).findUnique() != null){
+			String provider = Person.findByEmail(filledForm.get().email).linkedAccounts.get(0).providerKey;
+			return badRequest(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, true, "danger", "You already have a " + provider + " account"));
 		} else {
 			return UsernamePasswordAuthProvider.handleSignup(ctx());
 		}
