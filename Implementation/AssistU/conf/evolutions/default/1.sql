@@ -92,6 +92,7 @@ create table s3file (
   filepath                  varchar(255),
   project_id                bigint,
   person_id                 bigint,
+  version                   bigint not null,
   constraint pk_s3file primary key (id))
 ;
 

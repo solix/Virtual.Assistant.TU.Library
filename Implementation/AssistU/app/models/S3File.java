@@ -29,8 +29,8 @@ public class S3File extends Model {
     public boolean owntemplate=false;
     public String filepath;
 
-//    @Version
-//    public Long version=0L;
+    @Version
+    public Long version=0L;
 
     @ManyToOne
     public Project project;
