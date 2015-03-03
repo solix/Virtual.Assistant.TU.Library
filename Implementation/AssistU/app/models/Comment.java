@@ -5,6 +5,9 @@ import javax.persistence.*;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ChatMessage model class
  *
@@ -25,6 +28,9 @@ public class Comment extends Model {
     public Person person;
     @ManyToOne
     public Project project;
+
+    @ManyToMany
+    public List<Person> seenBy = new ArrayList<Person>();
 
     public boolean isChild =false;
 

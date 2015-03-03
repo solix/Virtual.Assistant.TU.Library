@@ -77,6 +77,7 @@ GET         /project/downloadownTemplate/:fileid        controllers.DocumentData
 
 #discussion
 GET         /discussions                                controllers.Application.discussion()
+GET         /discussion/seen/:cid                       controllers.DiscussionData.seen(cid: Long)
 GET         /discussion/:pid                            controllers.DiscussionData.discussion(pid: Long)
 GET         /chatFeed/:project                          controllers.DiscussionData.chatFeed(project: String)
 POST        /chat                                       controllers.DiscussionData.postMessage()

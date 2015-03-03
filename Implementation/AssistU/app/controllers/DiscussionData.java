@@ -1,5 +1,8 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Query;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
@@ -14,6 +17,7 @@ import play.mvc.Result;
 
 import static play.libs.Json.toJson;
 
+import java.beans.Expression;
 import java.util.*;
 
 import com.feth.play.module.pa.PlayAuthenticate;
@@ -40,6 +44,14 @@ public class DiscussionData extends Controller {
             session().put("callback", routes.DiscussionData.discussion(pid).absoluteURL(request()));
             return Authentication.login();
         }
+    }
+
+    public static Result seen(Long cid){
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Comment c = Comment.find.byId(cid);
+        c.seenBy.add(person);
+        c.save();
+        return discussion(c.project.id);
     }
 
     /** Keeps track of all connected browsers per room **/
@@ -214,6 +226,18 @@ public class DiscussionData extends Controller {
             }
         }
         return ok(toJson(comments));
+    }
+
+    /**
+     * list all the comments
+     * @return
+     */
+    public static List<Comment> allNewComments(Person person){
+        List<Project> projects = PersonData.findActiveProjects();
+        List<Comment> seenComments = Comment.find.where().in("project", projects).ne("person", person).in("seenBy", person).orderBy("date asc").findList();
+        List<Comment> allComments = Comment.find.where().in("project", projects).ne("person", person).orderBy("date asc").findList();
+        allComments.removeAll(seenComments);
+        return allComments;
     }
 
     /**
