@@ -13,7 +13,14 @@ import java.util.regex.Pattern;
 
 public class Application extends Controller {
 
-
+    /**
+     * The reroute function checks if there is a link stored within the session
+     * for the key 'callback'. When a user tries to perform an action or access
+     * a page without having a valid session (i.e. he is not logged in), the url
+     * gets saved in the session under this key. The login function then calls this
+     * function to find out what user tried to access before.
+     * @return Result
+     */
     public static Result reroute(){
         String route = session("callback");
         if (route != null) {
@@ -23,9 +30,9 @@ public class Application extends Controller {
     }
 
     /**
-     * index view
-     *
-     * @return
+     * This function either shows the index page, or redirects the user to the login
+     * page if he is not logged in.
+     * @return Result
      */
     public static Result index() {
 
@@ -38,10 +45,11 @@ public class Application extends Controller {
         }
     }
 
-
-
-
-
+    /**
+     * This function either shows the project page, or redirects the user to the login
+     * page if he is not logged in.
+     * @return Result
+     */
     public static Result project() {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
@@ -53,8 +61,9 @@ public class Application extends Controller {
     }
 
     /**
-     * chat page
-     * @return
+     * This function either shows the discussion page, or redirects the user to the login
+     * page if he is not logged in.
+     * @return Result
      */
     public static Result discussion() {
 
@@ -67,15 +76,14 @@ public class Application extends Controller {
         }
     }
 
-    /**
-     *Task view
-     *
-     * @return
-     */
     private static Form<Task> taskForm = Form.form(Task.class);
 
+    /**
+     * This function either shows the task page, or redirects the user to the login
+     * page if he is not logged in.
+     * @return Result
+     */
     public static Result task() {
-
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             List<Task> tasks = Task.ordered(user) ;
@@ -87,8 +95,9 @@ public class Application extends Controller {
     }
 
     /**
-     * suggestion page
-     * @return
+     * This function either shows the suggestions page, or redirects the user to the login
+     * page if he is not logged in.
+     * @return Result
      */
     public static Result suggestions() {
 
@@ -101,13 +110,23 @@ public class Application extends Controller {
         }
     }
 
+    /**
+     * This function validates text intended for titles based on a static regex
+     * @param input the input string that needs validating
+     * @return a boolean that indicates a match
+     */
     public static Boolean allowedTitleRegex(String input){
-        final String regex = "([a-zA-Z]+)( {1}([a-zA-Z0-9]+))*";
+        final String regex = "([a-zA-Z0-9]+)( {1}([a-zA-Z0-9]+))*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
         return m.matches();
     }
 
+    /**
+     * This function validates text intended for names based on a static regex
+     * @param input the input string that needs validating
+     * @return a boolean that indicates a match
+     */
     public static Boolean allowedNameRegex(String input){
         final String regex = "([a-zA-Z]+)(-{1}([a-zA-Z]+))*";
         Pattern p = Pattern.compile(regex);

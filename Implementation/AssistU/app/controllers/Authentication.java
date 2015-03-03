@@ -21,14 +21,15 @@ public class Authentication extends Controller {
     public static final String FLASH_ERROR_KEY = "error";
     public static final String USER_ROLE = "user";
 
+    /**
+     * This function catches the login form, checks it and then passes it for handling.
+     * @return Result
+     */
     public static Result doLogin() {
         Authenticate.noCache(response());
         final Form<LocalUsernamePasswordAuthProvider.NativeLogin> filledForm = LocalUsernamePasswordAuthProvider.LOGIN_FORM
                 .bindFromRequest();
         if (filledForm.hasErrors()) {
-            // User did not fill everything properly
-//            return badRequest(home.render("Could not log you in", null, true, "danger",
-//                    "The combination of your email and password did not match any account"));
             return ok(login.render(filledForm, true, "danger", "Your credentials did not match any user"));
         } else {
             // Everything was filled
@@ -37,28 +38,8 @@ public class Authentication extends Controller {
     }
 
     /**
-     * inner class login
-     */
-//    public static class Login {
-//        public  String email;
-//        public  String password;
-//        /**
-//         * validate the form
-//         */
-//        public String validate(){
-//            if(User.authenticate(email,password) == null){
-//                return "invalid user name or password";
-//            }
-//            return null;
-//        }
-//    }
-
-//    private static final Form<Login> loginform = Form.form(Login.class);
-
-    /**
-     * login page
-     *
-     * @return
+     * This function renders a blank login page
+     * @return Result
      */
     public static Result login() {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -67,6 +48,11 @@ public class Authentication extends Controller {
         return ok(login.render(LocalUsernamePasswordAuthProvider.LOGIN_FORM, false, "", ""));
     }
 
+    /**
+     * This function also renders the login, but with a warning. This function gets called from
+     * the authentication library when it could authenticate a user.
+     * @return Result
+     */
     public static Result loginWithMessage(String message, String theme) {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(person != null)
@@ -75,9 +61,8 @@ public class Authentication extends Controller {
     }
 
     /**
-     * signup page
-     *
-     * @return
+     * This function renders the signup page
+     * @return Result
      */
     public static Result signup() {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
@@ -91,19 +76,10 @@ public class Authentication extends Controller {
     }
 
     /**
-     * authenticate the user
+     * The function retrieves the Person model from the session
+     * @param session: the session of the browser
+     * @return Person
      */
-//    public static Result authenticate(){
-//        Form<Login> signinform = loginform.bindFromRequest();
-//        if(signinform.hasErrors()){
-//            return badRequest(login.render(loginform));
-//        }else {
-//            session().clear();
-//            session("email" , signinform.get().email);
-//            return redirect(routes.Application.index());
-//        }
-//    }
-
     public static Person getLocalUser(final Http.Session session) {
         final AuthUser currentAuthUser = PlayAuthenticate.getUser(session);
         final Person localPerson = Person.findByAuthUserIdentity(currentAuthUser);

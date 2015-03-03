@@ -24,6 +24,9 @@ import static play.test.Helpers.start;
  */
 public class DiscussionTest extends WithApplication {
 
+    /**
+     * This test tests the discussion functionality
+     */
     @Test
     public void discussion_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {

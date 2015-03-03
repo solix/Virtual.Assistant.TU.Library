@@ -56,6 +56,13 @@ public class Event extends Model {
     }
 
 
+    /**
+     * eventlist for certain users in the specific date range
+     * @param start
+     * @param end
+     * @param person
+     * @return event list
+     */
     public static List<Event> findInDateRange(Date start, Date end, Person person) {
 
 
@@ -117,6 +124,7 @@ public class Event extends Model {
     /**
      * Creates full planning for writing an article article owners of the project
      *
+     * This is an static method to fill up events on the calendar
      */
     public static void defaultPlanningArticle(Person person,Project p){
         Date startDate = p.dateCreated;

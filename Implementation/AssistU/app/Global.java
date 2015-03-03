@@ -36,7 +36,6 @@ public class Global extends GlobalSettings {
                 public Call login() {
                     Logger.debug("loading login");
                     // Your login page
-//                    return routes.Authentication.relogin();
                     return routes.Application.reroute();
                 }
 
@@ -44,7 +43,6 @@ public class Global extends GlobalSettings {
                 public Call afterAuth() {
                     // The user will be redirected to this page after authentication
                     // if no original URL was saved
-//                    return routes.Application.index();
                     return routes.Application.reroute();
                 }
 

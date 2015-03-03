@@ -21,6 +21,9 @@ import static play.test.Helpers.start;
  */
 public class PersonTest extends WithApplication {
 
+    /**
+     * This test tests the deleting a user functionality
+     */
     @Test
     public void delete_user_test() {
         running(fakeApplication(new play.GlobalSettings()), new Runnable() {

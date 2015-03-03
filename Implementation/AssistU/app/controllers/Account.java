@@ -9,8 +9,12 @@ import play.mvc.Controller;
 
 import static play.data.Form.form;
 
-//import views.html.account.*;
-
+/**
+ * This class is the controller for all account-related actions.
+ * Most functions in this class are commented as they were part
+ * of a sample provided by the authentication plugin, can still be
+ * used in future releases, but have no functionality in this version.
+ */
 public class Account extends Controller {
 
 	public static class Accept {

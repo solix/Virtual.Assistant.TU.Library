@@ -42,12 +42,21 @@ private static final Form<Task> tForm = Form.form(Task.class);
         }
     }
 
+    /**
+     * returns all existing tasks
+     * @return Result
+     */
     public static Result getTasks(){
         List<Task> tasks= Task.find.all();
 
         return ok(toJson(tasks));
     }
 
+    /**
+     * Deletes a task
+     * @param id: ID of the task
+     * @return Result
+     */
     public static Result deleteTask(long id){
 
         Task t = Task.find.byId(id);
@@ -57,6 +66,11 @@ private static final Form<Task> tForm = Form.form(Task.class);
 
     }
 
+    /**
+     * mark a task as done
+     * @param id: ID of the tast
+     * @return Result
+     */
     public static Result doneTask(long id){
 
         Task t = Task.find.byId(id);
@@ -67,6 +81,11 @@ private static final Form<Task> tForm = Form.form(Task.class);
 
     }
 
+    /**
+     * Undo the done task
+     * @param id: ID of the task
+     * @return Result
+     */
     public static Result undoTask(long id){
 
         Task t = Task.find.byId(id);

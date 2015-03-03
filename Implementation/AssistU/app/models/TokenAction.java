@@ -52,13 +52,27 @@ public class TokenAction extends Model {
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date expires;
 
+	/**
+	 * finder to make queries in db
+	 */
 	public static final Finder<Long, TokenAction> find = new Finder<Long, TokenAction>(
 			Long.class, TokenAction.class);
 
+	/**
+	 * find by token
+	 * @param token
+	 * @param type
+	 * @return
+	 */
 	public static TokenAction findByToken(final String token, final Type type) {
 		return find.where().eq("token", token).eq("type", type).findUnique();
 	}
 
+	/**
+	 * delete token actions
+	 * @param u
+	 * @param type
+	 */
 	public static void deleteByUser(final Person u, final Type type) {
 		QueryIterator<TokenAction> iterator = find.where()
 				.eq("targetPerson.id", u.id).eq("type", type).findIterate();
@@ -66,10 +80,21 @@ public class TokenAction extends Model {
 		iterator.close();
 	}
 
+	/**
+	 * if date is still valid
+	 * @return
+	 */
 	public boolean isValid() {
 		return this.expires.after(new Date());
 	}
 
+	/**
+	 * creates a token action
+	 * @param type
+	 * @param token
+	 * @param targetPerson
+	 * @return
+	 */
 	public static TokenAction create(final Type type, final String token,
 			final Person targetPerson) {
 		final TokenAction ua = new TokenAction();
