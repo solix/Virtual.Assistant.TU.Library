@@ -27,7 +27,7 @@
                 @if(DiscussionData.allNewComments(currentUser).size() == 0){
                     <li>
                         <a href="@routes.Application.discussion()">
-                            <div><strong>No Comments</strong></div>
+                            <div><strong>No New Comments</strong></div>
                             <div>
                                 Nothing to see here!
                             </div>
@@ -39,6 +39,9 @@
                     <li>
                         <a href="@routes.DiscussionData.seen(comment.cid)">
                             <div>
+                                <small class="pull-right text-muted" style="margin: 2px">
+                                    <i class="fa fa-clock-o fa-fw" title="@comment.date"></i>
+                                </small>
                                 <strong>@comment.subject</strong>
                                 @if(comment.content.size <= 10){
                                     <p>@comment.person.name says: @comment.content</p>
