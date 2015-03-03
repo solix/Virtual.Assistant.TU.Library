@@ -48,10 +48,16 @@ public class DiscussionData extends Controller {
 
     public static Result seen(Long cid){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        Comment c = Comment.find.byId(cid);
-        c.seenBy.add(person);
-        c.save();
-        return discussion(c.project.id);
+        if(person != null) {
+            Comment c = Comment.find.byId(cid);
+            c.seenBy.add(person);
+            c.save();
+            return discussion(c.project.id);
+        }else {
+            //User did not have a session
+            session().put("callback", routes.DiscussionData.seen(cid).absoluteURL(request()));
+            return Authentication.login();
+        }
     }
 
     /** Keeps track of all connected browsers per room **/
