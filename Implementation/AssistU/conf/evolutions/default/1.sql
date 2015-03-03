@@ -47,6 +47,14 @@ create table linked_account (
   constraint pk_linked_account primary key (id))
 ;
 
+create table mendeley_document (
+  id                        varchar(255) not null,
+  title                     varchar(255),
+  type                      varchar(255),
+  year                      varchar(255),
+  constraint pk_mendeley_document primary key (id))
+;
+
 create table person (
   id                        bigint not null,
   email                     varchar(255),
@@ -106,6 +114,12 @@ create table token_action (
   constraint pk_token_action primary key (id))
 ;
 
+
+create table mendeley_document_person (
+  mendeley_document_id           varchar(255) not null,
+  person_id                      bigint not null,
+  constraint pk_mendeley_document_person primary key (mendeley_document_id, person_id))
+;
 create sequence comment_seq;
 
 create sequence document_file_seq;
@@ -113,6 +127,8 @@ create sequence document_file_seq;
 create sequence event_seq;
 
 create sequence linked_account_seq;
+
+create sequence mendeley_document_seq;
 
 create sequence person_seq;
 
@@ -147,6 +163,10 @@ create index ix_token_action_targetPerson_10 on token_action (target_person_id);
 
 
 
+alter table mendeley_document_person add constraint fk_mendeley_document_person_m_01 foreign key (mendeley_document_id) references mendeley_document (id) on delete restrict on update restrict;
+
+alter table mendeley_document_person add constraint fk_mendeley_document_person_p_02 foreign key (person_id) references person (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
@@ -158,6 +178,10 @@ drop table if exists document_file;
 drop table if exists event;
 
 drop table if exists linked_account;
+
+drop table if exists mendeley_document;
+
+drop table if exists mendeley_document_person;
 
 drop table if exists person;
 
@@ -178,6 +202,8 @@ drop sequence if exists document_file_seq;
 drop sequence if exists event_seq;
 
 drop sequence if exists linked_account_seq;
+
+drop sequence if exists mendeley_document_seq;
 
 drop sequence if exists person_seq;
 

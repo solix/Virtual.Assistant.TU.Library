@@ -63,6 +63,12 @@ public class PersonData extends Controller {
         return p;
     }
 
+    public static MendeleyDocument createMendeleyDocument(String id, String title, String type, List<String> authors_new, String year){
+        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        MendeleyDocument mendeley_document = MendeleyDocument.create(id, person.id, title, type, authors_new, year);
+        return mendeley_document;
+    }
+
     public static Result deleteAccount(){
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {

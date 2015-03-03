@@ -2,6 +2,8 @@ package models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import controllers.PersonData;
 import play.Logger;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
@@ -47,6 +49,9 @@ public class Person extends Model {
     @OneToMany(mappedBy = "person")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
 
+    @ManyToMany(mappedBy = "persons")
+    public List<MendeleyDocument> mendeleydocuments = new ArrayList<MendeleyDocument>();
+
     @OneToMany(mappedBy = "person")
     public List<Role> roles= new ArrayList<Role>();
     @OneToMany(mappedBy = "person")
@@ -74,16 +79,29 @@ public class Person extends Model {
 //    }
 
     public static Person update(final AuthUser authUser) {
-//        Person person = Person.findByEmail();
         final Person person = Person.findByAuthUserIdentity(authUser);
-//        Logger.debug("USER FOR UPDATING: " + person.name);
         if(authUser instanceof MendeleyAuthUser){
-
+            person.mendeleyConnected=true;
+            person.mendeleydocuments.clear();
+            for(JsonNode doc : ((MendeleyAuthUser) authUser).getDocuments()){
+                MendeleyDocument mendeley_doc = MendeleyDocument.find.where().eq("id", doc.get("id").asText()).findUnique();
+                if(mendeley_doc == null){
+                    List<String> authors = new ArrayList<String>();
+                    for(JsonNode author : doc.get("authors")){
+                        authors.add(author.get("last_name").asText());
+                    }
+                    mendeley_doc = PersonData.createMendeleyDocument(
+                            doc.get("id").asText(),
+                            doc.get("title").asText(),
+                            doc.get("type").asText(),
+                            authors,
+                            doc.get("year").asText());
+                }
+                person.mendeleydocuments.add(mendeley_doc);
+            }
         }
-
-//        person.save();
-//        return person;
-        return null;
+        person.save();
+        return person;
     }
 
     public static boolean existsByAuthUserIdentity(

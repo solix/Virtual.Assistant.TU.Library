@@ -1,6 +1,12 @@
 package plugins.providers.mendeley;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import controllers.PersonData;
+import models.MendeleyDocument;
+import models.Person;
+import play.data.*;
+import play.mvc.*;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import plugins.com.feth.play.module.pa.providers.oauth2.BasicOAuth2AuthUser;
 import plugins.com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
 import plugins.com.feth.play.module.pa.user.FirstLastNameIdentity;
@@ -8,6 +14,9 @@ import plugins.com.feth.play.module.pa.user.PicturedIdentity;
 import plugins.com.feth.play.module.pa.user.EmailIdentity;
 import plugins.com.feth.play.module.pa.user.ProfiledIdentity;
 import play.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by arnaud on 18-12-14.
@@ -48,10 +57,12 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
     private String discipline;
     private String profile_pic;
     private Boolean email_verified; //TODO: should not matter, safer is to reverify here too
-    private String documents;
+    private JsonNode documents;
 
     public MendeleyAuthUser(final JsonNode node, final OAuth2AuthInfo info, final String state) {
         super(node.get(Constants.ID).asText(), info, state);
+
+        Logger.debug("THIS IS IN THE NODE: " + node.toString());
 
         if (node.has(Constants.NAME)) {
             this.name = node.get(Constants.NAME).asText();
@@ -81,8 +92,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
             this.email_verified = node.get(Constants.EMAIL_VERIFIED).asBoolean();
         }
         if (node.has(Constants.DOCUMENTS)) {
-            this.documents = node.get(Constants.DOCUMENTS).asText();
-            Logger.debug("DOCUMENTS: " + documents);
+            this.documents = node.get(Constants.DOCUMENTS);
         }
     }
 
@@ -124,7 +134,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
         return profile_pic;
     }
 
-    public String getDocuments() {return documents;}
+    public JsonNode getDocuments() {return documents;}
 
     @Override
     public String getEmail() {

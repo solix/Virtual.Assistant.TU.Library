@@ -50,7 +50,7 @@ public class UserService extends UserServicePlugin {
 
     @Override
     public AuthUser update(final AuthUser knownUser) {
-        Logger.debug(knownUser.getProvider());
+        Logger.debug("IS NULL: " + (knownUser == null));
         Person.update(knownUser);
         // User logged in again, bump last login date
 //        User.setLastLoginDate(knownUser);
@@ -104,7 +104,8 @@ public class UserService extends UserServicePlugin {
      */
     @Override
     public AuthUser link(final AuthUser oldUser, final AuthUser newUser) {
-        return null;
+        Person.addLinkedAccount(oldUser, newUser);
+        return newUser;
     }
 
 //    public String getLocalEmail(final Auth)
