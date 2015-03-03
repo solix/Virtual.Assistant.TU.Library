@@ -30,7 +30,7 @@
                                                 <i>download @p.template from here</i>
                                                 @if(p.template.equals("Own")) {
                                                     <a href="@{
-                                                        routes.DocumentData.downloadOwnTemplate(p.id)
+                                                        S3File.downloadOwnTemplate(p.id)
                                                     }" title="Download the @p.template template">
                                                         <i class="fa fa-cloud-download fa-fw"></i>
                                                     </a>

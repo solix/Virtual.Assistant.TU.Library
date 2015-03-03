@@ -79,4 +79,12 @@ public class S3File extends Model {
         }
     }
 
+
+    public static URL downloadOwnTemplate(Long pid) throws java.net.MalformedURLException{
+
+        Project project = Project.find.byId(pid);
+        S3File s3files= S3File.find.where().eq("project", project).eq("owntemplate", true).findUnique();
+        return s3files.getUrl();
+    }
+
 }

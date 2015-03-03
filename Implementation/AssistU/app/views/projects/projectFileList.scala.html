@@ -21,11 +21,11 @@
                             <td style="text-align : center">
                                 <a href="@upload.getUrl" ><i class="fa fa-download fa-fw"></i></a>
                                 |
-                            @*<a href="@routes.DocumentData.documentDiscussion(upload.id)"><i class="fa fa-comment fa-fw"></i></a>*@
-@*//                               @if(upload.person.equals(currentUser)){*@
-                                    @*|*@
-                                    @*<a style="color: red" href="#" data-toggle="modal" data-target="#deleteFile@upload.id.version()"><i class="fa fa-close fa-fw"></i></a>*@
-                              @*}*@
+                          <a href="@routes.DocumentData.documentDiscussion(upload.id)"><i class="fa fa-comment fa-fw"></i></a>
+                            @if(upload.person.equals(currentUser)){
+                                    |
+                                    <a style="color: red" href="#" data-toggle="modal" data-target="#deleteFile@upload.id.version()"><i class="fa fa-close fa-fw"></i></a>
+                              }
                             </td>
                         </tr>
                     }
@@ -36,15 +36,15 @@
         }
         @uploads.map { f =>
             @*Delete Document Confirmation Modal*@
-@*//            @template.smallmodal("deleteFile" + f.id.toString)("danger")("Deleting " + f.name) {*@
-                @*<p style="text-align : center">Are you sure you want to delete @f.name?</p>*@
-                @*<div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">*@
-                    @*<a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>*@
-                @*</div>*@
-                @*<div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">*@
-                    @*<a type="submit" class="btn btn-danger col-xs-12" href="@routes.DocumentData.deleteDocument(f.id)">*@
-                        @*Delete!</a>*@
-                @*</div>*@
-            @*}*@
+           @template.smallmodal("deleteFile" + f.id.version())("danger")("Deleting " + f.name) {
+                <p style="text-align : center">Are you sure you want to delete @f.name?</p>
+                <div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">
+                   <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
+                </div>
+                <div class="btn-group col-xs-6" role="group" style="margin : 20 px 0 px 0 px 0 px">
+                    <a type="submit" class="btn btn-danger col-xs-12" href="@routes.DocumentData.deleteDocument(f.id)">
+                        Delete!</a>
+                </div>
+           }
         }
     }
