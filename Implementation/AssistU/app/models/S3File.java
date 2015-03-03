@@ -87,4 +87,12 @@ public class S3File extends Model {
         return s3files.getUrl();
     }
 
+
+    public static URL downloadarticleTemplate() throws java.net.MalformedURLException{
+
+       URL url = new URL("https://s3.amazonaws.com/com.assistu.projects3/articleTemplate/template.doc");
+        return url;
+    }
+
+
 }
