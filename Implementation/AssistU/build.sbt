@@ -33,7 +33,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.2.0",
   "org.webjars" %% "webjars-play" % "2.3.0",
   "org.webjars" % "jquery-ui" % "1.11.0-1",
-  "org.mindrot" % "jbcrypt" % "0.3m"
+  "org.mindrot" % "jbcrypt" % "0.3m",
+  "com.amazonaws" % "aws-java-sdk" % "1.3.11"
   )
 
 resolvers ++= Seq(

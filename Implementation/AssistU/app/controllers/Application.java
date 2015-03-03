@@ -2,13 +2,15 @@ package controllers;
 
 import models.*;
 import play.data.Form;
-import play.mvc.*;
 import views.html.*;
 import plugins.com.feth.play.module.pa.PlayAuthenticate;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.html.index;
+
 
 
 public class Application extends Controller {
@@ -133,5 +135,6 @@ public class Application extends Controller {
         Matcher m = p.matcher(input);
         return m.matches();
     }
+
 
 }

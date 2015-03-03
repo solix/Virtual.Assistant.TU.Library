@@ -1,4 +1,4 @@
-@(parentpage: String, currentUser:Person)
+@(parentpage: String, currentUser:Person )
 <!-- Navigation -->
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -20,7 +20,7 @@
     <ul class="nav navbar-top-links navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-comments fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                 <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-messages">
                 <li>
@@ -35,116 +35,46 @@
                     </a>
                 </li>
                 <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                        </div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                        </div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a class="text-center" href="#">
-                        <strong>Read All Messages</strong>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </li>
+
             </ul>
             <!-- /.dropdown-messages -->
         </li>
         <!-- /.dropdown -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-wrench fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                <i class="fa fa-wrench fa-fw"></i> @if(Task.allUndoneTask(currentUser).size()>0){<span class="badge badge-info">@Task.allUndoneTask(currentUser).size()</span> }<i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-tasks">
+                @if(Task.allUndoneTask(currentUser).size() == 0){
                 <li>
-                    <a href="#">
+                    <a href="@routes.Application.task()">
+                        <div><strong>No Tasks</strong></div>
                         <div>
-                            <p>
-                                <strong>Task 1</strong>
-                                <span class="pull-right text-muted">40% Complete</span>
-                            </p>
-                            <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                    <span class="sr-only">40% Complete (success)</span>
-                                </div>
-                            </div>
+                             Make a new one or give yourself an applause!
+
                         </div>
                     </a>
                 </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <p>
-                                <strong>Task 2</strong>
-                                <span class="pull-right text-muted">20% Complete</span>
-                            </p>
-                            <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                    <span class="sr-only">20% Complete</span>
-                                </div>
+            }
+                @Task.allUndoneTask(currentUser).map { t =>
+                    <li>
+                        <a href="@routes.Application.task()">
+                            <div>
+                                <p>
+                                    <strong>@t.name</strong>
+                                    <span class="pull-right text-muted">Due : @t.dueDate.toString.substring(0,10)</span>
+                                </p>
+
+
                             </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <p>
-                                <strong>Task 3</strong>
-                                <span class="pull-right text-muted">60% Complete</span>
-                            </p>
-                            <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                    <span class="sr-only">60% Complete (warning)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <p>
-                                <strong>Task 4</strong>
-                                <span class="pull-right text-muted">80% Complete</span>
-                            </p>
-                            <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                    <span class="sr-only">80% Complete (danger)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a class="text-center" href="#">
-                        <strong>See All Tasks</strong>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </li>
+
+
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                }
             </ul>
+
             <!-- /.dropdown-tasks -->
         </li>
         <!-- /.dropdown -->

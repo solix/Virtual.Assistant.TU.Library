@@ -64,14 +64,12 @@ GET         /project/:pid/acceptinvitation              controllers.ProjectData.
 GET         /project/:pid/declineinvitation             controllers.ProjectData.hasDeclined(pid: Long)
 GET         /project/:pid/leave                         controllers.ProjectData.leaveProject(pid: Long)
 GET         /project/:pid/removemember/:uid             controllers.ProjectData.removeMemberFromProject(uid: Long, pid: Long)
-POST        /project/upload                             controllers.DocumentData.uploadDocument(pid : Long)
-POST        /project/uploadNewTemplate                  controllers.DocumentData.uploadNewTemplate(pid: Long)
-GET         /project/discuss/:docId                     controllers.DocumentData.documentDiscussion(docId: Long)
-GET         /project/download/:fileid                   controllers.DocumentData.downloadDocument(fileid :Long)
-GET         /project/delete/:fileid                     controllers.DocumentData.deleteDocument(fileid :Long)
-GET         /project/downloadTemplate                   controllers.DocumentData.downloadTemplate()
-GET         /project/downloadownTemplate/:fileid        controllers.DocumentData.downloadOwnTemplate(fileid :Long)
 
+#FILE Upload/Download
+POST        /project/upload                             controllers.DocumentData.upload(pid: Long)
+POST        /project/uploadNewTemplate                  controllers.DocumentData.uploadNewTemplate(pid: Long)
+GET         /project/discuss/:docId                     controllers.DocumentData.documentDiscussion(docId: java.util.UUID)
+GET         /project/delete/:fileid                     controllers.DocumentData.deleteDocument(fileid :java.util.UUID)
 
 
 #discussion

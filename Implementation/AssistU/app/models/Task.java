@@ -56,6 +56,15 @@ public class Task extends Model {
      * list all the task
      * @return
      */
+    public static List<Task> allUndoneTask(Person person){
+        return Task.find.where().in("person",person).eq("done",false).orderBy("dueDate asc").findList();
+    }
+
+    /**
+     * list all undone tasks
+     * @param person
+     * @return
+     */
     public static List<Task> alltask(Person person){
         return Task.find.where().in("person", person).findList();
     }

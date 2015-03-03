@@ -100,10 +100,10 @@ public class DiscussionData extends Controller {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(Long.parseLong(message.get("projectID")));
         if(person != null){
-            DocumentFile doc = DocumentFile.find.byId(Long.parseLong(message.get("attachment")));
+            S3File doc = S3File.find.byId(java.util.UUID.fromString(message.get("attachment")));
             if(message.get("content").equals("") || message.get("subject").equals("")) {
                 return badRequest(discussionFile.render("An error has occured.", person, p,
-                        DocumentFile.find.byId(Long.parseLong(message.get("attachment"))), message, true, "danger",
+                        S3File.find.byId(java.util.UUID.fromString(message.get("attachment"))), message, true, "danger",
                         "Your message or subject was empty"));
             } else {
                 result.put("uid", person.id);

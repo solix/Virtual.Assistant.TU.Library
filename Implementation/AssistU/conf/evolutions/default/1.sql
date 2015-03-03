@@ -85,6 +85,18 @@ create table role (
   constraint pk_role primary key (rid))
 ;
 
+create table s3file (
+  id                        varchar(40) not null,
+  bucket                    varchar(255),
+  name                      varchar(255),
+  owntemplate               boolean,
+  filepath                  varchar(255),
+  project_id                bigint,
+  person_id                 bigint,
+  version                   bigint not null,
+  constraint pk_s3file primary key (id))
+;
+
 create table task (
   id                        bigint not null,
   name                      varchar(255),
@@ -140,10 +152,14 @@ alter table role add constraint fk_role_person_7 foreign key (person_id) referen
 create index ix_role_person_7 on role (person_id);
 alter table role add constraint fk_role_project_8 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_role_project_8 on role (project_id);
-alter table task add constraint fk_task_person_9 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_task_person_9 on task (person_id);
-alter table token_action add constraint fk_token_action_targetPerson_10 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
-create index ix_token_action_targetPerson_10 on token_action (target_person_id);
+alter table s3file add constraint fk_s3file_project_9 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_s3file_project_9 on s3file (project_id);
+alter table s3file add constraint fk_s3file_person_10 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_s3file_person_10 on s3file (person_id);
+alter table task add constraint fk_task_person_11 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_task_person_11 on task (person_id);
+alter table token_action add constraint fk_token_action_targetPerson_12 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
+create index ix_token_action_targetPerson_12 on token_action (target_person_id);
 
 
 
@@ -164,6 +180,8 @@ drop table if exists person;
 drop table if exists project;
 
 drop table if exists role;
+
+drop table if exists s3file;
 
 drop table if exists task;
 

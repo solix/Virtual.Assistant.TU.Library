@@ -44,8 +44,11 @@ public class Person extends Model {
     @OneToMany(mappedBy = "person")
     public List<Event> events;
 
+//    @OneToMany(mappedBy = "person")
+//    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
+
     @OneToMany(mappedBy = "person")
-    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
+    public List<S3File> documentFiles = new ArrayList<S3File>();
 
     @OneToMany(mappedBy = "person")
     public List<Role> roles= new ArrayList<Role>();

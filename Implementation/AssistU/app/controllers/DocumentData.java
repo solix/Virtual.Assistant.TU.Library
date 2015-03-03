@@ -9,6 +9,9 @@ import play.mvc.*;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import java.io.IOException;
 import java.lang.String;
@@ -19,69 +22,43 @@ import plugins.com.feth.play.module.pa.PlayAuthenticate;
 public class DocumentData extends Controller {
 
     /**
-     * POST uploaded document  to the server
+     * Uploads a file to the amazon S3 file storage
+     *
+     * @return
      */
-    public static Result uploadDocument(Long pid) {
+    public static Result upload(long pid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
+        if (user != null) {
             Project project = Project.find.byId(pid);
-            MultipartFormData body = request().body().asMultipartFormData();
-            //play api to get the file
-            FilePart document = body.getFile("document");
-            if (document != null) {
-                String fileName = document.getFilename();
-                String contentType = document.getContentType();
-                File file = document.getFile();
-                try {
-                    //this creates folder and  will be changed in future to the name of the project
-                    //String pname=project.folder;
 
-                    FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libUpload/" + project.folder, fileName));
-                } catch (IOException ioe) {
-                    System.out.println("Problem operating on filesystem");
-                }
-                String filepath = document.getFile().toString();
-                DocumentFile doc = DocumentFile.create(fileName, file, file.getPath(), project.id, user.id);
-
-
+            Http.MultipartFormData body = request().body().asMultipartFormData();
+            Http.MultipartFormData.FilePart uploadFilePart = body.getFile("upload");
+            if (uploadFilePart != null) {
+                S3File s3File = new S3File();
+                s3File.name = uploadFilePart.getFilename();
+                s3File.file = uploadFilePart.getFile();
+                s3File.project=project;
+                s3File.person=user;
+                s3File.save();
                 return redirect(controllers.routes.Application.project());
             } else {
-
-                return badRequest(
-                        "PLease provide a correct file"
-                );
+                return badRequest("File upload error");
             }
-        }else{
-            //User did not have a session
-            session().put("callback", routes.DocumentData.uploadDocument(pid).absoluteURL(request()));
-            return Authentication.login();
         }
+        //User did not have a session
+        session().put("callback", routes.DocumentData.upload(pid).absoluteURL(request()));
+        return Authentication.login();
     }
-
-
-
     /**
-     * Download the document file
+     * Deletes the file from file list inside the project
+     * @param fid
+     * @return
      */
-    public static Result downloadDocument(Long id){
 
-        //this creates folder and  will be changed in future to the name of the project
-        //String pname="projectfolder";
-        DocumentFile documentFile = DocumentFile.find.byId(id);
-        Project project = Project.find.where().in("documentFiles",documentFile).findUnique();
-        String path ="/Users/soheil/Desktop/libUpload/"+project.folder;
-        return  ok(new File(path,documentFile.name));
-    }
-
-    /**
-     * This function deletes a document
-     * @param fid: document ID
-     * @return Result
-     */
-    public static Result deleteDocument(Long fid){
-        DocumentFile documentFile = DocumentFile.find.byId(fid);
+    public static Result deleteDocument(UUID fid) {
+        S3File documentFile = S3File.find.byId(fid);
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
+        if (user != null) {
             if (documentFile.person.equals(user)) {
                 documentFile.delete();
             }
@@ -94,14 +71,15 @@ public class DocumentData extends Controller {
     }
 
     /**
-     * This function render the page where a user can start a discussion with a file attached.
-     * @param docid: The ID of the document
-     * @return Result
+
+     * Interlinks each file to  discussion
+     * @param docid
+     * @return
      */
-    public static Result documentDiscussion(Long docid){
+    public static Result documentDiscussion(UUID docid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
-            DocumentFile df = DocumentFile.find.byId(docid);
+        if (user != null) {
+            S3File df = S3File.find.byId(docid);
             Project p = Project.find.byId(df.project.id);
             DynamicForm message = new DynamicForm();
             return ok(discussionFile.render("Discuss " + df.name, user, p, df, message, false, "", ""));
@@ -112,38 +90,29 @@ public class DocumentData extends Controller {
         }
     }
 
-    public static Result downloadTemplate(){
-        String temple="template.doc";
-        String path ="/Users/soheil/Desktop/libtempl/";
-        return  ok(new File(path,temple));
-    }
 
+    /**
+     * user uploads his own template to the project
+     * @param pid
+     * @return
+     */
     public static Result uploadNewTemplate(Long pid) {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
+        if (user != null) {
             Project project = Project.find.byId(pid);
-            MultipartFormData body = request().body().asMultipartFormData();
-            //play api to get the file
-            FilePart document = body.getFile("document");
-            if (document != null) {
-                String fileName = document.getFilename();
-                String contentType = document.getContentType();
-                File file = document.getFile();
-                try {
-                    //this creates folder and  will be changed in future to the name of the project
-                    //String pname=project.folder;
-
-                    FileUtils.moveFile(file, new File("/Users/soheil/Desktop/libtempl/Owntemplates/" + project.folder, fileName));
-                } catch (IOException ioe) {
-                    System.out.println("Problem operating on filesystem");
-                }
-                String filepath = document.getFile().toString();
-                DocumentFile doc = DocumentFile.create(fileName, file, file.getPath(), project.id, user.id);
-                doc.owntemplate = true;
+            Http.MultipartFormData body = request().body().asMultipartFormData();
+            Http.MultipartFormData.FilePart uploadFilePart = body.getFile("upload");
+            if (uploadFilePart != null) {
+                S3File s3File = new S3File();
+                s3File.name = uploadFilePart.getFilename();
+                s3File.file = uploadFilePart.getFile();
+                s3File.project=project;
+                s3File.person=user;
+                s3File.save();
+                    s3File.owntemplate = true;
                 project.template = "Own";
                 project.update();
-                doc.update();
-
+                s3File.update();
 
                 return redirect(controllers.routes.Application.project());
             } else {
@@ -159,16 +128,12 @@ public class DocumentData extends Controller {
         }
     }
 
-    public static Result downloadOwnTemplate(Long id){
 
 
-        DocumentFile documentFile = DocumentFile.find.byId(id);
-        Project project = Project.find.where().in("template","Own").in("documentFiles",documentFile).findUnique();
-        String path ="/Users/soheil/Desktop/libtempl/Owntemplates/"+project.folder;
-
-        return  ok(new File(path,documentFile.name));
 
 
-    }
+
+
+
 
 }
