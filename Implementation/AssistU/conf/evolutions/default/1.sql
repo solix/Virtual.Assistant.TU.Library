@@ -120,6 +120,12 @@ create table mendeley_document_person (
   person_id                      bigint not null,
   constraint pk_mendeley_document_person primary key (mendeley_document_id, person_id))
 ;
+
+create table person_mendeley_document (
+  person_id                      bigint not null,
+  mendeley_document_id           varchar(255) not null,
+  constraint pk_person_mendeley_document primary key (person_id, mendeley_document_id))
+;
 create sequence comment_seq;
 
 create sequence document_file_seq;
@@ -167,6 +173,10 @@ alter table mendeley_document_person add constraint fk_mendeley_document_person_
 
 alter table mendeley_document_person add constraint fk_mendeley_document_person_p_02 foreign key (person_id) references person (id) on delete restrict on update restrict;
 
+alter table person_mendeley_document add constraint fk_person_mendeley_document_p_01 foreign key (person_id) references person (id) on delete restrict on update restrict;
+
+alter table person_mendeley_document add constraint fk_person_mendeley_document_m_02 foreign key (mendeley_document_id) references mendeley_document (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
@@ -184,6 +194,8 @@ drop table if exists mendeley_document;
 drop table if exists mendeley_document_person;
 
 drop table if exists person;
+
+drop table if exists person_mendeley_document;
 
 drop table if exists project;
 

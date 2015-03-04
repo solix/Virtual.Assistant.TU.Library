@@ -49,7 +49,7 @@ public class Person extends Model {
     @OneToMany(mappedBy = "person")
     public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
 
-    @ManyToMany(mappedBy = "persons")
+    @ManyToMany
     public List<MendeleyDocument> mendeleydocuments = new ArrayList<MendeleyDocument>();
 
     @OneToMany(mappedBy = "person")
@@ -79,28 +79,13 @@ public class Person extends Model {
 //    }
 
     public static Person update(final AuthUser authUser) {
-        final Person person = Person.findByAuthUserIdentity(authUser);
+        Person person = Person.findByAuthUserIdentity(authUser);
         if(authUser instanceof MendeleyAuthUser){
             person.mendeleyConnected=true;
-            person.mendeleydocuments.clear();
-            for(JsonNode doc : ((MendeleyAuthUser) authUser).getDocuments()){
-                MendeleyDocument mendeley_doc = MendeleyDocument.find.where().eq("id", doc.get("id").asText()).findUnique();
-                if(mendeley_doc == null){
-                    List<String> authors = new ArrayList<String>();
-                    for(JsonNode author : doc.get("authors")){
-                        authors.add(author.get("last_name").asText());
-                    }
-                    mendeley_doc = PersonData.createMendeleyDocument(
-                            doc.get("id").asText(),
-                            doc.get("title").asText(),
-                            doc.get("type").asText(),
-                            authors,
-                            doc.get("year").asText());
-                }
-                person.mendeleydocuments.add(mendeley_doc);
-            }
+            person = PersonData.clearMendeleyData(person);
+            person = PersonData.updateMendeleyData(person, ((MendeleyAuthUser) authUser).getDocuments());
         }
-        person.save();
+        person.update();
         return person;
     }
 

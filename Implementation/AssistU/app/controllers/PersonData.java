@@ -1,10 +1,13 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import models.*;
 import play.mvc.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import plugins.com.feth.play.module.pa.PlayAuthenticate;
+import plugins.providers.mendeley.MendeleyAuthUser;
 
 /**
  * Created by arnaud on 16-12-14.
@@ -67,6 +70,45 @@ public class PersonData extends Controller {
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         MendeleyDocument mendeley_document = MendeleyDocument.create(id, person.id, title, type, authors_new, year);
         return mendeley_document;
+    }
+
+    public static Person clearMendeleyData(Person person){
+        for(MendeleyDocument mendeley_document : person.mendeleydocuments){
+            if(mendeley_document.persons.size() == 1){
+                person.mendeleydocuments.remove(mendeley_document);
+                mendeley_document.persons.remove(person);
+                mendeley_document.delete();
+            }else{
+                mendeley_document.persons.remove(person);
+                mendeley_document.update();
+            }
+        }
+        person.update();
+        return person;
+    }
+
+    public static Person updateMendeleyData(Person person, JsonNode oauth_mendeley_documents){
+        for(JsonNode doc : oauth_mendeley_documents){
+            MendeleyDocument mendeley_doc = MendeleyDocument.find.where().eq("id", doc.get("id").asText()).findUnique();
+            if(mendeley_doc == null){
+                List<String> authors = new ArrayList<String>();
+                for(JsonNode author : doc.get("authors")){
+                    authors.add(author.get("last_name").asText());
+                }
+                mendeley_doc = PersonData.createMendeleyDocument(
+                        doc.get("id").asText(),
+                        doc.get("title").asText(),
+                        doc.get("type").asText(),
+                        authors,
+                        doc.get("year").asText());
+            }
+            if(!mendeley_doc.persons.contains(person)) {
+                person.mendeleydocuments.add(mendeley_doc);
+                mendeley_doc.update();
+            }
+            person.update();
+        }
+        return person;
     }
 
     public static Result deleteAccount(){
