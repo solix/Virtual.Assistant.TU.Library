@@ -12,9 +12,7 @@ import java.util.*;
 
 import static play.libs.Json.toJson;
 
-/**
- * Created by arnaud on 13-12-14.
- */
+
 public class ProjectData extends Controller {
 
     /**
@@ -59,7 +57,7 @@ public class ProjectData extends Controller {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         Project p = Project.find.byId(pid);
         if(user != null)
-            return ok(projectEdit.render("Edit Project " + p.name, p, projectForm, false, "", "", user));
+            return ok(projectEdit.render("Edit Project " + p.name, p, projectForm.fill(p), false, "", "", user));
         else {
             session().put("callback", routes.ProjectData.editProjectPage(pid).absoluteURL(request()));
             return Authentication.login();
@@ -96,6 +94,10 @@ public class ProjectData extends Controller {
                 }
                 Emailer.sendNotifyEmail("[assistU] New project "+p.name+ "Created",user,views.html.email.projectCreated.render(user,p));
 
+
+
+
+
                 return redirect(routes.ProjectData.project(p.id));
             }
 
@@ -125,7 +127,13 @@ public class ProjectData extends Controller {
                     return badRequest(projectNew.render("Something went wrong", filledProjectForm, true, "danger",
                             "The input did not have the allowed format, please review your information", user));
                 } else {
-                    Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description);
+                    String template = filledProjectForm.get().template;
+                    if (!template.equals("None")) {
+                        Event.defaultPlanningArticle(user, p);
+                        p.planning = true;
+                        p.save();
+                    }
+                    Project.edit(pid, filledProjectForm.get().folder, filledProjectForm.get().name, filledProjectForm.get().description,template);
                 }
             }
             return redirect(routes.ProjectData.project(pid));
@@ -179,7 +187,7 @@ public class ProjectData extends Controller {
                         //Pattern match the correct role for invitation
                         if (emailform.get("role").equals("Owner")) {
                             Project.inviteOwner(p.id, user_invited.id);
-                            Event.defaultPlanningArticle(user, p);
+
                             p.planning = true;
                             p.save();
                         } else if (emailform.get("role").equals("Reviewer")) {
@@ -211,13 +219,17 @@ public class ProjectData extends Controller {
             //See if there actually exists a (pending) role between the accepting user and project
             if (r != null) {
                 r.accepted = true;
+                if(r.role.equals(Role.OWNER))
+                Event.defaultPlanningArticle(user, p);
                 r.dateJoined = new Date();
                 r.save();
                 List<Person> owners=findAllOwners(p.id);
                 owners.stream().forEach((u) -> {
                     if(!u.equals(user))
-                    Emailer.sendNotifyEmail("[Assistu]"+ user.name + "has joined the project" , u ,views.html.email.project_joined.render(u,user,p) );
+                    Emailer.sendNotifyEmail("[Assistu] "+ user.name + " has joined the project" , u ,views.html.email.project_joined.render(u,user,p) );
                 });
+                Emailer.sendNotifyEmail("[Assistu] "+ user.name + " you have just joined the project" , user ,views.html.email.project_joined_2.render(user,p) );
+
             }
             return redirect(routes.ProjectData.project(p.id));
         } else {
@@ -240,10 +252,16 @@ public class ProjectData extends Controller {
             if (r != null) {
                 r.delete();
             }
+            List<Person> owners=findAllOwners(p.id);
+            owners.stream().forEach((u) -> {
+                if(!u.equals(user))
+                    Emailer.sendNotifyEmail("[Assistu] "+ user.name + " has declined to join the project" , u ,views.html.email.declined.render(u,user,p) );
+            });
             return redirect(routes.Application.project());
         } else {
             //User did not have a session
             session().put("callback", routes.ProjectData.hasDeclined(pid).absoluteURL(request()));
+
             return Authentication.login();
         }
 

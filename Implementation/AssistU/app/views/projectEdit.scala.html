@@ -1,69 +1,77 @@
 @(title: String, p: Project, projectForm: Form[Project])(info: Boolean, theme: String, message: String)(currentUser:Person)
-@defining(Project.find.where().in("users", currentUser)) { projectListQuery =>
-    <html lang="en">
-        <head>
-            @linkLoader.headlinks(title)
-        </head>
-        <body>
-            <div id="wrapper">
-                @dashboard("project", currentUser)
-                <div id="page-wrapper">
-                    @template.headericon("fa fa-line-chart fa-5x")
-                    <div class="row">
-                        <div class="col-xs-12" style="text-align: center; margin: 1% 0">
-                            <h3>Edit Project @p.name</h3>
+    @defining(Project.find.where().in("users", currentUser)) { projectListQuery =>
+        <html lang="en">
+            <head>
+                @linkLoader.headlinks(title)
+            </head>
+            <body>
+                <div id="wrapper">
+                    @dashboard("project", currentUser)
+                    <div id="page-wrapper">
+                        @template.headericon("fa fa-line-chart fa-5x")
+                        <div class="row">
+                            <div class="col-xs-12" style="text-align: center; margin: 1% 0">
+                                <h3>Edit Project @p.name</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-                            @if(info) {
-                                @template.alert(theme, message)
-                            }
-                        @helper.form(action = routes.ProjectData.editProject(p.id)) {
-                            <div class="form-group">
-                                <label class="control-label" for="validate-text">Folder Name</label>
-                                <input autofocus class="form-control input-sm" id="folder" name="folder" value="@p.folder" type="text" placeholder="Folder name (Required)">
-                                <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                                @if(info) {
+                                    @template.alert(theme, message)
+                                }
+                                @helper.form(action = routes.ProjectData.editProject(p.id)) {
+                                    <div class="form-group">
+                                        <label class="control-label" for="validate-text">Folder Name</label>
+                                        <input autofocus class="form-control input-sm" id="folder" name="folder" value="@p.folder" type="text" placeholder="Folder name (Required)">
+                                        <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="validate-text">Project Name</label>
+                                        <input autofocus class="form-control input-sm" id="name" name="name" value="@p.name" type="text" placeholder="Project name (Required)">
+                                        <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="validate-text">Description</label>
+                                        <input autofocus class="form-control input-sm" id="description" name="description" value="@p.description" type="text" placeholder="Description (Optional)">
+                                    </div>
+                                    @if(p.template.equals("None")) {
+                                        <div class="form-group">
+                                            <label>Change template: </label>
+                                            <select class="form-control" id="template" name="template">
+                                                <option>None</option>
+                                                <option>TU Delft - Dissertation</option>
+                                                <option>TU Delft - Article</option>
+                                            </select>
+                                        </div>
+                                    }else {
+                                        <label>Chosen template: @p.template</label>
+                                        <input type="hidden" name="template" value="@projectForm("template").value">
+                                    }
+
+                                    <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                                        <a type="button" class="btn btn-default col-xs-12" href="@routes.Application.project()">Cancel</a>
+                                    </div>
+                                    <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
+                                        <button type="submit" class="btn btn-info col-xs-12">Edit!</button>
+                                    </div>
+                                }
                             </div>
-                            <div class="form-group">
-                                <label class="control-label" for="validate-text">Project Name</label>
-                                <input autofocus class="form-control input-sm" id="name" name="name" value="@p.name" type="text" placeholder="Project name (Required)">
-                                <span class="help-inline" style="font-size: x-small;">Minimum length: 3</span>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="validate-text">Description</label>
-                                <input autofocus class="form-control input-sm" id="description" name="description" value="@p.description" type="text" placeholder="Description (Optional)">
-                            </div>
-                            <div class="form-group">
-                                <label>Chosen template: </label>
-                                <select class="form-control" name="template">
-                                    <option>@p.template</option>
-                                </select>
-                            </div>
-                            <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
-                                <a type="button" class="btn btn-default col-xs-12" href="@routes.Application.project()">Cancel</a>
-                            </div>
-                            <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
-                                <button type="submit" class="btn btn-info col-xs-12">Edit!</button>
-                            </div>
-                        }
                         </div>
                     </div>
                 </div>
-            </div>
 
-                <!-- jQuery -->
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+                    <!-- jQuery -->
+                <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
 
-                <!-- Form Validation Icons -->
-            <script src="@routes.Assets.at("javascripts/formValidationSetup.js")"></script>
+                    <!-- Form Validation Icons -->
+                <script src="@routes.Assets.at("javascripts/formValidationSetup.js")"></script>
 
-                <!--bootstrap-->
-            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                    <!--bootstrap-->
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-                <!--sb-Admin-->
-            <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
-            <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
-        </body>
-    </html>
-}
+                    <!--sb-Admin-->
+                <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+                <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+            </body>
+        </html>
+    }

@@ -16,17 +16,6 @@ create table comment (
   constraint pk_comment primary key (cid))
 ;
 
-create table document_file (
-  id                        bigint not null,
-  name                      varchar(255),
-  owntemplate               boolean,
-  filepath                  varchar(255),
-  project_id                bigint,
-  person_id                 bigint,
-  version                   bigint not null,
-  constraint pk_document_file primary key (id))
-;
-
 create table event (
   id                        bigint not null,
   title                     varchar(255),
@@ -90,7 +79,6 @@ create table s3file (
   bucket                    varchar(255),
   name                      varchar(255),
   owntemplate               boolean,
-  filepath                  varchar(255),
   project_id                bigint,
   person_id                 bigint,
   version                   bigint not null,
@@ -120,8 +108,6 @@ create table token_action (
 
 create sequence comment_seq;
 
-create sequence document_file_seq;
-
 create sequence event_seq;
 
 create sequence linked_account_seq;
@@ -140,26 +126,22 @@ alter table comment add constraint fk_comment_person_1 foreign key (person_id) r
 create index ix_comment_person_1 on comment (person_id);
 alter table comment add constraint fk_comment_project_2 foreign key (project_id) references project (id) on delete restrict on update restrict;
 create index ix_comment_project_2 on comment (project_id);
-alter table document_file add constraint fk_document_file_project_3 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_document_file_project_3 on document_file (project_id);
-alter table document_file add constraint fk_document_file_person_4 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_document_file_person_4 on document_file (person_id);
-alter table event add constraint fk_event_person_5 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_event_person_5 on event (person_id);
-alter table linked_account add constraint fk_linked_account_person_6 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_linked_account_person_6 on linked_account (person_id);
-alter table role add constraint fk_role_person_7 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_role_person_7 on role (person_id);
-alter table role add constraint fk_role_project_8 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_role_project_8 on role (project_id);
-alter table s3file add constraint fk_s3file_project_9 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_s3file_project_9 on s3file (project_id);
-alter table s3file add constraint fk_s3file_person_10 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_s3file_person_10 on s3file (person_id);
-alter table task add constraint fk_task_person_11 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_task_person_11 on task (person_id);
-alter table token_action add constraint fk_token_action_targetPerson_12 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
-create index ix_token_action_targetPerson_12 on token_action (target_person_id);
+alter table event add constraint fk_event_person_3 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_event_person_3 on event (person_id);
+alter table linked_account add constraint fk_linked_account_person_4 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_linked_account_person_4 on linked_account (person_id);
+alter table role add constraint fk_role_person_5 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_role_person_5 on role (person_id);
+alter table role add constraint fk_role_project_6 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_role_project_6 on role (project_id);
+alter table s3file add constraint fk_s3file_project_7 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_s3file_project_7 on s3file (project_id);
+alter table s3file add constraint fk_s3file_person_8 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_s3file_person_8 on s3file (person_id);
+alter table task add constraint fk_task_person_9 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_task_person_9 on task (person_id);
+alter table token_action add constraint fk_token_action_targetPerson_10 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
+create index ix_token_action_targetPerson_10 on token_action (target_person_id);
 
 
 
@@ -168,8 +150,6 @@ create index ix_token_action_targetPerson_12 on token_action (target_person_id);
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists comment;
-
-drop table if exists document_file;
 
 drop table if exists event;
 
@@ -190,8 +170,6 @@ drop table if exists token_action;
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists comment_seq;
-
-drop sequence if exists document_file_seq;
 
 drop sequence if exists event_seq;
 

@@ -18,7 +18,7 @@
     <!-- /.navbar-header -->
 
     <ul class="nav navbar-top-links navbar-right">
-        <li class="dropdown">
+        <li class="dropdown msg">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                  <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
@@ -168,7 +168,7 @@
     }
     <!-- /.navbar-top-links -->
     <!-- Side Bar -->
-    <div class="navbar-default sidebar" role="navigation">
+    <div class="navbar-default sidebar"  role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <script>
             (function() {
@@ -183,7 +183,7 @@
             })();
 //            jQuery(".gsc-input").attr("placeholder", "Rechercher");
             </script>
-            <ul class="nav nav-tabs nav-stacked" id="side-menu">
+            <ul class="nav nav-tabs nav-stacked two" id="side-menu">
                 <li class="sidebar-search">
                     <gcse:searchbox-only></gcse:searchbox-only>
                </li>
@@ -192,33 +192,7 @@
                 </li>
                 <li>
                     <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
-                    @*defining(PersonData.findActiveProjects()) { projects =>*@
-                        @*if(projects.size() > 0) {*@
-                            @*<ul class="nav nav-second-level">*@
-                                @*for(p <- projects){*@
-                                    @*defining(Role.find.where().eq("person", currentUser).eq("project", p).findUnique().role) { role =>*@
-                                        @*if(role.equals(Role.OWNER)) {*@
-                                            @*<li>*@
-                                                @*<a href="@routes.ProjectData.project(p.id)"><i class="fa fa-mortar-board"></i> @p.folder</a>*@
-                                            @*</li>*@
-                                        @*} else {*@
-                                            @*if(role.equals(Role.REVIEWER)){*@
-                                                @*<li>*@
-                                                    @*<a href="@routes.ProjectData.project(p.id)"><i class="fa fa-edit"></i> @p.folder</a>*@
-                                                @*</li>*@
-                                            @*} else {*@
-                                                @*if(role.equals(Role.GUEST)){*@
-                                                    @*<li>*@
-                                                        @*<a href="@routes.ProjectData.project(p.id)"><i class="fa fa-suitcase"></i> @p.folder</a>*@
-                                                    @*</li>*@
-                                                @*}*@
-                                            @*}*@
-                                        @*}*@
-                                    @*}*@
-                                @*}*@
-                            @*</ul>*@
-                        @*}*@
-                    @*}*@
+
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
@@ -226,34 +200,7 @@
                 </li>
                 <li>
                     <a @if(parentpage.equals("discussion")){class="active"} href="@routes.Application.discussion()"><i class="fa fa-comments fa-fw"></i> Discussions</a>
-                    @*defining(PersonData.findActiveProjects()) { projects =>*@
-                        @*if(projects.size() > 0) {*@
-                            @*<ul class="nav nav-second-level">*@
-                            @*for(p <- projects){*@
-                                @*defining(Role.find.where().eq("person", currentUser).eq("project", p).findUnique().role) { role =>*@
-                                    @*if(role.equals(Role.OWNER)) {*@
-                                        @*<li>*@
-                                            @*<a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-mortar-board"></i> @p.folder</a>*@
-                                        @*</li>*@
-                                    @*} else {*@
-                                        @*if(role.equals(Role.REVIEWER)){*@
-                                            @*<li>*@
-                                                @*<a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-edit"></i> @p.folder</a>*@
-                                            @*</li>*@
-                                        @*} else {*@
-                                            @*if(role.equals(Role.GUEST)){*@
-                                                @*<li>*@
-                                                    @*<a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-suitcase"></i> @p.folder</a>*@
-                                                @*</li>*@
-                                            @*}*@
-                                        @*}*@
-                                    @*}*@
-                                @*}*@
-                            @*}*@
-                            @*</ul>*@
-                        @*}*@
-                    @*}*@
-                        <!-- /.nav-second-level -->
+
                 </li>
                 <li>
                     <a @if(parentpage.equals("task")){class="active"} href="@routes.Application.task()"><i class="fa fa-wrench fa-fw"></i> Tasks</a>
