@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.data.Form;
 import views.html.*;
 import plugins.com.feth.play.module.pa.PlayAuthenticate;
@@ -55,7 +56,8 @@ public class Application extends Controller {
     public static Result project() {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
-            return ok(project.render("AssistU - Projects", user, null));
+            Project p = PersonData.getLastUsedProject();
+            return ok(project.render("AssistU - Projects", user, p));
         }else{
             session().put("callback", routes.Application.project().absoluteURL(request()));
             return Authentication.login();

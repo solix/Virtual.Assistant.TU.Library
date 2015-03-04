@@ -3,27 +3,9 @@
     <div role="tabpanel">
         <ul class="nav nav-tabs">
             @for(p <- PersonData.findActiveProjects) {
-                @if(project != null){
-                    @if(p.id == project.id) {
-                        <li role="presentation" class="active" style="width: 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                            <a href="#project@p.id" data-toggle="tab">@p.folder</a>
-                        </li>
-                    } else {
-                        <li role="presentation" style="width: 18%; overflow: hidden; white-space: nowrap ; text-overflow : ellipsis">
-                            <a href="#project@p.id" data-toggle="tab">@p.folder</a>
-                        </li>
-                    }
-                } else {
-                    @if(p.id == PersonData.getLastUsedProject.id) {
-                        <li role="presentation" class="active" style="width : 18% ; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                            <a href="#project@p.id" data-toggle="tab">@p.folder</a>
-                        </li>
-                    } else {
-                        <li role="presentation" style="width : 18% ; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                            <a href="#project@p.id" data-toggle="tab">@p.folder</a>
-                        </li>
-                    }
-                }
+                <li role="presentation" @if(p.id == project.id){class="active"} style="width: 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                    <a href="#project@p.id" data-toggle="tab">@p.folder</a>
+                </li>
             }
         </ul>
     </div>
