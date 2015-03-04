@@ -380,4 +380,17 @@ public class ProjectData extends Controller {
         return persons;
     }
 
+    public static List<MendeleyDocument> findAllMendeleyDocuments(Long pid){
+        List<Person> members = ProjectData.findAllOwners(pid);
+        List<MendeleyDocument> result = new ArrayList<MendeleyDocument>();
+        for(Person member : members){
+            for(MendeleyDocument mendeley_document : member.mendeleydocuments){
+                if(!result.contains(mendeley_document)){
+                    result.add(mendeley_document);
+                }
+            }
+        }
+        return result;
+    }
+
 }

@@ -64,6 +64,7 @@
                                                     <li><a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-comments fa-fw"></i> Go to discussions...</a></li>
                                                     <li class="divider"></li>
                                                     <li><a href="#" data-toggle="modal" data-target="#memberList@p.id"><i class="fa fa-users fa-fw"></i> Show members...</a></li>
+                                                    <li><a href="#" data-toggle="modal" data-target="#mendeleyList@p.id"><i class="fa fa-wrench fa-fw"></i> Show library...</a></li>
                                                     @if(role.role.equals(Role.OWNER)){
                                                         <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user-plus fa-fw"></i> Add a member...</a></li>
                                                     }
@@ -205,7 +206,29 @@
                     </table>
                 }
             }
-
+            @template.mediummodal("mendeleyList"+p.id.toString)("info")("Mendeley Documents of "+p.name) {
+                    <!-- Table -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th style="text-align: center">Type</th>
+                            <th style="text-align: center">Authors</th>
+                            <th style="text-align: center">Year</th>
+                            <th style="text-align: center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr style="font-size: smaller">
+                                <td>Title</td>
+                                <td style="text-align: center">Type</td>
+                                <td style="text-align: center">Authors</td>
+                                <td style="text-align: center">2015</td>
+                                <td style="text-align: center">ADD</td>
+                            </tr>
+                    </tbody>
+                </table>
+            }
         }
     </div>
 }
