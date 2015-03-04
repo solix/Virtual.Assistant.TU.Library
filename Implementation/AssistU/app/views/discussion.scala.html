@@ -23,182 +23,149 @@
                                 <div class="container-fluid" style="text-align: center; margin: 0 0 1% 0">
                                     <div role="tabpanel">
                                         <ul class="nav nav-tabs">
-                                        @for(p <- activeProjectList) {
-                                            @if(project != null){
-                                                @if(p.id == project.id) {
-                                                    <li role="presentation" class="active" style="width: 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                                    </li>
-                                                } else {
-                                                    <li role="presentation" style="width: 18%; overflow: hidden; white-space: nowrap ; text-overflow : ellipsis">
-                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                                    </li>
-                                                }
-                                            } else {
-                                                @if(p.id == PersonData.getLastUsedProject.id) {
-                                                    <li role="presentation" class="active" style="width : 18% ; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
-                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                                    </li>
-                                                } else {
-                                                    <li role="presentation" style="width : 18% ; overflow : hidden ; white-space : nowrap ; text-overflow : ellipsis">
-                                                        <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
-                                                    </li>
-                                                }
+                                            @for(p <- activeProjectList) {
+                                                <li role="presentation" @if(p.id == project.id){class="active"} style="width: 18%; text-overflow : ellipsis ; overflow : hidden ; white-space : nowrap">
+                                                    <a ng-click="setCurrentProject('@p.id')" href="#discussion@p.id" data-toggle="tab">@p.folder</a>
+                                                </li>
                                             }
-                                        }
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="tab-content">
                                     @for(p <- activeProjectList){
-                                        @if(project != null){
-                                            @if(p.id == project.id) {
-                                                <div class="tab-pane fade in active" id="discussion@p.id">
-                                            } else {
-                                                <div class="tab-pane fade" id="discussion@p.id">
-                                            }
-                                        } else {
-                                            @if(p.equals(PersonData.getLastUsedProject)){
-                                                <div class="tab-pane fade in active" id="discussion@p.id">
-                                            } else {
-                                                <div class="tab-pane fade" id="discussion@p.id">
-                                            }
-                                        }
-                                        <div class="row">
-                                            <div class="col-xs-10">
-                                                <h3 style="margin: 5px 0 0 30px;">Discussions of project <a href="@routes.ProjectData.project(p.id)">@p.name</a></h3>
+                                        <div class="tab-pane fade @if(p.id == project.id){active in}" id="discussion@p.id">
+                                            <div class="row">
+                                                <div class="col-xs-10">
+                                                    <h3 style="margin: 5px 0 0 30px;">Discussions of project <a href="@routes.ProjectData.project(p.id)">@p.name</a></h3>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment@p.id" style="margin: 0; margin-right: 30px;">Post new Message</button>
+                                                </div>
                                             </div>
-                                            <div class="col-xs-2">
-                                                <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment@p.id" style="margin: 0; margin-right: 30px;">Post new Message</button>
-                                            </div>
-                                        </div>
-                                        <hr class="hr" style="margin: 15px 15px 0">
-                                        <div id="comment@p.id" class="panel-footer collapse" style="margin: -1px -30px 0; padding: 15px 50px 40px; border-bottom: 1px solid #DDDDDD">
-                                            <div class="row" style="text-align: center">
-                                                <button type="button" class="close pull-right" data-toggle="collapse" data-target="#comment@p.id" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h3 style="padding: 0; margin: 0">Post a new Message</h3>
-                                            </div>
-                                            <ul class="message" style="padding: 10px 50px 0 10px; margin: 0;">
-                                                <li>
-                                                    @defining(Role.find.where().eq("project",p).eq("person",currentUser).findUnique().role) { role =>
-                                                        @if(role.equals(Role.OWNER)){
-                                                            <div class="message-badge primary">
-                                                                <i class="fa fa-mortar-board" style="margin-top: 15px"></i>
-                                                            </div>
-                                                        }
-                                                        @if(role.equals(Role.REVIEWER)){
-                                                            <div class="message-badge danger">
-                                                                <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
-                                                            </div>
-                                                        }
-                                                        @if(role.equals(Role.GUEST)){
-                                                            <div class="message-badge info">
-                                                                <i class="fa fa-suitcase" style="margin-left: 4px; margin-top: 15px"></i>
-                                                            </div>
-                                                        }
-                                                    }
-                                                    <div class="message-panel" style="margin-left: 40px; background-color: white">
-                                                        <div class="message-heading">
-                                                            <input type="text" name="subject" ng-model="message.subject"
-                                                            placeholder="Your subject here..." class="ng-pristine ng-valid form-control input-sm">
-                                                            <hr class="hr" style="margin: 15px 0 10px">
-                                                            <textarea type="text" class="ng-pristine ng-valid form-control input-sm" name="content" rows="5"
-                                                            placeholder="Your message here..." ng-model="message.content"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <div class="row pull-right" style="padding: 0 50px 0 0;margin: 0">
-                                                <button ng-click="reset();" class="btn btn-default btn-sm"
-                                                data-toggle="collapse" data-target="#comment@p.id" type="button" style="width: 80px">Cancel</button>
-                                                <button type="button" class="btn btn-warning btn-sm" style="width: 80px" ng-if="message.subject == '' || message.content == ''"
-                                                id="saySomething">Submit</button>
-                                                <button type="button" class="btn btn-warning btn-sm" style="width: 80px" ng-if="message.subject != '' && message.content != ''"
-                                                id="saySomething" data-toggle="collapse" data-target="#comment@p.id" ng-click="submitMsg()">Submit</button>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body" style="padding: 0">
-                                            <ul class="timeline" style="margin-right: 30px; margin-bottom: 0; height: 80%">
-                                                <li class="{{comment.who}} comment" ng-repeat="comment in comments | filter:{projectID: @p.id}">
-                                                    <div class="timeline-badge primary" ng-if="comment.role=='Owner'">
-                                                        <i class="fa fa-mortar-board" style="margin-top: 15px"></i>
-                                                    </div>
-                                                    <div class="timeline-badge danger" ng-if="comment.role=='Reviewer'">
-                                                        <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
-                                                    </div>
-                                                    <div class="timeline-badge info" ng-if="comment.role=='Guest'">
-                                                        <i class="fa fa-suitcase" style="margin-top: 15px"></i>
-                                                    </div>
-                                                    <div class="timeline-panel">   @*ng-if="guestids.indexOf(comment.uid) != -1 || comment.uid == @currentUser.id"*@
-                                                        <div class="timeline-heading">
-                                                            @if(ProjectData.findAllOwners(p.id).contains(currentUser)) {
-                                                                <a class="pull-right" href="#" ng-if="comment.role == 'Guest' || comment.uid == @currentUser.id"
-                                                                style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
-                                                                    <i class="fa fa-close"></i>
-                                                                </a>
-                                                            } else {
-                                                                <a class="pull-right" href="#" ng-if="comment.uid == @currentUser.id"
-                                                                style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
-                                                                    <i class="fa fa-close"></i>
-                                                                </a>
+                                            <hr class="hr" style="margin: 15px 15px 0">
+                                            <div id="comment@p.id" class="panel-footer collapse" style="margin: -1px -30px 0; padding: 15px 50px 40px; border-bottom: 1px solid #DDDDDD">
+                                                <div class="row" style="text-align: center">
+                                                    <button type="button" class="close pull-right" data-toggle="collapse" data-target="#comment@p.id" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h3 style="padding: 0; margin: 0">Post a new Message</h3>
+                                                </div>
+                                                <ul class="message" style="padding: 10px 50px 0 10px; margin: 0;">
+                                                    <li>
+                                                        @defining(Role.find.where().eq("project",p).eq("person",currentUser).findUnique().role) { role =>
+                                                            @if(role.equals(Role.OWNER)){
+                                                                <div class="message-badge primary">
+                                                                    <i class="fa fa-mortar-board" style="margin-top: 15px"></i>
+                                                                </div>
                                                             }
-                                                            <a class="btn btn-info pull-right" data-toggle="collapse" href="#showSubCommentsOf{{comment.cid}}" aria-expanded="false" aria-controls="collapseExample">
-                                                                Show/Hide
-                                                            </a>
-                                                            <h4 class="timeline-title" style="margin-left: 10px; margin-bottom: 0">
-                                                                <u>{{comment.subject}}</u>
-                                                                <br>
-                                                                <p ng-if="!comment.hasAttachment" style="font-size: x-small; margin-bottom: 0; margin-top: 4px">(by {{comment.username}})</p>
-                                                                <p ng-if="comment.hasAttachment" style="font-size: x-small; margin-bottom: 0; margin-top: 4px">(by {{comment.username}}, about <a href="@routes.ProjectData.project(p.id)">{{comment.attachment}}</a>)</p>
-                                                            </h4>
-                                                        </div>
-                                                        <div class="collapse" id="showSubCommentsOf{{comment.cid}}">
-                                                            <hr class="hr" style="margin: 15px 0 10px">
-                                                            <div class="container-fluid" style="min-height: 80px; padding-right: 0">
-                                                                <small class="pull-right text-muted" style="margin-right: 4px">
-                                                                    <i class="fa fa-clock-o fa-fw" title="{{comment.date}}"></i>
-                                                                </small>
-                                                                {{comment.content}}
+                                                            @if(role.equals(Role.REVIEWER)){
+                                                                <div class="message-badge danger">
+                                                                    <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
+                                                                </div>
+                                                            }
+                                                            @if(role.equals(Role.GUEST)){
+                                                                <div class="message-badge info">
+                                                                    <i class="fa fa-suitcase" style="margin-left: 4px; margin-top: 15px"></i>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        <div class="message-panel" style="margin-left: 40px; background-color: white">
+                                                            <div class="message-heading">
+                                                                <input type="text" name="subject" ng-model="message.subject"
+                                                                placeholder="Your subject here..." class="ng-pristine ng-valid form-control input-sm">
+                                                                <hr class="hr" style="margin: 15px 0 10px">
+                                                                <textarea type="text" class="ng-pristine ng-valid form-control input-sm" name="content" rows="5"
+                                                                placeholder="Your message here..." ng-model="message.content"></textarea>
                                                             </div>
-
-                                                            <div class="container-fluid" ng-repeat="subcomment in subcomments | hasSameSubject:comment.subject" style="padding: 0">
-                                                                <hr class="hr" style="margin: 5px 0">
-                                                                <div class="container-fluid" style="padding-right: 0">
-                                                                    <small class="pull-right text-muted" style="margin-top: 4px; margin-right: 4px">
-                                                                        <i class="fa fa-clock-o fa-fw" title="{{subcomment.date}}"></i>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <div class="row pull-right" style="padding: 0 50px 0 0;margin: 0">
+                                                    <button ng-click="reset();" class="btn btn-default btn-sm"
+                                                    data-toggle="collapse" data-target="#comment@p.id" type="button" style="width: 80px">Cancel</button>
+                                                    <button type="button" class="btn btn-warning btn-sm" style="width: 80px" ng-if="message.subject == '' || message.content == ''"
+                                                    id="saySomething">Submit</button>
+                                                    <button type="button" class="btn btn-warning btn-sm" style="width: 80px" ng-if="message.subject != '' && message.content != ''"
+                                                    id="saySomething" data-toggle="collapse" data-target="#comment@p.id" ng-click="submitMsg()">Submit</button>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body" style="padding: 0">
+                                                <ul class="timeline" style="margin-right: 30px; margin-bottom: 0; height: 80%">
+                                                    <li class="{{comment.who}} comment" ng-repeat="comment in comments | filter:{projectID: @p.id}">
+                                                        <div class="timeline-badge primary" ng-if="comment.role=='Owner'">
+                                                            <i class="fa fa-mortar-board" style="margin-top: 15px"></i>
+                                                        </div>
+                                                        <div class="timeline-badge danger" ng-if="comment.role=='Reviewer'">
+                                                            <i class="fa fa-edit" style="margin-left: 4px; margin-top: 15px"></i>
+                                                        </div>
+                                                        <div class="timeline-badge info" ng-if="comment.role=='Guest'">
+                                                            <i class="fa fa-suitcase" style="margin-top: 15px"></i>
+                                                        </div>
+                                                        <div class="timeline-panel">   @*ng-if="guestids.indexOf(comment.uid) != -1 || comment.uid == @currentUser.id"*@
+                                                            <div class="timeline-heading">
+                                                                @if(ProjectData.findAllOwners(p.id).contains(currentUser)) {
+                                                                    <a class="pull-right" href="#" ng-if="comment.role == 'Guest' || comment.uid == @currentUser.id"
+                                                                    style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
+                                                                        <i class="fa fa-close"></i>
+                                                                    </a>
+                                                                } else {
+                                                                    <a class="pull-right" href="#" ng-if="comment.uid == @currentUser.id"
+                                                                    style="color : red ; font-size : large ; padding : 8px 8px 0 20px" ng-click="deleteMsg(comment)">
+                                                                        <i class="fa fa-close"></i>
+                                                                    </a>
+                                                                }
+                                                                <a class="btn btn-info pull-right" data-toggle="collapse" href="#showSubCommentsOf{{comment.cid}}" aria-expanded="false" aria-controls="collapseExample">
+                                                                    Show/Hide
+                                                                </a>
+                                                                <h4 class="timeline-title" style="margin-left: 10px; margin-bottom: 0">
+                                                                    <u>{{comment.subject}}</u>
+                                                                    <br>
+                                                                    <p ng-if="!comment.hasAttachment" style="font-size: x-small; margin-bottom: 0; margin-top: 4px">(by {{comment.username}})</p>
+                                                                    <p ng-if="comment.hasAttachment" style="font-size: x-small; margin-bottom: 0; margin-top: 4px">(by {{comment.username}}, about <a href="@routes.ProjectData.project(p.id)">{{comment.attachment}}</a>)</p>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="collapse" id="showSubCommentsOf{{comment.cid}}">
+                                                                <hr class="hr" style="margin: 15px 0 10px">
+                                                                <div class="container-fluid" style="min-height: 80px; padding-right: 0">
+                                                                    <small class="pull-right text-muted" style="margin-right: 4px">
+                                                                        <i class="fa fa-clock-o fa-fw" title="{{comment.date}}"></i>
                                                                     </small>
-                                                                    <b>{{subcomment.username}}</b> - {{subcomment.content}}
+                                                                    {{comment.content}}
                                                                 </div>
-                                                            </div>
-                                                            <div class="panel-footer" style="margin-left: -15px; margin-right: -15px; margin-bottom: -15px; margin-top: 5px">
-                                                                <div class="input-group">
-                                                                    <input id="btn-input" type="text" class="form-control input-sm" placeholder="@currentUser.name says..."
-                                                                    ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message['subcomment' + comment.cid]"/>
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn btn-warning btn-sm" ng-click="setSubmessageAsContent(comment.cid);submitMsg()">React!</button>
-                                                                    </span>
+
+                                                                <div class="container-fluid" ng-repeat="subcomment in subcomments | hasSameSubject:comment.subject" style="padding: 0">
+                                                                    <hr class="hr" style="margin: 5px 0">
+                                                                    <div class="container-fluid" style="padding-right: 0">
+                                                                        <small class="pull-right text-muted" style="margin-top: 4px; margin-right: 4px">
+                                                                            <i class="fa fa-clock-o fa-fw" title="{{subcomment.date}}"></i>
+                                                                        </small>
+                                                                        <b>{{subcomment.username}}</b> - {{subcomment.content}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel-footer" style="margin-left: -15px; margin-right: -15px; margin-bottom: -15px; margin-top: 5px">
+                                                                    <div class="input-group">
+                                                                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="@currentUser.name says..."
+                                                                        ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message['subcomment' + comment.cid]"/>
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn btn-warning btn-sm" ng-click="setSubmessageAsContent(comment.cid);submitMsg()">React!</button>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
                                     }
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                        <!--bootstrap-->
-                    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-                        <!--sb-Admin-->
-                    <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
-
-                    <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
+                </div>
+                    <!--bootstrap-->
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                    <!--sb-Admin-->
+                <script src="@routes.Assets.at("javascripts/sb-admin-2.js")"></script>
+                <script src="@routes.Assets.at("javascripts/plugins/metisMenu/metisMenu.min.js")"></script>
             </body>
         </html>
     }

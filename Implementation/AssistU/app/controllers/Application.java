@@ -70,11 +70,11 @@ public class Application extends Controller {
      * @return Result
      */
     public static Result discussion() {
-
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if (user != null)
-            return ok(discussion.render("AssisTU - Discussions", user, null));
-        else {
+        if (user != null) {
+            Project p = PersonData.getLastUsedProject();
+            return ok(discussion.render("AssisTU - Discussions", user, p));
+        } else {
             session().put("callback", routes.Application.discussion().absoluteURL(request()));
             return Authentication.login();
         }
