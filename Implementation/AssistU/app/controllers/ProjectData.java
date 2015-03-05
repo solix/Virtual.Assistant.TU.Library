@@ -385,16 +385,16 @@ public class ProjectData extends Controller {
 
     public static List<MendeleyDocument> findAllMendeleyDocuments(Long pid){
         List<Person> members = ProjectData.findAllOwners(pid);
-
-        SqlQuery query = Ebean.createSqlQuery("SELECT distinct title FROM Mendeley_Document");
-        List<SqlRow> rows = query.findList();
-        List<MendeleyDocument> results = new ArrayList<MendeleyDocument>();
-        for (SqlRow row : rows) {
-            results.add(MendeleyDocument.find.where().eq("id", row.getLong("id")).findUnique());
+        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().in("person", members).orderBy("title").setDistinct(true).findList();
+        Map<String, MendeleyDocument> temp = new HashMap<String, MendeleyDocument>();
+        for(MendeleyDocument mendeley_doc : mendeley_docs){
+            temp.put(mendeley_doc.title, mendeley_doc);
         }
-
-//        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().in("person", members).orderBy("title").setDistinct(true).findList();
-        return results;
+        List<MendeleyDocument> result = new ArrayList<MendeleyDocument>();
+        for(String title : temp.keySet()){
+            result.add(temp.get(title));
+        }
+        return result;
     }
 
 }
