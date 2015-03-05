@@ -3,3 +3,12 @@
     position: relative;
     z-index: 1101;
 }*/
+
+.tour-step-background,
+.tour-backdrop {
+    position: fixed;
+}
+
+.tour-step-background {
+    background: #fff;
+}
