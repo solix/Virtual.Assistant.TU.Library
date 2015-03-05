@@ -50,7 +50,6 @@ public class UserService extends UserServicePlugin {
 
     @Override
     public AuthUser update(final AuthUser knownUser) {
-        Logger.debug("IS NULL: " + (knownUser == null));
         Person.update(knownUser);
         // User logged in again, bump last login date
 //        User.setLastLoginDate(knownUser);

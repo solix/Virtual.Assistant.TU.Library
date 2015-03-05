@@ -1,5 +1,9 @@
 package models;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import play.Logger;
+import play.api.libs.json.Json;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import plugins.providers.mendeley.MendeleyAuthUser;
@@ -13,30 +17,48 @@ public class MendeleyDocument extends Model {
     @Id
     public String id;
     public String title;
-    public String type;
-    public List<String> authors = new ArrayList<String>();
+    public String doctype;
+    public String authors;
     public String year;
+    @Constraints.Required @Column(columnDefinition="TEXT")
+    public String nodeData;
 
-    @ManyToMany
-    public List<Person> persons;
+    @ManyToOne
+    public Person person;
 
-    public MendeleyDocument(String id, Long uid, String title, String type, List<String> authors_new, String year){
-        this.id = id;
-        this.title = title;
-        this.type = type;
-        for(String author : authors_new){
-            this.authors.add(author);
+    public MendeleyDocument(Long uid, JsonNode nodeData){
+        Logger.debug("CREATING MENDELEY DOCUMENT: " + nodeData.toString());
+        this.nodeData = nodeData.toString();
+        this.id = nodeData.get("id").asText();
+        this.title = nodeData.get("title").asText();
+        this.doctype = nodeData.get("type").asText();
+        if(nodeData.has("authors")) {
+            String authors = "";
+            JsonNode authorsNode = nodeData.get("authors");
+            for (JsonNode author : authorsNode) {
+                authors = authors + author.get("last_name").asText();
+                if (!authorsNode.get(authorsNode.size() - 1).equals(author)) {
+                    authors = authors + ", ";
+                }
+            }
+            this.authors = authors;
         }
-        this.year = year;
-        this.persons.add(Person.find.byId(uid));
+        if(nodeData.has("year")) {
+            this.year = nodeData.get("year").asText();
+        }
+        this.person = Person.find.byId(uid);
+//        Logger.debug("NODEDATA: " + Json.parse(this.nodeData).toString());
     }
 
     public static Model.Finder<Long,MendeleyDocument> find = new Model.Finder(
             Long.class, MendeleyDocument.class
     );
 
-    public static MendeleyDocument create(String id, Long uid, String title, String type, List<String> authors_new, String year){
-        MendeleyDocument mendeley_document = new MendeleyDocument(id, uid, title, type, authors_new, year);
+    public static MendeleyDocument create(Long uid, JsonNode nodeData){
+        MendeleyDocument mendeley_document = new MendeleyDocument(uid, nodeData);
+//        Person person = Person.find.byId(uid);
+//        person.mendeleydocuments.add(mendeley_document);
+//        person.update();
         mendeley_document.save();
         return mendeley_document;
     }

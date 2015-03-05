@@ -3,14 +3,20 @@ package plugins.providers.mendeley;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Person;
+import play.libs.ws.WSRequest;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import plugins.com.feth.play.module.pa.exceptions.AccessTokenException;
 import plugins.com.feth.play.module.pa.exceptions.AuthException;
+import plugins.com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
 import plugins.com.feth.play.module.pa.providers.oauth2.OAuth2AuthProvider;
 import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
 import play.Application;
 import play.Logger;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
+
+
 
 /**
  * Created by arnaud on 18-12-14.
@@ -83,6 +89,25 @@ public class MendeleyAuthProvider extends
     @Override
     public String getKey() {
         return PROVIDER_KEY;
+    }
+
+    public static void exportDocumentToMendeley(JsonNode documentData, String token){
+        String documentUrl = "https://api.mendeley.com/documents";
+        final WSResponse documentResult = WS
+                .url(documentUrl)
+//                .setQueryParameter(OAUTH_TOKEN, token)
+                .setHeader("Authorization", "BEARER " + token)
+                .setHeader("Accept", "application/vnd.mendeley-document.1+json")
+                .setHeader("Content-Type" ,"application/vnd.mendeley-document.1+json")
+                        .setBody(documentData)
+//                .get(10000)
+//                .post(documentData)
+                .get().get(10000);
+
+        Logger.debug("IT WORKED: " + (documentResult.getStatus() == 201));
+        Logger.debug("RETURN STATUS: " + documentResult.getStatus());
+        Logger.debug("STATUSTEXT: " + documentResult.getStatusText());
+        Logger.debug("BODY: " + documentResult.getBody());
     }
 
 }

@@ -50,8 +50,11 @@ create table linked_account (
 create table mendeley_document (
   id                        varchar(255) not null,
   title                     varchar(255),
-  type                      varchar(255),
+  doctype                   varchar(255),
+  authors                   varchar(255),
   year                      varchar(255),
+  node_data                 TEXT,
+  person_id                 bigint,
   constraint pk_mendeley_document primary key (id))
 ;
 
@@ -65,6 +68,7 @@ create table person (
   email_validated           boolean,
   active                    boolean,
   mendeley_connected        boolean,
+  mendeley_token            varchar(255),
   native_account            boolean,
   constraint pk_person primary key (id))
 ;
@@ -114,18 +118,6 @@ create table token_action (
   constraint pk_token_action primary key (id))
 ;
 
-
-create table mendeley_document_person (
-  mendeley_document_id           varchar(255) not null,
-  person_id                      bigint not null,
-  constraint pk_mendeley_document_person primary key (mendeley_document_id, person_id))
-;
-
-create table person_mendeley_document (
-  person_id                      bigint not null,
-  mendeley_document_id           varchar(255) not null,
-  constraint pk_person_mendeley_document primary key (person_id, mendeley_document_id))
-;
 create sequence comment_seq;
 
 create sequence document_file_seq;
@@ -158,24 +150,18 @@ alter table event add constraint fk_event_person_5 foreign key (person_id) refer
 create index ix_event_person_5 on event (person_id);
 alter table linked_account add constraint fk_linked_account_person_6 foreign key (person_id) references person (id) on delete restrict on update restrict;
 create index ix_linked_account_person_6 on linked_account (person_id);
-alter table role add constraint fk_role_person_7 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_role_person_7 on role (person_id);
-alter table role add constraint fk_role_project_8 foreign key (project_id) references project (id) on delete restrict on update restrict;
-create index ix_role_project_8 on role (project_id);
-alter table task add constraint fk_task_person_9 foreign key (person_id) references person (id) on delete restrict on update restrict;
-create index ix_task_person_9 on task (person_id);
-alter table token_action add constraint fk_token_action_targetPerson_10 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
-create index ix_token_action_targetPerson_10 on token_action (target_person_id);
+alter table mendeley_document add constraint fk_mendeley_document_person_7 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_mendeley_document_person_7 on mendeley_document (person_id);
+alter table role add constraint fk_role_person_8 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_role_person_8 on role (person_id);
+alter table role add constraint fk_role_project_9 foreign key (project_id) references project (id) on delete restrict on update restrict;
+create index ix_role_project_9 on role (project_id);
+alter table task add constraint fk_task_person_10 foreign key (person_id) references person (id) on delete restrict on update restrict;
+create index ix_task_person_10 on task (person_id);
+alter table token_action add constraint fk_token_action_targetPerson_11 foreign key (target_person_id) references person (id) on delete restrict on update restrict;
+create index ix_token_action_targetPerson_11 on token_action (target_person_id);
 
 
-
-alter table mendeley_document_person add constraint fk_mendeley_document_person_m_01 foreign key (mendeley_document_id) references mendeley_document (id) on delete restrict on update restrict;
-
-alter table mendeley_document_person add constraint fk_mendeley_document_person_p_02 foreign key (person_id) references person (id) on delete restrict on update restrict;
-
-alter table person_mendeley_document add constraint fk_person_mendeley_document_p_01 foreign key (person_id) references person (id) on delete restrict on update restrict;
-
-alter table person_mendeley_document add constraint fk_person_mendeley_document_m_02 foreign key (mendeley_document_id) references mendeley_document (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -191,11 +177,7 @@ drop table if exists linked_account;
 
 drop table if exists mendeley_document;
 
-drop table if exists mendeley_document_person;
-
 drop table if exists person;
-
-drop table if exists person_mendeley_document;
 
 drop table if exists project;
 

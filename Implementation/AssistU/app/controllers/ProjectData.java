@@ -1,5 +1,8 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlQuery;
+import com.avaje.ebean.SqlRow;
 import models.*;
 import play.Logger;
 import play.data.*;
@@ -251,7 +254,7 @@ public class ProjectData extends Controller {
             return redirect(routes.Application.project());
         } else {
             //User did not have a session
-            session().put("callback", routes.ProjectData.removeMemberFromProject(uid,pid).absoluteURL(request()));
+            session().put("callback", routes.ProjectData.removeMemberFromProject(uid, pid).absoluteURL(request()));
             return Authentication.login();
         }
     }
@@ -382,15 +385,16 @@ public class ProjectData extends Controller {
 
     public static List<MendeleyDocument> findAllMendeleyDocuments(Long pid){
         List<Person> members = ProjectData.findAllOwners(pid);
-        List<MendeleyDocument> result = new ArrayList<MendeleyDocument>();
-        for(Person member : members){
-            for(MendeleyDocument mendeley_document : member.mendeleydocuments){
-                if(!result.contains(mendeley_document)){
-                    result.add(mendeley_document);
-                }
-            }
+
+        SqlQuery query = Ebean.createSqlQuery("SELECT distinct title FROM Mendeley_Document");
+        List<SqlRow> rows = query.findList();
+        List<MendeleyDocument> results = new ArrayList<MendeleyDocument>();
+        for (SqlRow row : rows) {
+            results.add(MendeleyDocument.find.where().eq("id", row.getLong("id")).findUnique());
         }
-        return result;
+
+//        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().in("person", members).orderBy("title").setDistinct(true).findList();
+        return results;
     }
 
 }

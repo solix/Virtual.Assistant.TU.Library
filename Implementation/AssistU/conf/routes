@@ -74,7 +74,6 @@ GET         /project/downloadTemplate                   controllers.DocumentData
 GET         /project/downloadownTemplate/:fileid        controllers.DocumentData.downloadOwnTemplate(fileid :Long)
 
 
-
 #discussion
 GET         /discussions                                controllers.Application.discussion()
 GET         /discussion/:pid                            controllers.DiscussionData.discussion(pid: Long)
@@ -101,10 +100,7 @@ GET         /send/email                                 controllers.Emailer.send
 
 #User
 GET         /deleteaccount                              controllers.PersonData.deleteAccount()
-
-
-
-
+GET         /exportMendeleyDocument/:id                 controllers.PersonData.postMendeleyDocument(id: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -215,7 +215,8 @@
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li>
-                    <a class="btn btn-lg btn-social-icon btn-mendeley" href="@AuthProvider.Registry.get("mendeley").getUrl()">
+                    <a class="btn btn-lg btn-social-icon btn-mendeley" href="@AuthProvider.Registry.get("mendeley").getUrl()"
+                    style="font-size: small">
                         @if(currentUser.mendeleyConnected){Sync Mendeley Library}else{Link Mendeley Library}
                     </a>
                 </li>

@@ -57,12 +57,11 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
     private String discipline;
     private String profile_pic;
     private Boolean email_verified; //TODO: should not matter, safer is to reverify here too
+    private String token;
     private JsonNode documents;
 
     public MendeleyAuthUser(final JsonNode node, final OAuth2AuthInfo info, final String state) {
         super(node.get(Constants.ID).asText(), info, state);
-
-        Logger.debug("THIS IS IN THE NODE: " + node.toString());
 
         if (node.has(Constants.NAME)) {
             this.name = node.get(Constants.NAME).asText();
@@ -94,6 +93,7 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
         if (node.has(Constants.DOCUMENTS)) {
             this.documents = node.get(Constants.DOCUMENTS);
         }
+        this.token = info.getAccessToken();
     }
 
     @Override
@@ -135,6 +135,8 @@ public class MendeleyAuthUser extends BasicOAuth2AuthUser implements FirstLastNa
     }
 
     public JsonNode getDocuments() {return documents;}
+
+    public String getToken() {return token;}
 
     @Override
     public String getEmail() {
