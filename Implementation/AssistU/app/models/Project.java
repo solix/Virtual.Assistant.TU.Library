@@ -32,14 +32,12 @@ public class Project extends Model {
     public Boolean active=false;
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateCreated;
-//    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
-//    public Date lastAccessed;
+
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     public Date dateArchived;
     @OneToMany(mappedBy = "project")
     public List<Role> roles = new ArrayList<Role>();
-//    @OneToMany(mappedBy = "project")
-//    public List<DocumentFile> documentFiles = new ArrayList<DocumentFile>();
+
     @OneToMany(mappedBy = "project")
     public List<S3File> documentFiles = new ArrayList<S3File>();
     @OneToMany(mappedBy = "project")
@@ -84,11 +82,12 @@ public class Project extends Model {
      * TODO: project need to be find by id and only then new data will be updated using update method (need to check hashmap support)
      * @return
      */
-    public static void edit(Long pid, String folder, String name, String description){
+    public static void edit(Long pid, String folder, String name, String description,String template){
         Project p = Project.find.byId(pid);
         p.folder = folder;
         p.name = name;
         p.description = description;
+        p.template=template;
 //        p.lastAccessed = new Date();
         p.update();
     }
@@ -100,7 +99,6 @@ public class Project extends Model {
     public static void archive(Long pid){
         Project p = Project.find.byId(pid);
         p.active = false;
-//        p.lastAccessed = new Date();
         p.dateArchived = new Date();
         p.update();
     }
@@ -115,7 +113,6 @@ public class Project extends Model {
         Role r = Role.createOwnerRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
-//        p.lastAccessed = new Date();
         p.update();
         u.update();
     }
@@ -126,7 +123,6 @@ public class Project extends Model {
         Role r = Role.createGuestRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
-//        p.lastAccessed = new Date();
         p.update();
         u.update();
     }
@@ -137,7 +133,6 @@ public class Project extends Model {
         Role r = Role.createReviewerRole(pid, uid);
         p.roles.add(r);
         u.roles.add(r);
-//        p.lastAccessed = new Date();
         p.update();
         u.update();
     }
@@ -151,15 +146,9 @@ public class Project extends Model {
         Role r = Role.find.where().eq("project", p).eq("person", u).findUnique();
         p.roles.remove(r);
         u.roles.remove(r);
-//        p.lastAccessed = new Date();
         p.update();
         u.update();
         r.delete();
     }
 
-//    public static void updateLastAccessed(Long pid){
-//        Project p = Project.find.byId(pid);
-//        p.lastAccessed = new Date();
-//        p.update();
-//    }
 }

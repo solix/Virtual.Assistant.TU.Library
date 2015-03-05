@@ -124,8 +124,8 @@ public class PersonData extends Controller {
                 c.delete();
             }
             //Delete Documents
-            List<DocumentFile> documents = DocumentFile.find.where().eq("person", user).findList();
-            for(DocumentFile d : documents){
+            List<S3File> documents = S3File.find.where().eq("person", user).findList();
+            for(S3File d : documents){
                 d.delete();
             }
             Person.deleteAccount(user.id);

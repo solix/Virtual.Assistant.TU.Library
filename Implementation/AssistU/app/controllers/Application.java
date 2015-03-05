@@ -16,6 +16,8 @@ import views.html.index;
 
 public class Application extends Controller {
 
+
+
     /**
      * The reroute function checks if there is a link stored within the session
      * for the key 'callback'. When a user tries to perform an action or access

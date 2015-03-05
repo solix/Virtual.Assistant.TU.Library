@@ -2,6 +2,7 @@
 @defining(PersonData.findActiveProjects) { activeProjectList =>
     <div class="tab-content">
         @for(p <- activeProjectList){
+<<<<<<< HEAD
             <div class="tab-pane fade @if(p.id == project.id){active in}" id="project@p.id">
                 @defining(Role.find.where().eq("project", p).eq("person", currentUser).eq("accepted", true).findUnique()){ role =>
                     <div class="container-fluid" style="margin-top: 10px">

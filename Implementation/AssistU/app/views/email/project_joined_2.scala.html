@@ -1,0 +1,14 @@
+@(joineduser : Person,p : Project)
+<br />
+<br />
+<h2>Hi @joineduser.name</h2>
+<p>
+  you have successfully joined '@p.name'.
+</p>
+<p>
+  If you would like to go and see your project, please go to <a href=@routes.ProjectData.project(p.id)> this link</a>.
+</p>
+
+
+Cheers,
+assistU team
