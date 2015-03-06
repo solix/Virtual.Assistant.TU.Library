@@ -1,8 +1,10 @@
 // Instance the tour
 var tour = new Tour({
-   
+
     debug: true
 });
+tour.init();
+tour.start();
 
 tour.addSteps([{
     element: "#one",
@@ -53,8 +55,8 @@ tour.addSteps([{
 
 ]);
 
-tour.init();
-tour.start(true);
+tour.restart();
+
 
 
 
