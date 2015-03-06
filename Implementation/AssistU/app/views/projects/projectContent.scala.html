@@ -56,7 +56,7 @@
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="margin: 0; padding: 0">
                                                     <i class="fa fa-cog fa-fw"></i><span class="caret"></span>
                                                 </a>
-                                                <ul class="dropdown-menu dropdown-menu-right dropdown-messages" style="width: 200px">
+                                                <ul class="dropdown-menu dropdown-menu-right dropdown-messages" style="width: 250px">
                                                     @if(role.role.equals(Role.OWNER)) {
                                                         <li><a href="@routes.ProjectData.editProjectPage(p.id)"><i class="fa fa-pencil fa-fw"></i>
                                                             Edit project details...</a></li>
@@ -64,7 +64,9 @@
                                                     <li><a href="@routes.DiscussionData.discussion(p.id)"><i class="fa fa-comments fa-fw"></i> Go to discussions...</a></li>
                                                     <li class="divider"></li>
                                                     <li><a href="#" data-toggle="modal" data-target="#memberList@p.id"><i class="fa fa-users fa-fw"></i> Show members...</a></li>
-                                                    <li><a href="#" data-toggle="modal" data-target="#mendeleyList@p.id"><i class="fa fa-wrench fa-fw"></i> Show library...</a></li>
+                                                    @if(currentUser.mendeleyConnected){
+                                                        <li><a href="#" data-toggle="modal" data-target="#mendeleyList@p.id"><img src="@routes.Assets.at("icons/mendeley-24-black.png")" style="margin-left: -3px; padding-right: 1px">Show Mendeley documents...</a></li>
+                                                    }
                                                     @if(role.role.equals(Role.OWNER)){
                                                         <li><a href="#" data-toggle="modal" data-target="#addMemberToProject@p.id"><i class="fa fa-user-plus fa-fw"></i> Add a member...</a></li>
                                                     }
@@ -227,15 +229,16 @@
                                 <td style="text-align: center">@mendeley_doc.year</td>
                                 <td style="text-align: center">
                                     @if(MendeleyDocument.find.where().eq("person",currentUser).eq("title", mendeley_doc.title).findList().size() > 0){
-                                        <i class="fa fa-check-square"></i>
+                                        <i class="fa fa-check-square" title="You have this document in your library"></i>
                                     }else{
-                                        <a href="@routes.PersonData.postMendeleyDocument(mendeley_doc.id)"><i class="fa fa-plus-square"></i></a>
+                                        <a href="@routes.PersonData.postMendeleyDocument(mendeley_doc.id)"><i class="fa fa-plus-square" title="Add this to my library"></i></a>
                                     }
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                <a class="pull-right" href="https:www.mendeley.com/library">Go to my Mendeley Library</a>
             }
         }
     </div>

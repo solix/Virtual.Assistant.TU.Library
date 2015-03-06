@@ -215,9 +215,12 @@
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li>
-                    <a class="btn btn-lg btn-social-icon btn-mendeley" href="@AuthProvider.Registry.get("mendeley").getUrl()"
-                    style="font-size: small">
-                        @if(currentUser.mendeleyConnected){Sync Mendeley Library}else{Link Mendeley Library}
+                    <a href="@AuthProvider.Registry.get("mendeley").getUrl()">
+                        @if(currentUser.mendeleyConnected){
+                            <img src="@routes.Assets.at("icons/mendeley-24-black.png")" style="margin-left: -3px; padding-right: 1px">Sync Mendeley Library...
+                        }else{
+                            <img src="@routes.Assets.at("icons/mendeley-24-black.png")" style="margin-left: -3px; padding-right: 1px">Link Mendeley Library...
+                        }
                     </a>
                 </li>
                 <li><a href="#" data-toggle="modal" data-target="#deleteAccount"><i class="fa fa-close fa-fw"></i> Delete account...</a>
