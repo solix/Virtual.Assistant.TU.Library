@@ -142,7 +142,7 @@ public class PersonData extends Controller {
             }
             //Clear Mendeley Data
             clearMendeleyData(user);
-//            Person.deleteAccount(user.id);
+            Person.deleteAccount(user.id);
         }
         return Authentication.login();
     }

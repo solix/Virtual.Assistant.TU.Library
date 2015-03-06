@@ -67,8 +67,11 @@ public class Global extends GlobalSettings {
                     if (e instanceof AccessDeniedException) {
                         return routes.Authentication.OAuthDenied(((AccessDeniedException) e).getProviderKey());
                     }
-                    if(e instanceof AuthException && e.getMessage().equals("playauthenticate.core.exception.signupuser_failed")){
+                    if(e.getMessage().equals("playauthenticate.core.exception.signupuser_failed")){
                         return routes.Authentication.loginWithMessage("You already have a default account","danger");
+                    }
+                    if(e.getMessage().equals("Mendeley timed out")){
+                        return routes.Application.reroute();
                     }
                     // more custom problem handling here...
 

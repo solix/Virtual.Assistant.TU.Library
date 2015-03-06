@@ -65,6 +65,7 @@ public class MendeleyAuthProvider extends
 
         final String libraryUrl = getConfiguration().getString(
                 USER_DOCUMENTS_URL_SETTING_KEY);
+
         final WSResponse libraryResult = WS
                 .url(libraryUrl)
                 .setQueryParameter(OAUTH_TOKEN,
@@ -72,17 +73,26 @@ public class MendeleyAuthProvider extends
                 .get()
                 .get(getTimeout());
 
-        final ArrayNode libraryinfo = (ArrayNode)libraryResult.asJson();
+        if(libraryResult.getStatus() == 504) {
+            throw new AuthException("Mendeley timed out");
+        }else{
+            JsonNode libraryNode = libraryResult.asJson();
+            Logger.debug("NODE: " + libraryNode.toString());
+            if(libraryNode instanceof ArrayNode) {
+                ArrayNode libraryinfo = (ArrayNode) libraryNode;
+                userinfo.put("documents", libraryinfo);
 
-        userinfo.put("documents", libraryinfo);
+                final JsonNode result = userinfo;
 
-        final JsonNode result = userinfo;
-
-        if (infoResult.getStatus() >= 400) {
-            throw new AuthException(result.get("meta").get("errorDetail").asText());
-        } else {
-            Logger.debug(result.toString());
-            return new MendeleyAuthUser(result, info, state);
+                if (infoResult.getStatus() >= 400) {
+                    throw new AuthException(result.get("meta").get("errorDetail").asText());
+                } else {
+                    Logger.debug(result.toString());
+                    return new MendeleyAuthUser(result, info, state);
+                }
+            }else {
+                throw new AuthException(libraryNode.get("message").asText());
+            }
         }
     }
 
@@ -90,24 +100,4 @@ public class MendeleyAuthProvider extends
     public String getKey() {
         return PROVIDER_KEY;
     }
-
-    public static void exportDocumentToMendeley(JsonNode documentData, String token){
-        String documentUrl = "https://api.mendeley.com/documents";
-        final WSResponse documentResult = WS
-                .url(documentUrl)
-//                .setQueryParameter(OAUTH_TOKEN, token)
-                .setHeader("Authorization", "BEARER " + token)
-                .setHeader("Accept", "application/vnd.mendeley-document.1+json")
-                .setHeader("Content-Type" ,"application/vnd.mendeley-document.1+json")
-                        .setBody(documentData)
-//                .get(10000)
-//                .post(documentData)
-                .get().get(10000);
-
-        Logger.debug("IT WORKED: " + (documentResult.getStatus() == 201));
-        Logger.debug("RETURN STATUS: " + documentResult.getStatus());
-        Logger.debug("STATUSTEXT: " + documentResult.getStatusText());
-        Logger.debug("BODY: " + documentResult.getBody());
-    }
-
 }
