@@ -1,5 +1,6 @@
 // Instance the tour
 var tour = new Tour({
+    storage: false,
     debug: true
 });
 
@@ -47,7 +48,7 @@ tour.addSteps([{
         orphan: true,
         title: "Here is your calendar",
         placement: "right",
-        content: "Click and Plan your future articles"
+        content: "Click on calendar and Plan your future ! That was it :)"
     }
 
 ]);
