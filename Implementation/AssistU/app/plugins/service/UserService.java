@@ -1,5 +1,6 @@
 package plugins.service;
 
+import play.Logger;
 import plugins.com.feth.play.module.pa.providers.oauth2.google.GoogleAuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
@@ -102,7 +103,8 @@ public class UserService extends UserServicePlugin {
      */
     @Override
     public AuthUser link(final AuthUser oldUser, final AuthUser newUser) {
-        return null;
+        Person.addLinkedAccount(oldUser, newUser);
+        return newUser;
     }
 
 //    public String getLocalEmail(final Auth)

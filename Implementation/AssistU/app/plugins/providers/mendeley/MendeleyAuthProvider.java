@@ -3,14 +3,20 @@ package plugins.providers.mendeley;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Person;
+import play.libs.ws.WSRequest;
+import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import plugins.com.feth.play.module.pa.exceptions.AccessTokenException;
 import plugins.com.feth.play.module.pa.exceptions.AuthException;
+import plugins.com.feth.play.module.pa.providers.oauth2.OAuth2AuthInfo;
 import plugins.com.feth.play.module.pa.providers.oauth2.OAuth2AuthProvider;
 import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
 import play.Application;
 import play.Logger;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
+
+
 
 /**
  * Created by arnaud on 18-12-14.
@@ -59,6 +65,7 @@ public class MendeleyAuthProvider extends
 
         final String libraryUrl = getConfiguration().getString(
                 USER_DOCUMENTS_URL_SETTING_KEY);
+
         final WSResponse libraryResult = WS
                 .url(libraryUrl)
                 .setQueryParameter(OAUTH_TOKEN,
@@ -66,17 +73,26 @@ public class MendeleyAuthProvider extends
                 .get()
                 .get(getTimeout());
 
-        final ArrayNode libraryinfo = (ArrayNode)libraryResult.asJson();
+        if(libraryResult.getStatus() == 504) {
+            throw new AuthException("Mendeley timed out");
+        }else{
+            JsonNode libraryNode = libraryResult.asJson();
+            Logger.debug("NODE: " + libraryNode.toString());
+            if(libraryNode instanceof ArrayNode) {
+                ArrayNode libraryinfo = (ArrayNode) libraryNode;
+                userinfo.put("documents", libraryinfo);
 
-        userinfo.put("documents", libraryinfo);
+                final JsonNode result = userinfo;
 
-        final JsonNode result = userinfo;
-
-        if (infoResult.getStatus() >= 400) {
-            throw new AuthException(result.get("meta").get("errorDetail").asText());
-        } else {
-            Logger.debug(result.toString());
-            return new MendeleyAuthUser(result, info, state);
+                if (infoResult.getStatus() >= 400) {
+                    throw new AuthException(result.get("meta").get("errorDetail").asText());
+                } else {
+                    Logger.debug(result.toString());
+                    return new MendeleyAuthUser(result, info, state);
+                }
+            }else {
+                throw new AuthException(libraryNode.get("message").asText());
+            }
         }
     }
 
@@ -84,5 +100,4 @@ public class MendeleyAuthProvider extends
     public String getKey() {
         return PROVIDER_KEY;
     }
-
 }

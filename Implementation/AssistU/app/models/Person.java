@@ -2,6 +2,8 @@ package models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import controllers.PersonData;
 import play.Logger;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
@@ -33,6 +35,7 @@ public class Person extends Model {
     public boolean emailValidated=false;
     public boolean active=false;
     public boolean mendeleyConnected=false;
+    public String mendeleyToken=null;
     public boolean native_account=false;
 
 
@@ -49,6 +52,9 @@ public class Person extends Model {
 
     @OneToMany(mappedBy = "person")
     public List<S3File> documentFiles = new ArrayList<S3File>();
+
+    @OneToMany(mappedBy = "person")
+    public List<MendeleyDocument> mendeleydocuments = new ArrayList<MendeleyDocument>();
 
     @OneToMany(mappedBy = "person")
     public List<Role> roles= new ArrayList<Role>();
@@ -71,9 +77,16 @@ public class Person extends Model {
      * @return
      */
     public static Person update(final AuthUser authUser) {
-        final Person person = Person.findByAuthUserIdentity(authUser);
+
+        Person person = Person.findByAuthUserIdentity(authUser);
+        if(authUser instanceof MendeleyAuthUser){
+            person.mendeleyConnected=true;
+            person.mendeleyToken=((MendeleyAuthUser) authUser).getToken();
+            person = PersonData.clearMendeleyData(person);
+            person = PersonData.updateMendeleyData(person, ((MendeleyAuthUser) authUser).getDocuments());
+        }
         person.active = true;
-        person.save();
+        person.update();
         return person;
     }
 
@@ -207,6 +220,7 @@ public class Person extends Model {
 
         if(authUser instanceof MendeleyAuthUser){
             person.mendeleyConnected=true;
+            person.mendeleyToken=((MendeleyAuthUser) authUser).getToken();
         }
 
         person.save();

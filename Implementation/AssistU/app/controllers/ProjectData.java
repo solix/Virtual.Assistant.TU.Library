@@ -1,5 +1,8 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlQuery;
+import com.avaje.ebean.SqlRow;
 import models.*;
 import play.Logger;
 import play.data.*;
@@ -436,6 +439,20 @@ public class ProjectData extends Controller {
             persons.add(role.person);
         }
         return persons;
+    }
+
+    public static List<MendeleyDocument> findAllMendeleyDocuments(Long pid){
+        List<Person> members = ProjectData.findAllOwners(pid);
+        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().in("person", members).orderBy("title").setDistinct(true).findList();
+        Map<String, MendeleyDocument> temp = new HashMap<String, MendeleyDocument>();
+        for(MendeleyDocument mendeley_doc : mendeley_docs){
+            temp.put(mendeley_doc.title, mendeley_doc);
+        }
+        List<MendeleyDocument> result = new ArrayList<MendeleyDocument>();
+        for(String title : temp.keySet()){
+            result.add(temp.get(title));
+        }
+        return result;
     }
 
 }

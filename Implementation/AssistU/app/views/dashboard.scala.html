@@ -1,4 +1,6 @@
-@(parentpage: String, currentUser:Person )
+
+@(parentpage: String, currentUser:Person)
+    @import plugins.com.feth.play.module.pa.providers.AuthProvider
 <!-- Navigation -->
 
 <nav class="navbar navbar-default navbar-static-top "  role="navigation" style="margin-bottom: 0">
@@ -143,7 +145,14 @@
                  <i class="fa fa-user fa-fw"></i> <span > @currentUser.name </span> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                <li>
+                    <a href="@AuthProvider.Registry.get("mendeley").getUrl()">
+                        @if(currentUser.mendeleyConnected){
+                            <img src="@routes.Assets.at("icons/mendeley-24-black.png")" style="margin-left: -3px; padding-right: 1px">Sync Mendeley Library...
+                        }else{
+                            <img src="@routes.Assets.at("icons/mendeley-24-black.png")" style="margin-left: -3px; padding-right: 1px">Link Mendeley Library...
+                        }
+                    </a>
                 </li>
                 <li><a href="#" data-toggle="modal" data-target="#deleteAccount"><i class="fa fa-close fa-fw"></i> Delete account...</a>
                 </li>
@@ -196,6 +205,7 @@
                     <a @if(parentpage.equals("project")){class="active"} href="@routes.Application.project()"><i class="fa fa-line-chart fa-fw"></i> Projects</a>
 
                     <!-- /.nav-second-level -->
+
                 </li>
                 <li class="eight">
                     <a @if(parentpage.equals("calendar")){class="active"} href="@routes.CalendarData.calendar()"><i class="fa fa-calendar fa-fw"></i> Calendar</a>

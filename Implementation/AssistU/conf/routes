@@ -71,7 +71,6 @@ POST        /project/uploadNewTemplate                  controllers.DocumentData
 GET         /project/discuss/:docId                     controllers.DocumentData.documentDiscussion(docId: java.util.UUID)
 GET         /project/delete/:fileid                     controllers.DocumentData.deleteDocument(fileid :java.util.UUID)
 
-
 #discussion
 GET         /discussions                                controllers.Application.discussion()
 GET         /discussion/:pid                            controllers.DiscussionData.discussion(pid: Long)
@@ -96,10 +95,7 @@ GET         /suggestions                                controllers.Application.
 
 #User
 GET         /deleteaccount                              controllers.PersonData.deleteAccount()
-
-
-
-
+GET         /exportMendeleyDocument/:id                 controllers.PersonData.postMendeleyDocument(id: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
