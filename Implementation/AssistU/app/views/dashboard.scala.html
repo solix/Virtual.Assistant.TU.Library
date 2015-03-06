@@ -21,27 +21,47 @@
 
     <ul class="nav navbar-top-links navbar-right" id="three">
         <li class="dropdown msg">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                 <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-messages">
-                <li>
-                    <a href="#">
-                        <div>
-                            <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                        </div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                    </a>
-                </li>
-                <li class="divider"></li>
 
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-comments fa-fw"></i> @if(DiscussionData.allNewComments(currentUser).size()>0){<span class="badge badge-info">@DiscussionData.allNewComments(currentUser).size()</span> }<i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-tasks">
+                @if(DiscussionData.allNewComments(currentUser).size() == 0){
+                    <li>
+                        <a href="@routes.Application.discussion()">
+                            <div><strong>No New Comments</strong></div>
+                            <div>
+                                Nothing to see here!
+                            </div>
+                        </a>
+                    </li>
+                }
+            @defining(DiscussionData.allNewComments(currentUser)) { comments =>
+                @for(comment <- comments){
+                    <li>
+                        <a href="@routes.DiscussionData.seen(comment.cid)">
+                            <div>
+                                <small class="pull-right text-muted" style="margin: 2px">
+                                    <i class="fa fa-clock-o fa-fw" title="@comment.date"></i>
+                                </small>
+                                <strong>@comment.subject</strong>
+                                @if(comment.content.size <= 10){
+                                    <p>@comment.person.name says: @comment.content</p>
+                                } else {
+                                    <p>@comment.person.name says: @comment.content.substring(0, 10)...</p>
+                                }
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                }
+            }
             </ul>
-            <!-- /.dropdown-messages -->
+
+                <!-- /.dropdown-tasks -->
         </li>
-        <!-- /.dropdown -->
+            <!-- /.dropdown -->
+        <!--TASKS-->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-wrench fa-fw"></i> @if(Task.allUndoneTask(currentUser).size()>0){<span class="badge badge-info">@Task.allUndoneTask(currentUser).size()</span> }<i class="fa fa-caret-down"></i>

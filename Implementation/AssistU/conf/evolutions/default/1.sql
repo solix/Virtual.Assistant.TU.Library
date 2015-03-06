@@ -118,6 +118,12 @@ create table token_action (
   constraint pk_token_action primary key (id))
 ;
 
+
+create table comment_person (
+  comment_cid                    bigint not null,
+  person_id                      bigint not null,
+  constraint pk_comment_person primary key (comment_cid, person_id))
+;
 create sequence comment_seq;
 
 create sequence event_seq;
@@ -161,11 +167,17 @@ create index ix_token_action_targetPerson_11 on token_action (target_person_id);
 
 
 
+alter table comment_person add constraint fk_comment_person_comment_01 foreign key (comment_cid) references comment (cid) on delete restrict on update restrict;
+
+alter table comment_person add constraint fk_comment_person_person_02 foreign key (person_id) references person (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists comment;
+
+drop table if exists comment_person;
 
 drop table if exists event;
 

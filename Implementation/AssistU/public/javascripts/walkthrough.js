@@ -1,5 +1,6 @@
 // Instance the tour
 var tour = new Tour({
+   
     debug: true
 });
 
@@ -52,9 +53,8 @@ tour.addSteps([{
 
 ]);
 
-tour.init(true);
+tour.init();
 tour.start(true);
-tour.restart();
 
 
 
