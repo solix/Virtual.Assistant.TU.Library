@@ -18,7 +18,7 @@ public class Comment extends Model {
 
     @Id
     public long cid;
-    @Constraints.Required
+    @Constraints.Required @Column(columnDefinition="TEXT")
     public String subject;
     @Constraints.Required @Column(columnDefinition="TEXT")
     public String content;
