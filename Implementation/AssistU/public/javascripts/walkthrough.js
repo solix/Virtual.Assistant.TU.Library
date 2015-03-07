@@ -26,13 +26,13 @@ tour.addSteps([{
     title: "Project page",
     placement: "bottom",
     content: "you can Create a new Project or view if you have any invitations ",
-    path: "/projects"
+    // path: "/projects"
 },{
     element: ".five",
     title: "Discuss with others",
     placement: "top",
     content: "When you have an active project you can start discussing a topic with other members!",
-    path: "/discussions"
+    // path: "/discussions"
 },{
     element: ".six",
     title: "Add a Personal Task",
@@ -44,7 +44,7 @@ tour.addSteps([{
     title: "Tips and Suggestions",
     placement: "bottom",
     content: "Get the best Tips ever",
-    path: "/suggestions"
+    // path: "/suggestions"
 },{
         element: ".eight",
         orphan: true,
@@ -55,7 +55,7 @@ tour.addSteps([{
 
 ]);
 
-tour.restart();
+tour.init().start(true);
 
 
 
