@@ -10,8 +10,8 @@ public abstract class GoogleOAuth2Base extends OAuth2Test {
     public static final String GOOGLE_USER_EMAIL = "fethjoscha@gmail.com";
 
     protected void amendConfiguration(final Map<String, String> additionalConfiguration) {
-        additionalConfiguration.put(constructSettingKey(CLIENT_ID), System.getenv("GOOGLE_CLIENT_ID"));
-        additionalConfiguration.put(constructSettingKey(CLIENT_SECRET), System.getenv("GOOGLE_CLIENT_SECRET"));
+//        additionalConfiguration.put(constructSettingKey(CLIENT_ID), System.getenv("GOOGLE_CLIENT_ID"));
+//        additionalConfiguration.put(constructSettingKey(CLIENT_SECRET), System.getenv("GOOGLE_CLIENT_SECRET"));
     }
 
     protected String getProviderKey() {

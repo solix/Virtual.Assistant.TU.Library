@@ -1,15 +1,50 @@
 \chapter{Recommendations}
-\section{TU Delft NetID}
 
-\subsection{Authentication}
+\section{Authentication}
+
+The following recommendations are all Authentication-oriented. Authentication covers all the possible ways a user can log
+himself into the application with either a default account or a social account.
+
+\subsection{TU Delft NetID}
 
 At the time this project was implemented, the NetID service of the TU Delft was undergoing an update and complete overhaul. 
 Because of this transfer, the central IT department was unable to provide us with access information to use the NetID OAuth2 service.
-Given that the application is primairily aimed at students and researches of the TU Delft, the implementation of the NetID
+Given that the application is primarily aimed at students and researches of the TU Delft, the implementation of the NetID
 OAuth2 service should still remain a part of the future of this project. It will allow for a better integration with other
 services provided by the TU Delft.
 
-\section{Future Evolution}
+\subsection{Mendeley}
+
+The current implementation of the Mendeley document-sharing configuration is quite ubiquitous. A user now only has the option
+to either share his complete library, or not at all. If the Mendeley library sharing functionality is kept in future releases,
+a good recommendation would be to expand its functionality and allow users to have more control about which document gets shared
+in which project. A possible implementation would be to have some Mendeley Control Center inside the application, where you
+can specify which documents you wish to import, have an overview of which documents are shared in which projects, and maybe
+even have the option to implicitly share documents between users directly.
+
+\section{Functionality}
+
+Functionality in this case means the way users have the ability to interact with the application.
+
+\subsection{Asynchronousness}
+
+The initial idea was to have asynchronous notifications, invitations, messages, etc., however this proved troublesome in certain
+cases which resulted in not everything behaving in an asynchronous manner. For future implementations, it would be easier for users
+if project invitations and notifications would appear asynchronous instead of after reloading. Also suggestions could be
+triggered asynchronously in the future, for instance when the system notices the user might have some trouble somewhere with
+a certain subject of his or her article, a small tip or suggestion could pop up from the bottom right.
+
+\subsection{Calendar}
+
+The current implementation of the calendar misses a bit of robustness and extended functionality, which leaves some room for
+improvement. A first good recommendation would be to have the functionality to export the calendar to other applications such as
+Google Calendar and iCal. A second one would be to improve the look and feel of the Calendar page, such as adding colourcodes to
+indicate which event belongs to which project, or adding some gradients to the events so they are easier on the eyes.
+
+\section{Data Gathering}
+
+The following and final part of recommendations is about how the application could be able to learn from its user's behaviours,
+and how administrators would be able to extract relevant information.
 
 \subsection{User Logging}
 
