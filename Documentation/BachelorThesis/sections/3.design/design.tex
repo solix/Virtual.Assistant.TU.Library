@@ -3,22 +3,22 @@
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
-Today the web has become the central point of all applications. With the presence of Internet, users can use many applications without needing to 
+Today the web has become the central point of all applications. With the presence of Internet, users can use many applications without the need to 
 install the program on their machine. Technologies such as JavaScript, HTML, CSS are evolving rapidly and have created the opportunity for the users of 
 world wide web to have a more pleasant experience. Fast and robust applications play an important role in attracting users and convincing them to 
-migrate from installing the programs on their machine and instead using their browsers. In order to build the most robust web applications possible, 
-there is a need to implement new, state of the art software engineering designs.
+migrate from installing the programs on their machine to using their browsers instead. In order to build the most solid web applications possible, 
+it is in our best interest to implement new, state of the art software engineering designs.
 
 \subsection{Purpose} % (fold)
 \label{sub:purpose}
 
 This chapter describes the architecture design of a `Virtual Assistant' application. It is intended to describe the design of the system 
-thoroughly enough to allow future contributors of the project to clearly understand of how the software is expected to be build. It will provide 
-an overview and description of the system and relations between the components and user interactions. 
+thoroughly enough to allow future contributors of the project to clearly understand of how the software is expected to be extended. It will provide 
+an overview and description of the system, the relations between the components and user interactions. 
 
 \subsection{Scope} % (fold)
 \label{sub:scope}
-The scope of the `AssistU' software design is intended for a basic system that illustrates a proof of concept. Its purpose is the act of writing 
+The scope of the `AssisTU' software design is set to a basic system that illustrates a proof of concept. Its purpose is the act of writing 
 scientific articles that provides planning, organizing tasks, discussions and suggestions.
 
 \section{Use Cases} % (fold)
@@ -27,12 +27,12 @@ scientific articles that provides planning, organizing tasks, discussions and su
 \label{sub:actors}
 \subsubsection{Student/Researcher User} 
 The Student/Researcher user is the main user of the application. This user can make extensive use of all the features provided by the application. 
-For example, the Student/Researcher can create a project, edit a project, upload templates and document, invite others, make a planning, discuss a 
-topic with other collaborators, create a to-do-list of what has to be done for the project and get information on how to write a scientific article.
+For example, the Student/Researcher can create a project, edit a project, upload templates and other documents, invite others, make a planning, discuss 
+a topic with other collaborators, create a to-do-list of what has to be done for the project and get information on how to write a scientific article.
 
 \subsubsection{Reviewer User} 
 The Reviewer actor is able to use most of the same features as a Student/Researcher can, apart from editing project information or inviting other 
-members to a project. His main objective to be able to review a Student/Researcher's work and provide feedback. A user can take on the Reviewer role 
+members to a project. His main objective is to be able to review a Student/Researcher's work and provide feedback. A user can take on the Reviewer role 
 when He/She gets invited by a Student/Researcher into the project. A Reviewer is able to download documents, create new discussions, upload own 
 documents, and comment on existing discussions about a certain section of the project. A Reviewer is considered a user with a reviewer role, which 
 means he can also make use of the tasks feature and calendar to create his own events.
@@ -43,7 +43,8 @@ actions such as viewing and downloading a document, or joining a discussion to g
 a project.
 
 \subsubsection{Administrative User} 
-The administrator of the application represents the operator of the system. He can extract logs and is in charge of administrating the system in terms of security and account issues that users may have.
+The administrator of the application represents the operator of the system. He can extract logs and is in charge of administrating the system in terms 
+of security and account issues that users may have.
 
 \subsection{List of Use Cases} % (fold)
 \label{sub:list_of_use_cases}
@@ -114,34 +115,35 @@ The administrator of the application represents the operator of the system. He c
 \section{System Architecture} % (fold)
 \label{sec:system_architecture}
 For the purpose of modularity, the Model-View-Controller (MVC) design was adopted for the architecture of the application. In this section, the MVC
-design of the system is illustrated in the form of a diagram, whereas its sub-components will also be discussed. MVC has been proven to be very
-suitable for web architecture since it promises low coupling and high cohesion between components of the systems, and provides room for easier
-extension or modification of a specific component.
+design of the system is illustrated in the form of a diagram. Its sub-components will also be discussed further down this section. MVC has been proven
+to be very suitable for web architecture since it promises low coupling and high cohesion between components of the systems, and provides room for 
+easier extension or modification of a specific component.
 \subsection{Architectural Design} % (fold)
 \label{sub:arichtectural_design}
 %
 
-In the app folder of this application, three packages defined, corresponding to the MVC design. 
+In the app folder of this application, three packages are defined, corresponding to the MVC design. 
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/MVCdiag.png}
 	
 \end{center}
 
-The image above is showing that the system architecture divides into three separate layers. Firstly the model, which represents the information, 
-secondly the view, that makes these information available for the user, and finally the controller that responds to user actions and processes them. \\
-In the next section we will explain more in-dept about each layer and explain the sub-components and their functions. 
+The image above shows that the system architecture divides into three separate layers. The first layer is the model, which represents the information. 
+The second layer is the view, which renders the information to the display of the user. The third and final layer is the controller, which interacts 
+with user actions and processes them on the back-end accordingly. \\
+In the next section we will explain each layer more thoroughly and explain the sub-components and their functions. 
 
 \subsection{Model} % (fold)
 \label{sub:design_rationale}
 The model part of the design is meant to keep track of changes in the states of the application, such as (for example) when the user creates a new
-project, or creates a new event in the calendar. When the user performs one of these actions, the model will propagate these changes through the 
-associated views and controllers within the application. The models also contain some operational methods that can be used (as static methods) to find 
-information in the database, and to update certain information upon a user or controller's actions.
+project, or creates a new event in the calendar. When the user performs one of these actions, the model will propagate these changes from the 
+views to the associated controllers within the application. The models also contain some operational methods that can be used (as static methods) to 
+find or update information in the database.
 
 \subsubsection{Relational Model Diagram}
 
-In order to give a general overview of the system's model layer, a graphical representation of the Entity Relationship (ER) diagram is illustrated to
-show the relationship that the entities have with each other.
+In order to give a more general overview of the system's model layer, a graphical representation of the Entity Relationship (ER) diagram is included to
+show the relationships that the entities have with each other.
 
 \begin{center}
 \includegraphics[scale=0.3]{./img/dsgn_img/RMA.png}
@@ -150,7 +152,7 @@ show the relationship that the entities have with each other.
 
 \subsubsection{Model description}
 \paragraph{User}
-The User model holds all the attributes a user needs within the application. Users are identified in the program by their (verified) email address 
+The User model holds all the attributes a user needs within the application. Users are identified in the application by their (verified) email address 
 which is unique. Almost all the models have a direct relation with the User model, as the user is a central component within the application. User 
 attributes consist of an email, a name, etc.
 
@@ -184,8 +186,13 @@ The Document file model holds information about the version and name of a specif
 assigned a unique version number, meant to identify files with the same name in the same project. It also contains the data of the user that uploaded
 the file, and a link to where the uploaded file is stored.
 
+\paragraph{Mendeley Document} % (fold)
+The Mendeley Document model is meant to store the metadata retrieved from user's Mendeley libraries. Its main attribute the is JSON data
+stored as a String so that the application can easily push the same data to another user's Mendeley library. Some other attributes such as
+title, type and authors are copied from this JSON to make searching for specific files easier.
+
 \subsection{View} % (fold)
-The View part of the MVC architecture is the gate for the user to interact with the application. The design of the View layer is designed to be simple
+The View part of the MVC architecture is the gate for the user to interact with the application. The View layer is designed to be simple
 and minimalistic. An image snapshot of the view's sub-components are shown next.
 \subsubsection{Login}
 
@@ -236,5 +243,5 @@ and minimalistic. An image snapshot of the view's sub-components are shown next.
 \end{center}
 
 \subsection{Controller}
-The Controllers are the brain of the application. They handle all the requests committed by users from the view part, and responds to it accordingly.
-The Controller are also responsible to update the models if there is any change in the state of the information.
+The Controllers are the brains of the application. They handle all the requests committed by users from the view part, and respond to it accordingly.
+The Controllers are also responsible to update the models if there is any change in the state of the information.
