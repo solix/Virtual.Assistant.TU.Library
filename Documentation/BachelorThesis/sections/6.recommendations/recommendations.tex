@@ -46,6 +46,16 @@ indicate which event belongs to which project, or adding some gradients to the e
 The following and final part of recommendations is about how the application could be able to learn from its user's behaviours,
 and how administrators would be able to extract relevant information.
 
+\subsection{Administrator Control Center}
+
+The current implementation of the application does not support explicit administrative control for the administrator from within the application, 
+but more of an implied back-end control. Administrators that want to change something are now expected to do that manually on the back-end
+server of the application, such as updating database records. 
+A good recommendation would be to implement some sort of Administrator Control Center where a user with administrator rights
+has full access to the database from within the application. This would also imply that people other than the server owner can
+be assigned the role of administrating the application. The administrator user should be able to extract logs and specific
+data from the database from within the application.
+
 \subsection{User Logging}
 
 The vision for this application was not only to provide a supporting system for accessing and discussing files, but also create
