@@ -111,7 +111,7 @@ of security and account issues that users may have.
 % subsection list_of_use_cases (end)
 
 % subsection actors (end)
-
+\newpage
 \section{System Architecture} % (fold)
 \label{sec:system_architecture}
 For the purpose of modularity, the Model-View-Controller (MVC) design was adopted for the architecture of the application. In this section, the MVC
@@ -139,7 +139,7 @@ The model part of the design is meant to keep track of changes in the states of 
 project, or creates a new event in the calendar. When the user performs one of these actions, the model will propagate these changes from the 
 views to the associated controllers within the application. The models also contain some operational methods that can be used (as static methods) to 
 find or update information in the database.
-
+\newpage
 \subsubsection{Relational Model Diagram}
 
 In order to give a more general overview of the system's model layer, a graphical representation of the Entity Relationship (ER) diagram is included to
@@ -187,7 +187,7 @@ assigned a unique version number, meant to identify files with the same name in 
 the file, and a link to where the uploaded file is stored.
 
 \paragraph{Mendeley Document} % (fold)
-The Mendeley Document model is meant to store the metadata retrieved from user's Mendeley libraries. Its main attribute the is JSON data
+The Mendeley Document model is meant to store the meta data retrieved from user's Mendeley libraries. Its main attribute the is JSON data
 stored as a String so that the application can easily push the same data to another user's Mendeley library. Some other attributes such as
 title, type and authors are copied from this JSON to make searching for specific files easier.
 
@@ -241,12 +241,12 @@ and minimalistic. An image snapshot of the view's sub-components are shown next.
 \includegraphics[height=200px, width=350px]{./img/dsgn_img/suggestions.png}
 	
 \end{center}
-
+\newpage
 \subsection{Controller}
 The Controllers are the brains of the application. They handle all the requests committed by users from the view part, and respond to it accordingly.\\
 The Controllers are also responsible to update the models if there is any change in the state of the information. In the table below an overview of all controllers with their responsibility is shown.\\
 
 \begin{center}
-\includegraphics[height=200px, width=200px]{./img/dsgn_img/controllers.png}
+\includegraphics[height=300px, width=300px]{./img/dsgn_img/controllers.png}
 	
 \end{center}
