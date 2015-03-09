@@ -81,7 +81,17 @@
                         @projects.projectNavBar(currentUser, project)
                         @projects.projectContent(currentUser, project)
                     }else{
-                        SHOW NO PROJECT MESSAGE
+                        <div class="row">
+                            <div class="col-lg-4 col-lg-offset-4">
+                                <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 150px">
+                                    <p>There are no projects to show</p>
+                                    <br>
+                                    <div class="btn-group" role="group">
+                                        <a style="width: 175px" type="button" class="btn btn-success" id="five" href="@routes.ProjectData.createProjectPage()">Create a new project</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </div><!--End of project page wrapper-->
             </div>
