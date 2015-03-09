@@ -103,8 +103,16 @@ public class DiscussionData extends Controller {
                 message.put("cid", comment.cid);
                 message.put("username", comment.person.name);
                 message.put("role", Role.find.where().eq("person", person).eq("project", Project.find.byId(message.get("projectID").asLong())).findUnique().role);
+                long pid = message.get("projectID").asLong();
+                Project p= Project.find.byId(pid);
+                List<Person> owners=ProjectData.findAllOwners(pid);
+                owners.stream().forEach((u) -> {
+                    if (!u.equals(person))
+                        Emailer.sendNotifyEmail("[Assistu] you got a new comment", u, views.html.email.discussion.new_comment.render(u, person, p, message.get("content").asText()));
+                });
                 sendEvent(message);
             }
+
         }
         return ok();
     }
@@ -144,7 +152,14 @@ public class DiscussionData extends Controller {
                 result.put("cid", "" + comment.cid);
                 result.put("role", Role.find.where().eq("person", person).eq("project", p).findUnique().role);
                 result.put("username", person.name);
+
+                List<Person> owners=ProjectData.findAllOwners(p.id);
+                owners.stream().forEach((u) -> {
+                    if (!u.equals(person))
+                        Emailer.sendNotifyEmail("[Assistu] you got a new comment", u, views.html.email.discussion.new_comment.render(u, person, p, result.get("content").asText()));
+                });
                 sendEvent(result);
+
             }
         }
         return DiscussionData.discussion(p.id);

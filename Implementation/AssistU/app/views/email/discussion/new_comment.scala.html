@@ -1,9 +1,9 @@
-@(url: String, token: String, name: String, email: String, name_project: String, name_poster: String, comment: String)
-Hello @name,
+@(reciever: Person, sender: Person, project: Project, comment: String)
+Hello @reciever.name,
 <br />
 <br />
 <p>
-    I would like to inform you that @name_poster has left a new message for you on the discussion page of your project @name_project.
+    I would like to inform you that @sender.name has left a new message for you on the discussion page of your project "@project.name".
 </p>
 <p>
     Here's what he has to say:
@@ -12,10 +12,10 @@ Hello @name,
     @comment
 </p>
 <br>
+@*<p>*@
+    @*In case you would like to leave a reply on this, please follow <a href="@url">this link</a> and see his message.*@
+@*</p>*@
 <p>
-    In case you would like to leave a reply on this, please follow <a href="@url">this link</a> and see his message.
-</p>
-<p>
-    Have a nice day,<br />
-    <i>your Personal Assistant</i>
+    Cheers,<br />
+    <i>AssistU</i>
 </p>

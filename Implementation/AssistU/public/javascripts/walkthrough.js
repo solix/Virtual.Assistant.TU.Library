@@ -1,6 +1,6 @@
 // Instance the tour
 var tour = new Tour({
-
+    storage: false,
     debug: true
 });
 
@@ -22,7 +22,7 @@ tour.addSteps([{
 },{
     element: "#four",
     title: "Project page",
-    placement: "bottom",
+    placement: "right",
     content: "you can Create a new Project or view if you have any invitations "
 },{
     element: "#five",
@@ -34,17 +34,17 @@ tour.addSteps([{
     {
     element: "#six",
     title: "Discuss with others",
-    placement: "top",
+    placement: "right",
     content: "When you have an active project you can start discussing a topic with other members!"
 },{
     element: "#seven",
     title: "Add a Personal Task",
-    placement: "bottom",
+    placement: "right",
     content: "Get yourself organized by making a TODO(s)"
 },{
     element: "#eight",
     title: "Tips and Suggestions",
-    placement: "bottom",
+    placement: "right",
     content: "Get the best Tips ever"
 },
 

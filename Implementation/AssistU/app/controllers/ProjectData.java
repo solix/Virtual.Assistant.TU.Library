@@ -186,7 +186,7 @@ public class ProjectData extends Controller {
                     Project p = Project.find.byId(pid);
                     //There can not be a role relation between the invited user and the project,
                     // as it would be the user is already a member
-                    if (Role.find.where().eq("project", p).eq("person", user_invited).findUnique() == null) {
+                    if (Role.find.where().eq("project",  p).eq("person", user_invited).findUnique() == null) {
                         //Pattern match the correct role for invitation
                         if (emailform.get("role").equals("Owner")) {
                             Project.inviteOwner(p.id, user_invited.id);
