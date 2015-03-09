@@ -3,8 +3,6 @@ var tour = new Tour({
 
     debug: true
 });
-tour.init();
-tour.start();
 
 tour.addSteps([{
     element: "#one",
@@ -25,33 +23,30 @@ tour.addSteps([{
     element: "#four",
     title: "Project page",
     placement: "bottom",
-    content: "you can Create a new Project or view if you have any invitations ",
-    // path: "/projects"
+    content: "you can Create a new Project or view if you have any invitations "
 },{
-    element: ".five",
+    element: "#five",
+    orphan: true,
+    title: "Here is your calendar",
+    placement: "right",
+    content: "Click on calendar and Plan your future ! That was it :)"
+},
+    {
+    element: "#six",
     title: "Discuss with others",
     placement: "top",
-    content: "When you have an active project you can start discussing a topic with other members!",
-    // path: "/discussions"
+    content: "When you have an active project you can start discussing a topic with other members!"
 },{
-    element: ".six",
+    element: "#seven",
     title: "Add a Personal Task",
     placement: "bottom",
-    content: "Get yourself organized by making a TODO(s)",
-    path: "/tasks"
+    content: "Get yourself organized by making a TODO(s)"
 },{
-    element: ".seven",
+    element: "#eight",
     title: "Tips and Suggestions",
     placement: "bottom",
-    content: "Get the best Tips ever",
-    // path: "/suggestions"
-},{
-        element: ".eight",
-        orphan: true,
-        title: "Here is your calendar",
-        placement: "right",
-        content: "Click on calendar and Plan your future ! That was it :)"
-    }
+    content: "Get the best Tips ever"
+},
 
 ]);
 
