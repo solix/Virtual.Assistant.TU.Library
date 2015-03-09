@@ -32,6 +32,19 @@
                                         </ul>
                                     </div>
                                 </div>
+                                @if(project == null){
+                                    <div class="row">
+                                        <div class="col-lg-4 col-lg-offset-4">
+                                            <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 150px">
+                                                <p>You need to be part of a project before you can discuss</p>
+                                                <br>
+                                                <div class="btn-group" role="group">
+                                                    <a style="width: 175px" type="button" class="btn btn-success" id="five" href="@routes.ProjectData.createProjectPage()">Create a new project</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                                 <div class="tab-content">
                                     @for(p <- activeProjectList){
                                         <div class="tab-pane fade @if(p.id == project.id){active in}" id="discussion@p.id">
