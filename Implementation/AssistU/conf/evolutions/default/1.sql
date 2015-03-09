@@ -5,7 +5,7 @@
 
 create table comment (
   cid                       bigint not null,
-  subject                   varchar(255),
+  subject                   TEXT,
   content                   TEXT,
   date                      varchar(255),
   person_id                 bigint,
