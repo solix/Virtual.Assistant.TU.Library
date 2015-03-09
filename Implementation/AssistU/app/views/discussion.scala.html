@@ -32,11 +32,11 @@
                                         </ul>
                                     </div>
                                 </div>
-                                @if(activeProjectList.isEmpty){
+                                @if(project == null){
                                     <div class="row">
                                         <div class="col-lg-4 col-lg-offset-4">
                                             <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 150px">
-                                                <p>There are no projects to show</p>
+                                                <p>You need to be part of a project before you can discuss</p>
                                                 <br>
                                                 <div class="btn-group" role="group">
                                                     <a style="width: 175px" type="button" class="btn btn-success" id="five" href="@routes.ProjectData.createProjectPage()">Create a new project</a>
