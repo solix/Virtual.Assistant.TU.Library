@@ -1,0 +1,65 @@
+% TU Delft Beamer template
+% Author: Maarten Abbink
+% Delft University of Technology
+% March 2014
+% Version 2.0
+% Based on original version 1.0 of Carl Schneider
+\documentclass{beamer}
+\usepackage[english]{babel}
+\usepackage{calc}
+\usepackage[absolute,overlay]{textpos}
+
+\mode<presentation>{\usetheme{default} \usecolortheme{seahorse}}
+
+\title[BEP]{Virtual Asssitant Web App\\ \small{Bachelor Thesis}}
+%\subtitle
+\institute[TU Delft]{Delft University of Technology}
+\author{A. Hambenne\\
+S. Jahanshahi}
+\date{\today}
+
+% Insert frame before each subsection (requires 2 latex runs)
+\AtBeginSubsection[] {
+	\begin{frame}<beamer>\frametitle{\titleSubsec}
+		\tableofcontents[currentsection,currentsubsection]  % Generation of the Table of Contents
+	\end{frame}
+}	
+
+
+% define a symbol which can be removed if you don't need it
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\Zset}{\field{Z}}
+
+\begin{document}
+
+{
+% remove the next line if you don't want a background image
+\usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{images/background-titlepage.jpg}}%
+\setbeamertemplate{footline}{\usebeamertemplate*{minimal footline}}
+\frame{\titlepage}
+}
+
+{\setbeamertemplate{footline}{\usebeamertemplate*{minimal footline}}
+% \begin{frame}\frametitle{\titleTOC}
+% 	\tableofcontents
+% \end{frame}
+}
+
+
+
+\begin{frame}\frametitle{Outline}
+	\begin{itemize}
+		\item What is our project about?
+		\item Project Set-up
+		\item Research \& Planning
+		\item Technologies
+		\item Design Architecture
+		\item Features
+		\item Metrics  \& Evaluation
+		\item Demo
+		\item Q\&A Session
+	\end{itemize}
+\end{frame}
+
+
+\end{document}
