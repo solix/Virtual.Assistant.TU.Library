@@ -61,17 +61,5 @@ S. Jahanshahi}
 	\end{itemize}
 \end{frame}
 
-% FEATURES
-
-\begin{frame}\frametitle{OAuth2 Authentication}
-	\begin{itemize}
-		\item Allowing users to authenticate themselves through accounts from other webservices
-		\item Google Plus and Mendeley
-		\item Use of existing Google Plus OAuth2 library
-		\item Extended library for Mendeley
-		\item Library can also be used for Facebook, Twitter, GitHub,...
-	\end{itemize}
-\end{frame}
-
 
 \end{document}
