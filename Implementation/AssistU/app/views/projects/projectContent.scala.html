@@ -77,8 +77,10 @@
                                     <hr class="hr" style="margin-top: 0">
                                         <!--Start of the project file list-->
                                     @projects.projectFileList(currentUser, p)
-                                        <!--Start of the project Upload Buttons-->
-                                    @projects.projectUploadButtons(p)
+                                    @if(!ProjectData.findAllGuests(p.id).contains(currentUser)){
+                                            <!--Start of the project Upload Buttons-->
+                                        @projects.projectUploadButtons(p)
+                                    }
                                         <!--End of the panel itself-->
                                 </div>
                                     <!--End of the panel-info-->

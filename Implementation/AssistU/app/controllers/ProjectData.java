@@ -15,6 +15,8 @@ import java.util.*;
 
 import static play.libs.Json.toJson;
 
+import controllers.routes;
+
 
 public class ProjectData extends Controller {
 
@@ -181,9 +183,9 @@ public class ProjectData extends Controller {
             //See if the user requesting to invite someone is an Owner
             if (ProjectData.findAllOwners(pid).contains(user)) {
                 Person user_invited = Person.find.where().eq("email", emailform.get("email")).findUnique();
+                Project p = Project.find.byId(pid);
                 //See if the user that needs to be invited exists in the system
                 if (user_invited != null) {
-                    Project p = Project.find.byId(pid);
                     //There can not be a role relation between the invited user and the project,
                     // as it would be the user is already a member
                     if (Role.find.where().eq("project",  p).eq("person", user_invited).findUnique() == null) {
@@ -199,6 +201,9 @@ public class ProjectData extends Controller {
                             Project.inviteGuest(p.id, user_invited.id);
                         }
                     }
+                } else {
+                    flash("error", "You did not provide a valid email address");
+                    return redirect(routes.Application.project());
                 }
             }
             return redirect(routes.Application.project());
@@ -434,6 +439,21 @@ public class ProjectData extends Controller {
     public static List<Person> findAllReviewers(Long pid){
         Project p = Project.find.byId(pid);
         List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.REVIEWER).findList();
+        List<Person> persons = new ArrayList<Person>();
+        for(Role role: roles){
+            persons.add(role.person);
+        }
+        return persons;
+    }
+
+    /**
+     * This function returns all the guests of a project
+     * @param pid: project ID
+     * @return List<Person>
+     */
+    public static List<Person> findAllGuests(Long pid){
+        Project p = Project.find.byId(pid);
+        List<Role> roles = Role.find.where().eq("project", p).eq("role", Role.GUEST).findList();
         List<Person> persons = new ArrayList<Person>();
         for(Role role: roles){
             persons.add(role.person);
