@@ -202,9 +202,15 @@ public class ProjectData extends Controller {
                         }
                     }
                 } else {
-                    //TODO
-                    flash("error", "You did not provide a valid email address");
-                    return redirect(routes.Application.project());
+                    String email = emailform.get("email");
+                    if(!email.equals("")){
+                        Emailer.sendInvitationEmail(user.name + " has invited you to join AssisTU", email,
+                                views.html.email.app_invitation.render(user,p));
+                        return redirect(routes.Application.project());
+                    }else{
+                        flash("error", "You did not provide a valid email address");
+                        return redirect(routes.Application.project());
+                    }
                 }
             }
             return redirect(routes.Application.project());

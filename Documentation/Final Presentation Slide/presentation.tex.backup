@@ -207,7 +207,7 @@ S. Jahanshahi}
 	\end{figure}
 	\begin{itemize}
 		\item Total lines of code: \textbf{5341} (including statically imported plugins)
-		\item Total code coverage: \textbf{69\%} (excluding statically imported plugins and framework code)
+		\item Total code coverage: \textbf{69\%}
 	\end{itemize}
 \end{frame}
 
