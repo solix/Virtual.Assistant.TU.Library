@@ -50,6 +50,23 @@ public class Emailer extends Controller {
 
     }
 
+    /**
+     * this is done to generally notify users of any important activities
+     * @param subject
+     * @param user
+     * @param body
+     */
+    public static void sendInvitationEmail(String subject, String emailaddress,Html body){
+
+        final Email email = new Email();
+        email.setSubject(subject);
+        email.setFrom("we.assitu@gmail");
+        email.addTo(emailaddress);
+        email.setBodyHtml(body.toString());
+        MailerPlugin.send(email);
+
+    }
+
 
 
 }
