@@ -34,10 +34,15 @@ public class Event extends Model {
     public Boolean endsSameDay;
 
     @ManyToOne
-    Person person;
+    public Person person;
 
 
-    public static Finder<Long,Event> find = new Finder<Long,Event>(Long.class, Event.class);
+    public static Model.Finder<Long,Event> find = new Model.Finder<Long,Event>(Long.class, Event.class);
+
+
+//    public static Model.Finder<Long, Comment> find = new Model.Finder(
+//            Long.class, Comment.class
+//    );
 
     /**
      * Cosntructor to create an event

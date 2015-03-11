@@ -202,6 +202,7 @@ public class ProjectData extends Controller {
                         }
                     }
                 } else {
+                    //TODO
                     flash("error", "You did not provide a valid email address");
                     return redirect(routes.Application.project());
                 }
