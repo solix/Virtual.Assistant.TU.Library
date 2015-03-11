@@ -40,7 +40,7 @@ public class DocumentData extends Controller {
                 s3File.project=project;
                 s3File.person=user;
                 s3File.save();
-                return redirect(controllers.routes.Application.project());
+                return redirect(controllers.routes.ProjectData.project(pid));
             } else {
                 return badRequest("File upload error");
             }
@@ -114,7 +114,7 @@ public class DocumentData extends Controller {
                 project.update();
                 s3File.update();
 
-                return redirect(controllers.routes.Application.project());
+                return redirect(controllers.routes.ProjectData.project(pid));
             } else {
 
                 return badRequest(
