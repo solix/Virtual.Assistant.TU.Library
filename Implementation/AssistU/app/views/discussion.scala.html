@@ -49,7 +49,7 @@
                                         <div class="tab-pane fade @if(p.id == project.id){active in}" id="discussion@p.id">
                                             <div class="row">
                                                 <div class="col-xs-10">
-                                                    <h3 style="margin: 5px 0 0 30px;">Discussions of project <a href="@routes.ProjectData.project(p.id)">@p.name</a></h3>
+                                                    <p style="font-size: 15pt; margin: 5px 0 0 30px;"><a href="@routes.ProjectData.project(p.id)">@p.name</a></p>
                                                 </div>
                                                 <div class="col-xs-2">
                                                     <button ng-click="setCurrentSubjectAndisChild('', false);" class="btn btn-success pull-right" data-toggle="collapse" data-target="#comment@p.id" style="margin: 0; margin-right: 30px;">Post new Message</button>
@@ -156,7 +156,7 @@
                                                                 <div class="panel-footer" style="margin-left: -15px; margin-right: -15px; margin-bottom: -15px; margin-top: 5px">
                                                                     <div class="input-group">
                                                                         <input id="btn-input" type="text" class="form-control input-sm" placeholder="@currentUser.name says..."
-                                                                        ng-click="reset(); setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message['subcomment' + comment.cid]"/>
+                                                                        ng-click="setCurrentSubjectAndisChild(comment.subject, true)" ng-model="message['subcomment' + comment.cid]"/>
                                                                         <span class="input-group-btn">
                                                                             <button class="btn btn-warning btn-sm" ng-click="setSubmessageAsContent(comment.cid);submitMsg()">React!</button>
                                                                         </span>
