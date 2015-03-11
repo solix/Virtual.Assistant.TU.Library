@@ -114,11 +114,11 @@ S. Jahanshahi}
 \frametitle{Features}
 \framesubtitle{OAuth2 Authentication}
 	\begin{itemize}
-		\item Allowing users to authenticate themselves through accounts from other web-services
+		\item External authentication
 		\item Google Plus and Mendeley
-		\item Use of existing Google Plus OAuth2 library
+		\item Existing Google Plus OAuth2 library
 		\item Extended library for Mendeley
-		\item Library can also be used for Facebook, Twitter, GitHub,...
+		\item Library supports Facebook, Twitter, GitHub,...
 	\end{itemize}
 \end{frame}
 
@@ -127,12 +127,12 @@ S. Jahanshahi}
 \frametitle{Features}
 \framesubtitle{Projects}
 	\begin{itemize}
-		\item A project is a virtual entity that users can create and join
-		\item Users who join get assigned a role by the inviting member
-		\item Three roles for members available: Owner, Reviewer and Guest
+		\item Create and join
+		\item Role assigning
+		\item Three roles: Owner, Reviewer and Guest
 		\item Predefined template vs. own template
-		\item Documents uploadable only by owners and reviewers, downloadable by every member
-		\item Projects can not be joined or searched by users without invitation
+		\item Owners and reviewers can upload, every member can download
+		\item Invitation-only (By Owner)
 	\end{itemize}
 \end{frame}
 
@@ -141,11 +141,11 @@ S. Jahanshahi}
 \frametitle{Features}
 \framesubtitle{Discussions}
 	\begin{itemize}
-		\item Discussions are linked to a project
-		\item Multiple discussions can be held per project
-		\item Discussions are visible and accessible to every member of the project
-		\item The use of AngularJS allows for real-time comment rendering (chat-like)
-		\item A discussion consists of one top-comment with zero or more sub-comments
+		\item Linked to a project
+		\item Multiple discussions per project
+		\item Visible and accessible to every member
+		\item Chat-like (AngularJS)
+		\item One top-comment with sub-comments
 	\end{itemize}
 \end{frame}
 
@@ -154,11 +154,11 @@ S. Jahanshahi}
 \frametitle{Features}
 \framesubtitle{Tasks}
 	\begin{itemize}
-		\item Tasks are exclusively linked to users
-		\item Have a due date and a description
-		\item Can be marked as Done and To-Do
+		\item User specific
+		\item Not on Calendar
+		\item Due date and description
+		\item Done or To-Do
 		\item Can be deleted and redone
-		\item Due dates do not show on Calendar
 	\end{itemize}
 \end{frame}
 
@@ -167,11 +167,10 @@ S. Jahanshahi}
 \frametitle{Features}
 \framesubtitle{Mendeley Library Sharing}
 	\begin{itemize}
-		\item Users can link their Mendeley Library to the application
-		\item Linking imports all the metadata as models into the application
-		\item When a user wants to add a document to his/her Mendeley Library, the metadata gets posted through OAuth2 API
-		\item Users can also sync their library again in case external changes were made
-		\item Mendeley Library Sharing is a global feature
+		\item Link and Sync Mendeley Library
+		\item Uses metadata
+		\item Mendeley OAuth2 API
+		\item Global feature
 	\end{itemize}
 \end{frame}
 
@@ -180,8 +179,8 @@ S. Jahanshahi}
 \frametitle{Features}
 \framesubtitle{Form Validation}
 	\begin{itemize}
-		\item A user must always have a valid session to access a page or perform an action
-		\item Names and titles of users and projects are passed through a REGEX expression
+		\item Session validation
+		\item REGEX expressions
 	\end{itemize}
 \end{frame}
 
@@ -214,7 +213,40 @@ S. Jahanshahi}
 \frametitle{Metrics \& Evaluation}
 \framesubtitle{Scrum}
 	\begin{itemize}
-	 \item 
+	 \item \textbf{12} Sprints in \textbf{14} weeks
+	\end{itemize}
+\end{frame}
+
+%SELF-EVALUATION: WHAT WENT WRONG
+\begin{frame}
+\frametitle{Metrics \& Evaluation}
+\framesubtitle{Self-evaluation: The bad parts}
+	\begin{itemize}
+	 \item Agreeing before implementing
+	 \item Timeline buffer zones
+	 \item Optimal < Functional
+	 \item Unverified Mendeley just works
+	\end{itemize}
+\end{frame}
+
+%SELF-EVALUATION: WHAT WENT RIGHT
+\begin{frame}
+\frametitle{Metrics \& Evaluation}
+\framesubtitle{Self-evaluation: The good parts}
+	\begin{itemize}
+	 \item Front-end first, then backend
+	 \item Practicality < Durability
+	\end{itemize}
+\end{frame}
+
+%SELF-EVALUATION: IMPORTANT LESSONS
+\begin{frame}
+\frametitle{Metrics \& Evaluation}
+\framesubtitle{Self-evaluation: What we learned}
+	\begin{itemize}
+	 \item Be realistic
+	 \item Choose tools wisely
+	 \item Use of multiple technologies combined
 	\end{itemize}
 \end{frame}
 
