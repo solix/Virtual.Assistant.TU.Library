@@ -104,7 +104,7 @@ public class UserService extends UserServicePlugin {
     @Override
     public AuthUser link(final AuthUser oldUser, final AuthUser newUser) {
         Person.addLinkedAccount(oldUser, newUser);
-        return newUser;
+        return oldUser;
     }
 
 //    public String getLocalEmail(final Auth)
