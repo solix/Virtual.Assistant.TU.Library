@@ -95,7 +95,7 @@ GET         /suggestions                                controllers.Application.
 
 
 #User
-GET         /deleteaccount                              controllers.PersonData.deleteAccount()
+#GET         /deleteaccount                              controllers.PersonData.deleteAccount()
 GET         /exportMendeleyDocument/:id                 controllers.PersonData.postMendeleyDocument(id: String)
 
 

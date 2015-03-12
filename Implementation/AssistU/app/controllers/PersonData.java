@@ -137,48 +137,49 @@ public class PersonData extends Controller {
     }
 
     /**
+     * TODO: HAS ISSUES ON CLOUD
      * This function deletes the user and all his relationships to other objects within the application
      * @return Result
      */
-    public static Result deleteAccount(){
-        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        if(user != null) {
-            //Delete LinkedAccounts
-            List<LinkedAccount> linked_accounts = user.linkedAccounts;
-            for (LinkedAccount l_a : linked_accounts) {
-                l_a.delete();
-            }
-            //Delete Roles
-            List<Role> roles = Role.find.where().eq("person", user).findList();
-            for(Role r : roles){
-                r.delete();
-            }
-            //Delete Tasks
-            List<Task> tasks = Task.find.where().eq("person", user).findList();
-            for(Task t : tasks){
-                t.delete();
-            }
-            //Delete Events
-            List<Event> events = Event.find.where().eq("person", user).findList();
-            for(Event e : events){
-                e.delete();
-            }
-            //Delete Comments
-            List<Comment> comments = Comment.find.where().eq("person", user).findList();
-            for(Comment c : comments){
-                c.delete();
-            }
-            //Delete Documents
-            List<S3File> documents = S3File.find.where().eq("person", user).findList();
-            for(S3File d : documents){
-                d.delete();
-            }
-            //Clear Mendeley Data
-            clearMendeleyData(user);
-            Person.deleteAccount(user.id);
-        }
-        return Authentication.login();
-    }
+//    public static Result deleteAccount(){
+//        Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+//        if(user != null) {
+//            //Delete LinkedAccounts
+//            List<LinkedAccount> linked_accounts = user.linkedAccounts;
+//            for (LinkedAccount l_a : linked_accounts) {
+//                l_a.delete();
+//            }
+//            //Delete Roles
+//            List<Role> roles = Role.find.where().eq("person", user).findList();
+//            for(Role r : roles){
+//                r.delete();
+//            }
+//            //Delete Tasks
+//            List<Task> tasks = Task.find.where().eq("person", user).findList();
+//            for(Task t : tasks){
+//                t.delete();
+//            }
+//            //Delete Events
+//            List<Event> events = Event.find.where().eq("person", user).findList();
+//            for(Event e : events){
+//                e.delete();
+//            }
+//            //Delete Comments
+//            List<Comment> comments = Comment.find.where().eq("person", user).findList();
+//            for(Comment c : comments){
+//                c.delete();
+//            }
+//            //Delete Documents
+//            List<S3File> documents = S3File.find.where().eq("person", user).findList();
+//            for(S3File d : documents){
+//                d.delete();
+//            }
+//            //Clear Mendeley Data
+//            clearMendeleyData(user);
+//            Person.deleteAccount(user.id);
+//        }
+//        return Authentication.login();
+//    }
 
 
     public static void exportDocumentToMendeley(JsonNode data, String token) throws IOException {
