@@ -92,7 +92,16 @@ public class Authentication extends Controller {
      * @return call to the plugin that passes the name of the plugins.service to user
      */
     public static Result OAuth(String provider){
-        return Authenticate.authenticate(provider);
+        if(provider.equals("mendeley")){
+            Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+            if(user != null){
+                return Authenticate.authenticate(provider);
+            } else {
+                return redirect(routes.Authentication.loginWithMessage("Your session has expired, please log in again", "danger"));
+            }
+        } else {
+            return Authenticate.authenticate(provider);
+        }
     }
 
     /**
