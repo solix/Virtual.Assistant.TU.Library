@@ -6,6 +6,7 @@ import plugins.com.feth.play.module.pa.user.AuthUser;
 import plugins.com.feth.play.module.pa.user.AuthUserIdentity;
 import plugins.com.feth.play.module.pa.service.UserServicePlugin;
 import models.Person;
+import plugins.providers.mendeley.MendeleyAuthUser;
 
 /**
  * Created by arnaud on 15-12-14.
@@ -40,7 +41,9 @@ public class UserService extends UserServicePlugin {
                 } else {
                     return Person.create(authUser);
                 }
-            } else {
+            } else if (authUser instanceof MendeleyAuthUser) {
+                return null;
+            }else{
                 return Person.create(authUser);
             }
         }else{
