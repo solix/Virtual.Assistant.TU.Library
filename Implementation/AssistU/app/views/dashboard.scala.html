@@ -174,8 +174,7 @@
                         }
                     </a>
                 </li>
-                <li><a href="#" data-toggle="modal" data-target="#deleteAccount"><i class="fa fa-close fa-fw"></i> Delete account...</a>
-                </li>
+                @*<li><a href="#" data-toggle="modal" data-target="#deleteAccount"><i class="fa fa-close fa-fw"></i> Delete account...</a></li>*@
                 <li class="divider"></li>
                 <li><a href="@routes.Authentication.OAuthLogout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
@@ -186,15 +185,15 @@
         <!-- /.dropdown -->
     </ul>
     @*Delete Account Confirmation Modal*@
-    @template.smallmodal("deleteAccount")("danger")("Delete account " + currentUser.name) {
-        <p style="text-align: center">Are you sure you want to delete account @currentUser.name?</p>
-        <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
-            <a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>
-        </div>
-        <div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">
-            <a class="btn btn-danger col-xs-12" href="@routes.PersonData.deleteAccount()">Delete me!</a>
-        </div>
-    }
+    @*template.smallmodal("deleteAccount")("danger")("Delete account " + currentUser.name) {*@
+        @*<p style="text-align: center">Are you sure you want to delete account @currentUser.name?</p>*@
+        @*<div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">*@
+            @*<a type="button" class="btn btn-default col-xs-12" data-dismiss="modal">Cancel</a>*@
+        @*</div>*@
+        @*<div class="btn-group col-xs-6" role="group" style="margin:20px 0px 0px 0px">*@
+            @*<a class="btn btn-danger col-xs-12" href="@routes.PersonData.deleteAccount()">Delete me!</a>*@
+        @*</div>*@
+    @*}*@
     <!-- /.navbar-top-links -->
     <!-- Side Bar -->
     <div class="navbar-default sidebar"  role="navigation">

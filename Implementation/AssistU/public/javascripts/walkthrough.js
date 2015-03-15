@@ -44,12 +44,16 @@ tour.addSteps([{
     element: "#eight",
     title: "Tips and Suggestions",
     placement: "right",
-    content: "Get the best Tips ever"
-},
+    content: "Get the best Tips ever",
+    onEnd: function(){
+        tour.end();
+      };
+}
 
 ]);
 
-tour.init().start(true);
+tour.init();
+tour.start(true);
 
 
 

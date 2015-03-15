@@ -23,6 +23,8 @@ import plugins.com.feth.play.module.pa.PlayAuthenticate;
 import views.html.discussion;
 import views.html.discussionFile;
 
+import controllers.routes;
+
 public class DiscussionData extends Controller {
 
     /**
@@ -34,7 +36,7 @@ public class DiscussionData extends Controller {
         Person user = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
         if(user != null) {
             Project p = Project.find.byId(pid);
-            return ok(discussion.render("AssistU - Projects", user, p));
+            return ok(discussion.render("AssistU - Discussions", user, p));
         }else {
             //User did not have a session
             session().put("callback", routes.DiscussionData.discussion(pid).absoluteURL(request()));
@@ -162,7 +164,7 @@ public class DiscussionData extends Controller {
 
             }
         }
-        return DiscussionData.discussion(p.id);
+        return redirect(routes.DiscussionData.discussion(p.id));
     }
 
     /**
