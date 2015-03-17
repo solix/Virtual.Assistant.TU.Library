@@ -37,11 +37,13 @@ create table linked_account (
 ;
 
 create table mendeley_document (
-  id                        varchar(255) not null,
+  id                        bigint not null,
+  mid                       varchar(255),
   title                     varchar(255),
   doctype                   varchar(255),
   authors                   varchar(255),
   year                      varchar(255),
+  folder                    varchar(255),
   node_data                 TEXT,
   person_id                 bigint,
   constraint pk_mendeley_document primary key (id))

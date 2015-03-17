@@ -3,6 +3,7 @@ package models;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import controllers.MendeleyData;
 import controllers.PersonData;
 import play.Logger;
 import play.db.ebean.*;
@@ -82,8 +83,8 @@ public class Person extends Model {
         if(authUser instanceof MendeleyAuthUser){
             person.mendeleyConnected=true;
             person.mendeleyToken=((MendeleyAuthUser) authUser).getToken();
-            person = PersonData.clearMendeleyData(person);
-            person = PersonData.updateMendeleyData(person, ((MendeleyAuthUser) authUser).getDocuments());
+            person = MendeleyData.updateMendeleyData(person);
+//            person = MendeleyData.updateMendeleyData(person, ((MendeleyAuthUser) authUser).getDocuments());
         }
         person.active = true;
         person.update();

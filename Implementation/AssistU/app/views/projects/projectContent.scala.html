@@ -207,45 +207,56 @@
                         </table>
                     }
                     @template.mediummodal("mendeleyList"+p.id.toString)("info")("Mendeley Documents of "+p.name) {
-                    <!-- Table -->
+
+                            <!-- Table -->
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Title</th>
                             <th style="text-align: center">Authors</th>
-                            <th style="text-align: center">Shared with</th>
+                            <th style="text-align: center">Type</th>
                             <th style="text-align: center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @ProjectData.findAllMendeleyDocuments(p.id).map{ mendeley_doc =>
                             <tr style="font-size: smaller">
-                                <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@mendeley_doc.title</td>
-                                <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@mendeley_doc.authors</td>
+                                <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                                    @if(mendeley_doc.title.size <= 20){
+                                        @mendeley_doc.title
+                                    }else{
+                                        @mendeley_doc.title.substring(0,19)...
+                                    }
+                                </td>
                                 <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
-                                    @defining(PersonData.findSharedPersons(mendeley_doc.title)){ sharers =>
-                                        @for(person <- sharers){
-                                            @if(!person.equals(currentUser)){
-                                                @person.name
-                                                @if(!sharers.last.equals(person)){
-                                                    <br>
-                                                }
-                                            }
-                                        }
+                                    @if(mendeley_doc.authors.size <= 20){
+                                        @mendeley_doc.authors
+                                    }else{
+                                        @mendeley_doc.authors.substring(0,19)...
+                                    }
+                                </td>
+                                <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                                    @if(mendeley_doc.doctype.size <= 20){
+                                        @mendeley_doc.doctype
+                                    }else{
+                                        @mendeley_doc.doctype.substring(0,19)...
                                     }
                                 </td>
                                 <td style="text-align: center">
-                                    @if(MendeleyDocument.find.where().eq("person",currentUser).eq("title", mendeley_doc.title).findList().size() > 0){
+                                    @if(MendeleyDocument.find.where().eq("person",currentUser).eq("folder", p.folder + " (" + p.id + ")").eq("title", mendeley_doc.title).findList().size() > 0){
                                         <i class="fa fa-check-square" title="You have this document in your library"></i>
-                                    }else{
-                                        <a href="@routes.PersonData.postMendeleyDocument(mendeley_doc.id)"><i class="fa fa-plus-square" title="Add this to my library"></i></a>
                                     }
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                <a class="pull-right" href="https:www.mendeley.com/library">Go to my Mendeley Library</a>
+                        <a href="@routes.MendeleyData.exportMendeleyLibrary(p.id)" class="btn btn-success" style="margin: 0; padding: 0 10px; height: 25px; width: 250px; text-align: center" @if(MendeleyData.hasFullLibrary(currentUser, p.id)){disabled}>
+                            <img src="@routes.Assets.at("icons/mendeley-24.png")" style="margin-left: -3px; padding-right: 1px">Sync this library with Mendeley
+                        </a>
+                <a class="btn btn-info pull-right" style="margin: 0; padding: 0 10px; height: 25px; width: 250px; text-align: center" href="https:www.mendeley.com/library">
+                    <img src="@routes.Assets.at("icons/mendeley-24.png")" style="margin-left: -3px; padding-right: 1px">Go to my Mendeley Library
+                </a>
             }
                 }
             </div>

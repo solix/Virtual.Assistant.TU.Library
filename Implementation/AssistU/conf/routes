@@ -96,7 +96,7 @@ GET         /suggestions                                controllers.Application.
 
 #User
 #GET         /deleteaccount                              controllers.PersonData.deleteAccount()
-GET         /exportMendeleyDocument/:id                 controllers.PersonData.postMendeleyDocument(id: String)
+GET         /exportMendeleyLibrary/:id                 controllers.MendeleyData.exportMendeleyLibrary(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -469,8 +469,8 @@ public class ProjectData extends Controller {
     }
 
     public static List<MendeleyDocument> findAllMendeleyDocuments(Long pid){
-        List<Person> members = ProjectData.findAllOwners(pid);
-        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().in("person", members).orderBy("title").setDistinct(true).findList();
+        Project project = Project.find.byId(pid);
+        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().eq("folder", project.folder + " (" + project.id + ")").orderBy("title").setDistinct(true).findList();
         Map<String, MendeleyDocument> temp = new HashMap<String, MendeleyDocument>();
         for(MendeleyDocument mendeley_doc : mendeley_docs){
             temp.put(mendeley_doc.title, mendeley_doc);

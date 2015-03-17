@@ -104,37 +104,7 @@ public class PersonData extends Controller {
     }
 
 
-    public static MendeleyDocument createMendeleyDocument(Person person, JsonNode nodeData){
-        return MendeleyDocument.create(person.id, nodeData);
-    }
 
-    public static Person clearMendeleyData(Person person){
-        List<MendeleyDocument> mendeley_documents = MendeleyDocument.find.where().eq("person", person).findList();
-        for(MendeleyDocument mendeley_document : mendeley_documents){
-            mendeley_document.delete();
-        }
-        person.update();
-        return person;
-    }
-
-    public static Person updateMendeleyData(Person person, JsonNode oauth_mendeley_documents){
-        for(JsonNode doc : oauth_mendeley_documents) {
-            PersonData.createMendeleyDocument(person, doc);
-            person.update();
-        }
-        return person;
-    }
-
-    public static Result postMendeleyDocument(String id){
-        Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
-        MendeleyDocument mendeley_documents = MendeleyDocument.find.where().eq("id", id).findUnique();
-        try {
-            exportDocumentToMendeley(Json.parse(mendeley_documents.nodeData), person.mendeleyToken);
-        } catch(IOException e){
-            Logger.debug("IOException: " + e.getMessage());
-        }
-        return Authentication.OAuth("mendeley");
-    }
 
     /**
      * TODO: HAS ISSUES ON CLOUD
@@ -182,33 +152,5 @@ public class PersonData extends Controller {
 //    }
 
 
-    public static void exportDocumentToMendeley(JsonNode data, String token) throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("curl",
-                "https://api.mendeley.com/documents",
-                "-H", "Authorization: Bearer " + token,
-                "-H", "Accept: application/vnd.mendeley-document.1+json",
-                "-H", "Content-Type: application/vnd.mendeley-document.1+json",
-                "--data-binary", Json.stringify(data));
 
-        Process shell = pb.start();
-        InputStream errorStream= shell.getErrorStream();
-        InputStream shellIn = shell.getInputStream();
-
-        BufferedInputStream bis = new BufferedInputStream(shellIn);
-        BufferedReader br=new BufferedReader(new InputStreamReader(bis));
-        String strLine="";
-        while ((strLine=br.readLine())!=null) {
-            Logger.debug("STRLINE: " + strLine);
-        }
-        br.close();
-    }
-
-    public static List<Person> findSharedPersons(String mendeley_title){
-        List<Person> result = new ArrayList<Person>();
-        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().eq("title", mendeley_title).findList();
-        for(MendeleyDocument mendeley_doc : mendeley_docs){
-            result.add(mendeley_doc.person);
-        }
-        return result;
-    }
 }
