@@ -202,4 +202,13 @@ public class PersonData extends Controller {
         }
         br.close();
     }
+
+    public static List<Person> findSharedPersons(String mendeley_title){
+        List<Person> result = new ArrayList<Person>();
+        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().eq("title", mendeley_title).findList();
+        for(MendeleyDocument mendeley_doc : mendeley_docs){
+            result.add(mendeley_doc.person);
+        }
+        return result;
+    }
 }

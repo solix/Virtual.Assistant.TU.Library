@@ -213,8 +213,7 @@
                         <tr>
                             <th>Title</th>
                             <th style="text-align: center">Authors</th>
-                            <th style="text-align: center">Type</th>
-                            <th style="text-align: center">Year</th>
+                            <th style="text-align: center">Shared with</th>
                             <th style="text-align: center">Status</th>
                         </tr>
                     </thead>
@@ -223,8 +222,18 @@
                             <tr style="font-size: smaller">
                                 <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@mendeley_doc.title</td>
                                 <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@mendeley_doc.authors</td>
-                                <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">@mendeley_doc.doctype</td>
-                                <td style="text-align: center">@mendeley_doc.year</td>
+                                <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                                    @defining(PersonData.findSharedPersons(mendeley_doc.title)){ sharers =>
+                                        @for(person <- sharers){
+                                            @if(!person.equals(currentUser)){
+                                                @person.name
+                                                @if(!sharers.last.equals(person)){
+                                                    <br>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </td>
                                 <td style="text-align: center">
                                     @if(MendeleyDocument.find.where().eq("person",currentUser).eq("title", mendeley_doc.title).findList().size() > 0){
                                         <i class="fa fa-check-square" title="You have this document in your library"></i>
