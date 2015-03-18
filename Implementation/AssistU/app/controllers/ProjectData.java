@@ -98,7 +98,8 @@ public class ProjectData extends Controller {
                     p.save();
                 }
                 Emailer.sendNotifyEmail("[assistU] New project "+p.name+ "Created",user,views.html.email.projectCreated.render(user,p));
-
+                if(user.mendeleyConnected)
+                    MendeleyData.syncMendeleyFolders(user);
 
 
 
@@ -244,7 +245,8 @@ public class ProjectData extends Controller {
                     Emailer.sendNotifyEmail("[Assistu] "+ user.name + " has joined the project" , u ,views.html.email.project_joined.render(u,user,p) );
                 });
                 Emailer.sendNotifyEmail("[Assistu] "+ user.name + " you have just joined the project" , user ,views.html.email.project_joined_2.render(user,p) );
-
+                if(user.mendeleyConnected)
+                    MendeleyData.syncMendeleyFolders(user);
             }
             return redirect(routes.ProjectData.project(p.id));
         } else {

@@ -222,10 +222,10 @@
                         @ProjectData.findAllMendeleyDocuments(p.id).map{ mendeley_doc =>
                             <tr style="font-size: smaller">
                                 <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
-                                    @if(mendeley_doc.title.size <= 20){
+                                    @if(mendeley_doc.title.size <= 30){
                                         @mendeley_doc.title
                                     }else{
-                                        @mendeley_doc.title.substring(0,19)...
+                                        @mendeley_doc.title.substring(0,29)...
                                     }
                                 </td>
                                 <td style="text-align: center;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
