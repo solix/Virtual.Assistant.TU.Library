@@ -216,15 +216,25 @@ public class MendeleyData extends Controller {
 
     public static Result exportMendeleyLibrary(Long pid){
         Person person = Person.findByAuthUserIdentity(PlayAuthenticate.getUser(session()));
+        Project project = Project.find.byId(pid);
+        Map<String, String> foldermap = new HashMap<String, String>();
+        String folder_id = "";
         if(person != null) {
+            try {
+                foldermap = getMendeleyFolderNames(person.mendeleyToken);
+                folder_id = foldermap.get(project.folder + " (" + project.id + ")");
+            } catch (IOException e) {
+                Logger.debug("IOException: " + e.getMessage());
+            }
             List<MendeleyDocument> documents = ProjectData.findAllMendeleyDocuments(pid);
             for (MendeleyDocument document : documents) {
                 if (MendeleyDocument.find.where().eq("title", document.title).eq("person", person).findList().size() == 0) {
                     try {
-                        if(!getMendeleyFolderNames(person.mendeleyToken).containsKey(document.folder)){
+                        if(!hasMendeleyProjectFolder(person, document.folder)){
                             syncMendeleyFolders(person);
                         }
-                        exportDocumentToMendeley(Json.parse(document.nodeData), person.mendeleyToken);
+                        String document_id = exportDocumentToMendeley(Json.parse(document.nodeData), person.mendeleyToken);
+                        exportDocumentToMendeleyFolder(person.mendeleyToken, folder_id, document_id);
                     } catch (IOException e) {
                         Logger.debug("IOException: " + e.getMessage());
                     }
@@ -236,13 +246,36 @@ public class MendeleyData extends Controller {
         }
     }
 
-    public static void exportDocumentToMendeley(JsonNode data, String token) throws IOException {
+    public static String exportDocumentToMendeley(JsonNode data, String token) throws IOException {
+        String documentdata = "";
         ProcessBuilder pb = new ProcessBuilder("curl",
                 "https://api.mendeley.com/documents",
                 "-H", "Authorization: Bearer " + token,
                 "-H", "Accept: application/vnd.mendeley-document.1+json",
                 "-H", "Content-Type: application/vnd.mendeley-document.1+json",
                 "--data-binary", Json.stringify(data));
+
+        Process shell = pb.start();
+        InputStream errorStream= shell.getErrorStream();
+        InputStream shellIn = shell.getInputStream();
+
+        BufferedInputStream bis = new BufferedInputStream(shellIn);
+        BufferedReader br=new BufferedReader(new InputStreamReader(bis));
+        documentdata=br.readLine();
+        br.close();
+        JsonNode documentjson = Json.parse(documentdata);
+        return documentjson.get("id").asText();
+    }
+
+    public static void exportDocumentToMendeleyFolder(String token, String folder_id, String document_id) throws IOException {
+        ObjectNode documentdata = new ObjectMapper().createObjectNode();
+        documentdata.put("id", document_id);
+
+        ProcessBuilder pb = new ProcessBuilder("curl",
+                "https://api.mendeley.com/folders/" + folder_id + "/documents",
+                "-H", "Authorization: Bearer " + token,
+                "-H", "Content-Type: application/vnd.mendeley-document.1+json",
+                "--data-binary", Json.stringify(documentdata));
 
         Process shell = pb.start();
         InputStream errorStream= shell.getErrorStream();
@@ -257,13 +290,13 @@ public class MendeleyData extends Controller {
         br.close();
     }
 
-    public static List<Person> findSharedPersons(String mendeley_title){
-        List<Person> result = new ArrayList<Person>();
-        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().eq("title", mendeley_title).findList();
-        for(MendeleyDocument mendeley_doc : mendeley_docs){
-            result.add(mendeley_doc.person);
-        }
-        return result;
-    }
+//    public static List<Person> findSharedPersons(String mendeley_title){
+//        List<Person> result = new ArrayList<Person>();
+//        List<MendeleyDocument> mendeley_docs = MendeleyDocument.find.where().eq("title", mendeley_title).findList();
+//        for(MendeleyDocument mendeley_doc : mendeley_docs){
+//            result.add(mendeley_doc.person);
+//        }
+//        return result;
+//    }
 
 }
