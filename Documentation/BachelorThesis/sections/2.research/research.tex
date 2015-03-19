@@ -1,8 +1,8 @@
 \chapter{Research}
 
-\section{Introduction}
+TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
-The outline of this research report is as follows: First we explain the problem domain, and provide an analysis. Secondly we state our project's requirements. Based on these requirements we formulate a research question that embodies our main objectives, followed by a technical analysis. The final part of this research report provides us with the optimal solution for our problem.
+The outline of this research report is as follows: First the problem domain is explained, which entails a description of the domain, how   analysis. Secondly we state our project's requirements. Based on these requirements we formulate a research question that embodies our main objectives, followed by a technical analysis. The final part of this research report provides us with the optimal solution for our problem.
 
 
 \section{Problem Domain} % (fold)
@@ -10,21 +10,13 @@ The outline of this research report is as follows: First we explain the problem 
 
 % section problem_domain (end)
 
-Within the following section we will describe and analyze what our problem domain is, identify the stakeholders, construct the scope and objectives, and summarize our interview we conducted from the Library's Head of Education Support.
+Within the following section the problem domain will be described and analyzed in terms of what the problem domain is exactly, who the identified stakeholders are and what the scope and objectives should be. A summary of conducted interviews is given at the end of this section.
 
 \subsection{Domain Description} % (fold)
 \label{sub:problem_description}
 
-The goal of this project is the creation and implementation of a prototype for a `Virtual Assistant', which helps students and researchers to write a report, thesis or dissertation. THe initial idea suggest that Virtual Assistant should provide its users with the ability to choose a layout template, allow for scheduling and feedback, and give suggestions or tips to users about how to write a report, thesis or dissertation.
+The goal of this project is the creation and implementation of a prototype for a `Virtual Assistant', which helps students and researchers write a report, thesis or dissertation. The initial idea entailed that the Virtual Assistant should provide its users with the ability to choose a layout template, allow for scheduling and feedback, and give suggestions or tips to users about how to write a report, thesis or dissertation.
 This project should entail either native desktop software, a web application, or a mobile application. The final product should be released as open source software.
-
-\subsection{Meeting: Client, Coach, Developer team } % (fold)
-\label{sub:meeting_client_coach_developer_team_meeting_}
-
-An introductory meeting is organized by developer team between coach and client in order to introduce all the members that are involving in the project. In the meeting the client has discussed their ideas about the project so that the coach can evaluate the feasibility of the project to be completed in 12 weeks.\\
-The meeting concluded by the list of initial requirement suggested by the coach which has made it more concrete for the client the future image of the prototype. It was also stated by the client that the prototype must output on gathering usage analytics and usage of information that were provided by \url{tulib.tudelft.nl/}.\\ 
-
-% subsection meeting_client_coach_developer_team_meeting_ (end)
 
 \subsection{Domain analysis} % (fold)
 
@@ -54,7 +46,7 @@ The most challenging part in this project is understanding how we can provide su
 
 
 
-\subsection{Research Question}
+\section{Research Question}
 
 The context of this project is to build an application that acts as a virtual assistant to help Bachelor students write their article/report in a correct manner. In order to design a robust and reliable software application, we first need to formulate a research question to do the technical research and to come up with a feasible and optimal solution for developing a prototype application.\\\\
 
@@ -62,7 +54,7 @@ During the first meeting that involved both our client and coach, the latter has
 
 The main research question is formulated as follows: `How do we build a reliable and robust web application prototype that is able to assist students in writing an article or report, and is also able to guide them in such a way that they are able to write an article or report in a correct and efficient manner within the time constraint that is given to them? '
 
-\subsection{Project Requirement}
+\section{Project Requirements}
 
 The requirements provide the backbone to a project. They are confirmed in accordance with our client and our coach. It is imperative that these requirements are met at the end of the implementation. In this section we first explain about our approach to reach our functional requirements and then list functional and technical and usability requirements of the project.
 
@@ -72,6 +64,15 @@ The analysis of the requirement was a very important step of the project which w
 The development team has worked further on these analysis in order to  reach concrete list of functional, technical and usability requirement for the project. Therefore Development team has illustrated mind-map diagram(appendix \ref{mindmap}) which illustrates the overview of the system.
 
 % subsection subsection_name (end)
+
+\subsection{Meeting: Client, Coach, Developer team } % (fold)
+\label{sub:meeting_client_coach_developer_team_meeting_}
+
+An introductory meeting is organized by developer team between coach and client in order to introduce all the members that are involving in the project. In the meeting the client has discussed their ideas about the project so that the coach can evaluate the feasibility of the project to be completed in 12 weeks.\\
+The meeting concluded by the list of initial requirement suggested by the coach which has made it more concrete for the client the future image of the prototype. It was also stated by the client that the prototype must output on gathering usage analytics and usage of information that were provided by \url{tulib.tudelft.nl/}.\\ 
+
+% subsection meeting_client_coach_developer_team_meeting_ (end)
+
 
 \subsection{Functional Requirements} % (fold)
 \label{sub:functional_requirement}
@@ -118,13 +119,13 @@ Finally there are also some usability requirements that should be met in order t
 \end{enumerate}
 % subsection usability_requirements (end)
 \newpage
-\subsection{Technical Analysis} % (fold)
+\section{Technical Analysis} % (fold)
 
 Now that the requirements are set, and our research question has been formulated, we know what type of features we are looking for in a technical setting. In this section we illustrate our findings, and justify our choices in terms of tools deployment, architecture design and system components.
 
 \subsection{Why a web application?}
 One of the main ideas that have been advised to us by our coach is the creation of a web application for our project. The justification for this is ease of usability and compatibility across several platforms. Web applications are also exempted from platform-specific updates, whereas now one single update on the web application immediately reaches all of our users at once. When a web application is used, users can access the exact same content from different computers or mobile devices.
-\subsection{Objective}
+\subsection{Objectives}
 There are various frameworks available for the implementation of a web application. The choice of a specific framework usually depends on the context and objectives of the project itself. Our current project entails the development of a prototype within a time constraint of 11 to 12 weeks, which persuaded us to use a full stack framework. If we would use a full stack framework, we should be able to focus primarily on techniques that allow us to perform rapid prototyping, generate quality code and provide good documentation all of which meet the clients requirements. The following features should facilitate reaching our objectives during the development phase.
 
 \begin{enumerate}
@@ -133,40 +134,6 @@ There are various frameworks available for the implementation of a web applicati
 	\item \textbf{Scalability}: The ability of a system, network, or process to handle a growing amount of work in a capable manner or its ability to be enlarged to accommodate that growth.\cite{wiki:scalability}
 	\item \textbf{Reliability}: The ability of a system to function under predefined conditions.
 \end{enumerate}
-\subsection{Project Development Methodology} % (fold)
-
-For our project development methodology we chose the agile Scrum methodology. This means that we will have weekly sprints (iterations within a fixed amount of time) in which a predefined set of items, taken from a product backlog\footnote{The agile product backlog in Scrum is a prioritized features list, containing short descriptions of all functionality desired in the product.\cite{backlog} }, are to be implemented. Each week we show our client what we achieved, and we discuss possible changes (within the requirements that have been agreed upon). The Scrum method gives developers an advantage over sequential methodologies such as the waterfall model or the V-model, because when changes have to be made to either pieces of code, features or even requirements, the sequential methodologies force the developers to revise (or even redo) everything that happened after the point where they were processed within the implementation. These sort of changes are more manageable within iterative methodologies such as Scrum. Scrum also allows developers to uncover designing constraints that may not have been obvious at the start of the implementation by giving them the opportunity to pivot after every sprint. \\\\
-Given these advantages, the use of the Scrum method should be the most adequate for our project. When using Scrum, some roles and conventions have to be attributed, which are listed below:
-
-\begin{enumerate}
-	\item \textbf{Roles}
-		\begin{itemize}
-			\item Development lead: Arnaud Hambenne
-			\item Scrum master/Dev Team: Soheil Jahanshahi
-			\item Product owner: TU Delft Library R \& D group  (Babak Dehghenpour, Nicoleta Nastase)
-			\item Coach: Alberto Bacchelli
-		\end{itemize}
-		\newpage
-	\item \textbf{Conventions}	
-\begin{itemize}
-		\item Sprint duration: One week.
-		\item Sprint Planning meeting: A weekly meeting that is used to prioritize the selected features for each sprint. 
-		\item Sprint reflection report: A weekly evaluation where the estimated effort is compared to the actual effort that was needed to implement the chosen features, and where possible issues are documented. The evaluation takes place at the end of each Sprint.
-		\item Daily Scrum meeting: A daily meeting between the developers which takes about 15 minutes.
-		\item Sprint review meeting: A weekly meeting of about 15-20 minutes with the clients, in order to receive their feedback on the implemented features.
-\end{itemize}
-\end{enumerate}
-
-\subsubsection{Definition of Done} 
-In order to be sure that every component functions correctly, we narrow down the definition we use for the word `done'. When we say a function or the application is `done' we mean that it is: 
-
-\begin{itemize}
-	\item	Implemented (the code has been written)
-	\item	Unit tested (JUnit test cases)
-	\item 	Integrated
-	\item 	Integration tested
-	\item 	Documented (the change has been documented)
-\end{itemize} 
 
 \subsection{Architectural Model : MVC}
 Having a design pattern is important when you want to write re-usable and maintainable code.
@@ -208,7 +175,39 @@ The result of this benchmark shows us that the differences between these two fra
 The Play! Framework offers excellent documentation\cite{playDoc} that can help us get familiar with the Play! environment. First of all, it is an open source application that has an amazing error handling because of the fact that everything is compiled and built on the fly. This makes it easier for developers to detect bugs and can dramatically improve the developer's productivity to make changes. By reloading the browser, you can immediately see the changes you just made, which makes it perfect for fast prototyping within our project. Moreover, Play! supports both the Scala and Java languages, it comes with a Scala template that allows you to write dynamic code within an HTML body, and it also comes with pre-configured testing support. This last one is particularly important because that means we do not need to worry about adding Junit dependencies to the build file. \\\\
 Play! also offers the use of the EBean server interface which is very handy for fetching and saving beans to a particular DataSource. It can make reactive applications simpler because Play! is built on \href{http://netty.io/}{Netty}, which means it supports non-blocking I/O.\footnote{ non-blocking I/O is a form of input/output processing that permits other processing to continue before the transmission has finished.} This will enable our web application to make remote calls inexpensively which is crucial for high performance web applications.
 
+\section{Project Development Methodology} % (fold)
 
+For our project development methodology we chose the agile Scrum methodology. This means that we will have weekly sprints (iterations within a fixed amount of time) in which a predefined set of items, taken from a product backlog\footnote{The agile product backlog in Scrum is a prioritized features list, containing short descriptions of all functionality desired in the product.\cite{backlog} }, are to be implemented. Each week we show our client what we achieved, and we discuss possible changes (within the requirements that have been agreed upon). The Scrum method gives developers an advantage over sequential methodologies such as the waterfall model or the V-model, because when changes have to be made to either pieces of code, features or even requirements, the sequential methodologies force the developers to revise (or even redo) everything that happened after the point where they were processed within the implementation. These sort of changes are more manageable within iterative methodologies such as Scrum. Scrum also allows developers to uncover designing constraints that may not have been obvious at the start of the implementation by giving them the opportunity to pivot after every sprint. \\\\
+Given these advantages, the use of the Scrum method should be the most adequate for our project. When using Scrum, some roles and conventions have to be attributed, which are listed below:
+
+\begin{enumerate}
+	\item \textbf{Roles}
+		\begin{itemize}
+			\item Development lead: Arnaud Hambenne
+			\item Scrum master/Dev Team: Soheil Jahanshahi
+			\item Product owner: TU Delft Library R \& D group  (Babak Dehghenpour, Nicoleta Nastase)
+			\item Coach: Alberto Bacchelli
+		\end{itemize}
+	\item \textbf{Conventions}	
+\begin{itemize}
+		\item Sprint duration: One week.
+		\item Sprint Planning meeting: A weekly meeting that is used to prioritize the selected features for each sprint. 
+		\item Sprint reflection report: A weekly evaluation where the estimated effort is compared to the actual effort that was needed to implement the chosen features, and where possible issues are documented. The evaluation takes place at the end of each Sprint.
+		\item Daily Scrum meeting: A daily meeting between the developers which takes about 15 minutes.
+		\item Sprint review meeting: A weekly meeting of about 15-20 minutes with the clients, in order to receive their feedback on the implemented features.
+\end{itemize}
+\end{enumerate}
+
+\subsubsection{Definition of Done} 
+In order to be sure that every component functions correctly, we narrow down the definition we use for the word `done'. When we say a function or the application is `done' we mean that it is: 
+
+\begin{itemize}
+	\item	Implemented (the code has been written)
+	\item	Unit tested (JUnit test cases)
+	\item 	Integrated
+	\item 	Integration tested
+	\item 	Documented (the change has been documented)
+\end{itemize} 
 
 
 
