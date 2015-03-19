@@ -1,69 +1,39 @@
 \chapter{Recommendations}
 
-The following recommendations is offered concerning the further development of this prototype. These recommendation are extracted from functional requirement and ideas that were arisen during and after the implementation phase. 
+In this chapter, some recommendations are suggested concerning further development of this prototype. These recommendation are extracted from functional requirement and ideas that were conceived during and after the implementation phase.
+
 \section{Authentication}
 
-The following recommendations are all Authentication-oriented. Authentication covers all the possible ways a user can log
-himself into the application with either a default account or a social account.
+The following recommendations are all Authentication-oriented. Authentication covers all the possible ways a user can log himself into the application with either a default account or a social account.
 
 \subsection{TU Delft NetID}
-
-At the time this project was implemented, the NetID service of the TU Delft was undergoing an update and complete overhaul. 
-Because of this transfer, the central IT department was unable to provide us with access information to use the NetID OAuth2 service.
-Given that the application is primarily aimed at students and researches of the TU Delft, the implementation of the NetID
-OAuth2 service should still remain a part of the future of this project. It will allow for a better integration with other
-services provided by the TU Delft.
+At the time this project was implemented, the NetID service of the TU Delft was undergoing an update and complete overhaul. Because of this transfer, the central IT department was unable to provide us with access information to use the NetID OAuth2 service. Given that the application is primarily aimed at students and researches of the TU Delft, the implementation of the NetID OAuth2 service should still remain a part of the future of this project. It will allow for a better integration with other services provided by the TU Delft.
 
 \subsection{Mendeley}
-
-The current implementation of the Mendeley document-sharing configuration is quite ubiquitous. A user now only has the option
-to either share his complete library, or not at all. If the Mendeley library sharing functionality is kept in future releases,
-a good recommendation would be to expand its functionality and allow users to have more control about which document gets shared
-in which project. A possible implementation would be to have some Mendeley Control Center inside the application, where you
-can specify which documents you wish to import, have an overview of which documents are shared in which projects, and maybe
-even have the option to implicitly share documents between users directly.
+The current implementation of the Mendeley document-sharing configuration is quite ubiquitous. If the Mendeley library sharing functionality is kept in future releases, a good recommendation would be to expand its functionality and allow users to have more control about which document gets shared in which project. A possible implementation would be to have some Mendeley Control Center inside the application, where you can specify which documents you wish to import, have an overview of which documents are shared in which projects, and maybe even have the option to implicitly share documents between users directly.
 
 \section{Functionality}
 
 Functionality in this case means the way users have the ability to interact with the application.
 
 \subsection{Asynchronousness}
-
-The initial idea was to have asynchronous notifications, invitations, messages, etc., however this proved troublesome in certain
-cases which resulted in not everything behaving in an asynchronous manner. For future implementations, it would be easier for users
-if project invitations and notifications would appear asynchronous instead of after reloading. Also suggestions could be
-triggered asynchronously in the future, for instance when the system notices the user might have some trouble somewhere with
-a certain subject of his or her article, a small tip or suggestion could pop up from the bottom right.
+The initial idea was to have asynchronous notifications, invitations, messages, etc., however this proved troublesome in certain cases which resulted in not everything behaving in an asynchronous manner. For future implementations, it would be easier for users if project invitations and notifications would appear asynchronous instead of after reloading. Also suggestions could be triggered asynchronously in the future, for instance when the system notices the user might have some trouble somewhere with a certain subject of his or her article, a small tip or suggestion could pop up from the bottom right.
 
 \subsection{Real-time collaborative writing } % (fold)
-One of the necessary feature that can facilitate collaboration between users that are involving in writing documents, is to have a real-time collaborative writing environment such as \url{https://www.sharelatex.com/}. This will avoid file conflicts, and provide efficient writing and reviewing of the document and will save space on storing different. This feature is highly recommended because the users can access their files anywhere without needing to install special editor and they can start writing on the cloud which will shared with other collaborators in real-time. 
+A straightforward feature that can facilitate collaboration is to have a real-time collaborative writing environment such as \url{https://www.sharelatex.com/}. This will avoid file conflicts, and provide efficient writing and reviewing of the document. Also will it save space in terms of storage. This feature is highly recommended because then the users can access their files anywhere without needing to install a specific type of editor, and they can write in a cloud-based environment which will allow them to share with other collaborators in real-time. 
 
 % subsection subsection_name (end)
 
 \subsection{Calendar}
-
-The current implementation of the calendar misses a bit of robustness and extended functionality, which leaves some room for
-improvement. A first good recommendation would be to have the functionality to export the calendar to other applications such as
-Google Calendar and iCal. A second one would be to improve the look and feel of the Calendar page, such as adding color codes to
-indicate which event belongs to which project, or adding some gradients to the events so they are easier on the eyes.
+The current implementation of the calendar misses a bit of robustness and extended functionality, which leaves some room for improvement. A first good recommendation would be to have the functionality to export the calendar to other applications such as Google Calendar and iCal. A second one would be to improve the look and feel of the Calendar page, such as adding color codes to indicate which event belongs to which project, or adding some gradients to the events so they are easier on the eyes.
 
 \section{Data Gathering}
-
-The following and final part of recommendations is about how the application could be able to learn from its user's behaviors,
-and how administrators would be able to extract relevant information.
+The following and final part of recommendations is about how the application could be able to learn from its user's behaviors, and how administrators would be able to extract relevant information.
 
 \subsection{Administrator Control Center}
-
-The current implementation of the application does not support explicit administrative control for the administrator from within the application, 
-but more of an implied back-end control. Administrators that want to change something are now expected to do that manually on the back-end
-server of the application, such as updating database records. 
-A good recommendation would be to implement some sort of Administrator Control Center where a user with administrator rights
-has full access to the database from within the application. This would also imply that people other than the server owner can
-be assigned the role of administrating the application. The administrator user should be able to extract logs and specific
-data from the database from within the application.
+The current implementation of the application does not support explicit administrative control for the administrator from within the application, but more of an implied back-end control. Administrators that want to change something are now expected to do that manually on the back-end server of the application, such as updating database records. A good recommendation would be to implement some sort of Administrator Control Center where a user with administrator rights has full access to the database from within the application. This would also imply that people other than the server owner can be assigned the role of administrating the application. The administrator user should be able to extract logs and specific data from the database from within the application.
 
 \subsection{User Logging}
-
 The vision for this application was not only to provide a supporting system for accessing and discussing files, but also create a recommender-styled suggestion page that can identify the most common problems users face when writing papers and articles.
 In order to create a good recommendation system, a minimum amount of data is needed to identify user interests and problems.
 A good way to do this is to, for example, provide links to information from the suggestion page and then ask the user
@@ -72,12 +42,8 @@ or create even more useful links, whereas less useful information can be bumped 
 has gathered enough information, and can identify the most common struggles, you can teach it to give suggestions at the time
 of relevance within the project. 
 
-
-
-
 \subsection{User Test \& usability test} % (fold)
 \label{sub:user_test}
-User testing can lead to make great changes to the application. User can give valuable feedbacks regarding the interface and functionality. For this prototype the minimum requirement to have a proper user test is to invite group of users so that different roles can be exercised by using this application. 
-The time duration of this project has made it so difficult to perform user test because a user test can take minimum 2-4 weeks time. We highly recommend to the future contributors to perform user test in order to identify feature limitations and benchmark the usability and functional requirement with the prototype.
+User testing is a great way to find out which changes to make to the application. Users can give valuable feedback regarding both interface and functionality. For this prototype, a minimal requirement to be able to properly test the application is to invite a small group of users who can fulfill different roles. The time constraints of this project has made it quite difficult to perform a thorough user test, as it could easily take a few weeks time to gather relevant feedback. We highly recommend to the future contributors to perform user tests in order to identify feature limitations and benchmark the usability and functional requirement with the prototype.
 % subsection user_test (end)
 % section testing (end)
