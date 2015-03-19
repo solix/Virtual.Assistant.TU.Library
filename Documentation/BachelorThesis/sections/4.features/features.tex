@@ -1,83 +1,40 @@
 \chapter{Features}
-This section will walk the reader through various set of distinct features of the application. These features has been developed in accordance with the functional and usability requirement in section \ref{req}. It is meant to provide the end-user of the application a useful working environment with necessary tools.
+In this chapter some primary features are discussed, categorized by the entities that benefit from them. These features have been implemented in accordance with the listed requirements in section \ref{req}. Their main goal is to provide the end-user of the application with a useful working environment and necessary tools.
 
 \section{Users}
-
-The users are the main actors within the application. They share documents, work together and start discussions with each other. Whenever
-a user either signs up with a default account, or signs in with a social account, a new user model gets created within the application which then
-stores its relations with projects, discussions and files. Every user is connected to a project through a role. The application caters three roles: 
-Owner (students), Reviewer (teachers) and Guests (other).
+The users are the main actors within the application. They share documents, work together and start discussions with each other. Whenever a user either signs up with a default account, or signs in with a social account, a new user model gets created within the application which then stores its relations with projects, discussions and files. Every user is connected to a project through a role. The application caters three roles: Owner (students), Reviewer (teachers) and Guests (other).
 
 \subsection{Authentication}
-
-Users are able to authenticate themselves in two ways: a default account and through a Google Plus account. A default account can be created from the 
-sign up page, where a user is asked for his first and last name, his email address, and his self-chosen password. After the user has submitted his 
-information, a verification mail is sent to his email address. An unverified user has no access to the application, so he will be redirected to the 
-login page every time as long as he remains unverified. The second type of authentication is through
-Google Plus, where a user can identify himself through his Google account. When a user signs in through Google Plus, the application inherits
-the first and last name the user has on Google Plus.
+Users are able to authenticate themselves in two ways: a default account and through a Google Plus account. A default account can be created from the sign up page, where a user is asked for his first and last name, his email address, and his self-chosen password. After the user has submitted his information, a verification mail is sent to his email address. An unverified user has no access to the application, so he will be redirected to the login page every time as long as he remains unverified. The second type of authentication is through Google Plus, where a user can identify himself through his Google account. When a user signs in through Google Plus, the application inherits the same first and last name the user has on Google Plus.
 
 \subsection{User roles}
-
-The users of the AssisTU application can be divided into three roles: the owner (students), the reviewer and the guest. The owner role allows for the 
-most control over a project. It is the highest ranking role with the least restrictions in terms of actions.
-Owners can add or remove members, and (given the role of other participants) sometimes also files and discussions. Besides this, Owners are also 
-allowed to edit the name, folder and description of a project of which they are the owner of, regardless of the initial creator. 
-The reviewer role is reserved for teachers and supervisors. They get special attention within the application and can easily be visually identified by 
-other users. Their contributions into a project in terms of files or comments cannot be deleted by anyone else but themselves, not even by the owners. 
-The final role is the guest role. Guests are considered to be neither owners nor reviewers, the guest role is considered the role with the most 
-restrictions.
+The users of the AssisTU application can be divided into three roles: the owner (students), the reviewer and the guest. The owner role allows for the most control over a project. It is the highest ranking role with the least restrictions in terms of actions. Owners can add or remove members, and (given the role of other participants) sometimes also files and discussions. Besides this, Owners are also allowed to edit the name, folder and description of a project of which they are the owner of, regardless of the initial creator. \\
+The reviewer role is reserved for teachers and supervisors. They get special attention within the application and can easily be visually identified by other users. Their contributions into a project in terms of files or comments cannot be deleted by anyone else but themselves, not even by the owners. \\
+The final role is the guest role. Guests are considered to be neither owners nor reviewers, the guest role is considered the role with the most restrictions.
 
 \newpage
 
 \subsection{Mendeley Library Sharing}
-
-During the course of this project, a requirement had been added to allow users to share their Mendeley libraries with other users. A user can
-link his mendeley account to the application from the drop down menu on the top right of the application. Once a user has linked his account,
-his documents will appear in a mendeley document list within a project, that can only be seen by other mendeley-enabled owners. This list will show
-all (distinct) documents from all owners that have linked their mendeley account. The documents that the user already has in his mendeley library
-will have a `checked' icon attached to them. The documents that the user does not have in his mendeley library yet will be accompanied by a clickable 
-`plus' icon that will push the document to their mendeley library, after which it will also appear as a `checked' icon.
+During the course of this project, a requirement had been added to allow users to share their Mendeley libraries with other users. A user can link his Mendeley account to the application from the drop down menu on the top right of the application. Once a user has linked his account, his/her Mendeley library will have created folders which are linked to projects with the same folder name within AssisTU. When he/she adds documents to this folder in Mendeley, these documents will appear in a Mendeley document list within the corresponding project, that can only be seen by other Mendeley-enabled owners. This list will show all (distinct) documents from all owners that have linked their Mendeley account. The documents that the user already has in his Mendeley library will have a `checked' icon attached to them. If the user is missing a document, they are able to sync the entire library with the Mendeley folder by the click of a button.
 
 \begin{center}
 \includegraphics[scale=0.5]{./img/mendeley.png}
 \end{center}
 
 \section{Projects}
-
-The main component of the AssisTU application is the creation of, and participation in projects. A project is an entity in which owners, reviewers and 
-guests come together. 
-The project overview is represented as a series of panels with tables, separated by tabs at the top of the page. The name in the tab is the folder 
-name, which is the same name users see when they join the project. 
+The main component of the AssisTU application is the creation of, and participation in projects. A project is an entity in which owners, reviewers and guests come together. The project overview is represented as a series of panels with tables, separated by tabs at the top of the page. The name in the tab is the folder name, which is the same name users see when they join the project. 
 
 \subsection{Creating a new Project}
-
-A new project can be created by clicking the `create new project' button on the top left of the project page. When the user clicks this button,
-he gets directed to a new page where he can choose a folder name, a project name, a project description and a possible template. The folder name
-appears on the tab of both the project- and discussion page, so that users can easily identify which project is under which tab. The project
-name is the main name of the project that also appears on top of the discussion page. After the project is created, the user gets redirected
-to the project overview with the newest project tab active.
+A new project can be created by clicking the `create new project' button on the top left of the project page. When the user clicks this button, he/she gets directed to a new page where they can choose a folder name, a project name, a project description and a possible template. The folder name appears on the tab of both the project- and discussion page, so that users can easily identify which project is under which tab. The project name is the main name of the project that also appears on top of the discussion page. After the project is created, the user gets redirected to the project overview with the newest project tab active.
 
 \subsection{Documents}
-
-When a project page is rendered, the user gets to see the list of documents connected to this project. Every member of a project is able to download
-any of these documents by clicking the download icon. Only owners and reviewers are able to upload their own documents. When a document is uploaded,
-it appears in the list as a row that displays the name of the file, the up-loader, and 2-3 action buttons. The first action button is the download 
-button, which is self-explanatory. The second text-balloon-icon action button allows users to use that file as a relational attachment in a discussion.
-When they use it, a new page is loaded that displays a new discussion template akin to the one on the discussion page itself. The only difference here
-is that now you can see a filename attached to it below the message. The optional third action button is the delete button, which in this case is
-only visible if you uploaded the file in the first place. The application does not allow owners to delete files uploaded by other owners or reviewers.
+When a project page is rendered, the user gets to see the list of documents connected to this project. Every member of a project is able to download any of these documents by clicking the download icon. Only owners and reviewers are able to upload their own documents. When a document is uploaded, it appears in the list as a row that displays the name of the file, the up-loader, and 2-3 action buttons. The first action button is the download button, which is self-explanatory. The second text-balloon-icon action button allows users to use that file as a relational attachment in a discussion. When they use it, a new page is loaded that displays a new discussion template akin to the one on the discussion page itself. The only difference here is that now you can see a filename attached to it below the message. The optional third action button is the delete button, which in this case is only visible if you uploaded the file in the first place. The application does not allow owners to delete files uploaded by other owners or reviewers.
 
 \subsection{Template}
-
-A template is a combination of a file and series of calendar-events. When a user chooses to use a predefined template, he can download the template file
-from the project page, and automatically all corresponding events will be loaded inside the calendar view. A user can also choose to create his own 
-template if he wishes to. In this case the user can upload his own template file, and create his own events inside the calendar.
+A template is a combination of a file and series of calendar-events. When a user chooses to use a predefined template, he can download the template file from the project page, and automatically all corresponding events will be loaded inside the calendar view. A user can also choose to create his own template if he wishes to. In this case the user can upload his own template file, and create his own events inside the calendar.
 
 \subsection{Project Settings/Options}
-
-After a project is created, the user can see a gear icon in the top right corner of the project panel. Clicking this gear icon shows a drop down
-with all the settings and options that a given user (with a given role) is allowed to see.
+After a project is created, the user can see a gear icon in the top right corner of the project panel. Clicking this gear icon shows a drop down with all the settings and options that a given user (with a given role) is allowed to see.
 
 \begin{center}
 \includegraphics[scale=0.5]{./img/project_dropdown.png}
@@ -85,9 +42,7 @@ with all the settings and options that a given user (with a given role) is allow
 
 \subsubsection{Edit Project}
 
-The edit project option is only available to owners. When clicking it, the user get redirected to a page similar to the page where he created a project,
-only this time with the data already filled in. The user can either click cancel to cancel the updating of the data, or hit `save'. Note
-that a template cannot be re-chosen after the project has been created.
+The edit project option is only available to owners. When clicking it, the user get redirected to a page similar to the page where he created a project, only this time with the data already filled in. The user can either click cancel to cancel the updating of the data, or hit `save'. Note that a template cannot be re-chosen after the project has been created.
 
 \subsubsection{Go to discussions}
 
