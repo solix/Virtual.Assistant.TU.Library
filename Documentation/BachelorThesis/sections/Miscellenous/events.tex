@@ -1,27 +1,13 @@
 \section{Project Events}
 
-This section illustrates the timeline of the implementation of the application. The sprints are discussed at a very high-level, and
-the biggest difficulties encountered are also documented.
+This section illustrates the time-line of the implementation of the application. The sprints are discussed at a very high-level, and the biggest difficulties encountered are also documented.
 
 \subsection{Sprints}
 
-The implementation of the project was divided into \textbf{12 sprints}, and took around \textbf{14 weeks} in total. 
-The first few sprints focused on front-end design without any back-end implementation. The idea
-behind this approach was to get everyone on the same line in terms of what the application should look like, and
-what kind of functionality it would eventually offer. 
-The first part that received back-end functionality was the project feature, as the entire application
-revolves around how users interact with each other within projects.
-Around the fifth sprint the user model and functionality got implemented so that all other parts could immediately
-get implemented with working sign up and login implementation.
-The sixth sprint got extended to two weeks, as the calendar and discussions functionality took more time than initially
-anticipated. From the sixth sprint throughout the twelfth
+The implementation of the project was divided into \textbf{12 sprints}, and took around \textbf{14 weeks} in total. The first few sprints focused primarily on front-end design without any back-end implementation. The idea behind this approach was to get everyone on the same line in terms of what the application should look like, and what kind of functionality it would eventually offer. The first part that received back-end functionality was the project feature, as the entire application revolves around how users interact with each other within projects. Around the fifth sprint, the User model and functionality got implemented so that all other parts could immediately get implemented with a working sign up and login implementation. The sixth sprint got extended to two weeks, as the calendar and discussions functionality took more time than initially anticipated. From the sixth sprint throughout the twelfth sprint, all remaining features were implemented.
 \newpage
 \subsection{Difficulties}
 
-A few difficulties were encountered during our implementation. The first difficulty was implementing TU Delft
-NetID for the users. Our client had contacted the IT department mid-December, yet only got a reply 4 weeks later
-that their request for application registration had been denied due to their transition into a new system. Not
-knowing about the unavailability, quite some time and work was lost preparing the application for the NetID implementation
-awaiting the reply from the IT department.\\
+A few difficulties were encountered during our implementation. The first difficulty was implementing the TU Delft NetID authentication for the users. Our client had contacted the IT department mid-December, yet only got a reply 4 weeks later that their request for application registration had been denied due to their transition into a new system. Not knowing about the unavailability, quite some time and work was lost preparing the application for the NetID implementation awaiting the reply from the IT department.\\
 
-A second difficulty emerged during the deployment phase when the application had to be deployed onto Heroku service. At the time of development mode, the models were created into the database internal memory `H2'. Therefore, when the models were migrated to PostgreSQL, it did not accept certain model names such as user (user is a reserved word in PostgreSQL).
+A second difficulty emerged during the deployment phase when the application had to be deployed onto Heroku service. At the time of development, the models were created into the database internal memory `H2'. However, when the models were migrated to PostgreSQL, it did not accept certain model names such as user (user is a reserved word in PostgreSQL). This issue was not a straightforward one and proved to be more time-consuming than initially anticipated.

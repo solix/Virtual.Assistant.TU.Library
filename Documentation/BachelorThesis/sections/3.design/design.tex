@@ -1,25 +1,18 @@
 \chapter{Design}
 
-This chapter describes the architecture design of the AssisTU application. It is intended to describe the design of the system 
-thoroughly enough to allow future contributors of the project to clearly understand of how the software is expected to be extended. It will provide 
-an overview and description of the system, the relations between the components and user interactions.
+This chapter describes the architecture design of the AssisTU application. It is intended to describe the design of the system thoroughly enough to allow future contributors of the project to clearly understand of how the software is expected to be extended. It will provide an overview and description of the system, the relations between the components and user interactions.
 
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
-Today the web has become the central point of all applications. With the presence of Internet, users can use many applications without the need to 
-install the program on their machine. Technologies such as JavaScript, HTML, CSS are evolving rapidly and have created the opportunity for the users of 
-world wide web to have a more pleasant experience. Fast and robust applications play an important role in attracting users and convincing them to 
-migrate from installing the programs on their machine to using their browsers instead. In order to build the most solid web applications possible, 
-it is in our best interest to implement new, state of the art software engineering designs.
+Today the web has become the central point of all applications. With the presence of Internet, users can use many applications without the need to install the software on their machines. Technologies such as JavaScript, HTML, CSS are evolving rapidly and have created the opportunity for the users of the world wide web to have a more pleasant experience. Fast and robust applications play an important role in attracting users and convincing them to migrate from installing the programs on their machines to using their browsers instead. In order to build the most solid web applications possible, it is in our best interest to implement new, state of the art software engineering designs.
 
 % \subsection{Purpose} % (fold)
 % \label{sub:purpose}
 
 \subsection{Scope} % (fold)
 \label{sub:scope}
-The scope of the AssisTU software design is set to a basic system that illustrates a proof of concept. Its purpose is the act of writing 
-scientific articles that provides planning, organizing tasks, discussions and suggestions.
+The scope of the AssisTU software design is set to a basic system that illustrates a proof of concept. Its purpose is to facilitate the act of writing scientific articles that provides planning, organizing tasks, discussions and suggestions.
 
 \section{Use Cases} % (fold)
 \label{sec:system_overview}
@@ -30,8 +23,10 @@ The following actors were identified within the application, along with their re
 \subsubsection{Student/Researcher User} 
 The Student/Researcher user is the main user of the application. This user can make extensive use of all the features provided by the application. For example, the Student/Researcher can create a project, edit a project, upload templates and other documents, invite others, make a planning, discuss topics with other collaborators, create a to-do list of what has to be done for the project and get information on how to write a scientific article.
 
+\newpage
+
 \subsubsection{Reviewer User} 
-The Reviewer actor is able to use most of the same features as a Student/Researcher can, apart from editing project information or inviting other members to a project. The reviewer's main objective is to be able to review a Student/Researcher's work and provide feedback. A user can take on the Reviewer role when He/She gets invited by a Student/Researcher into the project. A Reviewer is able to download documents, create new discussions, upload own documents, and comment on existing discussions about a certain section of the project. A Reviewer is considered a user with a reviewer role, which means he can also make use of the tasks feature and calendar to create his own events.
+The Reviewer actor is able to use most of the same features as a Student/Researcher can, apart from editing project information or inviting other members to a project. The reviewer's main objective is to be able to review a Student/Researcher's work and provide feedback. A user can be assigned the Reviewer role when He/She gets invited by a Student/Researcher into the project. A Reviewer is able to download documents, create new discussions, upload own documents, and comment on existing discussions about a certain section of the project. A Reviewer is considered a user with a reviewer role, which means he can also make use of the tasks feature and calendar to create his own events.
 
 \subsubsection{Guest User} 
 Guest users are those who are interested to join certain projects for purposes other than contributing or reviewing. They are able to perform certain actions such as viewing and downloading a document, or joining a discussion to give their comments. They are not able to upload their own documents to a project.
@@ -75,6 +70,8 @@ In this section a more concrete list of use cases is provided, again categorized
 	\item Download logging info
 \end{itemize}
 
+\newpage
+
 \subsection{Use Case Diagrams} % (fold)
 This section features some illustrations which depict the use cases in a diagram.
 \subsubsection{Student/Researcher User} 
@@ -109,7 +106,7 @@ This section features some illustrations which depict the use cases in a diagram
 \newpage
 \section{System Architecture} % (fold)
 \label{sec:system_architecture}
-For the purpose of modularity, the Model-View-Controller (MVC) design was adopted for the architecture of the application. In this section, the MVC design of the system is illustrated in the form of a diagram. Its sub-components will also be discussed further down this section. MVC has been proven to be very suitable for web architecture since it promises low coupling and high cohesion between components of the systems, and provides room for easier extension or modification of a specific component.
+For the purpose of modularity, the Model-View-Controller (MVC) design was adopted for the architecture of the application. In this section, the MVC design of the system is illustrated in the form of a diagram. Its sub-components will also be discussed further down this section. MVC has been proven to be very suitable for web architecture design as it promises low coupling and high cohesion between the components of the systems, and provides room for easier extension or modification of a specific component.
 \subsection{Architectural Design} % (fold)
 \label{sub:arichtectural_design}
 %
@@ -137,7 +134,7 @@ In order to give a more general overview of the system's model layer, a graphica
 
 \subsubsection{Model description}
 \paragraph{User}
-The User model holds all the attributes a user needs within the application. Users are identified in the application by their (verified) email address, which is unique. Almost all the models have a direct relation with the User model, as the user is a central component within the application. Common User attributes include an email, a name, etc.
+The User model holds all the attributes a user needs within the application. Users are identified in the application by their (verified) email address, which is always unique. Almost all the models have a direct relation with the User model, as the user is a central component within the application. Common User attributes include an email, a name, etc.
 
 \paragraph{Project}
 
