@@ -15,6 +15,8 @@
 
 \LoadClass[10pt]{book}
 
+
+\RequirePackage{apacite}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 %% English is the default language, but this can be changed to Dutch by
@@ -57,6 +59,7 @@
 \RequirePackage[nottoc]{tocbibind}
 \RequirePackage{xcolor}
 \RequirePackage{xkeyval}
+
 
 \ifxetex
     %% If the document is compiled with XeLaTeX, we load the TU Delft house
@@ -495,7 +498,9 @@
 \renewcommand*\labelitemiv{\color{title}\textperiodcentered}
 
 %% Use a custom bibliography style based on apsrev4-1.
-\bibliographystyle{tudelft-report}
+%\bibliographystyle{tudelft-report}
+%\usepackage{apacite}
+%\bibliographystyle{apacite}
 
 %% Hyperlinks are cyan, except in print mode, when they are all black.
 \hypersetup{
